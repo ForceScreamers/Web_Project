@@ -1,0 +1,64 @@
+hello
+
+Set up a template for the main pages at MainPage.js
+
+css or using jsx to style
+
+Database:
+  Create MySql DB
+  Connect DB
+  profile pictures of users inside DB? 
+  
+  DAL:
+	Done DAL class methods:
+	
+	parents DB
+		parent x 
+		game x 
+		child x
+		evaluation	x 
+		game type x 
+		
+	provider DB
+	
+
+		post 
+		provider 
+		topic
+
+
+Registeration page:
+  Email, username, password, profile picture
+  Registeration verification (special characters, username not taken)
+
+Validation:
+  Login:
+    Special characters, 
+
+  Registeration:
+    (Client) Max characters, Special characters 
+    (Server) Is in database, username matches password
+
+
+BEM:
+Block: container
+Element: container__button
+Modifier: container--hidden
+
+example:
+.form__submit--disabled { }
+
+
+Frontend
+  Finish InviteButton component
+
+C# functions to js functions
+C# Web api
+Check CORS Security
+
+
+
+
+----  DONE ----
+Restricted routes
+FIX - 'Access voilation' when running any function to manipulate data

@@ -1,0 +1,10 @@
+
+npx create-react-app app-name (Create react app)
+
+cd app-name (Changing directories)
+
+npm start (Start dev server)
+
+npm install json-server (Install JSON server - mockup Db - Don't know if I need it tho)
+
+a

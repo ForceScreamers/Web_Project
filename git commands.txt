@@ -1,0 +1,22 @@
+
+git init
+
+
+***First, add to the staging area, then commit and finally push to wherever.***
+
+git add <files>
+
+git commit -m '<messege here>'
+
+git pull <repo name> <branch>
+
+git push <repo name> <branch>
+
+Clone to this pc:
+git clone <url>
+
+Show remote repos:
+git remote show
+
+Add remote repo:
+git remote add <name on local pc> <repo url>

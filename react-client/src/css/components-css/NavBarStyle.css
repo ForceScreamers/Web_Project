@@ -1,0 +1,54 @@
+.List li{
+  display:inline;
+}
+
+.NavBarContainer{
+  background-color: red;
+  height: 45px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.ControlContainer{
+  display: flex;
+  align-items: center;
+  background-color: red;
+}
+
+.RightContainer{
+  justify-content: flex-end;
+  padding-left:10px;
+  padding-right: 10px;
+}
+
+/* .LeftContainer{
+  width: 200px;
+  justify-content: space-around;
+} */
+
+
+
+/* .PageLink:hover{
+  color: white;
+}
+.PageLink:link {
+  color: black;
+}
+.PageLink:visited {
+  color: black;
+}
+.PageLink:active {
+  color: black;
+}  */
+
+.LogoutButton{
+  border-radius: 2px;
+  border: none;
+  padding: 6px;
+  padding-right: 9px;
+  padding-left: 9px;
+}
+.LogoutButton:hover{
+  background-color: gainsboro;
+  cursor: pointer;
+}

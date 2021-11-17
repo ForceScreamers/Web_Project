@@ -1,0 +1,20 @@
+C:\Users\Administrator\Desktop\Finals-Project 16.10\Backend\provider-dal\Provider-DAL\bin\Debug\Provider-DAL.exe.config
+C:\Users\Administrator\Desktop\Finals-Project 16.10\Backend\provider-dal\Provider-DAL\bin\Debug\Provider-DAL.exe
+C:\Users\Administrator\Desktop\Finals-Project 16.10\Backend\provider-dal\Provider-DAL\bin\Debug\Provider-DAL.pdb
+C:\Users\Administrator\Desktop\Finals-Project 16.10\Backend\provider-dal\Provider-DAL\obj\Debug\Provider-DAL.csproj.AssemblyReference.cache
+C:\Users\Administrator\Desktop\Finals-Project 16.10\Backend\provider-dal\Provider-DAL\obj\Debug\Provider-DAL.csproj.CoreCompileInputs.cache
+C:\Users\Administrator\Desktop\Finals-Project 16.10\Backend\provider-dal\Provider-DAL\obj\Debug\Provider-DAL.exe
+C:\Users\Administrator\Desktop\Finals-Project 16.10\Backend\provider-dal\Provider-DAL\obj\Debug\Provider-DAL.pdb
+C:\Users\Kfir\Desktop\pp\Backend\provider-dal\Provider-DAL\bin\Debug\Provider-DAL.exe.config
+C:\Users\Kfir\Desktop\pp\Backend\provider-dal\Provider-DAL\bin\Debug\Provider-DAL.exe
+C:\Users\Kfir\Desktop\pp\Backend\provider-dal\Provider-DAL\bin\Debug\Provider-DAL.pdb
+C:\Users\Kfir\Desktop\pp\Backend\provider-dal\Provider-DAL\obj\Debug\Provider-DAL.csprojAssemblyReference.cache
+C:\Users\Kfir\Desktop\pp\Backend\provider-dal\Provider-DAL\obj\Debug\Provider-DAL.exe
+C:\Users\Kfir\Desktop\pp\Backend\provider-dal\Provider-DAL\obj\Debug\Provider-DAL.pdb
+C:\Users\Administrator\Desktop\Finals-Project\Finals-Project\Backend\provider-dal\Provider-DAL\bin\Debug\Provider-DAL.exe.config
+C:\Users\Administrator\Desktop\Finals-Project\Finals-Project\Backend\provider-dal\Provider-DAL\bin\Debug\Provider-DAL.exe
+C:\Users\Administrator\Desktop\Finals-Project\Finals-Project\Backend\provider-dal\Provider-DAL\bin\Debug\Provider-DAL.pdb
+C:\Users\Administrator\Desktop\Finals-Project\Finals-Project\Backend\provider-dal\Provider-DAL\obj\Debug\Provider-DAL.csproj.AssemblyReference.cache
+C:\Users\Administrator\Desktop\Finals-Project\Finals-Project\Backend\provider-dal\Provider-DAL\obj\Debug\Provider-DAL.csproj.CoreCompileInputs.cache
+C:\Users\Administrator\Desktop\Finals-Project\Finals-Project\Backend\provider-dal\Provider-DAL\obj\Debug\Provider-DAL.exe
+C:\Users\Administrator\Desktop\Finals-Project\Finals-Project\Backend\provider-dal\Provider-DAL\obj\Debug\Provider-DAL.pdb

@@ -1,0 +1,13 @@
+.LoginContainer{
+    display: flex;
+    margin-top: 20vh;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center; 
+}
+
+.InputContainer{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column; 
+}
