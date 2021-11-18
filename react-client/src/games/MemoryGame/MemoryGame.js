@@ -1,38 +1,21 @@
 import { useEffect, useState, useRef } from "react";
 import Card from "./Card";
 import "./app.scss";
-import image from '../TestGame/Images/download.jpg'
+import img from '../TestGame/Images/download.jpg'
 
-const gameCards = new Array(16);
-for (let i = 0; i < gameCards.length; i++) {
-  gameCards[i] = image;
+let gameCards = [];
+for (let i = 0; i < 16; i++) {
+  gameCards[i] = {
+    type: 1,
+    //image: "image"
+  }
 }
-// const uniqueElementsArray = [
-//   {
-//     type: "Pikachu",
-//     image: require(`./images/Pickachu.png`)
-//   },
-//   {
-//     type: "ButterFree",
-//     image: require(`./images/ButterFree.png`)
-//   },
-//   {
-//     type: "Charmander",
-//     image: require(`./images/Charmander.png`)
-//   },
-//   {
-//     type: "Squirtle",
-//     image: require(`./images/Squirtle.png`)
-//   },
-//   {
-//     type: "Pidgetto",
-//     image: require(`./images/Pidgetto.png`)
-//   },
-//   {
-//     type: "Bulbasaur",
-//     image: require(`./images/Bulbasaur.png`)
-//   }
-// ];
+
+gameCards[0].type = 1;
+gameCards[1].type = 1;
+
+const CARD_CLOSING_DELAY = 100;
+const EVALUATION_DELAY = 300;
 
 function shuffleCards(array) {
   const length = array.length;
@@ -48,83 +31,85 @@ function shuffleCards(array) {
 
 export default function MemoryGame() {
   const [cards, setCards] = useState(
-    shuffleCards.bind(null, gameCards)
+    //shuffleCards.bind(null, gameCards.concat(gameCards))
+    gameCards
   );
+
   const [openCards, setOpenCards] = useState([]);
   const [clearedCards, setClearedCards] = useState({});
   const [shouldDisableAllCards, setShouldDisableAllCards] = useState(false);
   const [moves, setMoves] = useState(0);
+  const [showModal, setShowModal] = useState(false);
   const timeout = useRef(null);
 
-  const disable = () => {
-    setShouldDisableAllCards(true);
-  };
-  const enable = () => {
-    setShouldDisableAllCards(false);
-  };
+  //  Disable or enable (the user can't click) all cards while evaluating
+  const disable = () => { setShouldDisableAllCards(true) };
+  const enable = () => { setShouldDisableAllCards(false) };
 
   const checkCompletion = () => {
-    if (Object.keys(clearedCards).length === 3) {
-      //  Done?
-
+    if (Object.keys(clearedCards).length === gameCards.length) {
+      console.log("Done!");
     }
   };
+
   const evaluate = () => {
     const [first, second] = openCards;
     enable();
-    if (cards[first].type === cards[second].type) {
+
+    if (cards[first].type === cards[second].type) {// If the types match
+
+      //  Update cleared cards with the newly opened cards
       setClearedCards((prev) => ({ ...prev, [cards[first].type]: true }));
+
+      //  Reset open cards
       setOpenCards([]);
       return;
     }
     // This is to flip the cards back after 500ms duration
     timeout.current = setTimeout(() => {
       setOpenCards([]);
-    }, 500);
+    }, CARD_CLOSING_DELAY);
   };
+
+  //  Handle click
   const handleCardClick = (index) => {
     if (openCards.length === 1) {
+
       setOpenCards((prev) => [...prev, index]);
+
+      //  Update move count
       setMoves((moves) => moves + 1);
+
       disable();
     } else {
       clearTimeout(timeout.current);
+
+      //  Open the clicked card
       setOpenCards([index]);
     }
   };
 
+  //  Every time the open cards update
   useEffect(() => {
     let timeout = null;
     if (openCards.length === 2) {
-      timeout = setTimeout(evaluate, 300);
+      timeout = setTimeout(evaluate, EVALUATION_DELAY);
     }
     return () => {
       clearTimeout(timeout);
     };
   }, [openCards]);
 
+  //  Every time the cleared cards update
   useEffect(() => {
     checkCompletion();
   }, [clearedCards]);
-  const checkIsFlipped = (index) => {
-    return openCards.includes(index);
-  };
 
-  const checkIsInactive = (card) => {
-    return Boolean(clearedCards[card.type]);
-  };
-
-  const handleRestart = () => {
-    setClearedCards({});
-    setOpenCards([]);
-    setMoves(0);
-    setShouldDisableAllCards(false);
-    // set a shuffled deck of cards
-    setCards(shuffleCards(cards));
-  };
+  const checkIsFlipped = (index) => { return openCards.includes(index) };
+  const checkIsInactive = (card) => { return Boolean(clearedCards[card.type]) };
 
   return (
-    <div className="App">
+    <div>
       <header>
         <h3>Play the Flip card game</h3>
         <div>
@@ -152,13 +137,7 @@ export default function MemoryGame() {
             <span className="bold">Moves:</span> {moves}
           </div>
         </div>
-        <div className="restart">
-          <button onClick={handleRestart} color="primary" variant="contained">
-            Restart
-          </button>
-        </div>
       </footer>
-
     </div>
   );
 }

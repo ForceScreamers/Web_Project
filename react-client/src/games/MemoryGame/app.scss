@@ -51,11 +51,16 @@
     grid-template-rows: repeat(4, 1fr);
     justify-items: center;
     align-items: stretch;
-    gap: 0.5rem;
+    gap: 2px;
     margin: 0 auto;
-    width: 360px;
-    height: 300px;
     perspective: 100%;
-    max-width: 720px;
+
+    //  Main container sizes
+    width: 70vw;
+    height: 50vw;
+    max-width: 850px;
+    min-width: 200px;
+    max-height: 500px;
+    min-height: 200px;
   }
 }

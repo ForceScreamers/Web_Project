@@ -11,14 +11,15 @@ const Card = ({ onClick, card, index, isInactive, isFlipped, isDisabled }) => {
 
   return (
     <div
-      className={classnames("card", {
+      className={classnames("border-0 card", {
         "is-flipped": isFlipped,
         "is-inactive": isInactive
       })}
       onClick={handleClick}
     >
       <div className="card-face card-font-face">
-        <img src={image} alt="front" />
+        {/*Disable pointer when the card is inactive*/}
+        <img src={image} alt="front" style={{ cursor: isInactive ? "default" : "pointer" }} />
       </div>
       <div className="card-face card-back-face">
         <img src={card.image} alt="back" />
