@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "GC53NU1A2BFjQGGBL5bExxs737PRjTyCjzi5Nm02f5+vOdNle/jyN+bWLmM3RRLA+F95L6HhnWo6Ujj+gcDV/w==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Administrator\\Desktop\\Web_Project\\Web_Project\\WebsiteApi\\DAL\\ParentDal\\ParentDal.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Administrator\\.nuget\\packages\\system.data.odbc\\6.0.0\\system.data.odbc.6.0.0.nupkg.sha512",
+    "C:\\Users\\Administrator\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512",
+    "C:\\Users\\Administrator\\.nuget\\packages\\system.text.encoding.codepages\\6.0.0\\system.text.encoding.codepages.6.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}

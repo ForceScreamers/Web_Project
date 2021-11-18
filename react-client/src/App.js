@@ -25,7 +25,12 @@ import UserProfile from './components/UserProfile';
 
 import axios from 'axios';
 import TestGame from './games/TestGame/TestGame';
-//import { Console } from 'console';
+
+//	Games import
+import MemoryGame from './games/MemoryGame/MemoryGame'
+
+//	Bootstrap css import
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 //#endregion
 
@@ -35,7 +40,7 @@ import TestGame from './games/TestGame/TestGame';
 const REQUEST_TIMEOUT_LENGTH = 4000;
 
 //	Used for debugging
-const ENABLE_LOGIN = true;
+const ENABLE_LOGIN = false;
 
 let username;
 
@@ -81,7 +86,7 @@ const App = () => {
 		else {
 			console.warn("Login disabled")
 			setIsAuth(true)
-			history.push('/Games/TestGame')
+			history.push('/Games/MemoryGame')
 		}
 	}
 
@@ -117,6 +122,7 @@ const App = () => {
 				<AuthenticatedRoute exact path="/MyProfile" isAuth={isAuth} component={MyProfile} />
 
 				<AuthenticatedRoute exact path="/Games/TestGame" isAuth={isAuth} component={TestGame} />
+				<AuthenticatedRoute exact path="/Games/MemoryGame" isAuth={isAuth} component={MemoryGame} />
 
 
 			</div>
