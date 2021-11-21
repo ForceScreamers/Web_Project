@@ -6,7 +6,7 @@ import img from '../TestGame/Images/download.jpg'
 let gameCards = [];
 for (let i = 0; i < 16; i++) {
   gameCards[i] = {
-    type: 1,
+    type: i,
     //image: "image"
   }
 }
@@ -111,9 +111,9 @@ export default function MemoryGame() {
   return (
     <div>
       <header>
-        <h3>Play the Flip card game</h3>
+        <h3>שלום</h3>
         <div>
-          Select two cards with same content consequtively to make them vanish
+          הוראות יהיו פה
         </div>
       </header>
       <div className="container">
@@ -134,7 +134,7 @@ export default function MemoryGame() {
       <footer>
         <div className="score">
           <div className="moves">
-            <span className="bold">Moves:</span> {moves}
+            <span className="bold">מהלכים:</span> {moves}
           </div>
         </div>
       </footer>

@@ -5,10 +5,12 @@
   transform-style: preserve-3d;
   position: relative;
   border-radius: 10px;
+  padding: 0;
   
   img {
     width: 95%;
     height: 95%;
+    padding:0;
   }
   
   .card-face {
@@ -16,6 +18,8 @@
     position: absolute;
     width: 100%;
     height: 100%;
+    padding: 0;
+
     &.card-back-face {
       transform: rotateY(180deg);
     }
