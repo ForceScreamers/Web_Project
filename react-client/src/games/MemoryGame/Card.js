@@ -4,7 +4,7 @@ import pokeball from "./images/pokeball.png";
 import "./card.scss";
 import image from '../TestGame/Images/download.jpg'
 
-const Card = ({ onClick, card, index, isInactive, isFlipped, isDisabled }) => {
+const Card = ({ onClick, card, index, isInactive, isFlipped, isDisabled, cardType }) => {
   const handleClick = () => {
     !isFlipped && !isDisabled && onClick(index);
   };
@@ -23,7 +23,8 @@ const Card = ({ onClick, card, index, isInactive, isFlipped, isDisabled }) => {
 
       </div>
       <div className="card-face card-back-face">
-        <img src={card.image} alt="back" />
+        {/* <img src={card.image} alt="back" /> */}
+        <div>{cardType}</div>
       </div>
     </div>
   );

@@ -3,16 +3,24 @@ import Card from "./Card";
 import "./app.scss";
 import img from '../TestGame/Images/download.jpg'
 
-let gameCards = [];
-for (let i = 0; i < 16; i++) {
-  gameCards[i] = {
-    type: i,
-    //image: "image"
+const CARD_COUNT = 16;
+let gameCards = new Array(CARD_COUNT);
+let isDone = false;
+//  TODO: change the typeCounter method to something nicer
+let typeCounter = 0;
+
+const GenerateGameCards = () => {
+  for (let i = 0; i < gameCards.length; i++) {
+    gameCards[i] = {
+      type: typeCounter,
+      //image: 
+    }
+
+    if (i % 2 != 0) {
+      typeCounter++;
+    }
   }
 }
-
-gameCards[0].type = 1;
-gameCards[1].type = 1;
 
 const CARD_CLOSING_DELAY = 100;
 const EVALUATION_DELAY = 300;
@@ -29,10 +37,13 @@ function shuffleCards(array) {
   return array;
 }
 
+GenerateGameCards();
+
 export default function MemoryGame() {
+
   const [cards, setCards] = useState(
-    //shuffleCards.bind(null, gameCards.concat(gameCards))
-    gameCards
+    shuffleCards.bind(null, gameCards)
+    //gameCards
   );
 
   const [openCards, setOpenCards] = useState([]);
@@ -47,9 +58,10 @@ export default function MemoryGame() {
   const enable = () => { setShouldDisableAllCards(false) };
 
   const checkCompletion = () => {
-    if (Object.keys(clearedCards).length === gameCards.length) {
+    if (Object.keys(clearedCards).length === gameCards.length / 2) {
       console.log("Done!");
     }
+    isDone = true;
   };
 
   const evaluate = () => {
@@ -58,12 +70,19 @@ export default function MemoryGame() {
 
     if (cards[first].type === cards[second].type) {// If the types match
 
-      //  Update cleared cards with the newly opened cards
+      //  Update cleared cards with the newly opened card type
+      //  Meaning there will be half the card count
       setClearedCards((prev) => ({ ...prev, [cards[first].type]: true }));
+      console.log("Ok!")
 
       //  Reset open cards
       setOpenCards([]);
-      return;
+
+      //TODO: Figure out this return
+      //return;
+    }
+    else {//  Picked a wrong couple
+      console.log("not good")
     }
     // This is to flip the cards back after 500ms duration
     timeout.current = setTimeout(() => {
@@ -105,6 +124,10 @@ export default function MemoryGame() {
     checkCompletion();
   }, [clearedCards]);
 
+  useEffect(() => {
+    console.log("Game loaded")
+  })
+
   const checkIsFlipped = (index) => { return openCards.includes(index) };
   const checkIsInactive = (card) => { return Boolean(clearedCards[card.type]) };
 
@@ -127,6 +150,7 @@ export default function MemoryGame() {
               isInactive={checkIsInactive(card)}
               isFlipped={checkIsFlipped(index)}
               onClick={handleCardClick}
+              cardType={cards[index].type}
             />
           );
         })}
