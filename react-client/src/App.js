@@ -40,7 +40,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 const REQUEST_TIMEOUT_LENGTH = 4000;
 
 //	Used for debugging
-const ENABLE_LOGIN = false;
+const ENABLE_LOGIN = true;
 
 let username;
 
@@ -52,8 +52,12 @@ const ValidateInput = (userData) => {
 	return true;
 }
 
+
+
 const App = () => {
 	const [isAuth, setIsAuth] = useState(false);
+
+
 
 	const HandleLogin = async (e) => {
 
@@ -68,6 +72,8 @@ const App = () => {
 
 			if (ValidateInput(userData)) {
 				//	Axios login request to server
+
+
 				axios({
 					method: 'post',
 					url: "http://localhost:5001/login",
@@ -75,12 +81,21 @@ const App = () => {
 					headers: {
 						data: JSON.stringify(userData),
 					}
-				}).then((response) => {
+				})
+					//TODO: Deal with unable to connect
+					.catch(err => console.log(err))
 
-					//	Redirect user to the main page
-					setIsAuth(response.data.Authenticated)
-					history.push('/Games/TestGame')
-				});
+					.then((response) => {
+
+						//	If there is a response
+						if (response) {
+							//	Redirect user to the main page
+							if (response.data.Authenticated) {
+								setIsAuth(response.data.Authenticated);
+								history.push('/Games/TestGame');
+							}
+						}
+					});
 			}
 		}
 		else {
@@ -90,7 +105,9 @@ const App = () => {
 		}
 	}
 
+	const AuthenticateUser = () => {
 
+	}
 
 	//#region	Control the website zoom level
 	useEffect(() => {

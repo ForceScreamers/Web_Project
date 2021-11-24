@@ -8,6 +8,8 @@ const axios = require('axios')
 
 const app = express();
 
+const Login = require('../../react-client/src/main-pages/Login')
+
 
 // Check environment variable
 const PORT = /*process.env.PORT ||*/ 5001;
@@ -34,12 +36,16 @@ app.use(
 );
 
 //  Routes  //
+//app.use(express.static(path.join('../../react-client/src')))
 
 // create a GET route
 app.get('/backend', (req, res) => {
   res.send({ express: 'YOUR EXPRESS BACKEND IS CONNECTED TO REACT' });
 });
 
+app.get('/Login', (req, res) => {
+  res.render(Login);
+})
 
 app.post('/login', (req, res) => {
   //  Axios request to webapi
