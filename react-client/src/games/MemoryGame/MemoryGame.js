@@ -125,7 +125,7 @@ export default function MemoryGame() {
   }, [clearedCards]);
 
   useEffect(() => {
-    console.log("Game loaded")
+    //console.log("Game loaded")
   })
 
   const checkIsFlipped = (index) => { return openCards.includes(index) };
