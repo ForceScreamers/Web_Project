@@ -8,8 +8,7 @@ const axios = require('axios')
 
 const app = express();
 
-const Login = require('../../react-client/src/main-pages/Login')
-
+const session = require('express-session');
 
 // Check environment variable
 const PORT = /*process.env.PORT ||*/ 5001;
@@ -22,10 +21,9 @@ app.use(cors())
 
 
 //  Listen on a port
-let server = app.listen(PORT, () => {
+/*let server =*/ app.listen(PORT, () => {
   console.log('Listening on port ' + PORT)
 });
-
 
 //use cors to allow cross origin resource sharing
 app.use(
@@ -35,17 +33,18 @@ app.use(
   })
 );
 
+app.use(session({
+  secret: 'secret-key',
+  resave: false,
+  saveUninitialized: false  //  Don't save empty value if there's no value
+}))
+
 //  Routes  //
-//app.use(express.static(path.join('../../react-client/src')))
 
 // create a GET route
 app.get('/backend', (req, res) => {
   res.send({ express: 'YOUR EXPRESS BACKEND IS CONNECTED TO REACT' });
 });
-
-app.get('/Login', (req, res) => {
-  res.render(Login);
-})
 
 app.post('/login', (req, res) => {
   //  Axios request to webapi
@@ -71,17 +70,32 @@ app.post('/login', (req, res) => {
   }).catch((err) => {
     status = 400;
     console.log(err)
-    console.log("Can't connect to webapi ")
+    console.log("Can't connect to webapi")
+
   }).then((response) => {
     console.log("Response from web api:");
-    console.log(response.data);
-    let authenticatedMessage = response.data;
+    console.log(response.data.Authenticated);
+
+
+    //let authenticatedMessage = response.data;
+    let authenticatedMessage = { Authenticated: true };
 
     //  End the request with bool, if the user is in the database 
     //  and the password and username match
     res.status(status).end(JSON.stringify(authenticatedMessage));
   })
-
-
-
 });
+
+
+
+app.post('/Auth', (req, res) => {
+  console.log(ids)
+  console.log(req.sessionID)
+
+  if (ids.includes(req.sessionID)) {
+    console.log("All good");
+  }
+  else {
+    console.log("Not good");
+  }
+})

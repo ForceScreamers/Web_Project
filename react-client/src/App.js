@@ -57,8 +57,6 @@ const ValidateInput = (userData) => {
 const App = () => {
 	const [isAuth, setIsAuth] = useState(false);
 
-
-
 	const HandleLogin = async (e) => {
 
 		e.preventDefault();
@@ -72,8 +70,6 @@ const App = () => {
 
 			if (ValidateInput(userData)) {
 				//	Axios login request to server
-
-
 				axios({
 					method: 'post',
 					url: "http://localhost:5001/login",
@@ -91,7 +87,7 @@ const App = () => {
 						if (response) {
 							//	Redirect user to the main page
 							if (response.data.Authenticated) {
-								setIsAuth(response.data.Authenticated);
+								//setIsAuth(response.data.Authenticated);
 								history.push('/Games/TestGame');
 							}
 						}
@@ -100,14 +96,11 @@ const App = () => {
 		}
 		else {
 			console.warn("Login disabled")
-			setIsAuth(true)
+			//setIsAuth(true)
 			history.push('/Games/MemoryGame')
 		}
 	}
 
-	const AuthenticateUser = () => {
-
-	}
 
 	//#region	Control the website zoom level
 	useEffect(() => {

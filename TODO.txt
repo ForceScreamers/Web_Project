@@ -2,8 +2,6 @@ hello
 
 Set up a template for the main pages at MainPage.js
 
-css or using jsx to style
-
 Database:
   Create MySql DB
   Connect DB
@@ -20,8 +18,6 @@ Database:
 		game type x 
 		
 	provider DB
-	
-
 		post 
 		provider 
 		topic
