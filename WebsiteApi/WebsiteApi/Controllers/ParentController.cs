@@ -25,6 +25,7 @@ namespace WebsiteApi.Controllers
         [Microsoft.AspNetCore.Mvc.HttpGet]
         public ContentResult Get()
         {
+            //  Get email and password from the request 
             Console.WriteLine("Email: " + Request.Headers["email"]);
             Console.WriteLine("Password: " + Request.Headers["password"]);
             //Console.WriteLine(ParentMethods.AddParent("DummyUsername", Request.Headers["email"], Request.Headers["password"], DateTime.Now.ToString()));
@@ -32,9 +33,11 @@ namespace WebsiteApi.Controllers
 
             bool result = false; 
             
-            if(!Request.Headers["email"].ToString().Equals("") && !Request.Headers["password"].ToString().Equals(""))//  Just for debugging 
+            if(!Request.Headers["email"].ToString().Equals("") && !Request.Headers["password"].ToString().Equals(""))//  Just for debugging (Checking for empty strings)
             {
+                //  Check if the email and password exist
                 result = ParentMethods.IsExists(Request.Headers["email"], Request.Headers["password"]);
+                Console.WriteLine("User exists: {0}", result);
             }
 
             return base.Content(JsonSerializer.Serialize(new { Authenticated = result }), "application/json", System.Text.Encoding.UTF8);

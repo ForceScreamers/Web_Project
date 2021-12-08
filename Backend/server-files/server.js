@@ -33,10 +33,14 @@ app.use(
   })
 );
 
+
 app.use(session({
   secret: 'secret-key',
   resave: false,
-  saveUninitialized: false  //  Don't save empty value if there's no value
+  saveUninitialized: false,  //  Don't save empty value if there's no value
+  cookie: {
+    maxAge: 1000 * 60 * 60 * 24 // Cookie wil expire after 1 day
+  }
 }))
 
 //  Routes  //
@@ -49,6 +53,7 @@ app.get('/backend', (req, res) => {
 app.post('/login', (req, res) => {
   //  Axios request to webapi
   let status = 200;
+  console.log(req)
 
   let reqData = JSON.parse(req.headers.data)
   console.log(reqData);
@@ -78,7 +83,7 @@ app.post('/login', (req, res) => {
 
 
     //let authenticatedMessage = response.data;
-    let authenticatedMessage = { Authenticated: true };
+    let authenticatedMessage = { Authenticated: response.data.Authenticated };
 
     //  End the request with bool, if the user is in the database 
     //  and the password and username match

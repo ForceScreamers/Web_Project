@@ -1,3 +1,21 @@
+Finish ProviderDal:
+  Should use the same webapi for both systems?
+
+Finish main pages
+
+Add session
+
+
+
+
+
+
+
+
+
+
+
+
 hello
 
 Set up a template for the main pages at MainPage.js

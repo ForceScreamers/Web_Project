@@ -47,12 +47,21 @@ let username;
 const ValidateInput = (userData) => {
 	//	Client validation
 	// Empty fields, unusual characters, field length (this one can be done inside the field itself)
-
+	console.log("Validating input...")
 	//	Returns a enum (EMPTY, UNUSUAL, MAXIMUM_LENGTH)
 	return true;
 }
 
-
+const RequestLogin = async (userData) => {
+	return axios({
+		method: 'post',
+		url: "http://localhost:5001/login",
+		timeout: REQUEST_TIMEOUT_LENGTH,
+		headers: {
+			data: JSON.stringify(userData),
+		}
+	})
+}
 
 const App = () => {
 	const [isAuth, setIsAuth] = useState(false);
@@ -69,32 +78,20 @@ const App = () => {
 		if (ENABLE_LOGIN) {
 
 			if (ValidateInput(userData)) {
-				//	Axios login request to server
-				axios({
-					method: 'post',
-					url: "http://localhost:5001/login",
-					timeout: REQUEST_TIMEOUT_LENGTH,
-					headers: {
-						data: JSON.stringify(userData),
-					}
-				})
-					//TODO: Deal with unable to connect
-					.catch(err => console.log(err))
-
+				//TODO: Deal with unable to connect
+				RequestLogin(userData).catch(err => console.log(err))
 					.then((response) => {
-
 						//	If there is a response
 						if (response) {
 							//	Redirect user to the main page
-							if (response.data.Authenticated) {
-								//setIsAuth(response.data.Authenticated);
-								history.push('/Games/TestGame');
-							}
+							console.log("User valid: " + response.data.Authenticated);
+							RedirectLoggedUser(response.data.Authenticated);
 						}
 					});
 			}
 		}
 		else {
+			//	FOR DEBUGGING	//
 			console.warn("Login disabled")
 			//setIsAuth(true)
 			history.push('/Games/MemoryGame')
@@ -115,6 +112,11 @@ const App = () => {
 		};
 	}, []);
 	//#endregion
+
+	const RedirectLoggedUser = (isLogged) => {
+		setIsAuth(isLogged);
+		isLogged ? history.push('/Welcome') : alert("Not valid")
+	}
 
 	return (
 		<Router history={history}>
