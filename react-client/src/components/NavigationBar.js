@@ -1,28 +1,20 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import '../css/components-css/NavBarStyle.css'
-
+import { Navbar, Container, Nav, NavDropdown } from 'react-bootstrap'
 
 function NavigationBar() {
-
   return (
-
-    <div className="NavBarContainer">
-
-      <div className="ControlContainer LeftContainer">
-        <Link to="/Games" className="PageLink">Games</Link>
-        <Link to="/MyProfile" className="PageLink">Profile</Link>
-      </div>
-
-      <div className="ControlContainer RightContainer">
-        <button className="LogoutButton" >Logout</button>
-      </div>
-
-
-    </div >
-
+    <div dir="rtl">
+      <Navbar bg="danger" variant="dark">
+        <Container fluid className="h-25">
+          <Navbar.Brand href="#home">בית</Navbar.Brand>
+          <Nav className="me-auto">
+            <Nav.Link href="#home">משחקייה</Nav.Link>
+            <Nav.Link href="#features">פניות</Nav.Link>
+            <Nav.Link href="#pricing">אודות</Nav.Link>
+          </Nav>
+        </Container>
+      </Navbar>
+    </div>
   )
 }
 
-
-export default NavigationBar;
+export default NavigationBar
