@@ -13,10 +13,15 @@ import history from './History'
 
 //Import main pages
 import Welcome from './main-pages/Welcome'
-import Games from './main-pages/Games'
-import MyProfile from './main-pages/MyProfile'
-import MainPage from './components/MainPage'
 import Register from './main-pages/Register';
+
+import EditProfile from './main-pages/EditProfile'
+import Games from './main-pages/Games'
+import About from './main-pages/About';
+import Info from './main-pages/Info';
+import Avatar from './main-pages/Avatar';
+import Journal from './main-pages/Journal';
+import Home from './main-pages/Home';
 
 import AuthenticatedRoute from "./components/AuthenticatedRoute";
 import UnauthenticatedRoute from "./components/UnauthenticatedRoute";
@@ -61,6 +66,10 @@ const RequestLogin = async (userData) => {
 			data: JSON.stringify(userData),
 		}
 	})
+}
+
+const HandleAddChild = () => {
+
 }
 
 const App = () => {
@@ -115,7 +124,7 @@ const App = () => {
 
 	const RedirectLoggedUser = (isLogged) => {
 		setIsAuth(isLogged);
-		isLogged ? history.push('/Welcome') : alert("Not valid")
+		isLogged ? history.push('/Welcome') : alert("Incorrect email or password")
 	}
 
 	return (
@@ -128,13 +137,24 @@ const App = () => {
 				<Route exact path="/" component={() => <Login HandleLogin={HandleLogin} />} />
 				<Route exact path="/Register" component={() => <Register />} />
 
-				<AuthenticatedRoute exact path="/Welcome" isAuth={isAuth} component={() => <MainPage username={username} />} />
+				{/* <AuthenticatedRoute exact path="/Welcome" isAuth={isAuth} component={() => <MainPage username={username} />} /> */}
 
-				<AuthenticatedRoute exact path="/Games" isAuth={isAuth} component={Games} />
-				<AuthenticatedRoute exact path="/MyProfile" isAuth={isAuth} component={MyProfile} />
+				{/* <AuthenticatedRoute exact path="/Games" isAuth={isAuth} component={Games} /> */}
+				{/* <AuthenticatedRoute exact path="/EditProfile" isAuth={isAuth} component={MyProfile} /> */}
 
 				<AuthenticatedRoute exact path="/Games/TestGame" isAuth={isAuth} component={TestGame} />
 				<AuthenticatedRoute exact path="/Games/MemoryGame" isAuth={isAuth} component={MemoryGame} />
+
+				<Route exact path="/Welcome" component={Welcome} />
+				<Route exact path="/About" component={About} />
+				<Route exact path="/EditProfile" component={() => <EditProfile HandleAddChild={HandleAddChild} />} />
+				<Route exact path="/Games" component={Games} />
+				<Route exact path="/Info" component={Info} />
+				<Route exact path="/Avatar" component={Avatar} />
+				<Route exact path="/Journal" component={Journal} />
+				<Route exact path="/Home" component={Home} />
+
+				{/* //  The main pages are: Games, info, about, edit profile, avatar, journal */}
 
 
 			</div>

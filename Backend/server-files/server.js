@@ -53,7 +53,6 @@ app.get('/backend', (req, res) => {
 app.post('/login', (req, res) => {
   //  Axios request to webapi
   let status = 200;
-  console.log(req)
 
   let reqData = JSON.parse(req.headers.data)
   console.log(reqData);
@@ -94,8 +93,8 @@ app.post('/login', (req, res) => {
 
 
 app.post('/Auth', (req, res) => {
-  console.log(ids)
-  console.log(req.sessionID)
+  //console.log(ids)
+  //console.log(req.sessionID)
 
   if (ids.includes(req.sessionID)) {
     console.log("All good");

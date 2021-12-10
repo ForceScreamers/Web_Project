@@ -15,12 +15,13 @@ namespace ParentDal
         //Add
         //Delete
 
-        public static int AddChild(int parentId)
+        public static int AddChild(int parentId, int childAge)
         {
-            string com = "INSERT INTO child (parent_id) VALUES (?)";
+            string com = "INSERT INTO child (parent_id, child_age) VALUES (?, ?)";
 
             OdbcParameter[] queryParameters = {
                 new OdbcParameter("@parent_id", parentId),
+                new OdbcParameter("@child_age", childAge),
             };
 
             return OdbcHelper.Execute(com, queryParameters);

@@ -1,11 +1,13 @@
 import NavigationBar from "../components/NavigationBar"
 import NavigationBarTest from "./NavigationBarTest"
 
-function MainPage({ title }) {
+function MainPage({ children, title }) {
   return (
-    <div className="MainPageContainer">
-      <NavigationBarTest />
+    <div>
+      <NavigationBar />
+      <h1>{title}</h1>
 
+      {children}{/* The components that go inside this wrapper component */}
 
     </div>
   )

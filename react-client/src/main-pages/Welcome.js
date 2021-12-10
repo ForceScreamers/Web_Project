@@ -2,15 +2,12 @@ import NavigationBar from '../components/NavigationBar'
 import NavigationBarTest from '../components/NavigationBarTest'
 import '../css/pages-css/Welcome.css'
 
-function Welcome({ username }) {
+function Welcome() {
     return (
         <div>
-
             <div className="WelcomeContainer">
-
-                <NavigationBarTest username={username} />
+                <NavigationBar />
                 <h1 className="Headline">Welcome!</h1>
-
             </div>
         </div>
     )
