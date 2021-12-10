@@ -12,7 +12,7 @@ function AddChildCard({ HandleAddChild }) {
         style={{ width: '30rem' }}
         className="mb-3"
       >
-        <Card.Header>הוספת ילד/ה </Card.Header>
+        <Card.Header>הוספת ילד/ה</Card.Header>
         <Card.Body>
           <Card.Text>
             <AddChildForm HandleAddChild={HandleAddChild} />

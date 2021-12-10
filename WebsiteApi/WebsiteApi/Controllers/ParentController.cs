@@ -21,7 +21,7 @@ namespace WebsiteApi.Controllers
 
 
 
-
+        //  TODO: Add a function that recives child information and adds it to the database, the function will return a confirmation that the child was added
         [Microsoft.AspNetCore.Mvc.HttpGet]
         public ContentResult Get()
         {

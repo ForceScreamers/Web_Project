@@ -1,6 +1,6 @@
 //#region Imports
 //Import hooks
-import React, { Component } from 'react';
+import React, { Children, Component } from 'react';
 import { useEffect, useState } from 'react';
 
 //Import main pages
@@ -68,8 +68,13 @@ const RequestLogin = async (userData) => {
 	})
 }
 
-const HandleAddChild = () => {
 
+
+const LoadChildren = () => {
+	//	Gets all the children for the logged parent (this)
+
+
+	return Children;
 }
 
 const App = () => {
@@ -107,6 +112,27 @@ const App = () => {
 		}
 	}
 
+	const HandleAddChild = (e) => {
+		//  Handles child add logic
+
+		//	Send request to server to add child
+		axios({
+			method: 'post',
+			url: "http://localhost:5001/add-child",
+			timeout: REQUEST_TIMEOUT_LENGTH,
+			headers: {
+				data: JSON.stringify({
+					name: e.target.childNameField.value,
+					age: e.target.childAgeSelect.value
+				}),
+			}
+		})
+			.catch(err => console.log(err))
+
+			.then((response) => {//	Get confirmation that the child was added
+				//	Response will be HasAddedChild
+			})
+	}
 
 	//#region	Control the website zoom level
 	useEffect(() => {
