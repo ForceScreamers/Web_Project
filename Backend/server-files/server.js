@@ -10,6 +10,8 @@ const app = express();
 
 const session = require('express-session');
 
+const utf8 = require('utf8');
+
 // Check environment variable
 const PORT = /*process.env.PORT ||*/ 5001;
 
@@ -61,7 +63,7 @@ app.post('/login', (req, res) => {
   axios({
     hostname: 'localhost',
     port: 5000,
-    url: 'http://localhost:5000/api/Parent',
+    url: 'http://localhost:5000/api/Parent/GetLoginConfirmation',
     method: 'GET',
     headers: {
       'Access-Control-Allow-Origin': '*',
@@ -78,18 +80,59 @@ app.post('/login', (req, res) => {
 
   }).then((response) => {
     console.log("Response from web api:");
-    console.log(response.data.Authenticated);
+    console.log(response.data.Confirmed);
 
 
     //let authenticatedMessage = response.data;
-    let authenticatedMessage = { Authenticated: response.data.Authenticated };
+    let responseMessage = { Confirmed: response.data.Confirmed };
 
     //  End the request with bool, if the user is in the database 
     //  and the password and username match
-    res.status(status).end(JSON.stringify(authenticatedMessage));
+    res.status(status).end(JSON.stringify(responseMessage));
   })
 });
 
+app.post('/add-child', (req, res) => {
+  //  Axios request to webapi
+  let status = 200;
+
+  let reqData = JSON.parse(req.headers.data)
+  console.log(reqData);
+  console.log("Child name decoded: " + utf8.decode(reqData.childName))
+  console.log("Child name encoded: " + reqData.childName)
+
+  //  Send login request to webapi
+  axios({
+    hostname: 'localhost',
+    port: 5000,
+    url: 'http://localhost:5000/api/Parent/GetAddChildConfirmation',
+    method: 'GET',
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Content-Type': 'application/json',
+
+      //  Send the recived  user data to the webapi
+      'childName': reqData.childName,
+      'childAge': reqData.childAge,
+    }
+  }).catch((err) => {
+    status = 400;
+    console.log(err)
+    console.log("Can't connect to webapi")
+
+  }).then((response) => {
+    console.log("Response from web api:");
+    //console.log(response);
+
+
+    //let authenticatedMessage = response.data;
+    let responseMessage = { Confirmed: response.data.Confirmed };
+
+    //  End the request with bool, if the user is in the database 
+    //  and the password and username match
+    res.status(status).end(JSON.stringify(responseMessage));
+  })
+})
 
 
 app.post('/Auth', (req, res) => {

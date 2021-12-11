@@ -9,18 +9,18 @@ function Login({ HandleLogin }) {
         <div className="LoginContainer">
 
             <h1>Login</h1>
-            <Link to="/Register" >register</Link>
+            <Link to="/Register" >הרשמה</Link>
 
             <form onSubmit={HandleLogin}>
 
                 <div className="InputContainer">
-                    <label>Email:</label>
+                    <label>אי-מייל:</label>
                     <input name="loginEmailField" type="text" />
 
-                    <label>Password:</label>
+                    <label>סיסמה:</label>
                     <input name="loginPasswordField" type="password" />
 
-                    <input type="submit" value="Login" />
+                    <input type="submit" value="התחברות" />
                 </div>
             </form>
 

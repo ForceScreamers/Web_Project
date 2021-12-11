@@ -37,6 +37,7 @@ import MemoryGame from './games/MemoryGame/MemoryGame'
 //	Bootstrap css import
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+import utf8 from 'utf8'
 //#endregion
 
 // var sharedsession = require("express-socket.io-session");
@@ -45,7 +46,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 const REQUEST_TIMEOUT_LENGTH = 4000;
 
 //	Used for debugging
-const ENABLE_LOGIN = true;
+const ENABLE_LOGIN = false;
 
 let username;
 
@@ -98,8 +99,8 @@ const App = () => {
 						//	If there is a response
 						if (response) {
 							//	Redirect user to the main page
-							console.log("User valid: " + response.data.Authenticated);
-							RedirectLoggedUser(response.data.Authenticated);
+							console.log("User valid: " + response.data.Confirmed);
+							RedirectLoggedUser(response.data.Confirmed);
 						}
 					});
 			}
@@ -108,30 +109,59 @@ const App = () => {
 			//	FOR DEBUGGING	//
 			console.warn("Login disabled")
 			//setIsAuth(true)
-			history.push('/Games/MemoryGame')
+			history.push('/Welcome')
 		}
 	}
 
+	//	Checks if the user input for the child add form is valid
+	//	All letters in hebrew and not empty
+	const AddchildInputValidation = (input) => {
+		console.log(input);
+
+		let valid = true;
+
+		if (input === "") {
+			valid = false;
+			alert("חסר שם הילד")
+		}
+		else if (!(/[\u0590-\u05FF]/).test(input)) {
+			valid = false;
+			alert("שם הילד צריך להיות בעברית")
+		}
+
+		return valid;
+	}
+
 	const HandleAddChild = (e) => {
+		e.preventDefault();
+
 		//  Handles child add logic
+		let formChildName = e.target.childNameField.value;
+		let formChildAge = e.target.childAgeSelect.value
 
-		//	Send request to server to add child
-		axios({
-			method: 'post',
-			url: "http://localhost:5001/add-child",
-			timeout: REQUEST_TIMEOUT_LENGTH,
-			headers: {
-				data: JSON.stringify({
-					name: e.target.childNameField.value,
-					age: e.target.childAgeSelect.value
-				}),
-			}
-		})
-			.catch(err => console.log(err))
+		//	Validate input
+		console.log(formChildName)
+		if (AddchildInputValidation(formChildName)) {
+			//Send request to server to add child
+			axios({
 
-			.then((response) => {//	Get confirmation that the child was added
-				//	Response will be HasAddedChild
+				method: 'post',
+				url: "http://localhost:5001/add-child",
+				timeout: REQUEST_TIMEOUT_LENGTH,
+				headers: {
+					data: JSON.stringify({
+						childName: utf8.encode(formChildName),
+						childAge: formChildAge
+					}),
+				}
 			})
+				.catch(err => console.log(err))
+
+				.then((response) => {//	Get confirmation that the child was added
+					//	Response will be HasAddedChild
+					console.log(response);
+				})
+		}
 	}
 
 	//#region	Control the website zoom level

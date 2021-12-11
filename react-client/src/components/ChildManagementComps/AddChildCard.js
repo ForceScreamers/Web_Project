@@ -14,7 +14,7 @@ function AddChildCard({ HandleAddChild }) {
       >
         <Card.Header>הוספת ילד/ה</Card.Header>
         <Card.Body>
-          <Card.Text>
+          <Card.Text as="div">
             <AddChildForm HandleAddChild={HandleAddChild} />
           </Card.Text>
         </Card.Body>
