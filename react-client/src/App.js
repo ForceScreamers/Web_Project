@@ -1,17 +1,17 @@
-//#region Imports
-//Import hooks
+//	#region Imports
+//	Import hooks
 import React, { Children, Component } from 'react';
 import { useEffect, useState } from 'react';
 
-//Import main pages
+//	Import main pages
 import Login from "./main-pages/Login";
 
 import { Router, Route, Redirect } from "react-router-dom";
 
-//Import history
+//	Import history
 import history from './History'
 
-//Import main pages
+//	Import main pages
 import Welcome from './main-pages/Welcome'
 import Register from './main-pages/Register';
 
@@ -38,10 +38,10 @@ import MemoryGame from './games/MemoryGame/MemoryGame'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import utf8 from 'utf8'
-//#endregion
+//	#endregion
 
-// var sharedsession = require("express-socket.io-session");
-// io.use(sharedsession(express_session));
+//	var sharedsession = require("express-socket.io-session");
+//	io.use(sharedsession(express_session));
 
 const REQUEST_TIMEOUT_LENGTH = 4000;
 
@@ -52,7 +52,7 @@ let username;
 
 const ValidateInput = (userData) => {
 	//	Client validation
-	// Empty fields, unusual characters, field length (this one can be done inside the field itself)
+	//	Empty fields, unusual characters, field length (this one can be done inside the field itself)
 	console.log("Validating input...")
 	//	Returns a enum (EMPTY, UNUSUAL, MAXIMUM_LENGTH)
 	return true;
@@ -106,6 +106,7 @@ const App = () => {
 			}
 		}
 		else {
+
 			//	FOR DEBUGGING	//
 			console.warn("Login disabled")
 			//setIsAuth(true)
