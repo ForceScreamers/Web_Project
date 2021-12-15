@@ -72,8 +72,20 @@ const RequestLogin = async (userData) => {
 
 
 const LoadChildren = () => {
-	//	Gets all the children for the logged parent (this)
+	console.log("Loading children...")
 
+	//	Gets all the children for the logged parent from the server
+	axios({
+		method: 'get',
+		url: "http://localhost:5001/get-children",
+		timeout: REQUEST_TIMEOUT_LENGTH,
+		headers: {
+			data: JSON.stringify(1)
+		}
+	}).catch(err => console.log(err))
+		.then((response) => {
+			console.log(response)
+		})
 
 	return Children;
 }
@@ -151,6 +163,7 @@ const App = () => {
 				timeout: REQUEST_TIMEOUT_LENGTH,
 				headers: {
 					data: JSON.stringify({
+						parentId: 10, // Will be the logged in parent id
 						childName: utf8.encode(formChildName),
 						childAge: formChildAge
 					}),
@@ -204,7 +217,7 @@ const App = () => {
 
 				<Route exact path="/Welcome" component={Welcome} />
 				<Route exact path="/About" component={About} />
-				<Route exact path="/EditProfile" component={() => <EditProfile HandleAddChild={HandleAddChild} />} />
+				<Route exact path="/EditProfile" component={() => <EditProfile HandleAddChild={HandleAddChild} LoadChildren={LoadChildren} />} />
 				<Route exact path="/Games" component={Games} />
 				<Route exact path="/Info" component={Info} />
 				<Route exact path="/Avatar" component={Avatar} />

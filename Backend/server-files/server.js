@@ -112,6 +112,7 @@ app.post('/add-child', (req, res) => {
       'Content-Type': 'application/json',
 
       //  Send the recived  user data to the webapi
+      'parentId': reqData.parentId,
       'childName': reqData.childName,
       'childAge': reqData.childAge,
     }
@@ -134,6 +135,28 @@ app.post('/add-child', (req, res) => {
   })
 })
 
+app.get('/get-children', (req, res) => {
+  let reqData = JSON.parse(req.headers.data)
+
+  //  Get the children from the webapi
+  axios({
+    hostname: 'localhost',
+    port: 5000,
+    url: 'http://localhost:5000/api/Parent/GetChildrenForParent',
+    method: 'GET',
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Content-Type': 'application/json',
+
+      parentId: reqData
+    }
+  }).catch(err => console.log(err))
+    .then((response) => {
+      console.log("Sending children to client...")
+      res.status(200).end(JSON.stringify(response.data))
+    })
+
+});
 
 app.post('/Auth', (req, res) => {
   //console.log(ids)

@@ -3,7 +3,14 @@ import AddChildCard from "../components/ChildManagementComps/AddChildCard"
 import ChildCard from "../components/ChildManagementComps/ChildCard"
 import MainPage from "../components/MainPage"
 
-function EditProfile({ HandleAddChild }) {
+import { useEffect } from "react"
+
+
+function EditProfile({ HandleAddChild, LoadChildren }) {
+  useEffect(() => {
+    LoadChildren();
+  })
+
   return (
     <div>
       <MainPage title='עריכת פרופיל'>

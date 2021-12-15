@@ -53,21 +53,39 @@ namespace WebsiteApi.Controllers
         public ContentResult GetAddChildConfirmation()
         {
             bool addedChild = false;
-            Console.WriteLine("Adding child...");
-            Console.Write("child name: {0}\nchild age: {1}\n", UTF8Encoding.Convert(Encoding.UTF8, Encoding.Unicode, Convert.FromBase64String(Request.Headers["childName"])), Request.Headers["childAge"]);
-            
-            //  Add child to database
+            try
+            {
 
-            addedChild = true;
+                Console.Write("Adding child... ");
+                //  Add child to database
+                Console.WriteLine( "return status: " + ChildMethods.AddChild(int.Parse(Request.Headers["parentId"]), int.Parse(Request.Headers["childAge"]), ConvertToUnicode(Request.Headers["childName"])));
+
+                addedChild = true;
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e);
+            }
 
             return base.Content(JsonSerializer.Serialize(new { Confirmed = addedChild }), "application/json", System.Text.Encoding.UTF8);
         }
 
-        private string Decode(string path)
+        [Microsoft.AspNetCore.Mvc.HttpGet]
+        [Microsoft.AspNetCore.Mvc.ActionName("GetChildrenForParent")]
+        public ContentResult GetChildrenForParent()
         {
-            // This StreamReader constructor defaults to UTF-8
-            using StreamReader reader = new StreamReader(path);
-            return reader.ReadToEnd();
+            object children = ChildMethods.GetChildrenForParent(int.Parse(Request.Headers["parentId"]));
+
+            //  Return children as a json object
+            return base.Content(JsonSerializer.Serialize(children), "application/json", Encoding.UTF8);
         }
+
+        /// <summary>
+        /// Converts a given UTF-8 encoded string to Unicode and returns unicode as string
+        /// </summary>
+        /// <param name="utf8text"></param>
+        /// <returns></returns>
+        private string ConvertToUnicode(string utf8text)
+        { return Encoding.Unicode.GetString(UTF8Encoding.Convert(Encoding.UTF8, Encoding.Unicode, Encoding.UTF8.GetBytes(utf8text))); }
     }
 }
