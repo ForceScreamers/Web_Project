@@ -153,7 +153,6 @@ app.get('/get-children-for-parent', (req, res) => {
   }).catch(err => console.log(err))
     .then((response) => {
       console.log("Sending children to client...")
-      console.log(response);
       res.status(200).end(JSON.stringify(response.data))
     })
 

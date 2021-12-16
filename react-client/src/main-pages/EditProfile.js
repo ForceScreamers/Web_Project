@@ -6,10 +6,12 @@ import MainPage from "../components/MainPage"
 import { useEffect } from "react"
 
 
-function EditProfile({ HandleAddChild, LoadChildren }) {
+function EditProfile({ HandleAddChild, LoadChildren, children_ }) {
   useEffect(() => {
-    LoadChildren();
-  })
+    LoadChildren().then((res) => console.log(res))
+    console.log(LoadChildren())
+
+  }, [children_])
 
   return (
     <div>

@@ -43,7 +43,6 @@ import utf8 from 'utf8'
 
 //	Import helper functions
 import { ValidateUserInput } from './Project-Modules/ValidateUserInput';
-import { useStateWithCallbackLazy } from './Project-Modules/UserStateWithCallbackLazy';
 
 //	#endregion
 
@@ -97,36 +96,34 @@ const AddchildInputValidation = (input) => {
 
 const GetChildrenFromServer = async () => {
 	console.log("Getting children from server...")
-	let children;
 	//	Gets all the children for the logged parent from the server
-	axios({
+	return axios({
 		method: 'get',
 		url: "http://localhost:5001/get-children-for-parent",
 		timeout: REQUEST_TIMEOUT_LENGTH,
 		headers: {
 			data: JSON.stringify(10)
 		}
-	}).catch(err => console.log(err))
-		.then((response) => {
-			if (response.data) { children = response.data }
-			else {
-				//	Make sure the response is undefined
-				children = undefined
-				console.error("Children data is undefined")
-			}
-		})
-
-	return children;
+	})
 }
 
 const App = () => {
 	const [isAuth, setIsAuth] = useState(false);
 
 	//	All children for logged parent
-	const [children, setChildren] = useStateWithCallbackLazy([]);
+	const [children, setChildren] = useState([]);
 
 	//	Current selected child, will be used for tracking progress
 	const [currentChild, setCurrentChild] = useState({});
+
+	const LoadChildren = async () => {
+		console.log("Loading children...")
+		return GetChildrenFromServer()
+			.catch(err => console.log(err))
+			.then(children_ => setChildren(children_))
+	}
+
+
 
 	const HandleLogin = async (e) => {
 
@@ -161,19 +158,12 @@ const App = () => {
 		}
 	}
 
-	const LoadChildren = async () => {
-		console.log("Loading children...")
 
-		setChildren(await GetChildrenFromServer())
-	}
 
 	//	Loads children into react components from the current state when the children array updates
-	useEffect(() => {
-		console.log(children)
-		if (children) {
-			children.forEach(child => console.log(child))
-		}
-	}, [children])
+	// useEffect(() => {
+	// 	console.log(children)
+	// }, [children])
 
 
 	//  Handles child add logic
@@ -250,7 +240,7 @@ const App = () => {
 
 				<Route exact path="/Welcome" component={Welcome} />
 				<Route exact path="/About" component={About} />
-				<Route exact path="/EditProfile" component={() => <EditProfile HandleAddChild={HandleAddChild} LoadChildren={LoadChildren} />} />
+				<Route exact path="/EditProfile" component={() => <EditProfile HandleAddChild={HandleAddChild} LoadChildren={LoadChildren} children_={children} />} />
 				<Route exact path="/Games" component={Games} />
 				<Route exact path="/Info" component={Info} />
 				<Route exact path="/Avatar" component={Avatar} />
