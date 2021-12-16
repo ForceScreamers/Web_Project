@@ -38,6 +38,13 @@ import MemoryGame from './games/MemoryGame/MemoryGame'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import utf8 from 'utf8'
+
+
+
+//	Import helper functions
+import { ValidateUserInput } from './Project-Modules/ValidateUserInput';
+import { useStateWithCallbackLazy } from './Project-Modules/UserStateWithCallbackLazy';
+
 //	#endregion
 
 //	var sharedsession = require("express-socket.io-session");
@@ -69,13 +76,28 @@ const RequestLogin = async (userData) => {
 	})
 }
 
+//	Checks if the user input for the child add form is valid
+//	All letters in hebrew and not empty
+const AddchildInputValidation = (input) => {
+	console.log(input);
 
+	let valid = true;
 
-const GetChildrenFromServer = () => {
-	console.log("Loading children...")
+	if (input === "") {
+		valid = false;
+		alert("חסר שם הילד")
+	}
+	else if (!(/[\u0590-\u05FF]/).test(input)) {
+		valid = false;
+		alert("שם הילד צריך להיות בעברית")
+	}
 
-	let children = {}
+	return valid;
+}
 
+const GetChildrenFromServer = async () => {
+	console.log("Getting children from server...")
+	let children;
 	//	Gets all the children for the logged parent from the server
 	axios({
 		method: 'get',
@@ -86,19 +108,22 @@ const GetChildrenFromServer = () => {
 		}
 	}).catch(err => console.log(err))
 		.then((response) => {
-			console.log(response.data)
-
-
+			if (response.data) { children = response.data }
+			else {
+				//	Make sure the response is undefined
+				children = undefined
+				console.error("Children data is undefined")
+			}
 		})
 
-	return Children;
+	return children;
 }
 
 const App = () => {
 	const [isAuth, setIsAuth] = useState(false);
 
 	//	All children for logged parent
-	const [children, setChildren] = useState([]);
+	const [children, setChildren] = useStateWithCallbackLazy([]);
 
 	//	Current selected child, will be used for tracking progress
 	const [currentChild, setCurrentChild] = useState({});
@@ -136,34 +161,25 @@ const App = () => {
 		}
 	}
 
-	const LoadChildren = () => {
-		//	Loads children into react components from the current state
-		setChildren(GetChildrenFromServer());
+	const LoadChildren = async () => {
+		console.log("Loading children...")
+
+		setChildren(await GetChildrenFromServer())
 	}
 
-	//	Checks if the user input for the child add form is valid
-	//	All letters in hebrew and not empty
-	const AddchildInputValidation = (input) => {
-		console.log(input);
-
-		let valid = true;
-
-		if (input === "") {
-			valid = false;
-			alert("חסר שם הילד")
+	//	Loads children into react components from the current state when the children array updates
+	useEffect(() => {
+		console.log(children)
+		if (children) {
+			children.forEach(child => console.log(child))
 		}
-		else if (!(/[\u0590-\u05FF]/).test(input)) {
-			valid = false;
-			alert("שם הילד צריך להיות בעברית")
-		}
+	}, [children])
 
-		return valid;
-	}
 
+	//  Handles child add logic
 	const HandleAddChild = (e) => {
 		e.preventDefault();
 
-		//  Handles child add logic
 		let formChildName = e.target.childNameField.value;
 		let formChildAge = e.target.childAgeSelect.value
 
