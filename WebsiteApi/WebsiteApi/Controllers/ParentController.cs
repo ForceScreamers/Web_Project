@@ -11,6 +11,7 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Text;
 using System.IO;
+using Newtonsoft.Json;
 
 namespace WebsiteApi.Controllers
 {
@@ -44,7 +45,7 @@ namespace WebsiteApi.Controllers
                 Console.WriteLine("User exists: {0}", result);
             }
 
-            return base.Content(JsonSerializer.Serialize(new { Confirmed = result }), "application/json", System.Text.Encoding.UTF8);
+            return base.Content(JsonConvert.SerializeObject(new { Confirmed = result }), "application/json", System.Text.Encoding.UTF8);
         }
 
 
@@ -67,17 +68,20 @@ namespace WebsiteApi.Controllers
                 Console.WriteLine(e);
             }
 
-            return base.Content(JsonSerializer.Serialize(new { Confirmed = addedChild }), "application/json", System.Text.Encoding.UTF8);
+            return base.Content(JsonConvert.SerializeObject(new { Confirmed = addedChild }), "application/json", System.Text.Encoding.UTF8);
         }
 
         [Microsoft.AspNetCore.Mvc.HttpGet]
         [Microsoft.AspNetCore.Mvc.ActionName("GetChildrenForParent")]
         public ContentResult GetChildrenForParent()
         {
+            Console.WriteLine("Sending children...");
             object children = ChildMethods.GetChildrenForParent(int.Parse(Request.Headers["parentId"]));
 
+
+
             //  Return children as a json object
-            return base.Content(JsonSerializer.Serialize(children), "application/json", Encoding.UTF8);
+            return base.Content(JsonConvert.SerializeObject(children), "application/json", Encoding.UTF8);
         }
 
         /// <summary>

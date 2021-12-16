@@ -97,9 +97,9 @@ app.post('/add-child', (req, res) => {
   let status = 200;
 
   let reqData = JSON.parse(req.headers.data)
-  console.log(reqData);
-  console.log("Child name decoded: " + utf8.decode(reqData.childName))
-  console.log("Child name encoded: " + reqData.childName)
+  //console.log(reqData);
+  //console.log("Child name decoded: " + utf8.decode(reqData.childName))
+  //console.log("Child name encoded: " + reqData.childName)
 
   //  Send login request to webapi
   axios({
@@ -119,7 +119,7 @@ app.post('/add-child', (req, res) => {
   }).catch((err) => {
     status = 400;
     console.log(err)
-    console.log("Can't connect to webapi")
+    //console.log("Can't connect to webapi")
 
   }).then((response) => {
     console.log("Response from web api:");
@@ -135,7 +135,7 @@ app.post('/add-child', (req, res) => {
   })
 })
 
-app.get('/get-children', (req, res) => {
+app.get('/get-children-for-parent', (req, res) => {
   let reqData = JSON.parse(req.headers.data)
 
   //  Get the children from the webapi
@@ -153,6 +153,7 @@ app.get('/get-children', (req, res) => {
   }).catch(err => console.log(err))
     .then((response) => {
       console.log("Sending children to client...")
+      console.log(response);
       res.status(200).end(JSON.stringify(response.data))
     })
 

@@ -71,20 +71,24 @@ const RequestLogin = async (userData) => {
 
 
 
-const LoadChildren = () => {
+const GetChildrenFromServer = () => {
 	console.log("Loading children...")
+
+	let children = {}
 
 	//	Gets all the children for the logged parent from the server
 	axios({
 		method: 'get',
-		url: "http://localhost:5001/get-children",
+		url: "http://localhost:5001/get-children-for-parent",
 		timeout: REQUEST_TIMEOUT_LENGTH,
 		headers: {
-			data: JSON.stringify(1)
+			data: JSON.stringify(10)
 		}
 	}).catch(err => console.log(err))
 		.then((response) => {
-			console.log(response)
+			console.log(response.data)
+
+
 		})
 
 	return Children;
@@ -92,6 +96,12 @@ const LoadChildren = () => {
 
 const App = () => {
 	const [isAuth, setIsAuth] = useState(false);
+
+	//	All children for logged parent
+	const [children, setChildren] = useState([]);
+
+	//	Current selected child, will be used for tracking progress
+	const [currentChild, setCurrentChild] = useState({});
 
 	const HandleLogin = async (e) => {
 
@@ -124,6 +134,11 @@ const App = () => {
 			//setIsAuth(true)
 			history.push('/Welcome')
 		}
+	}
+
+	const LoadChildren = () => {
+		//	Loads children into react components from the current state
+		setChildren(GetChildrenFromServer());
 	}
 
 	//	Checks if the user input for the child add form is valid
@@ -177,6 +192,8 @@ const App = () => {
 				})
 		}
 	}
+
+
 
 	//#region	Control the website zoom level
 	useEffect(() => {
