@@ -3,16 +3,20 @@ import AddChildCard from "../components/ChildManagementComps/AddChildCard"
 import ChildCard from "../components/ChildManagementComps/ChildCard"
 import MainPage from "../components/MainPage"
 
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 
 
-function EditProfile({ HandleAddChild, LoadChildren, children_ }) {
+function EditProfile({ HandleAddChild, children_: childrenProfiles }) {
+  //const [childrenProfiles, setChildrenProfiles] = useState([])
+
   useEffect(() => {
-    LoadChildren().then((res) => console.log(res))
-    console.log(LoadChildren())
+    toArray();
 
-  }, [children_])
+  }, [])
+  const toArray = () => {
+    childrenProfiles = [...childrenProfiles]
 
+  }
   return (
     <div>
       <MainPage title='עריכת פרופיל'>
@@ -20,6 +24,15 @@ function EditProfile({ HandleAddChild, LoadChildren, children_ }) {
         <Container fluid className="d-flex justify-content-around align-center">
           <Row>
             <Col>
+
+              {
+
+                childrenProfiles.map((index, name, age) => (
+                  <ChildCard key={index} name={name} age={age} />
+                ))
+
+              }
+
               <ChildCard name="a" age="2" />
               <ChildCard name="b" age="5" />
               <AddChildCard HandleAddChild={HandleAddChild} />
