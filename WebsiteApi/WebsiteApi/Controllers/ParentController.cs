@@ -68,7 +68,7 @@ namespace WebsiteApi.Controllers
                 Console.WriteLine(e);
             }
 
-            return base.Content(JsonConvert.SerializeObject(new { Confirmed = addedChild }), "application/json", System.Text.Encoding.UTF8);
+            return base.Content(JsonConvert.SerializeObject(new { Confirmed = addedChild, Name = ConvertToUnicode(Request.Headers["childName"]), Age = int.Parse(Request.Headers["childAge"]) }), "application/json", System.Text.Encoding.UTF8);
         }
 
         [Microsoft.AspNetCore.Mvc.HttpGet]

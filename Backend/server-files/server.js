@@ -127,7 +127,7 @@ app.post('/add-child', (req, res) => {
 
 
     //let authenticatedMessage = response.data;
-    let responseMessage = { Confirmed: response.data.Confirmed };
+    let responseMessage = response.data;
 
     //  End the request with bool, if the user is in the database 
     //  and the password and username match
@@ -152,6 +152,7 @@ app.get('/get-children-for-parent', (req, res) => {
     }
   }).catch(err => console.log(err))
     .then((response) => {
+      //  Send children to client
       console.log("Sending children to client...")
       res.status(200).end(JSON.stringify(response.data))
     })

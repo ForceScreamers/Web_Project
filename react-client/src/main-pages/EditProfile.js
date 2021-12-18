@@ -10,13 +10,26 @@ function EditProfile({ HandleAddChild, children_: childrenProfiles }) {
   //const [childrenProfiles, setChildrenProfiles] = useState([])
 
   useEffect(() => {
-    toArray();
+    formatChildren();
 
   }, [])
-  const toArray = () => {
-    childrenProfiles = [...childrenProfiles]
+
+  const formatChildren = () => {
+    console.log(childrenProfiles)
+
+    childrenProfiles.forEach((child) => {
+      // child.name = child.child_name;
+      // child.age = child.child_age;
+      // child.key = child.child_id;
+
+      // delete child.child_id;
+      // delete child.child_name;
+      // delete child.child_age;
+    })
+
 
   }
+
   return (
     <div>
       <MainPage title='עריכת פרופיל'>
@@ -27,14 +40,11 @@ function EditProfile({ HandleAddChild, children_: childrenProfiles }) {
 
               {
 
-                childrenProfiles.map((index, name, age) => (
-                  <ChildCard key={index} name={name} age={age} />
+                childrenProfiles.map((child) => (
+                  <ChildCard key={child.child_id} name={child.child_name} age={child.child_age} />
                 ))
 
               }
-
-              <ChildCard name="a" age="2" />
-              <ChildCard name="b" age="5" />
               <AddChildCard HandleAddChild={HandleAddChild} />
 
             </Col>

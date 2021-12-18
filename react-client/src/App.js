@@ -111,7 +111,7 @@ const App = () => {
 	const [isAuth, setIsAuth] = useState(false);
 
 	//	All children for logged parent
-	const [children, setChildrenProfiles] = useState([]);
+	const [childrenProfiles, setChildrenProfiles] = useState([]);
 
 	//	Current selected child, will be used for tracking progress
 	const [currentChild, setCurrentChild] = useState({});
@@ -121,8 +121,12 @@ const App = () => {
 		return GetChildrenFromServer()
 			.catch(err => console.log(err))
 			.then(res => {
-				console.log(res.data)
-				setChildrenProfiles(res.data)
+				if (res) {
+					console.log(res.data)
+					setChildrenProfiles(res.data)
+				}
+				else { console.log("No response from server") }
+
 			})
 	}
 
@@ -168,8 +172,8 @@ const App = () => {
 
 	//Load children into react components from the current state when the children array updates
 	useEffect(() => {
-		console.log(children);
-	}, [children])
+		console.log(childrenProfiles);
+	}, [childrenProfiles])
 
 
 
@@ -202,7 +206,11 @@ const App = () => {
 
 				.then((response) => {//	Get confirmation that the child was added
 					//	Response will be HasAddedChild
-					console.log(response);
+					if (response) {
+						console.log(response);
+						setChildrenProfiles([...childrenProfiles, { name: response.data.Name, age: response.data.Age }])
+					}
+					else { console.log("No response from server") }
 				})
 		}
 	}
@@ -248,7 +256,7 @@ const App = () => {
 
 				<Route exact path="/Welcome" component={Welcome} />
 				<Route exact path="/About" component={About} />
-				<Route exact path="/EditProfile" component={() => <EditProfile HandleAddChild={HandleAddChild} children_={children} />} />
+				<Route exact path="/EditProfile" component={() => <EditProfile HandleAddChild={HandleAddChild} children_={childrenProfiles} />} />
 				<Route exact path="/Games" component={Games} />
 				<Route exact path="/Info" component={Info} />
 				<Route exact path="/Avatar" component={Avatar} />

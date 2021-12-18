@@ -23,7 +23,7 @@ namespace ParentDal
         /// <returns></returns>
         public static DataTable GetChildrenForParent(int parentId)
         {
-            string com = "SELECT child_age, child_name FROM child WHERE parent_id=?";
+            string com = "SELECT child_age, child_name, child_id FROM child WHERE parent_id=?";
 
             OdbcParameter[] queryParameters = {
                 new OdbcParameter("@parent_id", parentId)
