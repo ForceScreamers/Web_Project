@@ -32,8 +32,17 @@ namespace ParentDal
             return OdbcHelper.GetTable(com, queryParameters);
         }
 
+        /// <summary>
+        /// Adds a child into the database and returns it's id
+        /// </summary>
+        /// <param name="parentId"></param>
+        /// <param name="childAge"></param>
+        /// <param name="childName"></param>
+        /// <returns></returns>
         public static int AddChild(int parentId, int childAge, string childName)
         {
+            int result = 0;
+
             string com = "INSERT INTO child (parent_id, child_age, child_name) VALUES (?, ?, ?)";
 
             OdbcParameter[] queryParameters = {
@@ -42,7 +51,23 @@ namespace ParentDal
                 new OdbcParameter("@child_name", childName),
             };
 
-            return OdbcHelper.Execute(com, queryParameters);
+            try
+            {
+                //  Try insert command
+                OdbcHelper.Execute(com, queryParameters);
+            }
+            catch(Exception e) { Console.WriteLine(e); }
+            finally
+            {
+                result = GetIdFromDataTable(OdbcHelper.GetTable("SELECT @@IDENTITY FROM child", new OdbcParameter[0]));
+            }
+            return result;
+        }
+
+        private static int GetIdFromDataTable(DataTable dt)
+        {
+            //  Get child_id from datatable
+            return int.Parse(dt.Rows[0].ItemArray[0].ToString());
         }
 
         public static int DeleteChild(int childId)

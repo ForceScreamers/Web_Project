@@ -12,6 +12,7 @@ using System.Web.Http;
 using System.Text;
 using System.IO;
 using Newtonsoft.Json;
+using System.Data;
 
 namespace WebsiteApi.Controllers
 {
@@ -53,13 +54,14 @@ namespace WebsiteApi.Controllers
         [Microsoft.AspNetCore.Mvc.ActionName("GetAddChildConfirmation")]
         public ContentResult GetAddChildConfirmation()
         {
+            int newlyAddedId = -1;
             bool addedChild = false;
             try
             {
 
                 Console.Write("Adding child... ");
                 //  Add child to database
-                Console.WriteLine( "return status: " + ChildMethods.AddChild(int.Parse(Request.Headers["parentId"]), int.Parse(Request.Headers["childAge"]), ConvertToUnicode(Request.Headers["childName"])));
+                newlyAddedId = ChildMethods.AddChild(int.Parse(Request.Headers["parentId"]), int.Parse(Request.Headers["childAge"]), ConvertToUnicode(Request.Headers["childName"]));
 
                 addedChild = true;
             }
@@ -68,7 +70,7 @@ namespace WebsiteApi.Controllers
                 Console.WriteLine(e);
             }
 
-            return base.Content(JsonConvert.SerializeObject(new { Confirmed = addedChild, Name = ConvertToUnicode(Request.Headers["childName"]), Age = int.Parse(Request.Headers["childAge"]) }), "application/json", System.Text.Encoding.UTF8);
+            return base.Content(JsonConvert.SerializeObject(new { confirmed = addedChild, name = ConvertToUnicode(Request.Headers["childName"]), age = int.Parse(Request.Headers["childAge"]), id = newlyAddedId }), "application/json", System.Text.Encoding.UTF8);
         }
 
         [Microsoft.AspNetCore.Mvc.HttpGet]
@@ -76,7 +78,11 @@ namespace WebsiteApi.Controllers
         public ContentResult GetChildrenForParent()
         {
             Console.WriteLine("Sending children...");
-            object children = ChildMethods.GetChildrenForParent(int.Parse(Request.Headers["parentId"]));
+            DataTable children = ChildMethods.GetChildrenForParent(int.Parse(Request.Headers["parentId"]));
+            children.Columns["child_name"].ColumnName = "name";
+            children.Columns["child_id"].ColumnName = "key";
+            children.Columns["child_age"].ColumnName = "age";
+
 
 
 

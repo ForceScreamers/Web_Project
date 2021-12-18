@@ -6,7 +6,7 @@ import MainPage from "../components/MainPage"
 import { useEffect, useState } from "react"
 
 
-function EditProfile({ HandleAddChild, children_: childrenProfiles }) {
+function EditProfile({ HandleDeleteChild, HandleAddChild, children_: childrenProfiles }) {
   //const [childrenProfiles, setChildrenProfiles] = useState([])
 
   useEffect(() => {
@@ -26,8 +26,6 @@ function EditProfile({ HandleAddChild, children_: childrenProfiles }) {
       // delete child.child_name;
       // delete child.child_age;
     })
-
-
   }
 
   return (
@@ -40,8 +38,8 @@ function EditProfile({ HandleAddChild, children_: childrenProfiles }) {
 
               {
 
-                childrenProfiles.map((child) => (
-                  <ChildCard key={child.child_id} name={child.child_name} age={child.child_age} />
+                childrenProfiles.map((child, i) => (
+                  <ChildCard key={i} name={child.name} age={child.age} />
                 ))
 
               }

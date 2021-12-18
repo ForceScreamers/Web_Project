@@ -176,17 +176,36 @@ const App = () => {
 	}, [childrenProfiles])
 
 
+	const HandleDeleteChild = (childId) => {
 
+		const RemoveChildProfile = (childId) => {
+			childrenProfiles.forEach()
+			childrenProfiles.splice(childrenProfiles.indexOf())
+		}
+
+
+		axios({
+			method: 'get',
+			url: "http://localhost:5001/delete-child",
+			timeout: REQUEST_TIMEOUT_LENGTH,
+			headers: {
+				data: JSON.stringify({ childId: childId })
+			}
+		}).catch(err => console.log(err))
+			.then((response) => {
+				setChildrenProfiles()
+			})
+	}
 
 	//  Handles child add logic
 	const HandleAddChild = (e) => {
 		e.preventDefault();
 
 		let formChildName = e.target.childNameField.value;
-		let formChildAge = e.target.childAgeSelect.value
+		let formChildAge = e.target.childAgeSelect.value;
 
 		//	Validate input
-		console.log(formChildName)
+		console.log(formChildName);
 		if (AddchildInputValidation(formChildName)) {
 			//Send request to server to add child
 			axios({
@@ -208,7 +227,7 @@ const App = () => {
 					//	Response will be HasAddedChild
 					if (response) {
 						console.log(response);
-						setChildrenProfiles([...childrenProfiles, { name: response.data.Name, age: response.data.Age }])
+						setChildrenProfiles([...childrenProfiles, { age: response.data.age, name: response.data.name, key: response.data.id }])
 					}
 					else { console.log("No response from server") }
 				})
@@ -256,7 +275,7 @@ const App = () => {
 
 				<Route exact path="/Welcome" component={Welcome} />
 				<Route exact path="/About" component={About} />
-				<Route exact path="/EditProfile" component={() => <EditProfile HandleAddChild={HandleAddChild} children_={childrenProfiles} />} />
+				<Route exact path="/EditProfile" component={() => <EditProfile HandleDeleteChild={HandleDeleteChild} HandleAddChild={HandleAddChild} children_={childrenProfiles} />} />
 				<Route exact path="/Games" component={Games} />
 				<Route exact path="/Info" component={Info} />
 				<Route exact path="/Avatar" component={Avatar} />

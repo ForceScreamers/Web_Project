@@ -154,10 +154,33 @@ app.get('/get-children-for-parent', (req, res) => {
     .then((response) => {
       //  Send children to client
       console.log("Sending children to client...")
+      console.log(response.data);
       res.status(200).end(JSON.stringify(response.data))
     })
 
 });
+
+
+app.get('/delete-child', (req, res) => {
+  axios({
+    hostname: 'localhost',
+    port: 5000,
+    url: 'http://localhost:5000/api/Parent/DeleteChild',
+    method: 'GET',
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Content-Type': 'application/json',
+
+      childId: reqData
+    }
+  }).catch(err => console.log(err))
+    .then((response) => {
+      //  Send children to client
+      console.log("Deleting child...")
+      console.log(response.data);
+      res.status(200).end(JSON.stringify(response.data))
+    })
+})
 
 app.post('/Auth', (req, res) => {
   //console.log(ids)
