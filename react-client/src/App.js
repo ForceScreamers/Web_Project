@@ -179,8 +179,14 @@ const App = () => {
 	const HandleDeleteChild = (childId) => {
 
 		const RemoveChildProfile = (childId) => {
-			childrenProfiles.forEach()
-			childrenProfiles.splice(childrenProfiles.indexOf())
+			childrenProfiles.forEach(childProfile => {
+				if (childProfile.id == childId) {
+					//	Remove the child with the given id from the state array
+					childrenProfiles.splice(childrenProfiles.indexOf(childProfile))
+				}
+			})
+
+			console.log(childrenProfiles);
 		}
 
 
