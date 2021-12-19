@@ -1,21 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Administrator\\Desktop\\Web_Project\\WebsiteApi\\WebsiteApi\\WebsiteApi.csproj": {}
+    "C:\\Users\\Kfir\\Desktop\\Web_Project\\WebsiteApi\\WebsiteApi\\WebsiteApi.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Administrator\\Desktop\\Web_Project\\WebsiteApi\\DAL\\ParentDal\\ParentDal.csproj": {
+    "C:\\Users\\Kfir\\Desktop\\Web_Project\\WebsiteApi\\DAL\\ParentDal\\ParentDal.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Administrator\\Desktop\\Web_Project\\WebsiteApi\\DAL\\ParentDal\\ParentDal.csproj",
+        "projectUniqueName": "C:\\Users\\Kfir\\Desktop\\Web_Project\\WebsiteApi\\DAL\\ParentDal\\ParentDal.csproj",
         "projectName": "ParentDal",
-        "projectPath": "C:\\Users\\Administrator\\Desktop\\Web_Project\\WebsiteApi\\DAL\\ParentDal\\ParentDal.csproj",
-        "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Administrator\\Desktop\\Web_Project\\WebsiteApi\\DAL\\ParentDal\\obj\\",
+        "projectPath": "C:\\Users\\Kfir\\Desktop\\Web_Project\\WebsiteApi\\DAL\\ParentDal\\ParentDal.csproj",
+        "packagesPath": "C:\\Users\\Kfir\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Kfir\\Desktop\\Web_Project\\WebsiteApi\\DAL\\ParentDal\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Microsoft\\Xamarin\\NuGet\\"
+        ],
         "configFilePaths": [
-          "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\Kfir\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
@@ -26,7 +30,6 @@
         },
         "frameworks": {
           "netcoreapp3.1": {
-            "targetAlias": "netcoreapp3.1",
             "projectReferences": {}
           }
         },
@@ -38,7 +41,6 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
-          "targetAlias": "netcoreapp3.1",
           "dependencies": {
             "System.Data.Odbc": {
               "target": "Package",
@@ -60,22 +62,26 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.301\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.101\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\Administrator\\Desktop\\Web_Project\\WebsiteApi\\WebsiteApi\\WebsiteApi.csproj": {
+    "C:\\Users\\Kfir\\Desktop\\Web_Project\\WebsiteApi\\WebsiteApi\\WebsiteApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Administrator\\Desktop\\Web_Project\\WebsiteApi\\WebsiteApi\\WebsiteApi.csproj",
+        "projectUniqueName": "C:\\Users\\Kfir\\Desktop\\Web_Project\\WebsiteApi\\WebsiteApi\\WebsiteApi.csproj",
         "projectName": "WebsiteApi",
-        "projectPath": "C:\\Users\\Administrator\\Desktop\\Web_Project\\WebsiteApi\\WebsiteApi\\WebsiteApi.csproj",
-        "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Administrator\\Desktop\\Web_Project\\WebsiteApi\\WebsiteApi\\obj\\",
+        "projectPath": "C:\\Users\\Kfir\\Desktop\\Web_Project\\WebsiteApi\\WebsiteApi\\WebsiteApi.csproj",
+        "packagesPath": "C:\\Users\\Kfir\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Kfir\\Desktop\\Web_Project\\WebsiteApi\\WebsiteApi\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Microsoft\\Xamarin\\NuGet\\"
+        ],
         "configFilePaths": [
-          "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\Kfir\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
@@ -86,10 +92,9 @@
         },
         "frameworks": {
           "netcoreapp3.1": {
-            "targetAlias": "netcoreapp3.1",
             "projectReferences": {
-              "C:\\Users\\Administrator\\Desktop\\Web_Project\\WebsiteApi\\DAL\\ParentDal\\ParentDal.csproj": {
-                "projectPath": "C:\\Users\\Administrator\\Desktop\\Web_Project\\WebsiteApi\\DAL\\ParentDal\\ParentDal.csproj"
+              "C:\\Users\\Kfir\\Desktop\\Web_Project\\WebsiteApi\\DAL\\ParentDal\\ParentDal.csproj": {
+                "projectPath": "C:\\Users\\Kfir\\Desktop\\Web_Project\\WebsiteApi\\DAL\\ParentDal\\ParentDal.csproj"
               }
             }
           }
@@ -102,7 +107,6 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
-          "targetAlias": "netcoreapp3.1",
           "dependencies": {
             "Microsoft.AspNet.WebApi.Core": {
               "target": "Package",
@@ -131,7 +135,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.301\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.101\\RuntimeIdentifierGraph.json"
         }
       }
     }

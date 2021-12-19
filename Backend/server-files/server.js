@@ -162,16 +162,18 @@ app.get('/get-children-for-parent', (req, res) => {
 
 
 app.get('/delete-child', (req, res) => {
+  let reqData = JSON.parse(req.headers.data)
+  console.log("child id: " + reqData.childId);
   axios({
     hostname: 'localhost',
     port: 5000,
-    url: 'http://localhost:5000/api/Parent/DeleteChild',
+    url: 'http://localhost:5000/api/Parent/GetDeleteChild',
     method: 'GET',
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Content-Type': 'application/json',
 
-      childId: reqData
+      childId: reqData.childId
     }
   }).catch(err => console.log(err))
     .then((response) => {

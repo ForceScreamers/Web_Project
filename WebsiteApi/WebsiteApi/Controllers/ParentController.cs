@@ -80,7 +80,7 @@ namespace WebsiteApi.Controllers
             Console.WriteLine("Sending children...");
             DataTable children = ChildMethods.GetChildrenForParent(int.Parse(Request.Headers["parentId"]));
             children.Columns["child_name"].ColumnName = "name";
-            children.Columns["child_id"].ColumnName = "key";
+            children.Columns["child_id"].ColumnName = "id";
             children.Columns["child_age"].ColumnName = "age";
 
 
@@ -88,6 +88,30 @@ namespace WebsiteApi.Controllers
 
             //  Return children as a json object
             return base.Content(JsonConvert.SerializeObject(children), "application/json", Encoding.UTF8);
+        }
+
+        [Microsoft.AspNetCore.Mvc.HttpGet]
+        [Microsoft.AspNetCore.Mvc.ActionName("GetDeleteChild")]
+        public ContentResult GetDeleteChild()
+        {
+            int childId = int.Parse(Request.Headers["childId"]);
+
+            try
+            {
+                ChildMethods.DeleteChild(int.Parse(Request.Headers["childId"]));
+            }
+            catch(Exception e) { Console.WriteLine(e); }
+            finally
+            {
+                Console.WriteLine("Deleted child");
+            }
+
+            Console.WriteLine("Deleted child: " + childId);
+
+
+            //  Return the deleted child id
+            return base.Content(JsonConvert.SerializeObject(new { id = childId }), "application/json", System.Text.Encoding.UTF8);
+
         }
 
         /// <summary>

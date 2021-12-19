@@ -10,23 +10,8 @@ function EditProfile({ HandleDeleteChild, HandleAddChild, children_: childrenPro
   //const [childrenProfiles, setChildrenProfiles] = useState([])
 
   useEffect(() => {
-    formatChildren();
 
-  }, [])
-
-  const formatChildren = () => {
-    console.log(childrenProfiles)
-
-    childrenProfiles.forEach((child) => {
-      // child.name = child.child_name;
-      // child.age = child.child_age;
-      // child.key = child.child_id;
-
-      // delete child.child_id;
-      // delete child.child_name;
-      // delete child.child_age;
-    })
-  }
+  }, [childrenProfiles])
 
   return (
     <div>
@@ -37,9 +22,9 @@ function EditProfile({ HandleDeleteChild, HandleAddChild, children_: childrenPro
             <Col>
 
               {
-
+                //  i - index inside the state array, using it because react wants to use it...
                 childrenProfiles.map((child, i) => (
-                  <ChildCard key={i} name={child.name} age={child.age} />
+                  <ChildCard HandleDeleteChild={HandleDeleteChild} key={i} id={child.id} name={child.name} age={child.age} />
                 ))
 
               }

@@ -51,6 +51,7 @@ namespace ParentDal
                 new OdbcParameter("@child_name", childName),
             };
 
+            //TODO: Appears twice, need to reduce
             try
             {
                 //  Try insert command
@@ -72,13 +73,26 @@ namespace ParentDal
 
         public static int DeleteChild(int childId)
         {
+            int result = 0;
+
             string com = "DELETE FROM child WHERE child_id=?";
 
             OdbcParameter[] queryParameters = {
-                new OdbcParameter("@parent_id", childId),
+                new OdbcParameter("@child_id", childId),
             };
 
-            return OdbcHelper.Execute(com, queryParameters);
+            //TODO: Simplyfy
+            try
+            {
+                //  Try insert command
+                OdbcHelper.Execute(com, queryParameters);
+            }
+            catch (Exception e) { Console.WriteLine(e); }
+            finally
+            {
+                result = GetIdFromDataTable(OdbcHelper.GetTable("SELECT @@IDENTITY FROM child", new OdbcParameter[0]));
+            }
+            return result;
         }
     }
 }

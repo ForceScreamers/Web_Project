@@ -177,19 +177,12 @@ const App = () => {
 
 
 	const HandleDeleteChild = (childId) => {
-
-		const RemoveChildProfile = (childId) => {
-			childrenProfiles.forEach(childProfile => {
-				if (childProfile.id == childId) {
-					//	Remove the child with the given id from the state array
-					childrenProfiles.splice(childrenProfiles.indexOf(childProfile))
-				}
-			})
-
-			console.log(childrenProfiles);
-		}
+		console.log("Deleting child... " + childId)
+		console.log(childrenProfiles);
 
 
+		// Get the delete confirmation from the server then delete 
+		//	the child from the state array
 		axios({
 			method: 'get',
 			url: "http://localhost:5001/delete-child",
@@ -199,8 +192,20 @@ const App = () => {
 			}
 		}).catch(err => console.log(err))
 			.then((response) => {
-				setChildrenProfiles()
+				setChildrenProfiles(RemoveChildProfile(childrenProfiles, response.childId))
 			})
+	}
+
+	//	Remove the child with the given id from the state array
+	const RemoveChildProfile = (profilesArray, childId) => {
+		profilesArray.forEach(childProfile => {
+			if (childProfile.id == childId) {
+				profilesArray.splice(profilesArray.indexOf(childProfile))
+			}
+		})
+
+		console.log(profilesArray);
+		return profilesArray;
 	}
 
 	//  Handles child add logic

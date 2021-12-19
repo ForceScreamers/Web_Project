@@ -1,5 +1,5 @@
 import { Card, CloseButton } from 'react-bootstrap'
-function ChildCard({ name, age }) {
+function ChildCard({ HandleDeleteChild, name, age, id }) {
   return (
     <div>
       <Card
@@ -12,7 +12,7 @@ function ChildCard({ name, age }) {
       >
 
         <Card.Body>
-          <Card.Title><CloseButton /> {name} </Card.Title>
+          <Card.Title><CloseButton onClick={() => HandleDeleteChild(id)} /> {name} </Card.Title>
           <Card.Text>
             {age}
           </Card.Text>
