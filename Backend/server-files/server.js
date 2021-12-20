@@ -4,13 +4,15 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const { rejects } = require('assert');
 
-const axios = require('axios')
+const axios = require('axios');
 
 const app = express();
 
 const session = require('express-session');
 
 const utf8 = require('utf8');
+
+const jwt = require('jsonwebtoken');
 
 // Check environment variable
 const PORT = /*process.env.PORT ||*/ 5001;
@@ -80,17 +82,54 @@ app.post('/login', (req, res) => {
 
   }).then((response) => {
     console.log("Response from web api:");
-    console.log(response.data.Confirmed);
+    console.log(response.data);
 
 
     //let authenticatedMessage = response.data;
     let responseMessage = { Confirmed: response.data.Confirmed };
+
+    //  Token instance
+    //TODO: change secret to .env variable
+    const token = jwt.sign({}, "secret", {
+      expiresIn: 300, // 5 Min
+    })
+    res.json({
+      authorized: true,
+      token: token,
+      result: userInfo // User information from server (just need username and id)
+
+    })
 
     //  End the request with bool, if the user is in the database 
     //  and the password and username match
     res.status(status).end(JSON.stringify(responseMessage));
   })
 });
+
+
+
+const verifyJWT = (req, res, next) => {
+  const token = req.headers["x-access-token"];//Grab token
+  if (!token) {
+    res.send("Need a token, gib pls UwU");
+  }
+  else {
+    jwt.verify(token, "secret", (err, decoded) => {
+      if (err) {
+        res.json({ authorized: false, message: "Failed to authenticate" });
+      }
+      else {
+        //  New variable userId, create a new one
+        req.userId = decoded.id;
+      }
+    })
+  }
+}
+
+app.get('/is-auth', verifyJWT, (req, res) => {
+  res.send("you are authenticated!");
+});
+
 
 app.post('/add-child', (req, res) => {
   //  Axios request to webapi
@@ -182,16 +221,4 @@ app.get('/delete-child', (req, res) => {
       console.log(response.data);
       res.status(200).end(JSON.stringify(response.data))
     })
-})
-
-app.post('/Auth', (req, res) => {
-  //console.log(ids)
-  //console.log(req.sessionID)
-
-  if (ids.includes(req.sessionID)) {
-    console.log("All good");
-  }
-  else {
-    console.log("Not good");
-  }
 })

@@ -52,7 +52,7 @@ import { ValidateUserInput } from './Project-Modules/ValidateUserInput';
 const REQUEST_TIMEOUT_LENGTH = 4000;
 
 //	Used for debugging
-const ENABLE_LOGIN = false;
+const ENABLE_LOGIN = true;
 
 let username;
 
@@ -147,11 +147,10 @@ const App = () => {
 				//TODO: Deal with unable to connect
 				RequestLogin(userData).catch(err => console.log(err))
 					.then((response) => {
-						//	If there is a response
-						if (response) {
+						if (response.data.authorized) {
 							//	Redirect user to the main page
-							console.log("User valid: " + response.data.Confirmed);
-							RedirectLoggedUser(response.data.Confirmed);
+							console.log("User valid: " + response.data.authorized);
+							RedirectLoggedUser(response.data.authorized);
 						}
 					});
 			}
@@ -163,6 +162,11 @@ const App = () => {
 			//setIsAuth(true)
 			history.push('/Welcome')
 		}
+	}
+
+	const RedirectLoggedUser = (isLogged) => {
+		setIsAuth(isLogged);
+		isLogged ? history.push('/Welcome') : alert("Incorrect email or password")
 	}
 
 	//	Loads children into state
@@ -276,10 +280,7 @@ const App = () => {
 	}, []);
 	//#endregion
 
-	const RedirectLoggedUser = (isLogged) => {
-		setIsAuth(isLogged);
-		isLogged ? history.push('/Welcome') : alert("Incorrect email or password")
-	}
+
 
 	return (
 		<Router history={history}>

@@ -13,6 +13,7 @@ using System.Text;
 using System.IO;
 using Newtonsoft.Json;
 using System.Data;
+using WebsiteApi.HelperClasses;
 
 namespace WebsiteApi.Controllers
 {
@@ -20,6 +21,10 @@ namespace WebsiteApi.Controllers
     [Microsoft.AspNetCore.Mvc.Route("api/[controller]/[action]")]
     public class ParentController : Controller
     {
+
+
+
+
         //  Call AddParent from the helper class
         //int result = ParentMethods.AddParent("Username", "Email", "1234", "10/10/2000");
 
@@ -30,23 +35,35 @@ namespace WebsiteApi.Controllers
         [Microsoft.AspNetCore.Mvc.ActionName("GetLoginConfirmation")]
         public ContentResult GetLoginConfirmation()
         {
+            int loggedId = -1;
+            string loggedUsername = "";
             //  Get email and password from the request 
             Console.WriteLine("Email: " + Request.Headers["email"]);
             Console.WriteLine("Password: " + Request.Headers["password"]);
+
             //Console.WriteLine(ParentMethods.AddParent("DummyUsername", Request.Headers["email"], Request.Headers["password"], DateTime.Now.ToString()));
             //"10/10/2000"
 
-
-            bool result = false; 
+            bool userExists = false; 
             
             if(!Request.Headers["email"].ToString().Equals("") && !Request.Headers["password"].ToString().Equals(""))//  Just for debugging (Checking for empty strings)
             {
                 //  Check if the email and password exist
-                result = ParentMethods.IsExists(Request.Headers["email"], Request.Headers["password"]);
-                Console.WriteLine("User exists: {0}", result);
+                userExists = ParentMethods.IsExists(Request.Headers["email"], Request.Headers["password"]);
+                Console.WriteLine("User exists: {0}", userExists);
+
+                if (userExists)
+                {
+                    //TODO: Fix casting into logged parent class
+                    // ---- Get the information of the logged in parent ----
+                    LoggedParent loggedParent = (LoggedParent)ParentMethods.GetParentLoggedInfo(Request.Headers["email"], Request.Headers["password"]);//  Cast into object
+
+                    //loggedId = loggedParent.ParentId;(LoggedParent)
+                    //loggedUsername = loggedParent.ParentUsername;
+                }
             }
 
-            return base.Content(JsonConvert.SerializeObject(new { Confirmed = result }), "application/json", System.Text.Encoding.UTF8);
+            return base.Content(JsonConvert.SerializeObject(new { username = loggedUsername, id = loggedId, confirmed = userExists }), "application/json", System.Text.Encoding.UTF8);
         }
 
 
@@ -122,4 +139,6 @@ namespace WebsiteApi.Controllers
         private string ConvertToUnicode(string utf8text)
         { return Encoding.Unicode.GetString(UTF8Encoding.Convert(Encoding.UTF8, Encoding.Unicode, Encoding.UTF8.GetBytes(utf8text))); }
     }
+
+    
 }

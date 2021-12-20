@@ -29,6 +29,34 @@ namespace ParentDal
 
             return OdbcHelper.Execute(com, queryParameters);
         }
+
+        /// <summary>
+        /// Returns the username and id of a parent with the matching email and password
+        /// </summary>
+        /// <param name="parentEmail"></param>
+        /// <param name="parentPassword"></param>
+        /// <returns></returns>
+        public static object GetParentLoggedInfo(string parentEmail, string parentPassword)
+        {
+            string com = "SELECT parent_id, parent_username FROM parent WHERE parent_email=? AND parent_password=?";
+            OdbcParameter[] queryParameters = {
+                new OdbcParameter("@parent_email", parentEmail),
+                new OdbcParameter("@parent_password", parentPassword)
+            };
+
+            //  Execute command
+            DataTable dt = OdbcHelper.GetTable(com, queryParameters);
+
+            //  Parse id
+            int parentId = int.Parse(dt.Rows[0].ItemArray[0].ToString());
+            string parentUsername = dt.Rows[0].ItemArray[1].ToString();
+
+
+            Console.WriteLine("Parent id: " + parentId);
+            Console.WriteLine("Parent username: " + parentUsername);
+            return new { username = parentUsername, id = parentId};
+        }
+
         public static int DeleteParent(int parentId)
         {
             string com = "DELETE FROM parent WHERE parent_id=?";
