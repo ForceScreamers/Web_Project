@@ -1,6 +1,6 @@
 //	#region Imports
 //	Import hooks
-import React, { Children, Component } from 'react';
+import React, { Children, Component, createContext, useContext } from 'react';
 import { useEffect, useState } from 'react';
 
 //	Import main pages
@@ -116,6 +116,9 @@ const App = () => {
 	//	Current selected child, will be used for tracking progress
 	const [currentChild, setCurrentChild] = useState({});
 
+	const [username, setUsername] = useState("no username");
+	const usernameDisplay = createContext(username);
+
 	const LoadChildren = async () => {
 		console.log("Loading children...")
 		return GetChildrenFromServer()
@@ -151,6 +154,9 @@ const App = () => {
 							//	Redirect user to the main page
 							console.log("User valid: " + response.data.authorized);
 							RedirectLoggedUser(response.data.authorized);
+							console.log(response.data.result.username)
+							setUsername(response.data.result.username)
+
 						}
 					});
 			}

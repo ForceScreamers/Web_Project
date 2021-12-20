@@ -83,10 +83,11 @@ app.post('/login', (req, res) => {
   }).then((response) => {
     console.log("Response from web api:");
     console.log(response.data);
+    let userInfo = response.data;
 
 
     //let authenticatedMessage = response.data;
-    let responseMessage = { Confirmed: response.data.Confirmed };
+    //let responseMessage = { Confirmed: response.data.Confirmed };
 
     //  Token instance
     //TODO: change secret to .env variable
@@ -97,12 +98,11 @@ app.post('/login', (req, res) => {
       authorized: true,
       token: token,
       result: userInfo // User information from server (just need username and id)
-
-    })
+    }).status(status).end(/*JSON.stringify(responseMessage)*/);
 
     //  End the request with bool, if the user is in the database 
     //  and the password and username match
-    res.status(status).end(JSON.stringify(responseMessage));
+
   })
 });
 

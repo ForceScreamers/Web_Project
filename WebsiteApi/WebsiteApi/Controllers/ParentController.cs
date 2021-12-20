@@ -37,6 +37,7 @@ namespace WebsiteApi.Controllers
         {
             int loggedId = -1;
             string loggedUsername = "";
+            object loggedParentInfo = null;
             //  Get email and password from the request 
             Console.WriteLine("Email: " + Request.Headers["email"]);
             Console.WriteLine("Password: " + Request.Headers["password"]);
@@ -56,14 +57,15 @@ namespace WebsiteApi.Controllers
                 {
                     //TODO: Fix casting into logged parent class
                     // ---- Get the information of the logged in parent ----
-                    LoggedParent loggedParent = (LoggedParent)ParentMethods.GetParentLoggedInfo(Request.Headers["email"], Request.Headers["password"]);//  Cast into object
-
-                    //loggedId = loggedParent.ParentId;(LoggedParent)
+                    loggedParentInfo = JsonConvert.SerializeObject(ParentMethods.GetParentLoggedInfo(Request.Headers["email"], Request.Headers["password"]));
+                    
+                    //LoggedParent loggedParent = loggedParentInfo.GetType().GetProperty("username").GetValue(loggedParentInfo);
+                    //loggedId = loggedParent.ParentId;
                     //loggedUsername = loggedParent.ParentUsername;
                 }
             }
 
-            return base.Content(JsonConvert.SerializeObject(new { username = loggedUsername, id = loggedId, confirmed = userExists }), "application/json", System.Text.Encoding.UTF8);
+            return base.Content((string)loggedParentInfo, "application/json", System.Text.Encoding.UTF8);
         }
 
 

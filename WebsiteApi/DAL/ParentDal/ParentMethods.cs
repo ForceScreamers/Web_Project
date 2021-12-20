@@ -54,7 +54,7 @@ namespace ParentDal
 
             Console.WriteLine("Parent id: " + parentId);
             Console.WriteLine("Parent username: " + parentUsername);
-            return new { username = parentUsername, id = parentId};
+            return new { username = parentUsername, id = parentId };
         }
 
         public static int DeleteParent(int parentId)
