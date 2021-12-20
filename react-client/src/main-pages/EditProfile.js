@@ -9,8 +9,9 @@ import { useEffect, useState } from "react"
 function EditProfile({ HandleDeleteChild, HandleAddChild, children_: childrenProfiles }) {
   //const [childrenProfiles, setChildrenProfiles] = useState([])
 
-  useEffect(() => {
 
+  useEffect(() => {
+    console.log("Updating children")
   }, [childrenProfiles])
 
   return (
@@ -23,8 +24,8 @@ function EditProfile({ HandleDeleteChild, HandleAddChild, children_: childrenPro
 
               {
                 //  i - index inside the state array, using it because react wants to use it...
-                childrenProfiles.map((child, i) => (
-                  <ChildCard HandleDeleteChild={HandleDeleteChild} key={i} id={child.id} name={child.name} age={child.age} />
+                childrenProfiles.map((child) => (
+                  <ChildCard HandleDeleteChild={HandleDeleteChild} key={child.id} id={child.id} name={child.name} age={child.age} />
                 ))
 
               }

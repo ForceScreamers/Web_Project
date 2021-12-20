@@ -173,6 +173,7 @@ const App = () => {
 	//Load children into react components from the current state when the children array updates
 	useEffect(() => {
 		console.log(childrenProfiles);
+
 	}, [childrenProfiles])
 
 
@@ -192,20 +193,31 @@ const App = () => {
 			}
 		}).catch(err => console.log(err))
 			.then((response) => {
-				setChildrenProfiles(RemoveChildProfile(childrenProfiles, response.childId))
+				console.log(response.data.childId);
+				let arr = RemoveChildProfile(childrenProfiles, response.data.childId);
+				console.log("Array without child");
+				console.log(arr);
+
+				setChildrenProfiles(arr)
 			})
 	}
 
 	//	Remove the child with the given id from the state array
 	const RemoveChildProfile = (profilesArray, childId) => {
-		profilesArray.forEach(childProfile => {
-			if (childProfile.id == childId) {
-				profilesArray.splice(profilesArray.indexOf(childProfile))
+		let newChildProfilesArray = [...childrenProfiles];
+
+		newChildProfilesArray.forEach(childProfile => {
+			if (childProfile.id === childId) {
+				console.log("aaa")
+
+				//Remove child
+				newChildProfilesArray.splice(newChildProfilesArray.indexOf(childProfile), 1)
 			}
 		})
 
-		console.log(profilesArray);
-		return profilesArray;
+		console.log("(From function) Array without child")
+		console.log(newChildProfilesArray);
+		return newChildProfilesArray;
 	}
 
 	//  Handles child add logic
@@ -237,8 +249,12 @@ const App = () => {
 				.then((response) => {//	Get confirmation that the child was added
 					//	Response will be HasAddedChild
 					if (response) {
-						console.log(response);
-						setChildrenProfiles([...childrenProfiles, { age: response.data.age, name: response.data.name, key: response.data.id }])
+						console.log("Setting children profiles with added child");
+						setChildrenProfiles([...childrenProfiles, {
+							age: response.data.age,
+							name: response.data.name,
+							id: response.data.id
+						}])
 					}
 					else { console.log("No response from server") }
 				})

@@ -110,7 +110,7 @@ namespace WebsiteApi.Controllers
 
 
             //  Return the deleted child id
-            return base.Content(JsonConvert.SerializeObject(new { id = childId }), "application/json", System.Text.Encoding.UTF8);
+            return base.Content(JsonConvert.SerializeObject(new { childId = childId }), "application/json", System.Text.Encoding.UTF8);
 
         }
 
