@@ -193,10 +193,9 @@ const App = () => {
 			}
 		}).catch(err => console.log(err))
 			.then((response) => {
-				console.log(response.data.childId);
+				//TODO: Verify Delete child
+
 				let arr = RemoveChildProfile(childrenProfiles, response.data.childId);
-				console.log("Array without child");
-				console.log(arr);
 
 				setChildrenProfiles(arr)
 			})

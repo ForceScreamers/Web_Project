@@ -12,9 +12,9 @@ function ChildCard({ HandleDeleteChild, name, age, id }) {
       >
 
         <Card.Body>
-          <Card.Title><CloseButton onClick={() => HandleDeleteChild(id)} /> {name} </Card.Title>
+          <Card.Title><CloseButton aria-label='מחיקה' onClick={() => HandleDeleteChild(id)} /> {name} </Card.Title>
           <Card.Text>
-            {age}
+            {"גיל: " + age}
           </Card.Text>
         </Card.Body>
       </Card>
