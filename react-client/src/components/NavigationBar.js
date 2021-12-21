@@ -3,21 +3,20 @@ import { Link } from "react-router-dom"
 import { useContext } from 'react'
 import usernameDisplay from '../App'
 
-
 //  היומן שלי, שינוי אווטר, עריכת פרופיל, משחקייה, מאמרים, אודותר
 
 //  The main pages are: Games, info, about, edit profile, avatar, journal
 
-function NavigationBar() {
+function NavigationBar({ username }) {
   return (
     <div dir="rtl">
       <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
         <Container fluid className="h-25">
           <Navbar.Brand href="/Home">כפתור בית</Navbar.Brand>
+          <Navbar.Brand href="/">{username}</Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto">
-              <Link to="/">a{useContext(usernameDisplay)}</Link>
               <Link to="/Games" className="nav-link">משחקייה</Link>
               <Link to="/Info" className="nav-link">מאמרים</Link>
               <Link to="/About" className="nav-link">אודות</Link>

@@ -107,6 +107,8 @@ const GetChildrenFromServer = async () => {
 	})
 }
 
+
+const usernameContext = createContext("username")
 const App = () => {
 	const [isAuth, setIsAuth] = useState(false);
 
@@ -117,7 +119,8 @@ const App = () => {
 	const [currentChild, setCurrentChild] = useState({});
 
 	const [username, setUsername] = useState("no username");
-	const usernameDisplay = createContext(username);
+
+	const usernameDisplay = useContext(usernameContext)
 
 	const LoadChildren = async () => {
 		console.log("Loading children...")
@@ -138,6 +141,8 @@ const App = () => {
 	const HandleLogin = async (e) => {
 
 		e.preventDefault();
+
+		console.log(usernameDisplay);
 
 		let userData = {
 			email: e.target.loginEmailField.value,
@@ -307,7 +312,7 @@ const App = () => {
 				<AuthenticatedRoute exact path="/Games/MemoryGame" isAuth={isAuth} component={MemoryGame} />
 
 				<Route exact path="/Welcome" component={Welcome} />
-				<Route exact path="/About" component={About} />
+				<Route exact path="/About" component={() => <About username={username} />} />
 				<Route exact path="/EditProfile" component={() => <EditProfile HandleDeleteChild={HandleDeleteChild} HandleAddChild={HandleAddChild} children_={childrenProfiles} />} />
 				<Route exact path="/Games" component={Games} />
 				<Route exact path="/Info" component={Info} />
