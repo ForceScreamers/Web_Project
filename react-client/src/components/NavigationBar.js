@@ -1,19 +1,30 @@
-import { Navbar, Container, Nav, NavDropdown, NavItem } from 'react-bootstrap'
+import { Navbar, Container, Nav, NavDropdown, NavItem, Button } from 'react-bootstrap'
 import { Link } from "react-router-dom"
 import { useContext } from 'react'
-import usernameDisplay from '../App'
+import { NavBarContext } from '../NavBarContext'
 
 //  היומן שלי, שינוי אווטר, עריכת פרופיל, משחקייה, מאמרים, אודותר
 
 //  The main pages are: Games, info, about, edit profile, avatar, journal
 
-function NavigationBar({ username }) {
+function NavigationBar({ HandleLogout }) {
+  const navBarContext = useContext(NavBarContext);
+  const usernameFromContext = navBarContext.username;
+  const childNameFromContext = navBarContext.child.name;
+
+  const S_CURRENT_CHILD = "ילד נוכחי";
+  const S_NO_CHILD_SELECTED = "לא נבחר ילד";
+
   return (
     <div dir="rtl">
       <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
         <Container fluid className="h-25">
           <Navbar.Brand href="/Home">כפתור בית</Navbar.Brand>
-          <Navbar.Brand href="/">{username}</Navbar.Brand>
+          <Navbar.Brand> מחובר בתור: {usernameFromContext}</Navbar.Brand>
+          <Navbar.Brand>
+            {childNameFromContext == undefined ? S_NO_CHILD_SELECTED : `${S_CURRENT_CHILD}:${childNameFromContext}`}
+
+          </Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto">
@@ -30,6 +41,9 @@ function NavigationBar({ username }) {
                 <NavDropdown.Divider />
                 <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
               </NavDropdown> */}
+
+              <Button onClick={HandleLogout} variant='danger'>יציאה</Button>
+
             </Nav>
           </Navbar.Collapse>
         </Container>

@@ -1,12 +1,12 @@
 //	#region Imports
 //	Import hooks
-import React, { Children, Component, createContext, useContext } from 'react';
+import React from 'react';
 import { useEffect, useState } from 'react';
 
 //	Import main pages
 import Login from "./main-pages/Login";
 
-import { Router, Route, Redirect } from "react-router-dom";
+import { Router, Route } from "react-router-dom";
 
 //	Import history
 import history from './History'
@@ -26,8 +26,6 @@ import Home from './main-pages/Home';
 import AuthenticatedRoute from "./components/AuthenticatedRoute";
 import UnauthenticatedRoute from "./components/UnauthenticatedRoute";
 
-import UserProfile from './components/UserProfile';
-
 import axios from 'axios';
 import TestGame from './games/TestGame/TestGame';
 
@@ -43,6 +41,7 @@ import utf8 from 'utf8'
 
 //	Import helper functions
 import { ValidateUserInput } from './Project-Modules/ValidateUserInput';
+import { NavBarContext } from './NavBarContext';
 
 //	#endregion
 
@@ -50,11 +49,25 @@ import { ValidateUserInput } from './Project-Modules/ValidateUserInput';
 //	io.use(sharedsession(express_session));
 
 const REQUEST_TIMEOUT_LENGTH = 4000;
-
-//	Used for debugging
-const ENABLE_LOGIN = true;
+const ENABLE_LOGIN = true;//! Used for debugging
 
 let username;
+
+
+/**
+ * normal comment
+ * *Important highlighted
+ * ! Warning
+ * ? Query
+ * TODO: todo comment
+ * @param myParameter The parameter for something
+ */
+
+
+
+
+
+
 
 const ValidateInput = (userData) => {
 	//	Client validation
@@ -108,7 +121,9 @@ const GetChildrenFromServer = async () => {
 }
 
 
-const usernameContext = createContext("username")
+
+
+// *	Instantiate app component
 const App = () => {
 	const [isAuth, setIsAuth] = useState(false);
 
@@ -117,10 +132,7 @@ const App = () => {
 
 	//	Current selected child, will be used for tracking progress
 	const [currentChild, setCurrentChild] = useState({});
-
 	const [username, setUsername] = useState("no username");
-
-	const usernameDisplay = useContext(usernameContext)
 
 	const LoadChildren = async () => {
 		console.log("Loading children...")
@@ -137,12 +149,37 @@ const App = () => {
 	}
 
 
+	/**
+	 * Changes the selected child from edit profile to the current child
+	 * Used to keep track of progress for this child
+	 */
+	const HandleSelectChild = (selectedChild) => {
+		setCurrentChild(selectedChild)
+		console.log("Selected child: ")
+		console.log(currentChild)
+
+
+		return true;
+	}
+
+	const IsSelectedChild = (childId) => {
+		console.log(currentChild.id === childId)
+
+		let isSelected = false;
+		if (Object.keys(currentChild).length === 0 && childrenProfiles[0].id === childId) {
+			isSelected = true;
+			setCurrentChild(childrenProfiles[0]);
+
+		}
+
+
+		return isSelected;
+	}
+
 
 	const HandleLogin = async (e) => {
 
 		e.preventDefault();
-
-		console.log(usernameDisplay);
 
 		let userData = {
 			email: e.target.loginEmailField.value,
@@ -150,7 +187,6 @@ const App = () => {
 		};
 
 		if (ENABLE_LOGIN) {
-
 			if (ValidateInput(userData)) {
 				//TODO: Deal with unable to connect
 				RequestLogin(userData).catch(err => console.log(err))
@@ -161,14 +197,12 @@ const App = () => {
 							RedirectLoggedUser(response.data.authorized);
 							console.log(response.data.result.username)
 							setUsername(response.data.result.username)
-
 						}
 					});
 			}
 		}
 		else {
-
-			//	FOR DEBUGGING	//
+			//! FOR DEBUGGING	//
 			console.warn("Login disabled")
 			//setIsAuth(true)
 			history.push('/Welcome')
@@ -291,6 +325,10 @@ const App = () => {
 	}, []);
 	//#endregion
 
+	// useEffect(() => {
+	// 	if (Object.keys(currentChild).length === 0) { setCurrentChild(childrenProfiles[0]) }
+	// }, [currentChild])
+
 
 
 	return (
@@ -311,15 +349,27 @@ const App = () => {
 				<AuthenticatedRoute exact path="/Games/TestGame" isAuth={isAuth} component={TestGame} />
 				<AuthenticatedRoute exact path="/Games/MemoryGame" isAuth={isAuth} component={MemoryGame} />
 
-				<Route exact path="/Welcome" component={Welcome} />
-				<Route exact path="/About" component={() => <About username={username} />} />
-				<Route exact path="/EditProfile" component={() => <EditProfile HandleDeleteChild={HandleDeleteChild} HandleAddChild={HandleAddChild} children_={childrenProfiles} />} />
-				<Route exact path="/Games" component={Games} />
-				<Route exact path="/Info" component={Info} />
-				<Route exact path="/Avatar" component={Avatar} />
-				<Route exact path="/Journal" component={Journal} />
-				<Route exact path="/Home" component={Home} />
 
+				<NavBarContext.Provider value={{
+					child: currentChild,
+					username: username
+				}}>
+					<Route exact path="/Welcome" component={Welcome} />
+					<Route exact path="/About" component={() => <About username={username} />} />
+					<Route exact path="/EditProfile" component={() =>
+						<EditProfile
+							IsSelectedChild={IsSelectedChild}
+							HandleSelectChild={HandleSelectChild}
+							HandleDeleteChild={HandleDeleteChild}
+							HandleAddChild={HandleAddChild}
+							children_={childrenProfiles} />}
+					/>
+					<Route exact path="/Games" component={Games} />
+					<Route exact path="/Info" component={Info} />
+					<Route exact path="/Avatar" component={Avatar} />
+					<Route exact path="/Journal" component={Journal} />
+					<Route exact path="/Home" component={Home} />
+				</NavBarContext.Provider>
 				{/* //  The main pages are: Games, info, about, edit profile, avatar, journal */}
 
 

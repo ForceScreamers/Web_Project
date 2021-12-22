@@ -9,7 +9,8 @@
       "dependsOrder": "parallel",
       "dependsOn": [
         "react-client-server",
-        "node-server"
+        "node-server",
+        "website-api"
       ]
     },
     {
@@ -24,6 +25,14 @@
       "label": "node-server",
       "type": "shell",
       "command": "cd Backend/server-files && nodemon server",
+      "presentation": {
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "website-api",
+      "type": "shell",
+      "command": "RunWebsiteApi.bat",
       "presentation": {
         "panel": "dedicated"
       }

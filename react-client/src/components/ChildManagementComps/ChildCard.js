@@ -1,5 +1,8 @@
-import { Card, CloseButton } from 'react-bootstrap'
-function ChildCard({ HandleDeleteChild, name, age, id }) {
+import { Card, CloseButton, Button } from 'react-bootstrap'
+function ChildCard({ IsSelectedChild, HandleSelectChild, HandleDeleteChild, specificChild }) {
+
+  const isSelected = IsSelectedChild(specificChild.id);
+
   return (
     <div>
       <Card
@@ -12,13 +15,26 @@ function ChildCard({ HandleDeleteChild, name, age, id }) {
       >
 
         <Card.Body>
-          <Card.Title><CloseButton aria-label='מחיקה' onClick={() => HandleDeleteChild(id)} /> {name} </Card.Title>
+          <Card.Title>
+            <CloseButton aria-label='מחיקה' onClick={() => HandleDeleteChild(specificChild.id)} /> {specificChild.name}
+
+            <Button
+              // disabled={isSelected ? "true" : "false"}
+              disabled={isSelected}
+              onClick={() => HandleSelectChild(specificChild)} variant="primary"
+            >
+              {isSelected ? "ילד נוכחי" : "בחר ילד"}
+            </Button>
+
+          </Card.Title>
           <Card.Text>
-            {"גיל: " + age}
+            {"גיל: " + specificChild.age}
           </Card.Text>
+
+
         </Card.Body>
       </Card>
-    </div>
+    </div >
   )
 }
 

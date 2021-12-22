@@ -1,10 +1,10 @@
 import NavigationBar from "../components/NavigationBar"
 import NavigationBarTest from "./NavigationBarTest"
 
-function MainPage({ children, title, username }) {
+function MainPage({ children, title }) {
   return (
     <div>
-      <NavigationBar username={username} />
+      <NavigationBar />
       <h1>{title}</h1>
 
       {children}{/* The components that go inside this wrapper component */}

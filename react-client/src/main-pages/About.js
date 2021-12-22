@@ -1,9 +1,9 @@
 import MainPage from "../components/MainPage"
 
-function About({ username }) {
+function About() {
   return (
     <div>
-      <MainPage title='אודות' username={username}>
+      <MainPage title='אודות'>
         <h2> אלו אודות</h2>
       </MainPage>
     </div>
