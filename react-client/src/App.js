@@ -9,13 +9,12 @@ import Login from "./main-pages/Login";
 import { Router, Route } from "react-router-dom";
 
 //	Import history
-import history from './History'
+import history from './History';
 
 //	Import main pages
-import Welcome from './main-pages/Welcome'
+import Welcome from './main-pages/Welcome';
 import Register from './main-pages/Register';
-
-import EditProfile from './main-pages/EditProfile'
+import EditProfile from './main-pages/EditProfile';
 import Games from './main-pages/Games'
 import About from './main-pages/About';
 import Info from './main-pages/Info';
@@ -30,17 +29,18 @@ import axios from 'axios';
 import TestGame from './games/TestGame/TestGame';
 
 //	Games import
-import MemoryGame from './games/MemoryGame/MemoryGame'
+import MemoryGame from './games/MemoryGame/MemoryGame';
 
 //	Bootstrap css import
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import utf8 from 'utf8'
+//	Other libraries
+import utf8 from 'utf8';
 
 
 
 //	Import helper functions
-import { ValidateUserInput } from './Project-Modules/ValidateUserInput';
+import { ValidateUserInput, EmailRegexCheck } from './Project-Modules/ValidateUserInput';
 import { NavBarContext } from './NavBarContext';
 
 //	#endregion
@@ -52,7 +52,6 @@ const REQUEST_TIMEOUT_LENGTH = 4000;
 const ENABLE_LOGIN = true;//! Used for debugging
 
 let username;
-
 
 /**
  * normal comment
@@ -67,15 +66,54 @@ let username;
 
 
 
+const ValidateLoginInput = (userData) => {
+	let emailValid, passwordValid = false;
 
+	if (ValidateEmail(userData.email)) { emailValid = true; }
+	if (ValidatePassword(userData.password)) { passwordValid = true; }
 
-const ValidateInput = (userData) => {
-	//	Client validation
-	//	Empty fields, unusual characters, field length (this one can be done inside the field itself)
-	console.log("Validating input...")
-	//	Returns a enum (EMPTY, UNUSUAL, MAXIMUM_LENGTH)
-	return true;
+	return emailValid && passwordValid;
 }
+
+/**
+ * Returns true or false whether the password isn't empty
+ */
+const ValidatePassword = (password) => {
+
+	let valid = false;
+	if (password !== "") {
+		valid = true;
+	}
+	else {
+		alert("empty password")
+	}
+
+	return valid;
+}
+
+/**
+ * Returns true or false whether the email isn't empty or doesn't have special characters
+ */
+const ValidateEmail = (email) => {
+
+	let valid = false;
+	if (email !== "") {
+		if (EmailRegexCheck(email)) {
+			valid = true;
+		}
+		else {
+			//	Email is invalid
+			alert("invalid email");
+		}
+	}
+	else {
+		//	Email is empty
+		alert("empty email");
+	}
+
+	return valid;
+};
+
 
 const RequestLogin = async (userData) => {
 	return axios({
@@ -119,7 +157,6 @@ const GetChildrenFromServer = async () => {
 		}
 	})
 }
-
 
 
 
@@ -187,17 +224,28 @@ const App = () => {
 		};
 
 		if (ENABLE_LOGIN) {
-			if (ValidateInput(userData)) {
+			if (ValidateLoginInput(userData)) {
 				//TODO: Deal with unable to connect
-				RequestLogin(userData).catch(err => console.log(err))
+				RequestLogin(userData)
+					.catch(err => console.log(err))
 					.then((response) => {
-						if (response.data.authorized) {
-							//	Redirect user to the main page
-							console.log("User valid: " + response.data.authorized);
-							RedirectLoggedUser(response.data.authorized);
-							console.log(response.data.result.username)
-							setUsername(response.data.result.username)
+
+						console.log(response);
+						if (response) {
+							if (response.data.authorized) {
+								//	Redirect user to the main page
+								RedirectLoggedUser(response.data.authorized);
+								setUsername(response.data.result.username)
+							}
+							else {
+								//	User doesn't exist
+								alert("user not found");
+							}
 						}
+						else {
+							console.error("server error, maybe webapi")
+						}
+
 					});
 			}
 		}

@@ -59,7 +59,6 @@ app.post('/login', (req, res) => {
   let status = 200;
 
   let reqData = JSON.parse(req.headers.data)
-  console.log(reqData);
 
   //  Send login request to webapi
   axios({
@@ -83,22 +82,22 @@ app.post('/login', (req, res) => {
   }).then((response) => {
     console.log("Response from web api:");
     console.log(response.data);
-    let userInfo = response.data;
-
-
-    //let authenticatedMessage = response.data;
-    //let responseMessage = { Confirmed: response.data.Confirmed };
+    let userInfo = response.data.UserInfo;
+    let userAuthenticated = response.data.Authenticated;
 
     //  Token instance
     //TODO: change secret to .env variable
     const token = jwt.sign({}, "secret", {
       expiresIn: 300, // 5 Min
     })
-    res.json({
-      authorized: true,
-      token: token,
+
+    let userData = {
+      authorized: userAuthenticated,
+      //token: token,
       result: userInfo // User information from server (just need username and id)
-    }).status(status).end(/*JSON.stringify(responseMessage)*/);
+    }
+
+    res.status(status).end(JSON.stringify(userData));
 
     //  End the request with bool, if the user is in the database 
     //  and the password and username match

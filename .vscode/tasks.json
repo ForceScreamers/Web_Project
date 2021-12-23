@@ -9,8 +9,8 @@
       "dependsOrder": "parallel",
       "dependsOn": [
         "react-client-server",
-        "node-server",
-        "website-api"
+        "node-server"
+        //"website-api"
       ]
     },
     {
