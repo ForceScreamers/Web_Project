@@ -36,7 +36,7 @@ namespace DAL
          * 
          */
 
-        public static int Execute(string com, object[] queryParameters)
+        public static int Execute(string com, OdbcParameter[] queryParameters)
         {
             
 

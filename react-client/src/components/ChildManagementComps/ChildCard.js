@@ -1,7 +1,7 @@
 import { Card, CloseButton, Button } from 'react-bootstrap'
-function ChildCard({ IsSelectedChild, HandleSelectChild, HandleDeleteChild, specificChild }) {
+function ChildCard({ HandleSelectChild, HandleDeleteChild, ChildProfile }) {
 
-  const isSelected = IsSelectedChild(specificChild.id);
+  //const isSelected = IsSelectedChild(ChildProfile.id);
 
   return (
     <div>
@@ -16,19 +16,19 @@ function ChildCard({ IsSelectedChild, HandleSelectChild, HandleDeleteChild, spec
 
         <Card.Body>
           <Card.Title>
-            <CloseButton aria-label='מחיקה' onClick={() => HandleDeleteChild(specificChild.id)} /> {specificChild.name}
+            <CloseButton aria-label='מחיקה' onClick={() => HandleDeleteChild(ChildProfile.id)} /> {ChildProfile.name}
 
             <Button
               // disabled={isSelected ? "true" : "false"}
-              disabled={isSelected}
-              onClick={() => HandleSelectChild(specificChild)} variant="primary"
+              disabled={ChildProfile.isSelected}
+              onClick={() => HandleSelectChild(ChildProfile)} variant="primary"
             >
-              {isSelected ? "ילד נוכחי" : "בחר ילד"}
+              {ChildProfile.isSelected ? "ילד נוכחי" : "בחר ילד"}
             </Button>
 
           </Card.Title>
           <Card.Text>
-            {"גיל: " + specificChild.age}
+            {"גיל: " + ChildProfile.age}
           </Card.Text>
 
 

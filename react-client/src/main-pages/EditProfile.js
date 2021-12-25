@@ -6,17 +6,18 @@ import MainPage from "../components/MainPage"
 import { useEffect, useState } from "react"
 
 
-function EditProfile({ IsSelectedChild, HandleSelectChild, HandleDeleteChild, HandleAddChild, children_: childrenProfiles }) {
+
+function EditProfile({ LoadChildren, IsSelectedChild, HandleSelectChild, HandleDeleteChild, HandleAddChild, children_: childrenProfiles }) {
   //const [childrenProfiles, setChildrenProfiles] = useState([])
 
 
-  useEffect(() => {
-    console.log("Updating children")
-  }, [childrenProfiles])
 
   return (
     <div>
       <MainPage title='עריכת פרופיל'>
+
+
+
         <h1>רשימת ילדים</h1>
         <Container fluid className="d-flex justify-content-around align-center">
           <Row>
@@ -24,13 +25,13 @@ function EditProfile({ IsSelectedChild, HandleSelectChild, HandleDeleteChild, Ha
 
               {
                 //  i - index inside the state array, using it because react wants to use it...
-                childrenProfiles.map((child) => (
+                childrenProfiles.map((childProfile) => (
                   <ChildCard
                     IsSelectedChild={IsSelectedChild}
                     HandleSelectChild={HandleSelectChild}
                     HandleDeleteChild={HandleDeleteChild}
-                    specificChild={child}
-                    key={child.id}  // Key for the component's index
+                    ChildProfile={childProfile}
+                    key={childProfile.id}  // Key for the component's index
                   />
                 ))
 

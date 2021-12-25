@@ -169,49 +169,86 @@ const App = () => {
 
 	//	Current selected child, will be used for tracking progress
 	const [currentChild, setCurrentChild] = useState({});
+
 	const [username, setUsername] = useState("no username");
 
-	const LoadChildren = async () => {
+	/**Gets the children belonging to the logged parent
+	 * Set current children profiles to the matching children
+	 */
+	const LoadChildren = () => {
+
 		console.log("Loading children...")
-		return GetChildrenFromServer()
+		GetChildrenFromServer()
 			.catch(err => console.log(err))
 			.then(res => {
 				if (res) {
 					console.log(res.data)
-					setChildrenProfiles(res.data)
+					setChildrenProfiles(res.data);
 				}
 				else { console.log("No response from server") }
-
 			})
 	}
 
+	/**
+	 * Returns the currently selected child
+	 */
+	const GetSelectedChild = () => {
+		let selectedChild = undefined;
+
+		childrenProfiles.forEach(child => {
+			if (child.isSelected) {
+				selectedChild = child;
+			}
+		});
+
+		if (selectedChild === undefined) { console.error("SOMETHING WENT WRONG WITH GETTING THE SELECTED CHILD") }
+		return selectedChild;
+	}
 
 	/**
 	 * Changes the selected child from edit profile to the current child
 	 * Used to keep track of progress for this child
 	 */
-	const HandleSelectChild = (selectedChild) => {
-		setCurrentChild(selectedChild)
-		console.log("Selected child: ")
-		console.log(currentChild)
+	const HandleSelectChild = (childToSelect) => {
+		console.log("WW")
+		axios({
+			method: 'post',
+			url: "http://localhost:5001/select-child",
+			timeout: REQUEST_TIMEOUT_LENGTH,
+			headers: {
+				data: JSON.stringify({ childId: childToSelect.id })
+			}
+		})
+			.catch(err => console.log(err))
+			.then((response) => {
+				//TODO: Get correct response, it's adding just need to change it inside the client
 
+				if (response.data.IsSelected) {//	The child was selected in the database 
+					//	Change the current child
+					console.log(`Switching child to ${childToSelect.name}`);
+					//setCurrentChild(response.data);
+					//	Set the current child as the currently selected one
+					setCurrentChild(
+						({ isSelected: response.data })
+					);
 
-		return true;
+					setCurrentChild(
+						({ childToSelect }) => {
+
+						}
+					)
+					LoadChildren();
+				}
+				else {
+					console.error("SOMETHING WENT WRONG WITH CHILD SELECT");
+				}
+			})
 	}
 
-	const IsSelectedChild = (childId) => {
-		console.log(currentChild.id === childId)
-
-		let isSelected = false;
-		if (Object.keys(currentChild).length === 0 && childrenProfiles[0].id === childId) {
-			isSelected = true;
-			setCurrentChild(childrenProfiles[0]);
-
-		}
-
-
-		return isSelected;
-	}
+	//	Loads children into state on pageload
+	useEffect(() => {
+		LoadChildren();
+	}, [])
 
 
 	const HandleLogin = async (e) => {
@@ -262,22 +299,8 @@ const App = () => {
 		isLogged ? history.push('/Welcome') : alert("Incorrect email or password")
 	}
 
-	//	Loads children into state
-	useEffect(() => {
-		LoadChildren();
-	}, [])
-
-	//Load children into react components from the current state when the children array updates
-	useEffect(() => {
-		console.log(childrenProfiles);
-
-	}, [childrenProfiles])
-
-
 	const HandleDeleteChild = (childId) => {
 		console.log("Deleting child... " + childId)
-		console.log(childrenProfiles);
-
 
 		// Get the delete confirmation from the server then delete 
 		//	the child from the state array
@@ -286,34 +309,17 @@ const App = () => {
 			url: "http://localhost:5001/delete-child",
 			timeout: REQUEST_TIMEOUT_LENGTH,
 			headers: {
-				data: JSON.stringify({ childId: childId })
+				data: JSON.stringify({
+					childId: childId,
+					parentId: 10
+				})
 			}
 		}).catch(err => console.log(err))
 			.then((response) => {
 				//TODO: Verify Delete child
 
-				let arr = RemoveChildProfile(childrenProfiles, response.data.childId);
-
-				setChildrenProfiles(arr)
+				LoadChildren();
 			})
-	}
-
-	//	Remove the child with the given id from the state array
-	const RemoveChildProfile = (profilesArray, childId) => {
-		let newChildProfilesArray = [...childrenProfiles];
-
-		newChildProfilesArray.forEach(childProfile => {
-			if (childProfile.id === childId) {
-				console.log("aaa")
-
-				//Remove child
-				newChildProfilesArray.splice(newChildProfilesArray.indexOf(childProfile), 1)
-			}
-		})
-
-		console.log("(From function) Array without child")
-		console.log(newChildProfilesArray);
-		return newChildProfilesArray;
 	}
 
 	//  Handles child add logic
@@ -343,14 +349,10 @@ const App = () => {
 				.catch(err => console.log(err))
 
 				.then((response) => {//	Get confirmation that the child was added
+
 					//	Response will be HasAddedChild
 					if (response) {
-						console.log("Setting children profiles with added child");
-						setChildrenProfiles([...childrenProfiles, {
-							age: response.data.age,
-							name: response.data.name,
-							id: response.data.id
-						}])
+						LoadChildren();
 					}
 					else { console.log("No response from server") }
 				})
@@ -373,12 +375,6 @@ const App = () => {
 	}, []);
 	//#endregion
 
-	// useEffect(() => {
-	// 	if (Object.keys(currentChild).length === 0) { setCurrentChild(childrenProfiles[0]) }
-	// }, [currentChild])
-
-
-
 	return (
 		<Router history={history}>
 			<div className="App" >
@@ -397,19 +393,19 @@ const App = () => {
 				<AuthenticatedRoute exact path="/Games/TestGame" isAuth={isAuth} component={TestGame} />
 				<AuthenticatedRoute exact path="/Games/MemoryGame" isAuth={isAuth} component={MemoryGame} />
 
-
+				{/* //TODO: NEED TO CALL THE ROUTES ONLY WHEN THE WELCOME PAGE LOADS*/}
 				<NavBarContext.Provider value={{
-					child: currentChild,
+					child: GetSelectedChild(),
 					username: username
 				}}>
 					<Route exact path="/Welcome" component={Welcome} />
 					<Route exact path="/About" component={() => <About username={username} />} />
 					<Route exact path="/EditProfile" component={() =>
 						<EditProfile
-							IsSelectedChild={IsSelectedChild}
 							HandleSelectChild={HandleSelectChild}
 							HandleDeleteChild={HandleDeleteChild}
 							HandleAddChild={HandleAddChild}
+							LoadChildren={LoadChildren}
 							children_={childrenProfiles} />}
 					/>
 					<Route exact path="/Games" component={Games} />

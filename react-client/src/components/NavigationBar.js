@@ -11,6 +11,7 @@ function NavigationBar({ HandleLogout }) {
   const navBarContext = useContext(NavBarContext);
   const usernameFromContext = navBarContext.username;
   const childNameFromContext = navBarContext.child.name;
+  console.log(navBarContext.child)
 
   const S_CURRENT_CHILD = "ילד נוכחי";
   const S_NO_CHILD_SELECTED = "לא נבחר ילד";

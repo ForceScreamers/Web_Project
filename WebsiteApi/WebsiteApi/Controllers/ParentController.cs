@@ -21,29 +21,16 @@ namespace WebsiteApi.Controllers
     [Microsoft.AspNetCore.Mvc.Route("api/[controller]/[action]")]
     public class ParentController : Controller
     {
-
-
-
-
-        //  Call AddParent from the helper class
         //int result = ParentMethods.AddParent("Username", "Email", "1234", "10/10/2000");
 
-
-
-        //  TODO: Add a function that recives child information and adds it to the database, the function will return a confirmation that the child was added
         [Microsoft.AspNetCore.Mvc.HttpGet]
         [Microsoft.AspNetCore.Mvc.ActionName("GetLoginConfirmation")]
         public ContentResult GetLoginConfirmation()
         {
-            int loggedId = -1;
-            string loggedUsername = "";
             object loggedParentInfo = null;
             //  Get email and password from the request 
             Console.WriteLine("Email: " + Request.Headers["email"]);
             Console.WriteLine("Password: " + Request.Headers["password"]);
-
-            //Console.WriteLine(ParentMethods.AddParent("DummyUsername", Request.Headers["email"], Request.Headers["password"], DateTime.Now.ToString()));
-            //"10/10/2000"
 
             bool userExists = false; 
             
@@ -55,13 +42,7 @@ namespace WebsiteApi.Controllers
 
                 if (userExists)
                 {
-                    //TODO: Fix casting into logged parent class
-                    // ---- Get the information of the logged in parent ----
                     loggedParentInfo = ParentMethods.GetParentLoggedInfo(Request.Headers["email"], Request.Headers["password"]);
-                    
-                    //LoggedParent loggedParent = loggedParentInfo.GetType().GetProperty("username").GetValue(loggedParentInfo);
-                    //loggedId = loggedParent.ParentId;
-                    //loggedUsername = loggedParent.ParentUsername;
                 }
             }
 
@@ -102,9 +83,7 @@ namespace WebsiteApi.Controllers
             children.Columns["child_name"].ColumnName = "name";
             children.Columns["child_id"].ColumnName = "id";
             children.Columns["child_age"].ColumnName = "age";
-
-
-
+            children.Columns["child_is_selected"].ColumnName = "isSelected";
 
             //  Return children as a json object
             return base.Content(JsonConvert.SerializeObject(children), "application/json", Encoding.UTF8);
@@ -115,23 +94,73 @@ namespace WebsiteApi.Controllers
         public ContentResult GetDeleteChild()
         {
             int childId = int.Parse(Request.Headers["childId"]);
+            int parentId = int.Parse(Request.Headers["parentId"]);
 
             try
             {
                 ChildMethods.DeleteChild(int.Parse(Request.Headers["childId"]));
+
+                //  If no child is selected, select the first one
+                if (IsNoneSelected(parentId))
+                {
+                    ChildMethods.SelectChild(GetFirstChildId(parentId));
+                    Console.WriteLine("Switching child...");
+                }
             }
-            catch(Exception e) { Console.WriteLine(e); }
+            catch (Exception e) { Console.WriteLine(e); }
             finally
             {
-                Console.WriteLine("Deleted child");
+                Console.WriteLine("Deleted child: " + childId);
             }
-
-            Console.WriteLine("Deleted child: " + childId);
-
 
             //  Return the deleted child id
             return base.Content(JsonConvert.SerializeObject(new { childId = childId }), "application/json", System.Text.Encoding.UTF8);
+        }
 
+        /// <summary>
+        /// Returns true if no child is selected (for the given parent), false otherwise
+        /// </summary>
+        /// <param name="parentId"></param>
+        /// <returns></returns>
+        private bool IsNoneSelected(int parentId)
+        {
+            DataTable children = ChildMethods.GetChildrenForParent(parentId);
+            bool isSelected = false;
+
+            Console.WriteLine("All children ids");
+
+            //  Iterate through children
+            foreach (DataRow row in children.Rows)
+            {
+                Console.WriteLine((int)row["child_id"]);
+                if ((bool)row["child_is_selected"])//If the child is selected
+                {
+                    isSelected = true;
+                }
+            }
+
+            return !isSelected;
+        }
+
+        /// <summary>
+        /// Returns the id of the first child to the given parent
+        /// </summary>
+        /// <param name="parentId"></param>
+        /// <returns></returns>
+        private int GetFirstChildId(int parentId)
+        {
+            return (int)ChildMethods.GetChildrenForParent(parentId).Rows[0]["child_id"];
+        }
+
+        [Microsoft.AspNetCore.Mvc.HttpPost]
+        [Microsoft.AspNetCore.Mvc.ActionName("SelectChild")]
+        public ContentResult SelectChild()
+        {
+            //  Selecting child 
+            bool result = ChildMethods.SelectChild(int.Parse(Request.Headers["childId"]));
+            Console.WriteLine(string.Format("Selecting child id: {0}... {1}", int.Parse(Request.Headers["childId"]), result ? "Success!" : "Failed"));
+
+            return base.Content(JsonConvert.SerializeObject(new { IsSelected = result }), "application/json", Encoding.UTF8);
         }
 
         /// <summary>
@@ -142,6 +171,4 @@ namespace WebsiteApi.Controllers
         private string ConvertToUnicode(string utf8text)
         { return Encoding.Unicode.GetString(UTF8Encoding.Convert(Encoding.UTF8, Encoding.Unicode, Encoding.UTF8.GetBytes(utf8text))); }
     }
-
-    
 }

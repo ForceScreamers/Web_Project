@@ -201,7 +201,7 @@ app.get('/get-children-for-parent', (req, res) => {
 
 app.get('/delete-child', (req, res) => {
   let reqData = JSON.parse(req.headers.data)
-  console.log("child id: " + reqData.childId);
+  console.log(`Delete child ${reqData.childId} for parent ${reqData.parentId}`);
   axios({
     hostname: 'localhost',
     port: 5000,
@@ -211,7 +211,8 @@ app.get('/delete-child', (req, res) => {
       'Access-Control-Allow-Origin': '*',
       'Content-Type': 'application/json',
 
-      childId: reqData.childId
+      childId: reqData.childId,
+      parentId: reqData.parentId
     }
   }).catch(err => console.log(err))
     .then((response) => {
@@ -219,5 +220,28 @@ app.get('/delete-child', (req, res) => {
       console.log("Deleting child...")
       console.log(response.data);
       res.status(200).end(JSON.stringify(response.data))
+    })
+})
+
+
+app.post('/select-child', (req, res) => {
+  let reqData = JSON.parse(req.headers.data);
+
+  axios({
+    hostname: 'localhost',
+    port: 5000,
+    url: 'http://localhost:5000/api/Parent/SelectChild',
+    method: 'POST',
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Content-Type': 'application/json',
+
+      childId: reqData.childId
+    }
+  })
+    .catch(err => console.log(err))
+    .then((response) => {
+      console.log(`Switching selected child to ${response.data.IsSelected}`)
+      res.status(200).end(JSON.stringify(response.data));
     })
 })
