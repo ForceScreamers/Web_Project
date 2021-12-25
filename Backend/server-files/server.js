@@ -93,7 +93,7 @@ app.post('/login', (req, res) => {
 
     let userData = {
       authorized: userAuthenticated,
-      //token: token,
+      token: token,
       result: userInfo // User information from server (just need username and id)
     }
 
@@ -108,25 +108,37 @@ app.post('/login', (req, res) => {
 
 
 const verifyJWT = (req, res, next) => {
+
   const token = req.headers["x-access-token"];//Grab token
+  console.log(token);
+
   if (!token) {
+    console.log("2")
     res.send("Need a token, gib pls UwU");
   }
   else {
     jwt.verify(token, "secret", (err, decoded) => {
       if (err) {
+        console.log("3")
+
         res.json({ authorized: false, message: "Failed to authenticate" });
       }
       else {
+        console.log("4")
         //  New variable userId, create a new one
         req.userId = decoded.id;
+        next();
       }
     })
   }
 }
 
+
 app.get('/is-auth', verifyJWT, (req, res) => {
-  res.send("you are authenticated!");
+  console.log("OK")
+  //console.log(verifyJWT)
+
+  res.status(200).end({ isAuth: true });
 });
 
 

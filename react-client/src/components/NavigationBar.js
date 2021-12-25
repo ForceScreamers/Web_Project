@@ -10,8 +10,10 @@ import { NavBarContext } from '../NavBarContext'
 function NavigationBar({ HandleLogout }) {
   const navBarContext = useContext(NavBarContext);
   const usernameFromContext = navBarContext.username;
-  const childNameFromContext = navBarContext.child.name;
-  console.log(navBarContext.child)
+  console.log(navBarContext)
+  //const childNameFromContext = navBarContext.child.name;
+  const childNameFromContext = "a";
+
 
   const S_CURRENT_CHILD = "ילד נוכחי";
   const S_NO_CHILD_SELECTED = "לא נבחר ילד";

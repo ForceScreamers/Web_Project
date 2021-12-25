@@ -48,7 +48,7 @@ import { NavBarContext } from './NavBarContext';
 //	var sharedsession = require("express-socket.io-session");
 //	io.use(sharedsession(express_session));
 
-const REQUEST_TIMEOUT_LENGTH = 4000;
+const REQUEST_TIMEOUT_LENGTH = 6000;
 const ENABLE_LOGIN = true;//! Used for debugging
 
 let username;
@@ -184,6 +184,7 @@ const App = () => {
 				if (res) {
 					console.log(res.data)
 					setChildrenProfiles(res.data);
+					setCurrentChild(GetSelectedChild());
 				}
 				else { console.log("No response from server") }
 			})
@@ -196,10 +197,12 @@ const App = () => {
 		let selectedChild = undefined;
 
 		childrenProfiles.forEach(child => {
+			console.log(child)
 			if (child.isSelected) {
 				selectedChild = child;
 			}
 		});
+
 
 		if (selectedChild === undefined) { console.error("SOMETHING WENT WRONG WITH GETTING THE SELECTED CHILD") }
 		return selectedChild;
@@ -226,17 +229,6 @@ const App = () => {
 				if (response.data.IsSelected) {//	The child was selected in the database 
 					//	Change the current child
 					console.log(`Switching child to ${childToSelect.name}`);
-					//setCurrentChild(response.data);
-					//	Set the current child as the currently selected one
-					setCurrentChild(
-						({ isSelected: response.data })
-					);
-
-					setCurrentChild(
-						({ childToSelect }) => {
-
-						}
-					)
 					LoadChildren();
 				}
 				else {
@@ -270,9 +262,15 @@ const App = () => {
 						console.log(response);
 						if (response) {
 							if (response.data.authorized) {
-								//	Redirect user to the main page
-								RedirectLoggedUser(response.data.authorized);
-								setUsername(response.data.result.username)
+
+								localStorage.setItem("token", response.data.token);
+
+								console.log(response.data.authorized);
+								setIsAuth(true);
+
+
+								RedirectLoggedUser(response.data.authorized);//	Redirect user to the main page
+								setUsername(response.data.result.username);
 							}
 							else {
 								//	User doesn't exist
@@ -294,8 +292,36 @@ const App = () => {
 		}
 	}
 
+	const GetIsAuthenticated = async () => {
+		console.log(localStorage.getItem("token"));
+		return axios({
+			method: 'get',
+			url: "http://localhost:5001/is-auth",
+			timeout: REQUEST_TIMEOUT_LENGTH,
+			headers: {
+				"x-access-token": localStorage.getItem("token"),
+				//data: null //TOKEN
+			}
+		})
+			.catch(err => console.log(err))
+			.then((res) => {
+				console.log(res)
+			})
+			.then((response) => {
+				if (response) {
+					console.log(response);
+					if (response.data.isAuth) {
+						setIsAuth(true);
+					}
+				}
+				else {
+					setIsAuth(false);
+				}
+			})
+	}
+
 	const RedirectLoggedUser = (isLogged) => {
-		setIsAuth(isLogged);
+		//setIsAuth(isLogged);
 		isLogged ? history.push('/Welcome') : alert("Incorrect email or password")
 	}
 
@@ -359,8 +385,6 @@ const App = () => {
 		}
 	}
 
-
-
 	//#region	Control the website zoom level
 	useEffect(() => {
 		const initialValue = document.body.style.zoom;
@@ -390,15 +414,15 @@ const App = () => {
 				{/* <AuthenticatedRoute exact path="/Games" isAuth={isAuth} component={Games} /> */}
 				{/* <AuthenticatedRoute exact path="/EditProfile" isAuth={isAuth} component={MyProfile} /> */}
 
-				<AuthenticatedRoute exact path="/Games/TestGame" isAuth={isAuth} component={TestGame} />
-				<AuthenticatedRoute exact path="/Games/MemoryGame" isAuth={isAuth} component={MemoryGame} />
+				{/* <AuthenticatedRoute exact path="/Games/TestGame" isAuth={isAuth} component={TestGame} />
+				<AuthenticatedRoute exact path="/Games/MemoryGame" isAuth={isAuth} component={MemoryGame} /> */}
 
 				{/* //TODO: NEED TO CALL THE ROUTES ONLY WHEN THE WELCOME PAGE LOADS*/}
 				<NavBarContext.Provider value={{
-					child: GetSelectedChild(),
+					child: currentChild,
 					username: username
 				}}>
-					<Route exact path="/Welcome" component={Welcome} />
+					<AuthenticatedRoute exact path="/Welcome" isAuth={GetIsAuthenticated} component={Welcome} />
 					<Route exact path="/About" component={() => <About username={username} />} />
 					<Route exact path="/EditProfile" component={() =>
 						<EditProfile
