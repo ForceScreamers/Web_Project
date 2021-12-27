@@ -22,7 +22,8 @@ import Avatar from './main-pages/Avatar';
 import Journal from './main-pages/Journal';
 import Home from './main-pages/Home';
 
-import AuthenticatedRoute from "./components/AuthenticatedRoute";
+//import AuthenticatedRoute from "./components/ProtectedRoute";
+import ProtectedRoute from './components/ProtectedRoute'
 import UnauthenticatedRoute from "./components/UnauthenticatedRoute";
 
 import axios from 'axios';
@@ -50,8 +51,6 @@ import { NavBarContext } from './NavBarContext';
 
 const REQUEST_TIMEOUT_LENGTH = 6000;
 const ENABLE_LOGIN = true;//! Used for debugging
-
-let username;
 
 /**
  * normal comment
@@ -160,9 +159,9 @@ const GetChildrenFromServer = async () => {
 
 
 
-// *	Instantiate app component
+// * React app component
 const App = () => {
-	const [isAuth, setIsAuth] = useState(false);
+	//const [isAuth, setIsAuth] = useState(false);
 
 	//	All children for logged parent
 	const [childrenProfiles, setChildrenProfiles] = useState([]);
@@ -266,10 +265,11 @@ const App = () => {
 								localStorage.setItem("token", response.data.token);
 
 								console.log(response.data.authorized);
-								setIsAuth(true);
 
+								console.log("Redirecting to welcome");
+								response.data.authorized ? history.push('/Welcome') : alert("Incorrect email or password")
+								//console.log(history);
 
-								RedirectLoggedUser(response.data.authorized);//	Redirect user to the main page
 								setUsername(response.data.result.username);
 							}
 							else {
@@ -308,22 +308,20 @@ const App = () => {
 				console.log(res)
 			})
 			.then((response) => {
-				if (response) {
-					console.log(response);
-					if (response.data.isAuth) {
-						setIsAuth(true);
-					}
-				}
-				else {
-					setIsAuth(false);
-				}
+				// if (response) {
+				// 	console.log(response);
+				// 	if (response.data.isAuth) {
+				// 		setIsAuth(true);
+				// 	}
+				// }
+				// else {
+				// 	setIsAuth(false);
+				// }
 			})
 	}
 
-	const RedirectLoggedUser = (isLogged) => {
-		//setIsAuth(isLogged);
-		isLogged ? history.push('/Welcome') : alert("Incorrect email or password")
-	}
+
+
 
 	const HandleDeleteChild = (childId) => {
 		console.log("Deleting child... " + childId)
@@ -422,7 +420,7 @@ const App = () => {
 					child: currentChild,
 					username: username
 				}}>
-					<AuthenticatedRoute exact path="/Welcome" isAuth={GetIsAuthenticated} component={Welcome} />
+					<ProtectedRoute exact path="/Welcome" component={Welcome} />
 					<Route exact path="/About" component={() => <About username={username} />} />
 					<Route exact path="/EditProfile" component={() =>
 						<EditProfile

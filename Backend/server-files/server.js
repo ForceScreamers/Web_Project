@@ -54,6 +54,8 @@ app.get('/backend', (req, res) => {
   res.send({ express: 'YOUR EXPRESS BACKEND IS CONNECTED TO REACT' });
 });
 
+
+
 app.post('/login', (req, res) => {
   //  Axios request to webapi
   let status = 200;
@@ -91,13 +93,13 @@ app.post('/login', (req, res) => {
       expiresIn: 300, // 5 Min
     })
 
-    let userData = {
+    let loginData = {
       authorized: userAuthenticated,
       token: token,
       result: userInfo // User information from server (just need username and id)
     }
 
-    res.status(status).end(JSON.stringify(userData));
+    res.status(status).end(JSON.stringify(loginData));
 
     //  End the request with bool, if the user is in the database 
     //  and the password and username match
@@ -137,8 +139,7 @@ const verifyJWT = (req, res, next) => {
 app.get('/is-auth', verifyJWT, (req, res) => {
   console.log("OK")
   //console.log(verifyJWT)
-
-  res.status(200).end({ isAuth: true });
+  res.json({ isAuth: true }).status(200).end();
 });
 
 

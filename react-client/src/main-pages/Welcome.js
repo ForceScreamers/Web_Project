@@ -1,8 +1,11 @@
 import NavigationBar from '../components/NavigationBar'
 import NavigationBarTest from '../components/NavigationBarTest'
 import '../css/pages-css/Welcome.css'
+import { useEffect } from 'react';
 
 function Welcome() {
+    console.log("eeeee!")
+    useEffect(() => console.log("WELCOMe!"));
     return (
         <div>
             <div className="WelcomeContainer">
