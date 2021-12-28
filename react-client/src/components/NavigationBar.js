@@ -1,20 +1,20 @@
 import { Navbar, Container, Nav, NavDropdown, NavItem, Button } from 'react-bootstrap'
 import { Link } from "react-router-dom"
-import { useContext, useEffect } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { NavBarContext } from '../NavBarContext'
 
 //  היומן שלי, שינוי אווטר, עריכת פרופיל, משחקייה, מאמרים, אודותר
-let usernameFromContext = 'NO USERNAME';
-let childNameFromContext = 'NO CHILD NAME';
 //  The main pages are: Games, info, about, edit profile, avatar, journal
 
 function NavigationBar({ HandleLogout }) {
   const navBarContext = useContext(NavBarContext);
+  const [username, setUsername] = useState('No username');
+  const [currentChildName, setCurrentChildName] = useState('No child selected');
 
   useEffect(() => {
-    usernameFromContext = localStorage.getItem('username');
-    childNameFromContext = navBarContext.child.name;
-    console.log(childNameFromContext);
+
+    setCurrentChildName(navBarContext.child.name);
+    setUsername(localStorage.getItem('username'));
   }, [])
 
   const S_CURRENT_CHILD = "ילד נוכחי";
@@ -25,9 +25,9 @@ function NavigationBar({ HandleLogout }) {
       <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
         <Container fluid className="h-25">
           <Navbar.Brand href="/Home">כפתור בית</Navbar.Brand>
-          <Navbar.Brand> מחובר בתור: {usernameFromContext}</Navbar.Brand>
+          <Navbar.Brand> מחובר בתור: {username}</Navbar.Brand>
           <Navbar.Brand>
-            {childNameFromContext == undefined ? S_NO_CHILD_SELECTED : `${S_CURRENT_CHILD}:${childNameFromContext}`}
+            {currentChildName == undefined ? S_NO_CHILD_SELECTED : `${S_CURRENT_CHILD}:${currentChildName}`}
 
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />

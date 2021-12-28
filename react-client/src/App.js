@@ -43,6 +43,7 @@ import utf8 from 'utf8';
 //	Import helper functions
 import { ValidateUserInput, EmailRegexCheck } from './Project-Modules/ValidateUserInput';
 import { NavBarContext } from './NavBarContext';
+import { useStateWithCallbackLazy } from './UseStateWithLazyCallback';
 
 //	#endregion
 
@@ -157,12 +158,17 @@ const App = () => {
 	//const [isAuth, setIsAuth] = useState(false);
 
 	//	All children for logged parent
-	const [childrenProfiles, setChildrenProfiles] = useState([]);
+	const [childrenProfiles, setChildrenProfiles] = useStateWithCallbackLazy([]);
 
 	//	Current selected child, will be used for tracking progress
 	const [currentChild, setCurrentChild] = useState({});
 
 	//const [username, setUsername] = useState("no username");
+
+	useEffect(() => {
+		console.log("USERNAME")
+		console.log(localStorage.getItem('username'))
+	})
 
 	/**Gets the children belonging to the logged parent
 	 * Set current children profiles to the matching children
@@ -180,13 +186,18 @@ const App = () => {
 			.catch(err => console.log(err))
 			.then(res => {
 				if (res) {
-					setCount(count => count + 1);
+					//setCount(count => count + 1);
 
 
 					console.log(res.data)
 					//TODO: Fix setstate function (create one that takes another func as an argument)
-					//setChildrenProfiles(res.data);
-					// setChildrenProfiles((res.data) => { setCurrentChild(GetSelectedChild()) } )
+					setChildrenProfiles(res.data, () => {
+						setCurrentChild(GetSelectedChild())
+						console.log("childrenProfiles");
+						console.log(childrenProfiles);
+
+					});
+					//setChildrenProfiles((res.data) => { setCurrentChild(GetSelectedChild()) } )
 					//setChildrenProfiles((res.data)=> {console.log()})
 				}
 				else { console.log("No response from server") }
@@ -200,7 +211,6 @@ const App = () => {
 		let selectedChild = undefined;
 		console.log(childrenProfiles)
 		childrenProfiles.forEach(child => {
-			console.log(child)
 			if (child.isSelected) {
 				selectedChild = child;
 			}
