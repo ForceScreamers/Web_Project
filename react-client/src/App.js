@@ -180,9 +180,14 @@ const App = () => {
 			.catch(err => console.log(err))
 			.then(res => {
 				if (res) {
+					setCount(count => count + 1);
+
+
 					console.log(res.data)
-					setChildrenProfiles(res.data);
-					setCurrentChild(GetSelectedChild());
+					//TODO: Fix setstate function (create one that takes another func as an argument)
+					//setChildrenProfiles(res.data);
+					// setChildrenProfiles((res.data) => { setCurrentChild(GetSelectedChild()) } )
+					//setChildrenProfiles((res.data)=> {console.log()})
 				}
 				else { console.log("No response from server") }
 			})
@@ -193,7 +198,7 @@ const App = () => {
 	 */
 	const GetSelectedChild = () => {
 		let selectedChild = undefined;
-
+		console.log(childrenProfiles)
 		childrenProfiles.forEach(child => {
 			console.log(child)
 			if (child.isSelected) {

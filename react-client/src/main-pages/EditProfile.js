@@ -7,10 +7,7 @@ import { useEffect, useState } from "react"
 
 
 
-function EditProfile({ LoadChildren, IsSelectedChild, HandleSelectChild, HandleDeleteChild, HandleAddChild, children_: childrenProfiles }) {
-  //const [childrenProfiles, setChildrenProfiles] = useState([])
-
-
+function EditProfile({ IsSelectedChild, HandleSelectChild, HandleDeleteChild, HandleAddChild, children_: childrenProfiles }) {
 
   return (
     <div>

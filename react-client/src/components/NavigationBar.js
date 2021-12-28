@@ -4,19 +4,17 @@ import { useContext, useEffect } from 'react'
 import { NavBarContext } from '../NavBarContext'
 
 //  היומן שלי, שינוי אווטר, עריכת פרופיל, משחקייה, מאמרים, אודותר
-
+let usernameFromContext = 'NO USERNAME';
+let childNameFromContext = 'NO CHILD NAME';
 //  The main pages are: Games, info, about, edit profile, avatar, journal
 
 function NavigationBar({ HandleLogout }) {
   const navBarContext = useContext(NavBarContext);
-  let usernameFromContext = 'NO USERNAME';
-  let childNameFromContext = 'NO CHILD NAME';
 
   useEffect(() => {
-    console.log("navBarContext");
     usernameFromContext = localStorage.getItem('username');
     childNameFromContext = navBarContext.child.name;
-    console.log(usernameFromContext)
+    console.log(childNameFromContext);
   }, [])
 
   const S_CURRENT_CHILD = "ילד נוכחי";
