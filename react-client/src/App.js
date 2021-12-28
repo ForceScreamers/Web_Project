@@ -420,7 +420,9 @@ const App = () => {
 					child: currentChild,
 					username: username
 				}}>
-					<ProtectedRoute exact path="/Welcome" component={Welcome} />
+					<Route path="/" component={<ProtectedRoute />}>
+						<Route exact path="/Welcome" component={Welcome} />
+					</Route>
 					<Route exact path="/About" component={() => <About username={username} />} />
 					<Route exact path="/EditProfile" component={() =>
 						<EditProfile

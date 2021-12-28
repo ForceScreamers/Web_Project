@@ -9,7 +9,7 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    console.log("Ya")
+    console.log("Ya");
     axios({
       method: 'get',
       url: "http://localhost:5001/is-auth",
@@ -37,8 +37,11 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
     <Route {...rest} render={props => {
       console.log(isAuthenticated);
       !isAuthenticated ? (
+
         <Redirect to='/' />
+
       ) : (
+
         <Component {...props} />
       )
     }
