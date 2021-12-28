@@ -82,8 +82,8 @@ app.post('/login', (req, res) => {
     console.log("Can't connect to webapi")
 
   }).then((response) => {
-    console.log("Response from web api:");
-    console.log(response.data);
+    //console.log(response.data);
+
     let userInfo = response.data.UserInfo;
     let userAuthenticated = response.data.Authenticated;
 
@@ -96,14 +96,14 @@ app.post('/login', (req, res) => {
     let loginData = {
       authorized: userAuthenticated,
       token: token,
-      result: userInfo // User information from server (just need username and id)
+      username: userInfo.username, // User information from server (just need username and id)
+      userId: userInfo.id // User information from server (just need username and id)
     }
+    console.log("Sending login data:")
+    console.log(loginData);
+
 
     res.status(status).end(JSON.stringify(loginData));
-
-    //  End the request with bool, if the user is in the database 
-    //  and the password and username match
-
   })
 });
 
@@ -173,7 +173,6 @@ app.post('/add-child', (req, res) => {
     //console.log("Can't connect to webapi")
 
   }).then((response) => {
-    console.log("Response from web api:");
     //console.log(response);
 
 

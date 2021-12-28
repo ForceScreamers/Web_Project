@@ -34,17 +34,17 @@ namespace WebsiteApi.Controllers
 
             bool userExists = false; 
             
-            if(!Request.Headers["email"].ToString().Equals("") && !Request.Headers["password"].ToString().Equals(""))//  Just for debugging (Checking for empty strings)
-            {
-                //  Check if the email and password exist
-                userExists = ParentMethods.IsExists(Request.Headers["email"], Request.Headers["password"]);
-                Console.WriteLine("User exists: {0}", userExists);
+            
+            //  Check if the email and password exist
+            userExists = ParentMethods.IsExists(Request.Headers["email"], Request.Headers["password"]);
+            Console.WriteLine("User exists: {0}", userExists);
 
-                if (userExists)
-                {
-                    loggedParentInfo = ParentMethods.GetParentLoggedInfo(Request.Headers["email"], Request.Headers["password"]);
-                }
+            if (userExists)
+            {
+                //  Get the username and id
+                loggedParentInfo = ParentMethods.GetParentLoggedInfo(Request.Headers["email"], Request.Headers["password"]);
             }
+            
 
             //  Return a json object containing the username, id and login confirmation
             return base.Content(JsonConvert.SerializeObject(new { UserInfo = loggedParentInfo, Authenticated = userExists}), "application/json", System.Text.Encoding.UTF8);

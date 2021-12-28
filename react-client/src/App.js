@@ -147,14 +147,7 @@ const AddchildInputValidation = (input) => {
 const GetChildrenFromServer = async () => {
 	console.log("Getting children from server...")
 	//	Gets all the children for the logged parent from the server
-	return axios({
-		method: 'get',
-		url: "http://localhost:5001/get-children-for-parent",
-		timeout: REQUEST_TIMEOUT_LENGTH,
-		headers: {
-			data: JSON.stringify(10)
-		}
-	})
+	return
 }
 
 
@@ -169,15 +162,21 @@ const App = () => {
 	//	Current selected child, will be used for tracking progress
 	const [currentChild, setCurrentChild] = useState({});
 
-	const [username, setUsername] = useState("no username");
+	//const [username, setUsername] = useState("no username");
 
 	/**Gets the children belonging to the logged parent
 	 * Set current children profiles to the matching children
 	 */
 	const LoadChildren = () => {
-
 		console.log("Loading children...")
-		GetChildrenFromServer()
+		axios({
+			method: 'get',
+			url: "http://localhost:5001/get-children-for-parent",
+			timeout: REQUEST_TIMEOUT_LENGTH,
+			headers: {
+				data: JSON.stringify(10)//TODO change to logged user id
+			}
+		})
 			.catch(err => console.log(err))
 			.then(res => {
 				if (res) {
@@ -229,6 +228,7 @@ const App = () => {
 					//	Change the current child
 					console.log(`Switching child to ${childToSelect.name}`);
 					LoadChildren();
+					console.log(currentChild)
 				}
 				else {
 					console.error("SOMETHING WENT WRONG WITH CHILD SELECT");
@@ -237,9 +237,9 @@ const App = () => {
 	}
 
 	//	Loads children into state on pageload
-	useEffect(() => {
-		LoadChildren();
-	}, [])
+	// useEffect(() => {
+	// 	LoadChildren();
+	// }, [])
 
 
 	const HandleLogin = async (e) => {
@@ -262,15 +262,19 @@ const App = () => {
 						if (response) {
 							if (response.data.authorized) {
 
+								console.log("Login data");
+								console.log(response.data);
 								localStorage.setItem("token", response.data.token);
+								localStorage.setItem("userId", response.data.userId);
+								localStorage.setItem("username", response.data.username);
 
 								console.log(response.data.authorized);
 
 								console.log("Redirecting to welcome");
 								response.data.authorized ? history.push('/Welcome') : alert("Incorrect email or password")
-								//console.log(history);
 
-								setUsername(response.data.result.username);
+								//setUsername(response.data.result.username);
+								LoadChildren();
 							}
 							else {
 								//	User doesn't exist
@@ -291,37 +295,6 @@ const App = () => {
 			history.push('/Welcome')
 		}
 	}
-
-	const GetIsAuthenticated = async () => {
-		console.log(localStorage.getItem("token"));
-		return axios({
-			method: 'get',
-			url: "http://localhost:5001/is-auth",
-			timeout: REQUEST_TIMEOUT_LENGTH,
-			headers: {
-				"x-access-token": localStorage.getItem("token"),
-				//data: null //TOKEN
-			}
-		})
-			.catch(err => console.log(err))
-			.then((res) => {
-				console.log(res)
-			})
-			.then((response) => {
-				// if (response) {
-				// 	console.log(response);
-				// 	if (response.data.isAuth) {
-				// 		setIsAuth(true);
-				// 	}
-				// }
-				// else {
-				// 	setIsAuth(false);
-				// }
-			})
-	}
-
-
-
 
 	const HandleDeleteChild = (childId) => {
 		console.log("Deleting child... " + childId)
@@ -418,12 +391,11 @@ const App = () => {
 				{/* //TODO: NEED TO CALL THE ROUTES ONLY WHEN THE WELCOME PAGE LOADS*/}
 				<NavBarContext.Provider value={{
 					child: currentChild,
-					username: username
 				}}>
 					<Route path="/" component={<ProtectedRoute />}>
 						<Route exact path="/Welcome" component={Welcome} />
 					</Route>
-					<Route exact path="/About" component={() => <About username={username} />} />
+					<Route exact path="/About" component={About} />
 					<Route exact path="/EditProfile" component={() =>
 						<EditProfile
 							HandleSelectChild={HandleSelectChild}

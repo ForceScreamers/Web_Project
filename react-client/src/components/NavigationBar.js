@@ -1,6 +1,6 @@
 import { Navbar, Container, Nav, NavDropdown, NavItem, Button } from 'react-bootstrap'
 import { Link } from "react-router-dom"
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import { NavBarContext } from '../NavBarContext'
 
 //  היומן שלי, שינוי אווטר, עריכת פרופיל, משחקייה, מאמרים, אודותר
@@ -9,11 +9,15 @@ import { NavBarContext } from '../NavBarContext'
 
 function NavigationBar({ HandleLogout }) {
   const navBarContext = useContext(NavBarContext);
-  const usernameFromContext = navBarContext.username;
-  console.log(navBarContext)
-  //const childNameFromContext = navBarContext.child.name;
-  const childNameFromContext = "a";
+  let usernameFromContext = 'NO USERNAME';
+  let childNameFromContext = 'NO CHILD NAME';
 
+  useEffect(() => {
+    console.log("navBarContext");
+    usernameFromContext = localStorage.getItem('username');
+    childNameFromContext = navBarContext.child.name;
+    console.log(usernameFromContext)
+  }, [])
 
   const S_CURRENT_CHILD = "ילד נוכחי";
   const S_NO_CHILD_SELECTED = "לא נבחר ילד";
