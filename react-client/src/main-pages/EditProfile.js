@@ -7,14 +7,18 @@ import { useEffect, useState } from "react"
 
 
 
-function EditProfile({ IsSelectedChild, HandleSelectChild, HandleDeleteChild, HandleAddChild, children_: childrenProfiles }) {
+function EditProfile({ HandleSelectChild, HandleDeleteChild, HandleAddChild }) {
+
+  const [childrenProfiles, setChildrenProfiles] = useState(JSON.parse(localStorage.getItem('children')))
+
+
+  useEffect(() => {
+    setChildrenProfiles(JSON.parse(localStorage.getItem('children')));
+  }, [])
 
   return (
     <div>
       <MainPage title='עריכת פרופיל'>
-
-
-
         <h1>רשימת ילדים</h1>
         <Container fluid className="d-flex justify-content-around align-center">
           <Row>
@@ -24,7 +28,6 @@ function EditProfile({ IsSelectedChild, HandleSelectChild, HandleDeleteChild, Ha
                 //  i - index inside the state array, using it because react wants to use it...
                 childrenProfiles.map((childProfile) => (
                   <ChildCard
-                    IsSelectedChild={IsSelectedChild}
                     HandleSelectChild={HandleSelectChild}
                     HandleDeleteChild={HandleDeleteChild}
                     ChildProfile={childProfile}

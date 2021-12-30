@@ -54,16 +54,55 @@ app.get('/backend', (req, res) => {
   res.send({ express: 'YOUR EXPRESS BACKEND IS CONNECTED TO REACT' });
 });
 
-
-
 app.post('/login', (req, res) => {
-  //  Axios request to webapi
-  let status = 200;
+  let loginData = {};
 
+  //  Request login
   let reqData = JSON.parse(req.headers.data)
+  RequestLogin(reqData.email, reqData.password)
+    .catch(err => console.log(err))
+    .then((res) => {
 
+      //  User data from webapi
+      let userInfo = res.data.UserInfo;
+      let userAuthenticated = res.data.Authenticated;
+
+      //  Token instance
+      //TODO: change secret to .env variable
+      const token = jwt.sign({}, "secret", {
+        expiresIn: 300, // 5 Min
+      })
+
+      loginData = {
+        authorized: userAuthenticated,
+        token: token,
+        username: userInfo.username, // User information from server (just need username and id)
+        userId: userInfo.id, // User information from server (just need username and id)
+      }
+    })
+    .then(() => {
+      GetChildren(loginData.userId)
+        .catch(err => console.log(err))
+        .then((res) => {
+          loginData.children = res.data;
+          console.log(loginData)
+        })
+        .then(() => {
+          res.status(200).end(JSON.stringify(loginData))
+        })
+    })
+
+
+
+
+  //  Get username and id
+  //  Get children for that parent 
+})
+
+
+const RequestLogin = (email, password) => {
   //  Send login request to webapi
-  axios({
+  return axios({
     hostname: 'localhost',
     port: 5000,
     url: 'http://localhost:5000/api/Parent/GetLoginConfirmation',
@@ -73,39 +112,27 @@ app.post('/login', (req, res) => {
       'Content-Type': 'application/json',
 
       //  Send the recived  user data to the webapi
-      'email': reqData.email,
-      'password': reqData.password,
+      'email': email,
+      'password': password,
     }
-  }).catch((err) => {
-    status = 400;
-    console.log(err)
-    console.log("Can't connect to webapi")
-
-  }).then((response) => {
-    //console.log(response.data);
-
-    let userInfo = response.data.UserInfo;
-    let userAuthenticated = response.data.Authenticated;
-
-    //  Token instance
-    //TODO: change secret to .env variable
-    const token = jwt.sign({}, "secret", {
-      expiresIn: 300, // 5 Min
-    })
-
-    let loginData = {
-      authorized: userAuthenticated,
-      token: token,
-      username: userInfo.username, // User information from server (just need username and id)
-      userId: userInfo.id // User information from server (just need username and id)
-    }
-    console.log("Sending login data:")
-    console.log(loginData);
-
-
-    res.status(status).end(JSON.stringify(loginData));
   })
-});
+}
+
+const GetChildren = (parentId) => {
+  //  Get the children from the webapi
+  return axios({
+    hostname: 'localhost',
+    port: 5000,
+    url: 'http://localhost:5000/api/Parent/GetChildrenForParent',
+    method: 'POST',
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Content-Type': 'application/json',
+
+      parentId: parentId
+    }
+  })
+}
 
 
 
@@ -138,7 +165,7 @@ const verifyJWT = (req, res, next) => {
 
 app.get('/is-auth', verifyJWT, (req, res) => {
   console.log("OK")
-  //console.log(verifyJWT)
+
   res.json({ isAuth: true }).status(200).end();
 });
 
@@ -187,12 +214,22 @@ app.post('/add-child', (req, res) => {
 
 app.get('/get-children-for-parent', (req, res) => {
   let reqData = JSON.parse(req.headers.data)
+  GetChildren(reqData)
+    .then((response) => {
+      res.status(200).end(JSON.stringify(response.data))
+    })
+
+
+});
+
+app.get('/get-current-child-name', (req, res) => {
+  let reqData = JSON.parse(req.headers.data)
 
   //  Get the children from the webapi
   axios({
     hostname: 'localhost',
     port: 5000,
-    url: 'http://localhost:5000/api/Parent/GetChildrenForParent',
+    url: 'http://localhost:5000/api/Parent/GetCurrentChildName',
     method: 'GET',
     headers: {
       'Access-Control-Allow-Origin': '*',
@@ -202,8 +239,7 @@ app.get('/get-children-for-parent', (req, res) => {
     }
   }).catch(err => console.log(err))
     .then((response) => {
-      //  Send children to client
-      console.log("Sending children to client...")
+
       console.log(response.data);
       res.status(200).end(JSON.stringify(response.data))
     })

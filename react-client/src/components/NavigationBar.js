@@ -1,34 +1,30 @@
 import { Navbar, Container, Nav, NavDropdown, NavItem, Button } from 'react-bootstrap'
 import { Link } from "react-router-dom"
 import { useContext, useEffect, useState } from 'react'
+import { LogoutContext } from '../LogoutContext'
 import { NavBarContext } from '../NavBarContext'
 
 //  היומן שלי, שינוי אווטר, עריכת פרופיל, משחקייה, מאמרים, אודותר
 //  The main pages are: Games, info, about, edit profile, avatar, journal
 
-function NavigationBar({ HandleLogout }) {
-  const navBarContext = useContext(NavBarContext);
-  const [username, setUsername] = useState('No username');
-  const [currentChildName, setCurrentChildName] = useState('No child selected');
+function NavigationBar() {
+  const logoutContext = useContext(LogoutContext);
+  const currentChildNameFromContext = useContext(NavBarContext).child.name;
+  const usernameFromContext = useContext(NavBarContext).username;
 
-  useEffect(() => {
 
-    setCurrentChildName(navBarContext.child.name);
-    setUsername(localStorage.getItem('username'));
-  }, [])
 
   const S_CURRENT_CHILD = "ילד נוכחי";
   const S_NO_CHILD_SELECTED = "לא נבחר ילד";
 
   return (
-    <div dir="rtl">
+    <div div dir="rtl" >
       <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
         <Container fluid className="h-25">
           <Navbar.Brand href="/Home">כפתור בית</Navbar.Brand>
-          <Navbar.Brand> מחובר בתור: {username}</Navbar.Brand>
+          <Navbar.Brand> מחובר בתור: {usernameFromContext}</Navbar.Brand>
           <Navbar.Brand>
-            {currentChildName == undefined ? S_NO_CHILD_SELECTED : `${S_CURRENT_CHILD}:${currentChildName}`}
-
+            {currentChildNameFromContext === undefined ? S_NO_CHILD_SELECTED : `${S_CURRENT_CHILD}:${currentChildNameFromContext}`}
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
@@ -47,13 +43,13 @@ function NavigationBar({ HandleLogout }) {
                 <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
               </NavDropdown> */}
 
-              <Button onClick={HandleLogout} variant='danger'>יציאה</Button>
+              <Button onClick={() => logoutContext()} variant='danger'>יציאה</Button>
 
             </Nav>
           </Navbar.Collapse>
         </Container>
       </Navbar>
-    </div>
+    </div >
   )
 }
 

@@ -1,5 +1,4 @@
 import NavigationBar from "../components/NavigationBar"
-import NavigationBarTest from "./NavigationBarTest"
 
 function MainPage({ children, title }) {
   return (

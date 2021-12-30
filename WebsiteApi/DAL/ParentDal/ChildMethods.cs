@@ -30,6 +30,14 @@ namespace ParentDal
             return OdbcHelper.GetTable(com, queryParameters);
         }
 
+        /// <summary>
+        /// Returns the currently selected child
+        /// </summary>
+        /// <returns></returns>
+        public static object GetCurrentChildName()
+        {
+            return OdbcHelper.GetTable("SELECT child_name FROM child WHERE child_is_selected=-1", new OdbcParameter[0]);
+        }
 
         /// <summary>
         /// Selects the child with the matching id in the database, returns true or false whether the child was successfully selected

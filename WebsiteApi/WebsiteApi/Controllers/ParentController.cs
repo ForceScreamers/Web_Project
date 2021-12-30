@@ -32,9 +32,9 @@ namespace WebsiteApi.Controllers
             Console.WriteLine("Email: " + Request.Headers["email"]);
             Console.WriteLine("Password: " + Request.Headers["password"]);
 
-            bool userExists = false; 
-            
-            
+            bool userExists = false;
+
+
             //  Check if the email and password exist
             userExists = ParentMethods.IsExists(Request.Headers["email"], Request.Headers["password"]);
             Console.WriteLine("User exists: {0}", userExists);
@@ -44,10 +44,10 @@ namespace WebsiteApi.Controllers
                 //  Get the username and id
                 loggedParentInfo = ParentMethods.GetParentLoggedInfo(Request.Headers["email"], Request.Headers["password"]);
             }
-            
+
 
             //  Return a json object containing the username, id and login confirmation
-            return base.Content(JsonConvert.SerializeObject(new { UserInfo = loggedParentInfo, Authenticated = userExists}), "application/json", System.Text.Encoding.UTF8);
+            return base.Content(JsonConvert.SerializeObject(new { UserInfo = loggedParentInfo, Authenticated = userExists }), "application/json", System.Text.Encoding.UTF8);
         }
 
 
@@ -66,7 +66,7 @@ namespace WebsiteApi.Controllers
 
                 addedChild = true;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine(e);
             }
@@ -74,7 +74,7 @@ namespace WebsiteApi.Controllers
             return base.Content(JsonConvert.SerializeObject(new { confirmed = addedChild, name = ConvertToUnicode(Request.Headers["childName"]), age = int.Parse(Request.Headers["childAge"]), id = newlyAddedId }), "application/json", System.Text.Encoding.UTF8);
         }
 
-        [Microsoft.AspNetCore.Mvc.HttpGet]
+        [Microsoft.AspNetCore.Mvc.HttpPost]
         [Microsoft.AspNetCore.Mvc.ActionName("GetChildrenForParent")]
         public ContentResult GetChildrenForParent()
         {

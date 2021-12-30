@@ -1,7 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import Card from "./Card";
 import "./app.scss";
-import img from '../TestGame/Images/download.jpg'
 
 const CARD_COUNT = 16;
 let gameCards = new Array(CARD_COUNT);

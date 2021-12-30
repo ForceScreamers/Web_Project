@@ -13,8 +13,6 @@ namespace ParentDal
 {
     public class ParentMethods
     {
-        
-        
         public static int AddParent(string parentUsername, string parentEmail, string parentPassword, string parentRegistrationDate)
         {
             string com = "INSERT INTO parent (parent_username, parent_email, parent_password, parent_registration_date) VALUES (?, ?, ?, ?)";

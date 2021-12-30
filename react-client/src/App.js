@@ -6,10 +6,7 @@ import { useEffect, useState } from 'react';
 //	Import main pages
 import Login from "./main-pages/Login";
 
-import { Router, Route } from "react-router-dom";
-
-//	Import history
-import history from './History';
+import { Route, useHistory } from "react-router-dom";
 
 //	Import main pages
 import Welcome from './main-pages/Welcome';
@@ -23,14 +20,9 @@ import Journal from './main-pages/Journal';
 import Home from './main-pages/Home';
 
 //import AuthenticatedRoute from "./components/ProtectedRoute";
-import ProtectedRoute from './components/ProtectedRoute'
-import UnauthenticatedRoute from "./components/UnauthenticatedRoute";
+import { ProtectedRoute } from './components/ProtectedRoute'
 
 import axios from 'axios';
-import TestGame from './games/TestGame/TestGame';
-
-//	Games import
-import MemoryGame from './games/MemoryGame/MemoryGame';
 
 //	Bootstrap css import
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -41,9 +33,10 @@ import utf8 from 'utf8';
 
 
 //	Import helper functions
-import { ValidateUserInput, EmailRegexCheck } from './Project-Modules/ValidateUserInput';
+import { EmailRegexCheck } from './Project-Modules/ValidateUserInput';
+import { LogoutContext } from './LogoutContext';
+
 import { NavBarContext } from './NavBarContext';
-import { useStateWithCallbackLazy } from './UseStateWithLazyCallback';
 
 //	#endregion
 
@@ -129,8 +122,6 @@ const RequestLogin = async (userData) => {
 //	Checks if the user input for the child add form is valid
 //	All letters in hebrew and not empty
 const AddchildInputValidation = (input) => {
-	console.log(input);
-
 	let valid = true;
 
 	if (input === "") {
@@ -145,80 +136,51 @@ const AddchildInputValidation = (input) => {
 	return valid;
 }
 
-const GetChildrenFromServer = async () => {
-	console.log("Getting children from server...")
-	//	Gets all the children for the logged parent from the server
-	return
-}
-
-
 
 // * React app component
 const App = () => {
-	//const [isAuth, setIsAuth] = useState(false);
+	const [currentChild, setCurrentChild] = useState('no name');
+	const [username, setUsername] = useState('no username');
+	//const history = useHistory();
+	let history = useHistory();
 
-	//	All children for logged parent
-	const [childrenProfiles, setChildrenProfiles] = useStateWithCallbackLazy([]);
 
-	//	Current selected child, will be used for tracking progress
-	const [currentChild, setCurrentChild] = useState({});
-
-	//const [username, setUsername] = useState("no username");
-
-	useEffect(() => {
-		console.log("USERNAME")
-		console.log(localStorage.getItem('username'))
-	})
 
 	/**Gets the children belonging to the logged parent
 	 * Set current children profiles to the matching children
 	 */
-	const LoadChildren = () => {
-		console.log("Loading children...")
+	const LoadChildrenFromServer = () => {
 		axios({
 			method: 'get',
 			url: "http://localhost:5001/get-children-for-parent",
 			timeout: REQUEST_TIMEOUT_LENGTH,
 			headers: {
-				data: JSON.stringify(10)//TODO change to logged user id
+				data: JSON.parse(localStorage.getItem('userId'))
 			}
 		})
 			.catch(err => console.log(err))
 			.then(res => {
 				if (res) {
-					//setCount(count => count + 1);
+					localStorage.setItem('children', JSON.stringify(res.data));
+					let children = JSON.parse(localStorage.getItem('children'));
 
-
-					console.log(res.data)
-					//TODO: Fix setstate function (create one that takes another func as an argument)
-					setChildrenProfiles(res.data, () => {
-						setCurrentChild(GetSelectedChild())
-						console.log("childrenProfiles");
-						console.log(childrenProfiles);
-
-					});
-					//setChildrenProfiles((res.data) => { setCurrentChild(GetSelectedChild()) } )
-					//setChildrenProfiles((res.data)=> {console.log()})
+					localStorage.setItem('currentChild', JSON.stringify(GetSelectedChild(children)))
+					setCurrentChild(JSON.parse(localStorage.getItem('currentChild')));
 				}
-				else { console.log("No response from server") }
 			})
 	}
 
-	/**
-	 * Returns the currently selected child
-	 */
-	const GetSelectedChild = () => {
-		let selectedChild = undefined;
-		console.log(childrenProfiles)
-		childrenProfiles.forEach(child => {
-			if (child.isSelected) {
-				selectedChild = child;
+	const GetSelectedChild = (childrenArray) => {
+		let tempArray = childrenArray;
+		let child = undefined;
+
+		tempArray.forEach((tempChild) => {
+			if (tempChild.isSelected) {
+				child = tempChild;
 			}
 		});
 
-
-		if (selectedChild === undefined) { console.error("SOMETHING WENT WRONG WITH GETTING THE SELECTED CHILD") }
-		return selectedChild;
+		return child;
 	}
 
 	/**
@@ -226,7 +188,6 @@ const App = () => {
 	 * Used to keep track of progress for this child
 	 */
 	const HandleSelectChild = (childToSelect) => {
-		console.log("WW")
 		axios({
 			method: 'post',
 			url: "http://localhost:5001/select-child",
@@ -241,9 +202,7 @@ const App = () => {
 
 				if (response.data.IsSelected) {//	The child was selected in the database 
 					//	Change the current child
-					console.log(`Switching child to ${childToSelect.name}`);
-					LoadChildren();
-					console.log(currentChild)
+					LoadChildrenFromServer();
 				}
 				else {
 					console.error("SOMETHING WENT WRONG WITH CHILD SELECT");
@@ -251,19 +210,26 @@ const App = () => {
 			})
 	}
 
-	//	Loads children into state on pageload
-	// useEffect(() => {
-	// 	LoadChildren();
-	// }, [])
+	const LogoutUser = () => {
+		localStorage.clear();
 
+		history.push("/");
+	}
 
 	const HandleLogin = async (e) => {
 
 		e.preventDefault();
 
+		//! For debugging
+		// let userData = {
+		// 	email: e.target.loginEmailField.value,
+		// 	password: e.target.loginPasswordField.value,
+		// };
+
+
 		let userData = {
-			email: e.target.loginEmailField.value,
-			password: e.target.loginPasswordField.value,
+			email: "test@test.com",
+			password: "1234",
 		};
 
 		if (ENABLE_LOGIN) {
@@ -273,33 +239,36 @@ const App = () => {
 					.catch(err => console.log(err))
 					.then((response) => {
 
-						console.log(response);
 						if (response) {
-							if (response.data.authorized) {
+							console.log(response);
 
-								console.log("Login data");
-								console.log(response.data);
+							//	If the user is authorized
+							if (response.data.authorized === true) {
+
+								//	Set localstorage items and states
 								localStorage.setItem("token", response.data.token);
 								localStorage.setItem("userId", response.data.userId);
 								localStorage.setItem("username", response.data.username);
+								setUsername(localStorage.getItem("username"));
 
-								console.log(response.data.authorized);
+								localStorage.setItem("children", JSON.stringify(response.data.children));
 
-								console.log("Redirecting to welcome");
-								response.data.authorized ? history.push('/Welcome') : alert("Incorrect email or password")
+								let children = JSON.parse(localStorage.getItem("children"));
+								localStorage.setItem('currentChild', JSON.stringify(GetSelectedChild(children)))
 
-								//setUsername(response.data.result.username);
-								LoadChildren();
+								setCurrentChild(JSON.parse(localStorage.getItem("currentChild")))
+
+								//	Redirect to welcome page
+								history.push("/Welcome");
 							}
 							else {
-								//	User doesn't exist
+								//	TODO Handle user doesn't exist
 								alert("user not found");
 							}
 						}
 						else {
 							console.error("server error, maybe webapi")
 						}
-
 					});
 			}
 		}
@@ -312,8 +281,6 @@ const App = () => {
 	}
 
 	const HandleDeleteChild = (childId) => {
-		console.log("Deleting child... " + childId)
-
 		// Get the delete confirmation from the server then delete 
 		//	the child from the state array
 		axios({
@@ -323,14 +290,14 @@ const App = () => {
 			headers: {
 				data: JSON.stringify({
 					childId: childId,
-					parentId: 10
+					parentId: JSON.parse(localStorage.getItem('userId'))
 				})
 			}
 		}).catch(err => console.log(err))
 			.then((response) => {
 				//TODO: Verify Delete child
 
-				LoadChildren();
+				LoadChildrenFromServer();
 			})
 	}
 
@@ -342,7 +309,6 @@ const App = () => {
 		let formChildAge = e.target.childAgeSelect.value;
 
 		//	Validate input
-		console.log(formChildName);
 		if (AddchildInputValidation(formChildName)) {
 			//Send request to server to add child
 			axios({
@@ -352,7 +318,7 @@ const App = () => {
 				timeout: REQUEST_TIMEOUT_LENGTH,
 				headers: {
 					data: JSON.stringify({
-						parentId: 10, // Will be the logged in parent id
+						parentId: JSON.parse(localStorage.getItem('userId')), // Will be the logged in parent id
 						childName: utf8.encode(formChildName),
 						childAge: formChildAge
 					}),
@@ -364,12 +330,15 @@ const App = () => {
 
 					//	Response will be HasAddedChild
 					if (response) {
-						LoadChildren();
+						LoadChildrenFromServer();
 					}
 					else { console.log("No response from server") }
 				})
 		}
 	}
+	useEffect(() => {
+		setUsername(localStorage.getItem('username'));
+	}, [])
 
 	//#region	Control the website zoom level
 	useEffect(() => {
@@ -386,38 +355,27 @@ const App = () => {
 	//#endregion
 
 	return (
-		<Router history={history}>
-			<div className="App" >
+		<div className="App" >
 
-				{/* DEFAULT PATH */}
-				{/* <Route exact path="/" render={() => (userLoggedIn ? (<Redirect to="/" />) : (<Redirect to="/Login" />))} /> */}
+			<Route exact path="/" component={() => <Login HandleLogin={HandleLogin} />} />
+			<Route exact path="/Register" component={() => <Register />} />
 
-				<Route exact path="/" component={() => <Login HandleLogin={HandleLogin} />} />
-				<Route exact path="/Register" component={() => <Register />} />
-
-				{/* <AuthenticatedRoute exact path="/Welcome" isAuth={isAuth} component={() => <MainPage username={username} />} /> */}
-
-				{/* <AuthenticatedRoute exact path="/Games" isAuth={isAuth} component={Games} /> */}
-				{/* <AuthenticatedRoute exact path="/EditProfile" isAuth={isAuth} component={MyProfile} /> */}
-
-				{/* <AuthenticatedRoute exact path="/Games/TestGame" isAuth={isAuth} component={TestGame} />
-				<AuthenticatedRoute exact path="/Games/MemoryGame" isAuth={isAuth} component={MemoryGame} /> */}
-
-				{/* //TODO: NEED TO CALL THE ROUTES ONLY WHEN THE WELCOME PAGE LOADS*/}
+			{/* //TODO: NEED TO CALL THE ROUTES ONLY WHEN THE WELCOME PAGE LOADS*/}
+			<LogoutContext.Provider value={LogoutUser}>
 				<NavBarContext.Provider value={{
 					child: currentChild,
+					username: username,
 				}}>
-					<Route path="/" component={<ProtectedRoute />}>
-						<Route exact path="/Welcome" component={Welcome} />
-					</Route>
-					<Route exact path="/About" component={About} />
-					<Route exact path="/EditProfile" component={() =>
+
+					<ProtectedRoute exact path="/Welcome" component={Welcome} />
+					<Route exact path="/About" comp={About} />
+
+					<Route path="/EditProfile" component={() =>
 						<EditProfile
 							HandleSelectChild={HandleSelectChild}
 							HandleDeleteChild={HandleDeleteChild}
 							HandleAddChild={HandleAddChild}
-							LoadChildren={LoadChildren}
-							children_={childrenProfiles} />}
+						/>}
 					/>
 					<Route exact path="/Games" component={Games} />
 					<Route exact path="/Info" component={Info} />
@@ -425,11 +383,10 @@ const App = () => {
 					<Route exact path="/Journal" component={Journal} />
 					<Route exact path="/Home" component={Home} />
 				</NavBarContext.Provider>
-				{/* //  The main pages are: Games, info, about, edit profile, avatar, journal */}
 
-
-			</div>
-		</Router>
+			</LogoutContext.Provider>
+			{/* //  The main pages are: Games, info, about, edit profile, avatar, journal */}
+		</div >
 	);
 }
 

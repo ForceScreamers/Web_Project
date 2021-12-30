@@ -1,8 +1,7 @@
 import React from "react";
 import classnames from "classnames";
-import pokeball from "./images/pokeball.png";
 import "./card.scss";
-import image from '../TestGame/Images/download.jpg'
+import image from '../MemoryGame/images/image.jpg'
 
 const Card = ({ onClick, card, index, isInactive, isFlipped, isDisabled, cardType }) => {
   const handleClick = () => {

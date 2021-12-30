@@ -9,6 +9,7 @@ export function ValidateUserInput(input, lang) {
   let result;
   if (lang === "Heb" && ValidateUserInput_Heb(input)) { result = true }
   if (lang === "Eng" && ValidateUserInput_Eng(input)) { result = true }
+  return result;
 }
 
 //  Returns true if the input contains only english characters and spaces
@@ -22,9 +23,9 @@ function ValidateUserInput_Heb(input) {
 }
 
 
-function ValidateUserInput_Num(input) {
-  return (/[0-9]/).test(input);
-}
+// function ValidateUserInput_Num(input) {
+//   return (/[0-9]/).test(input);
+// }
 
 
 export function EmailRegexCheck(email) {

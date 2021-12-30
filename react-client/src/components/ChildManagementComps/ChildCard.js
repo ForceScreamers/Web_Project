@@ -1,8 +1,6 @@
 import { Card, CloseButton, Button } from 'react-bootstrap'
 function ChildCard({ HandleSelectChild, HandleDeleteChild, ChildProfile }) {
 
-  //const isSelected = IsSelectedChild(ChildProfile.id);
-
   return (
     <div>
       <Card
