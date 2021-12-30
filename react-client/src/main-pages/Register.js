@@ -1,5 +1,8 @@
 import '../css/pages-css/Register.css'
 import { Link } from "react-router-dom"
+import { USER_INPUT_ERR } from '../Project-Modules/UserErrorEnums'
+
+
 function Register({ HandleRegister }) {
   return (
     <div>
@@ -19,6 +22,9 @@ function Register({ HandleRegister }) {
 
             <label>Password:</label>
             <input name="registerPasswordField" type="password" />
+
+            <label>Confirm password:</label>
+            <input name="registerPasswordConfirmField" type="password" />
 
             <label>Profile Picture:</label>
             <label>Choose or Upload</label>

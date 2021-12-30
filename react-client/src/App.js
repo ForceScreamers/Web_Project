@@ -33,8 +33,8 @@ import utf8 from 'utf8';
 
 
 //	Import helper functions
-import { EmailRegexCheck } from './Project-Modules/ValidateUserInput';
 import { LogoutContext } from './LogoutContext';
+import { ValidateLoginInput, ValidateRegisterInput } from './Project-Modules/ValidateUserInput';
 
 import { NavBarContext } from './NavBarContext';
 
@@ -59,53 +59,6 @@ const ENABLE_LOGIN = true;//! Used for debugging
 
 
 
-const ValidateLoginInput = (userData) => {
-	let emailValid, passwordValid = false;
-
-	if (ValidateEmail(userData.email)) { emailValid = true; }
-	if (ValidatePassword(userData.password)) { passwordValid = true; }
-
-	return emailValid && passwordValid;
-}
-
-/**
- * Returns true or false whether the password isn't empty
- */
-const ValidatePassword = (password) => {
-
-	let valid = false;
-	if (password !== "") {
-		valid = true;
-	}
-	else {
-		alert("empty password")
-	}
-
-	return valid;
-}
-
-/**
- * Returns true or false whether the email isn't empty or doesn't have special characters
- */
-const ValidateEmail = (email) => {
-
-	let valid = false;
-	if (email !== "") {
-		if (EmailRegexCheck(email)) {
-			valid = true;
-		}
-		else {
-			//	Email is invalid
-			alert("invalid email");
-		}
-	}
-	else {
-		//	Email is empty
-		alert("empty email");
-	}
-
-	return valid;
-};
 
 
 const RequestLogin = async (userData) => {
@@ -211,6 +164,7 @@ const App = () => {
 	}
 
 	const LogoutUser = () => {
+		console.log("Deleting localstorage")
 		localStorage.clear();
 
 		history.push("/");
@@ -280,6 +234,66 @@ const App = () => {
 		}
 	}
 
+	const HandleRegister = async (e) => {
+		e.preventDefault();
+
+		let userData = {
+			username: e.target.registerUsernameField.value,
+			email: e.target.registerEmailField.value,
+			password: e.target.registerPasswordField.value,
+			confirmPassword: e.target.registerPasswordConfirmField.value,
+		};
+		//!	Note, i'm sending the confirm password too
+		console.log(userData)
+
+		if (ENABLE_LOGIN) {
+			if (ValidateRegisterInput(userData)) {
+				//TODO: Deal with unable to connect
+				RequestLogin(userData)
+					.catch(err => console.log(err))
+					.then((response) => {
+
+						if (response) {
+							console.log(response);
+
+							//	If the user is authorized
+							if (response.data.authorized === true) {
+
+								//	Set localstorage items and states
+								localStorage.setItem("token", response.data.token);
+								localStorage.setItem("userId", response.data.userId);
+								localStorage.setItem("username", response.data.username);
+								setUsername(localStorage.getItem("username"));
+
+								localStorage.setItem("children", JSON.stringify(response.data.children));
+
+								let children = JSON.parse(localStorage.getItem("children"));
+								localStorage.setItem('currentChild', JSON.stringify(GetSelectedChild(children)))
+
+								setCurrentChild(JSON.parse(localStorage.getItem("currentChild")))
+
+								//	Redirect to welcome page
+								history.push("/Welcome");
+							}
+							else {
+								//	TODO Handle user doesn't exist
+								alert("user not found");
+							}
+						}
+						else {
+							console.error("server error, maybe webapi")
+						}
+					});
+			}
+		}
+		else {
+			//! FOR DEBUGGING	//
+			console.warn("Login disabled")
+			//setIsAuth(true)
+			history.push('/Welcome')
+		}
+	}
+
 	const HandleDeleteChild = (childId) => {
 		// Get the delete confirmation from the server then delete 
 		//	the child from the state array
@@ -295,7 +309,7 @@ const App = () => {
 			}
 		}).catch(err => console.log(err))
 			.then((response) => {
-				//TODO: Verify Delete child
+				//TODO: User verify delete child
 
 				LoadChildrenFromServer();
 			})
@@ -336,6 +350,7 @@ const App = () => {
 				})
 		}
 	}
+
 	useEffect(() => {
 		setUsername(localStorage.getItem('username'));
 	}, [])
@@ -358,7 +373,7 @@ const App = () => {
 		<div className="App" >
 
 			<Route exact path="/" component={() => <Login HandleLogin={HandleLogin} />} />
-			<Route exact path="/Register" component={() => <Register />} />
+			<Route exact path="/Register" component={() => <Register HandleRegister={HandleRegister} />} />
 
 			{/* //TODO: NEED TO CALL THE ROUTES ONLY WHEN THE WELCOME PAGE LOADS*/}
 			<LogoutContext.Provider value={LogoutUser}>
