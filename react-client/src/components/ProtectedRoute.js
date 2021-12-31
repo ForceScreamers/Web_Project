@@ -1,11 +1,15 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Suspense } from 'react';
 import { Route, Redirect, withRouter } from 'react-router-dom';
 
 //TODO: Find a way to create a protected route
 export const ProtectedRoute = ({ component: Component, ...rest }) => {
+  //let isAuth = false;
   const [isAuth, setIsAuth] = useState(false);
 
+  const GetIsAuth = () => {
+
+  }
 
   return (
     <Route {...rest} render={
@@ -23,15 +27,26 @@ export const ProtectedRoute = ({ component: Component, ...rest }) => {
             setIsAuth(response.data.isAuth);
           })
 
-
-
+        console.log(isAuth)
         if (isAuth) {
           console.log("Logged in!")
-          return <Component {...props} />
+
+          return (
+            <Suspense fallback={<h1>Loading...</h1>}>
+              <Component {...props} />
+            </Suspense>
+          )
+
         }
         else {
-          console.log("Unauth")
-          return <Redirect to="/" />;
+          console.log("Unauth");
+
+          return (
+            <Suspense fallback={<h1>Loading...</h1>}>
+              <Redirect to="/" />;
+            </Suspense>
+          )
+
         }
       }
     } />

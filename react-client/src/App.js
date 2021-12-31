@@ -59,7 +59,10 @@ const ENABLE_LOGIN = true;//! Used for debugging
 
 
 
-
+const RequestRegister = async () => {
+	// Register req
+	console.log("Requesting reg...")
+}
 
 const RequestLogin = async (userData) => {
 	return axios({
@@ -96,7 +99,6 @@ const App = () => {
 	const [username, setUsername] = useState('no username');
 	//const history = useHistory();
 	let history = useHistory();
-
 
 
 	/**Gets the children belonging to the logged parent
@@ -188,6 +190,7 @@ const App = () => {
 
 		if (ENABLE_LOGIN) {
 			if (ValidateLoginInput(userData)) {
+
 				//TODO: Deal with unable to connect
 				RequestLogin(userData)
 					.catch(err => console.log(err))
@@ -234,7 +237,7 @@ const App = () => {
 		}
 	}
 
-	const HandleRegister = async (e) => {
+	const HandleRegister = async (e, formValid) => {
 		e.preventDefault();
 
 		let userData = {
@@ -244,53 +247,48 @@ const App = () => {
 			confirmPassword: e.target.registerPasswordConfirmField.value,
 		};
 		//!	Note, i'm sending the confirm password too
-		console.log(userData)
 
-		if (ENABLE_LOGIN) {
-			if (ValidateRegisterInput(userData)) {
-				//TODO: Deal with unable to connect
-				RequestLogin(userData)
-					.catch(err => console.log(err))
-					.then((response) => {
 
-						if (response) {
-							console.log(response);
+		//!	THE BUG IS IN THE STATE AND THAT IT TAKES TOO LONG FOR THE STATE TO UPDATE
+		//! CHECK "REACT WAIT FOR STATE UPDATE"
+		console.log("Form valid: " + formValid)
+		if (formValid) {//	If the form is valid (Writing here !valid because the validation works the opposite way)
 
-							//	If the user is authorized
-							if (response.data.authorized === true) {
+			RequestRegister(userData)
+				.catch(err => console.log(err))
+				.then((response) => {
 
-								//	Set localstorage items and states
-								localStorage.setItem("token", response.data.token);
-								localStorage.setItem("userId", response.data.userId);
-								localStorage.setItem("username", response.data.username);
-								setUsername(localStorage.getItem("username"));
+					if (response) {
+						console.log(response);
 
-								localStorage.setItem("children", JSON.stringify(response.data.children));
+						//	If the user is authorized
+						if (response.data.authorized === true) {
 
-								let children = JSON.parse(localStorage.getItem("children"));
-								localStorage.setItem('currentChild', JSON.stringify(GetSelectedChild(children)))
+							//	Set localstorage items and states
+							localStorage.setItem("token", response.data.token);
+							localStorage.setItem("userId", response.data.userId);
+							localStorage.setItem("username", response.data.username);
+							setUsername(localStorage.getItem("username"));
 
-								setCurrentChild(JSON.parse(localStorage.getItem("currentChild")))
+							localStorage.setItem("children", JSON.stringify(response.data.children));
 
-								//	Redirect to welcome page
-								history.push("/Welcome");
-							}
-							else {
-								//	TODO Handle user doesn't exist
-								alert("user not found");
-							}
+							let children = JSON.parse(localStorage.getItem("children"));
+							localStorage.setItem('currentChild', JSON.stringify(GetSelectedChild(children)))
+
+							setCurrentChild(JSON.parse(localStorage.getItem("currentChild")))
+
+							//	Redirect to welcome page
+							history.push("/Welcome");
 						}
 						else {
-							console.error("server error, maybe webapi")
+							//	TODO Handle user doesn't exist
+							alert("user not found");
 						}
-					});
-			}
-		}
-		else {
-			//! FOR DEBUGGING	//
-			console.warn("Login disabled")
-			//setIsAuth(true)
-			history.push('/Welcome')
+					}
+					else {
+						console.error("server error, maybe webapi")
+					}
+				});
 		}
 	}
 
@@ -373,7 +371,10 @@ const App = () => {
 		<div className="App" >
 
 			<Route exact path="/" component={() => <Login HandleLogin={HandleLogin} />} />
-			<Route exact path="/Register" component={() => <Register HandleRegister={HandleRegister} />} />
+			<Route exact path="/Register" component={() =>
+				<Register
+					HandleRegister={(e, isValid) => HandleRegister(e, isValid)}
+				/>} />
 
 			{/* //TODO: NEED TO CALL THE ROUTES ONLY WHEN THE WELCOME PAGE LOADS*/}
 			<LogoutContext.Provider value={LogoutUser}>

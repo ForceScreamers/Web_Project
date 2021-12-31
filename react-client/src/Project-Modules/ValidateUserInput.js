@@ -1,5 +1,4 @@
 import { USER_INPUT_ERR } from "./UserErrorEnums";
-
 /**
  * Returns true if given input is valid (No special characters)
  * Takes a string input and the language to check 
@@ -43,7 +42,10 @@ function EmailRegexCheck(email) {
 }
 
 
-
+//TODO: Change name to ValidateRegisterForm
+/**
+ * Returns error
+ */
 export const ValidateRegisterInput = (userData) => {
   let emailValid, passwordValid, usernameValid, confirmPasswordValid = false;
 
@@ -53,7 +55,18 @@ export const ValidateRegisterInput = (userData) => {
   usernameValid = ValidateUsername(userData.username);
   confirmPasswordValid = ValidateConfirmPassword(userData.confirmPassword);
 
-  return emailValid && passwordValid && usernameValid;
+  let errorsToLoad = [emailValid, passwordValid, usernameValid, confirmPasswordValid];
+  let resultErrors = [];
+  errorsToLoad.forEach((err) => {
+    if (err !== USER_INPUT_ERR.VALID) {
+      resultErrors.push(err);
+    }
+  })
+
+  return {
+    errors: resultErrors,
+    isValid: resultErrors.length === 0,
+  };
 }
 
 export const ValidateLoginInput = (userData) => {
@@ -65,42 +78,28 @@ export const ValidateLoginInput = (userData) => {
   return emailValid && passwordValid;
 }
 
-const ValidateConfirmPassword = (password1, password2) => {
+export const ValidateConfirmPassword = (password1, password2) => {
   return password1 === password2;
 }
 
 /**
  * Returns true or false whether the username isn't empty or is a special character
  */
-const ValidateUsername = (username) => {
-  let valid = USER_INPUT_ERR.VALID;
-
-  if (username !== "") {
-    if (ValidateUserInput_All(username)) {
-      valid = true;
-    }
-    else {
-      valid = USER_INPUT_ERR.USERNAME_INVALID;
-    }
-  }
-  else {
-    valid = USER_INPUT_ERR.USERNAME_EMPTY;
-  }
-
-  return valid;
+export const ValidateUsername = (username) => {
+  return ValidateUserInput_All(username);
 }
 
 /**
  * Returns true or false whether the password isn't empty
  */
-const ValidatePassword = (password) => {
+export const ValidatePassword = (password) => {
 
   let valid = false;
   if (password !== "") {
     valid = true;
   }
   else {
-    alert("empty password")
+    // alert("empty password")
   }
 
   return valid;
@@ -109,7 +108,7 @@ const ValidatePassword = (password) => {
 /**
  * Returns true or false whether the email isn't empty or doesn't have special characters
  */
-const ValidateEmail = (email) => {
+export const ValidateEmail = (email) => {
 
   let valid = false;
   if (email !== "") {
@@ -118,12 +117,10 @@ const ValidateEmail = (email) => {
     }
     else {
       //	Email is invalid
-      alert("invalid email");
     }
   }
   else {
     //	Email is empty
-    alert("empty email");
   }
 
   return valid;

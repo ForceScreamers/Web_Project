@@ -24,7 +24,6 @@ function Login({ HandleLogin }) {
                 </div>
             </form>
 
-
         </div>
     )
 }
