@@ -26,7 +26,6 @@ const wrapPromise = (promise) => {
 
   return {
     read() {
-      console.log(status);
       if (status === 'pending') {
         throw suspender;
       }
@@ -34,7 +33,6 @@ const wrapPromise = (promise) => {
         throw result;
       }
       else if (status === 'success') {
-        console.log(result)
         return result;
       }
     }

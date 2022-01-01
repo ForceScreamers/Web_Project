@@ -104,24 +104,29 @@ const App = () => {
 	 * Set current children profiles to the matching children
 	 */
 	const LoadChildrenFromServer = () => {
-		axios({
-			method: 'get',
-			url: "http://localhost:5001/get-children-for-parent",
-			timeout: REQUEST_TIMEOUT_LENGTH,
-			headers: {
-				data: JSON.parse(localStorage.getItem('userId'))
-			}
-		})
-			.catch(err => console.log(err))
-			.then(res => {
-				if (res) {
-					localStorage.setItem('children', JSON.stringify(res.data));
-					let children = JSON.parse(localStorage.getItem('children'));
+		let parentId = JSON.parse(localStorage.getItem('userId'));
 
-					localStorage.setItem('currentChild', JSON.stringify(GetSelectedChild(children)))
-					setCurrentChild(JSON.parse(localStorage.getItem('currentChild')));
+		//!HERE
+		if (parentId) {
+			axios({
+				method: 'get',
+				url: "http://localhost:5001/get-children-for-parent",
+				timeout: REQUEST_TIMEOUT_LENGTH,
+				headers: {
+					data: parentId,
 				}
 			})
+				.catch(err => console.log(err))
+				.then(res => {
+					if (res) {
+						localStorage.setItem('children', JSON.stringify(res.data));
+						let children = JSON.parse(localStorage.getItem('children'));
+
+						localStorage.setItem('currentChild', JSON.stringify(GetSelectedChild(children)))
+						setCurrentChild(JSON.parse(localStorage.getItem('currentChild')));
+					}
+				})
+		}
 	}
 
 	const GetSelectedChild = (childrenArray) => {
@@ -162,14 +167,13 @@ const App = () => {
 					console.error("SOMETHING WENT WRONG WITH CHILD SELECT");
 				}
 			})
+
+
 	}
 
-	const LogoutUser = () => {
-		console.log("Deleting localstorage")
-		localStorage.clear();
 
-		history.push("/");
-	}
+
+
 
 	const HandleLogin = async (e) => {
 
@@ -349,8 +353,25 @@ const App = () => {
 	}
 
 	useEffect(() => {
+		//	Load username and current child
 		setUsername(localStorage.getItem('username'));
+		setCurrentChild(JSON.parse(localStorage.getItem('currentChild')));
 	}, [])
+
+
+	useEffect(() => {
+		//	Disconnect the user if the localstorage is empty
+		return history.listen(() => {
+			if (localStorage.length === 0 && history.location.pathname !== "/") {
+				LogoutUser();
+			}
+		})
+	}, [history])
+
+	const LogoutUser = () => {
+		localStorage.clear();
+		history.replace("/");
+	}
 
 	//#region	Control the website zoom level
 	useEffect(() => {

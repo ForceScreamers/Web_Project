@@ -1,6 +1,6 @@
 import { Container, Row, Col } from "react-bootstrap"
-import AddChildCard from "../components/ChildManagementComps/AddChildCard"
-import ChildCard from "../components/ChildManagementComps/ChildCard"
+import AddChildCard from "../components/EditProfileComponents/AddChildCard"
+import ChildCard from "../components/EditProfileComponents/ChildCard"
 import MainPage from "../components/MainPage"
 
 import { useEffect, useState } from "react"
@@ -25,15 +25,18 @@ function EditProfile({ HandleSelectChild, HandleDeleteChild, HandleAddChild }) {
             <Col>
 
               {
-                //  i - index inside the state array, using it because react wants to use it...
-                childrenProfiles.map((childProfile) => (
-                  <ChildCard
-                    HandleSelectChild={HandleSelectChild}
-                    HandleDeleteChild={HandleDeleteChild}
-                    ChildProfile={childProfile}
-                    key={childProfile.id}  // Key for the component's index
-                  />
-                ))
+                childrenProfiles != undefined//  If there are no children
+
+                  //  i - index inside the state array, using it because react wants to use it...
+                  ? childrenProfiles.map((childProfile) => (
+                    <ChildCard
+                      HandleSelectChild={HandleSelectChild}
+                      HandleDeleteChild={HandleDeleteChild}
+                      ChildProfile={childProfile}
+                      key={childProfile.id}  // Key for the component's index
+                    />
+                  ))
+                  : <></>
 
               }
               <AddChildCard HandleAddChild={HandleAddChild} />

@@ -7,22 +7,17 @@ import { NavBarContext } from '../NavBarContext'
 //  היומן שלי, שינוי אווטר, עריכת פרופיל, משחקייה, מאמרים, אודותר
 //  The main pages are: Games, info, about, edit profile, avatar, journal
 
-const ClearLs = () => {
-  localStorage.clear();
-}
-
 function NavigationBar() {
-  const logoutContext = useContext(LogoutContext);
+  const LogoutUser = useContext(LogoutContext);
   const currentChildNameFromContext = useContext(NavBarContext).child.name;
   const usernameFromContext = useContext(NavBarContext).username;
-
 
 
   const S_CURRENT_CHILD = "ילד נוכחי";
   const S_NO_CHILD_SELECTED = "לא נבחר ילד";
 
   return (
-    <div div dir="rtl" >
+    <div dir="rtl" >
       <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
         <Container fluid className="h-25">
           <Navbar.Brand href="/Home">כפתור בית</Navbar.Brand>
@@ -47,7 +42,7 @@ function NavigationBar() {
                 <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
               </NavDropdown> */}
 
-              <Button onClick={ClearLs} variant='danger'>יציאה</Button>
+              <Button onClick={LogoutUser} variant='danger'>יציאה</Button>
 
             </Nav>
           </Navbar.Collapse>
