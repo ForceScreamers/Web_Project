@@ -100,7 +100,6 @@ const App = () => {
 	//const history = useHistory();
 	let history = useHistory();
 
-
 	/**Gets the children belonging to the logged parent
 	 * Set current children profiles to the matching children
 	 */
@@ -384,20 +383,20 @@ const App = () => {
 				}}>
 
 					<ProtectedRoute exact path="/Welcome" component={Welcome} />
-					<Route exact path="/About" comp={About} />
+					<ProtectedRoute exact path="/About" component={About} />
 
-					<Route path="/EditProfile" component={() =>
+					<ProtectedRoute path="/EditProfile" component={() =>
 						<EditProfile
 							HandleSelectChild={HandleSelectChild}
 							HandleDeleteChild={HandleDeleteChild}
 							HandleAddChild={HandleAddChild}
 						/>}
 					/>
-					<Route exact path="/Games" component={Games} />
-					<Route exact path="/Info" component={Info} />
-					<Route exact path="/Avatar" component={Avatar} />
-					<Route exact path="/Journal" component={Journal} />
-					<Route exact path="/Home" component={Home} />
+					<ProtectedRoute exact path="/Games" component={Games} />
+					<ProtectedRoute exact path="/Info" component={Info} />
+					<ProtectedRoute exact path="/Avatar" component={Avatar} />
+					<ProtectedRoute exact path="/Journal" component={Journal} />
+					<ProtectedRoute exact path="/Home" component={Home} />
 				</NavBarContext.Provider>
 
 			</LogoutContext.Provider>

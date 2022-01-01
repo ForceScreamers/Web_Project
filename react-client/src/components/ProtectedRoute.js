@@ -1,54 +1,32 @@
 import axios from 'axios';
 import React, { useEffect, useState, Suspense } from 'react';
 import { Route, Redirect, withRouter } from 'react-router-dom';
+import { fetchIsAuth } from './GetAuthenticated';
+
+
+
 
 //TODO: Find a way to create a protected route
 export const ProtectedRoute = ({ component: Component, ...rest }) => {
-  //let isAuth = false;
-  const [isAuth, setIsAuth] = useState(false);
 
-  const GetIsAuth = () => {
-
-  }
+  const reasource = fetchIsAuth();
 
   return (
-    <Route {...rest} render={
-      (props) => {
+    <Suspense fallback={<h1>Loading...</h1>}>
+      <Route {...rest} render={
+        (props) => {
+          let isAuth = reasource.isAuth.read();
+          console.log(reasource.isAuth)
 
-        axios({
-          method: 'get',
-          url: "http://localhost:5001/is-auth",
-          timeout: 2000,
-          headers: {
-            "x-access-token": localStorage.getItem('token'),
+          if (isAuth) {
+            return <Component {...props} />
           }
-        })
-          .then((response) => {
-            setIsAuth(response.data.isAuth);
-          })
-
-        console.log(isAuth)
-        if (isAuth) {
-          console.log("Logged in!")
-
-          return (
-            <Suspense fallback={<h1>Loading...</h1>}>
-              <Component {...props} />
-            </Suspense>
-          )
-
+          else {
+            localStorage.clear();
+            return <Redirect to="/" />
+          }
         }
-        else {
-          console.log("Unauth");
-
-          return (
-            <Suspense fallback={<h1>Loading...</h1>}>
-              <Redirect to="/" />;
-            </Suspense>
-          )
-
-        }
-      }
-    } />
+      } />
+    </Suspense>
   )
 };

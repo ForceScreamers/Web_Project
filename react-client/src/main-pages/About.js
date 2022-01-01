@@ -1,11 +1,10 @@
-import MainPage from "../components/MainPage"
+import NavigationBar from "../components/NavigationBar"
 
 function About() {
   return (
     <div>
-      <MainPage title='אודות'>
-        <h2> אלו אודות</h2>
-      </MainPage>
+      <NavigationBar />
+      <h1>אודות</h1>
     </div>
   )
 }

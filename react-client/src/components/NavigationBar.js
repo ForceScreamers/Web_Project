@@ -7,6 +7,10 @@ import { NavBarContext } from '../NavBarContext'
 //  היומן שלי, שינוי אווטר, עריכת פרופיל, משחקייה, מאמרים, אודותר
 //  The main pages are: Games, info, about, edit profile, avatar, journal
 
+const ClearLs = () => {
+  localStorage.clear();
+}
+
 function NavigationBar() {
   const logoutContext = useContext(LogoutContext);
   const currentChildNameFromContext = useContext(NavBarContext).child.name;
@@ -43,7 +47,7 @@ function NavigationBar() {
                 <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
               </NavDropdown> */}
 
-              <Button onClick={() => logoutContext()} variant='danger'>יציאה</Button>
+              <Button onClick={ClearLs} variant='danger'>יציאה</Button>
 
             </Nav>
           </Navbar.Collapse>
