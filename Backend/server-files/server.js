@@ -1,5 +1,4 @@
 const express = require('express');
-const path = require('path');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const { rejects } = require('assert');
@@ -7,10 +6,6 @@ const { rejects } = require('assert');
 const axios = require('axios');
 
 const app = express();
-
-const session = require('express-session');
-
-const utf8 = require('utf8');
 
 const jwt = require('jsonwebtoken');
 
@@ -29,7 +24,7 @@ app.use(cors())
   console.log('Listening on port ' + PORT)
 });
 
-//use cors to allow cross origin resource sharing
+//!use cors to allow cross origin resource sharing
 app.use(
   cors({
     origin: 'http://localhost:3000',
@@ -37,29 +32,67 @@ app.use(
   })
 );
 
-
-app.use(session({
-  secret: 'secret-key',
-  resave: false,
-  saveUninitialized: false,  //  Don't save empty value if there's no value
-  cookie: {
-    maxAge: 1000 * 60 * 60 * 24 // Cookie wil expire after 1 day
-  }
-}))
-
-//  Routes  //
-
 // create a GET route
 app.get('/backend', (req, res) => {
   res.send({ express: 'YOUR EXPRESS BACKEND IS CONNECTED TO REACT' });
 });
 
-app.post('/login', (req, res) => {
-  let loginData = {};
+app.post('/register', (req, res) => {
+  let registerData = {};
 
   //  Request login
   let reqData = JSON.parse(req.headers.data)
-  RequestLogin(reqData.email, reqData.password)
+
+  let userEmail = reqData.email;
+  let userUsername = reqData.username;
+  let userPassword = reqData.password;
+
+  //  Log-in registered user
+  RequestRegisterFromWebapi(userEmail, userUsername, userPassword)
+    .catch(err => console.log(err))
+    .then((res) => {
+
+      //  User data from webapi
+      let userRegistered = res.data.Registered;
+
+      if (userRegistered) {
+        LogInUser(userEmail, userPassword)
+          .then(() => {
+            // Confirm that the user 
+          })
+          .catch(err => console.log(err));
+      }
+      else {
+        //  Cannot register user
+      }
+    })
+})
+
+const RequestRegisterFromWebapi = (username, email, password) => {
+  //  Send login request to webapi
+  return axios({
+    hostname: 'localhost',
+    port: 5000,
+    url: 'http://localhost:5000/api/Parent/GetRegisterConfirmation',
+    method: 'POST',
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Content-Type': 'application/json',
+
+      //  Send the recived  user data to the webapi
+      'username': username,
+      'email': email,
+      'password': password,
+    }
+  })
+}
+
+//  TODO: FINISH REGISTER AND LOGIN!!!!
+app.post('/login', (req, res) => {
+  let loginData = {};
+
+  //  Request login with the given email and password
+  RequestLoginFromWebapi(email, password)
     .catch(err => console.log(err))
     .then((res) => {
 
@@ -91,16 +124,14 @@ app.post('/login', (req, res) => {
           res.status(200).end(JSON.stringify(loginData))
         })
     })
-
-
-
-
-  //  Get username and id
-  //  Get children for that parent 
 })
 
 
-const RequestLogin = (email, password) => {
+const LogInUser = async (email, password) => {
+
+}
+
+const RequestLoginFromWebapi = (email, password) => {
   //  Send login request to webapi
   return axios({
     hostname: 'localhost',
