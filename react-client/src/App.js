@@ -358,6 +358,7 @@ const App = () => {
 		setCurrentChild(JSON.parse(localStorage.getItem('currentChild')));
 	}, [])
 
+	
 
 	useEffect(() => {
 		//	Disconnect the user if the localstorage is empty
