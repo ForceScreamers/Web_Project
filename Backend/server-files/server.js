@@ -52,18 +52,13 @@ app.post('/register', (req, res) => {
     .catch(err => console.log(err))
     .then((res) => {
 
-      //  User data from webapi
-      let userRegistered = res.data.Registered;
-
-      if (userRegistered) {
+      if (res.data.Registered) {
         LogInUser(userEmail, userPassword)
-          .then(() => {
-            // Confirm that the user 
-          })
           .catch(err => console.log(err));
       }
       else {
         //  Cannot register user
+        console.log("Cannot register user");
       }
     })
 })
@@ -89,10 +84,18 @@ const RequestRegisterFromWebapi = (username, email, password) => {
 
 //  TODO: FINISH REGISTER AND LOGIN!!!!
 app.post('/login', (req, res) => {
+  let reqData = JSON.parse(req.headers.data)
+
+  //  Log the user
+  LogInUser(reqData.email, reqData.password);
+})
+
+
+const LogInUser = async (email, password) => {
   let loginData = {};
 
   //  Request login with the given email and password
-  RequestLoginFromWebapi(email, password)
+  return RequestLoginFromWebapi(email, password)
     .catch(err => console.log(err))
     .then((res) => {
 
@@ -124,11 +127,6 @@ app.post('/login', (req, res) => {
           res.status(200).end(JSON.stringify(loginData))
         })
     })
-})
-
-
-const LogInUser = async (email, password) => {
-
 }
 
 const RequestLoginFromWebapi = (email, password) => {
