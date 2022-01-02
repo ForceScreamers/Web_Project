@@ -77,7 +77,6 @@ C:\Users\Administrator\Desktop\Web_Project\WebsiteApi\DAL\ParentDal\bin\Debug\ne
 C:\Users\Administrator\Desktop\Web_Project\WebsiteApi\DAL\ParentDal\bin\Debug\netcoreapp3.1\runtimes\osx\lib\netcoreapp3.1\System.Data.Odbc.dll
 C:\Users\Administrator\Desktop\Web_Project\WebsiteApi\DAL\ParentDal\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp3.1\System.Data.Odbc.dll
 C:\Users\Administrator\Desktop\Web_Project\WebsiteApi\DAL\ParentDal\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp3.1\System.Text.Encoding.CodePages.dll
-C:\Users\Administrator\Desktop\Web_Project\WebsiteApi\DAL\ParentDal\obj\Debug\netcoreapp3.1\ParentDal.csproj.AssemblyReference.cache
 C:\Users\Administrator\Desktop\Web_Project\WebsiteApi\DAL\ParentDal\obj\Debug\netcoreapp3.1\ParentDal.AssemblyInfoInputs.cache
 C:\Users\Administrator\Desktop\Web_Project\WebsiteApi\DAL\ParentDal\obj\Debug\netcoreapp3.1\ParentDal.AssemblyInfo.cs
 C:\Users\Administrator\Desktop\Web_Project\WebsiteApi\DAL\ParentDal\obj\Debug\netcoreapp3.1\ParentDal.csproj.CoreCompileInputs.cache
