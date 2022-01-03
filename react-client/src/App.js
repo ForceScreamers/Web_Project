@@ -59,9 +59,21 @@ const ENABLE_LOGIN = true;//! Used for debugging
 
 
 
-const RequestRegister = async () => {
+const RequestRegister = async (userData) => {
 	// Register req
 	console.log("Requesting reg...")
+
+	//	Encode the username
+	userData.username = utf8.encode(userData.username)
+
+	return axios({
+		method: 'post',
+		url: "http://localhost:5001/register",
+		timeout: REQUEST_TIMEOUT_LENGTH,
+		headers: {
+			data: JSON.stringify(userData),
+		}
+	})
 }
 
 const RequestLogin = async (userData) => {

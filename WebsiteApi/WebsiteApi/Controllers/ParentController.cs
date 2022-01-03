@@ -21,47 +21,47 @@ namespace WebsiteApi.Controllers
     [Microsoft.AspNetCore.Mvc.Route("api/[controller]/[action]")]
     public class ParentController : Controller
     {
-        //int result = ParentMethods.AddParent("Username", "Email", "1234", "10/10/2000");
 
         [Microsoft.AspNetCore.Mvc.HttpPost]
-        [Microsoft.AspNetCore.Mvc.ActionName("GetLoginConfirmation")]
+        [Microsoft.AspNetCore.Mvc.ActionName("GetRegisterConfirmation")]
         public ContentResult GetRegisterConfirmation()
         {
-            object registeredParentInfo = null;
-            
-
-            bool userExists = false;
-
             string parentUsername = Request.Headers["username"].ToString();
             string parentEmail = Request.Headers["email"].ToString();
             string parentPassword = Request.Headers["password"].ToString();
 
             Console.WriteLine("Registering parent: {0} {1} {2}", parentUsername, parentEmail, parentPassword);
-            //string parentRegDate = DateTime.
 
-            Console.WriteLine(DateTime.Now);
-            Console.WriteLine(DateTime.Today);
-            Console.WriteLine(DateTime.UtcNow);
-
-            //try
-            //{
-            //    //ParentMethods.AddParent()
-
-            //}
-            //  Check if the email and password exist
-            //userExists = ParentMethods.IsExists(Request.Headers["email"], Request.Headers["password"]);
-            //Console.WriteLine("User exists: {0}", userExists);
-
-            //if (userExists)
-            //{
-            //    //  Get the username and id
-            //    loggedParentInfo = ParentMethods.GetParentLoggedInfo(Request.Headers["email"], Request.Headers["password"]);
-            //}
+            bool userRegistered = false;//  If the parent is registered in the system
+            bool userExists = false;//  If the user already exists in the system
 
 
-            //  Return a json object containing the username, id and login confirmation
-            //return base.Content(JsonConvert.SerializeObject(new { UserInfo = loggedParentInfo, Authenticated = userExists }), "application/json", System.Text.Encoding.UTF8);
-            return null;
+            if (ParentMethods.IsExists(Request.Headers["email"], Request.Headers["password"]) == false)
+            {
+                int result = 0;
+
+                try
+                {
+                    //  Add parent to db
+                    result = ParentMethods.AddParent(parentUsername, parentEmail, parentPassword, DateTime.Today.ToString());
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
+
+                //  If there are no errors, the parent is registered
+                userRegistered = (result == 0);
+            }
+            else
+            {
+                //  The user already exists
+                userExists = true;
+                Console.WriteLine("User exists");
+
+            }
+
+            return base.Content(JsonConvert.SerializeObject(new { Registered = userRegistered, Exists = userExists }), "application/json", System.Text.Encoding.UTF8);
         }
 
 
