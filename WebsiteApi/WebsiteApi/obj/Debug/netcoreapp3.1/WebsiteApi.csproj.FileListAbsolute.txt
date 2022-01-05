@@ -145,7 +145,6 @@ C:\Users\Kfir\Desktop\Web_Project\WebsiteApi\WebsiteApi\bin\Debug\netcoreapp3.1\
 C:\Users\Kfir\Desktop\Web_Project\WebsiteApi\WebsiteApi\obj\Debug\netcoreapp3.1\WebsiteApi.csprojAssemblyReference.cache
 C:\Users\Kfir\Desktop\Web_Project\WebsiteApi\WebsiteApi\obj\Debug\netcoreapp3.1\staticwebassets\WebsiteApi.StaticWebAssets.Manifest.cache
 C:\Users\Kfir\Desktop\Web_Project\WebsiteApi\WebsiteApi\obj\Debug\netcoreapp3.1\staticwebassets\WebsiteApi.StaticWebAssets.xml
-C:\Users\Kfir\Desktop\Web_Project\WebsiteApi\WebsiteApi\obj\Debug\netcoreapp3.1\WebsiteApi.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\Kfir\Desktop\Web_Project\WebsiteApi\WebsiteApi\obj\Debug\netcoreapp3.1\WebsiteApi.AssemblyInfoInputs.cache
 C:\Users\Kfir\Desktop\Web_Project\WebsiteApi\WebsiteApi\obj\Debug\netcoreapp3.1\WebsiteApi.AssemblyInfo.cs
 C:\Users\Kfir\Desktop\Web_Project\WebsiteApi\WebsiteApi\obj\Debug\netcoreapp3.1\WebsiteApi.RazorTargetAssemblyInfo.cache
@@ -228,3 +227,8 @@ C:\Users\Administrator\Desktop\Web_Project\WebsiteApi\WebsiteApi\obj\Debug\netco
 C:\Users\Administrator\Desktop\Web_Project\WebsiteApi\WebsiteApi\obj\Debug\netcoreapp3.1\WebsiteApi.dll
 C:\Users\Administrator\Desktop\Web_Project\WebsiteApi\WebsiteApi\obj\Debug\netcoreapp3.1\WebsiteApi.pdb
 C:\Users\Administrator\Desktop\Web_Project\WebsiteApi\WebsiteApi\obj\Debug\netcoreapp3.1\WebsiteApi.genruntimeconfig.cache
+C:\Users\Kfir\Desktop\Web_Project\WebsiteApi\WebsiteApi\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Logging.dll
+C:\Users\Kfir\Desktop\Web_Project\WebsiteApi\WebsiteApi\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Tokens.dll
+C:\Users\Kfir\Desktop\Web_Project\WebsiteApi\WebsiteApi\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\Kfir\Desktop\Web_Project\WebsiteApi\WebsiteApi\bin\Debug\netcoreapp3.1\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\Kfir\Desktop\Web_Project\WebsiteApi\WebsiteApi\obj\Debug\netcoreapp3.1\WebsiteApi.MvcApplicationPartsAssemblyInfo.cache

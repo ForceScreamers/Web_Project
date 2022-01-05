@@ -21,6 +21,7 @@ import Home from './main-pages/Home';
 
 //import AuthenticatedRoute from "./components/ProtectedRoute";
 import { ProtectedRoute } from './components/ProtectedRoute'
+import { PublicRoute } from './components/PublicRoute'
 
 import axios from 'axios';
 
@@ -59,17 +60,34 @@ const ENABLE_LOGIN = true;//! Used for debugging
 
 
 
-const RequestRegister = async () => {
+const RequestRegister = async (userData) => {
 	// Register req
 	console.log("Requesting reg...")
+
+	//	Encode the username
+	userData.username = utf8.encode(userData.username)
+
+	return axios({
+		method: 'POST',
+		url: "http://localhost:5000/UserRegister",
+		timeout: REQUEST_TIMEOUT_LENGTH,
+		headers: {
+			data: JSON.stringify(userData),
+		}
+	})
 }
 
 const RequestLogin = async (userData) => {
+	console.log("dhtrghzertdfx")
 	return axios({
-		method: 'post',
-		url: "http://localhost:5001/login",
+		method: 'POST',
+		hostname: 'localhost',
+		url: "http://localhost:5000/api/Parent/Test",
+		port: 5000,
 		timeout: REQUEST_TIMEOUT_LENGTH,
 		headers: {
+			'Access-Control-Allow-Origin': '*',
+			'Content-Type': 'application/json',
 			data: JSON.stringify(userData),
 		}
 	})
@@ -251,47 +269,43 @@ const App = () => {
 		};
 		//!	Note, i'm sending the confirm password too
 
-
-		//!	THE BUG IS IN THE STATE AND THAT IT TAKES TOO LONG FOR THE STATE TO UPDATE
-		//! CHECK "REACT WAIT FOR STATE UPDATE"
 		console.log("Form valid: " + formValid)
 		if (formValid) {//	If the form is valid (Writing here !valid because the validation works the opposite way)
 
-			RequestRegister(userData)
-				.catch(err => console.log(err))
-				.then((response) => {
+			let hasRegistered = await RequestRegister(userData);
+			if (hasRegistered) {
+				console.log(hasRegistered);
 
-					if (response) {
-						console.log(response);
+				//	If the user is authorized
+				if (hasRegistered.data.registered === true) {
 
-						//	If the user is authorized
-						if (response.data.authorized === true) {
+					//	Set localstorage items and states
+					localStorage.setItem("token", hasRegistered.data.token);
+					localStorage.setItem("userId", hasRegistered.data.userId);
+					localStorage.setItem("username", hasRegistered.data.username);
+					setUsername(localStorage.getItem("username"));
 
-							//	Set localstorage items and states
-							localStorage.setItem("token", response.data.token);
-							localStorage.setItem("userId", response.data.userId);
-							localStorage.setItem("username", response.data.username);
-							setUsername(localStorage.getItem("username"));
+					localStorage.setItem("children", JSON.stringify(hasRegistered.data.children));
 
-							localStorage.setItem("children", JSON.stringify(response.data.children));
+					let children = JSON.parse(localStorage.getItem("children"));
+					localStorage.setItem('currentChild', JSON.stringify(GetSelectedChild(children)))
 
-							let children = JSON.parse(localStorage.getItem("children"));
-							localStorage.setItem('currentChild', JSON.stringify(GetSelectedChild(children)))
+					setCurrentChild(JSON.parse(localStorage.getItem("currentChild")))
 
-							setCurrentChild(JSON.parse(localStorage.getItem("currentChild")))
-
-							//	Redirect to welcome page
-							history.push("/Welcome");
-						}
-						else {
-							//	TODO Handle user doesn't exist
-							alert("user not found");
-						}
-					}
-					else {
-						console.error("server error, maybe webapi")
-					}
-				});
+					//	Redirect to welcome page
+					history.push("/Welcome");
+				}
+				else if (hasRegistered.data.exists) {
+					alert("User already exists");
+				}
+				else {
+					//	TODO Handle user doesn't exist
+					console.error("ERROR IN REGISTER USER");
+				}
+			}
+			else {
+				console.error("server error, maybe webapi")
+			}
 		}
 	}
 
@@ -358,16 +372,9 @@ const App = () => {
 		setCurrentChild(JSON.parse(localStorage.getItem('currentChild')));
 	}, [])
 
-	
 
-	useEffect(() => {
-		//	Disconnect the user if the localstorage is empty
-		return history.listen(() => {
-			if (localStorage.length === 0 && history.location.pathname !== "/") {
-				LogoutUser();
-			}
-		})
-	}, [history])
+
+
 
 	const LogoutUser = () => {
 		localStorage.clear();
@@ -391,8 +398,8 @@ const App = () => {
 	return (
 		<div className="App" >
 
-			<Route exact path="/" component={() => <Login HandleLogin={HandleLogin} />} />
-			<Route exact path="/Register" component={() =>
+			<PublicRoute exact path="/" component={() => <Login HandleLogin={HandleLogin} />} />
+			<PublicRoute exact path="/Register" component={() =>
 				<Register
 					HandleRegister={(e, isValid) => HandleRegister(e, isValid)}
 				/>} />

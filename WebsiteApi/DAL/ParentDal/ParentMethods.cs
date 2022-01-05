@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-
+using System.Threading.Tasks; 
 
 using System.Data;
 using System.Data.Odbc;
 using DAL;
+using WebsiteApi.HelperClasses;
 
 namespace ParentDal
 {
@@ -34,7 +34,7 @@ namespace ParentDal
         /// <param name="parentEmail"></param>
         /// <param name="parentPassword"></param>
         /// <returns></returns>
-        public static object GetParentLoggedInfo(string parentEmail, string parentPassword)
+        public static LoggedParent GetParentLoggedInfo(string parentEmail, string parentPassword)
         {
             string com = "SELECT parent_id, parent_username FROM parent WHERE parent_email=? AND parent_password=?";
             OdbcParameter[] queryParameters = {
@@ -52,7 +52,8 @@ namespace ParentDal
 
             Console.WriteLine("Parent id: " + parentId);
             Console.WriteLine("Parent username: " + parentUsername);
-            return new { username = parentUsername, id = parentId };
+
+            return new LoggedParent(parentUsername, parentId);
         }
 
         public static int DeleteParent(int parentId)

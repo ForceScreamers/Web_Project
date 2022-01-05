@@ -8,6 +8,7 @@ const axios = require('axios');
 const app = express();
 
 const jwt = require('jsonwebtoken');
+const { response } = require('express');
 
 // Check environment variable
 const PORT = /*process.env.PORT ||*/ 5001;
@@ -17,6 +18,11 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json());
 app.use(express.static('src'))
 app.use(cors())
+
+//  TODO: Remove node server ?
+//  TODO: Remove node server ?
+//  TODO: Remove node server ?
+//  TODO: Remove node server ?
 
 
 //  Listen on a port
@@ -38,30 +44,44 @@ app.get('/backend', (req, res) => {
 });
 
 app.post('/register', (req, res) => {
-  let registerData = {};
 
-  //  Request login
   let reqData = JSON.parse(req.headers.data)
 
   let userEmail = reqData.email;
   let userUsername = reqData.username;
   let userPassword = reqData.password;
 
-  //  Log-in registered user
-  RequestRegisterFromWebapi(userEmail, userUsername, userPassword)
-    .catch(err => console.log(err))
-    .then((res) => {
-
-      if (res.data.Registered) {
-        LogInUser(userEmail, userPassword)
-          .catch(err => console.log(err));
-      }
-      else {
-        //  Cannot register user
-        console.log("Cannot register user");
-      }
+  RegisterUser(userEmail, userUsername, userPassword)
+    .then((registerResponse) => {
+      console.log(registerResponse);
+      res.status(200).end(JSON.stringify(registerResponse))
     })
 })
+
+const RegisterUser = async (email, username, password) => {
+  let registerResponse = await RequestRegisterFromWebapi(email, username, password);
+  console.log(registerResponse)
+  let userRegistered = registerResponse.data.Registered;
+  let userExists = registerResponse.data.Exists;
+  let loginData;
+
+  if (userRegistered === true && userExists === false) {
+    loginData = await LogInUser(email, password);
+    loginData.registered = userRegistered;
+    loginData.exists = userExists;
+  }
+  else {
+    // ! Error registering the user
+    console.log("Cannot register user");
+  }
+
+  console.log(loginData);
+
+
+  return loginData;
+
+  //  TODO: return the user data , if the use already exists and if the user is registered
+}
 
 const RequestRegisterFromWebapi = (username, email, password) => {
   //  Send login request to webapi
@@ -86,47 +106,46 @@ const RequestRegisterFromWebapi = (username, email, password) => {
 app.post('/login', (req, res) => {
   let reqData = JSON.parse(req.headers.data)
 
-  //  Log the user
-  LogInUser(reqData.email, reqData.password);
+  //  Log the user and return the login data as a response
+  LogInUser(reqData.email, reqData.password)
+    .then((loginResponse) => {
+      console.log(loginResponse);
+      res.status(200).end(JSON.stringify(loginResponse))
+    })
 })
 
-
+/**
+ * Calls login from webapi
+ * Returns the login data (username, user id and the children of that user)
+ */
 const LogInUser = async (email, password) => {
-  let loginData = {};
+  //  Log the user and return the login data as a response
 
-  //  Request login with the given email and password
-  return RequestLoginFromWebapi(email, password)
-    .catch(err => console.log(err))
-    .then((res) => {
+  let apiResponse = await RequestLoginFromWebapi(email, password);
 
-      //  User data from webapi
-      let userInfo = res.data.UserInfo;
-      let userAuthenticated = res.data.Authenticated;
+  //  User data from webapi
+  let userInfo = apiResponse.data.UserInfo;
+  let userAuthenticated = apiResponse.data.Authenticated;
 
-      //  Token instance
-      //TODO: change secret to .env variable
-      const token = jwt.sign({}, "secret", {
-        expiresIn: 300, // 5 Min
-      })
+  console.log(apiResponse);
 
-      loginData = {
-        authorized: userAuthenticated,
-        token: token,
-        username: userInfo.username, // User information from server (just need username and id)
-        userId: userInfo.id, // User information from server (just need username and id)
-      }
-    })
-    .then(() => {
-      GetChildren(loginData.userId)
-        .catch(err => console.log(err))
-        .then((res) => {
-          loginData.children = res.data;
-          console.log(loginData)
-        })
-        .then(() => {
-          res.status(200).end(JSON.stringify(loginData))
-        })
-    })
+  //  Token instance
+  //TODO: change secret to .env variable
+  const token = jwt.sign({}, "secret", {
+    expiresIn: 300, // 5 Min
+  })
+
+  let loginData = {
+    authorized: userAuthenticated,
+    token: token,
+    username: userInfo.username, // User information from server (just need username and id)
+    userId: userInfo.id, // User information from server (just need username and id)
+  }
+
+  let apiResonse = await GetChildren(loginData.userId);
+
+  loginData.children = apiResonse.data;
+  return loginData;
 }
 
 const RequestLoginFromWebapi = (email, password) => {
@@ -163,8 +182,7 @@ const GetChildren = (parentId) => {
   })
 }
 
-
-
+//  TODO: Clear console logs
 const verifyJWT = (req, res, next) => {
 
   const token = req.headers["x-access-token"];//Grab token
@@ -191,13 +209,11 @@ const verifyJWT = (req, res, next) => {
   }
 }
 
-
 app.get('/is-auth', verifyJWT, (req, res) => {
   console.log("OK")
 
   res.json({ isAuth: true }).status(200).end();
 });
-
 
 app.post('/add-child', (req, res) => {
   //  Axios request to webapi
@@ -247,8 +263,6 @@ app.get('/get-children-for-parent', (req, res) => {
     .then((response) => {
       res.status(200).end(JSON.stringify(response.data))
     })
-
-
 });
 
 app.get('/get-current-child-name', (req, res) => {
@@ -272,9 +286,7 @@ app.get('/get-current-child-name', (req, res) => {
       console.log(response.data);
       res.status(200).end(JSON.stringify(response.data))
     })
-
 });
-
 
 app.get('/delete-child', (req, res) => {
   let reqData = JSON.parse(req.headers.data)
@@ -299,7 +311,6 @@ app.get('/delete-child', (req, res) => {
       res.status(200).end(JSON.stringify(response.data))
     })
 })
-
 
 app.post('/select-child', (req, res) => {
   let reqData = JSON.parse(req.headers.data);
