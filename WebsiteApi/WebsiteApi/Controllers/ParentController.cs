@@ -15,13 +15,14 @@ using Newtonsoft.Json;
 using System.Data;
 using WMS.Models.VM;
 using WebsiteApi.HelperClasses;
+
+//	--- To remove ---
 using Microsoft.AspNetCore.Cors;
 //using Microsoft.AspNet.WebApi.Core;
 
 namespace WebsiteApi.Controllers
 {
 	[ApiController]
-	//[EnableCors("CorsPolicy")]
 	[Microsoft.AspNetCore.Mvc.Route("api/[controller]/[action]")]
 
 	public class ParentController : Controller
@@ -34,10 +35,10 @@ namespace WebsiteApi.Controllers
 		[Microsoft.AspNetCore.Mvc.ActionName("UserRegister")]
 		public ContentResult UserRegister()
 		{
+
 			string parentUsername = Request.Headers["username"].ToString();
 			string parentEmail = Request.Headers["email"].ToString();
 			string parentPassword = Request.Headers["password"].ToString();
-
 			Console.WriteLine("Registering parent: {0} {1} {2}", parentUsername, parentEmail, parentPassword);
 
 			bool userRegistered = false;//  If the parent is registered in the system
@@ -67,18 +68,26 @@ namespace WebsiteApi.Controllers
 				Console.WriteLine("User exists");
 			}
 
-			return base.Content(JsonConvert.SerializeObject(new { Registered = userRegistered, UserExists = userExists }), "application/json", System.Text.Encoding.UTF8);
+			return base.Content(JsonConvert.SerializeObject(
+				new 
+					{ 
+						Registered = userRegistered, 
+						UserExists = userExists,
+						Children = userRegistered 
+							? GetChildrenForParent( ParentMethods.GetParentLoggedInfo(Request.Headers["email"], Request.Headers["password"]).Id) 
+							: null,
+					}
+				), "application/json", System.Text.Encoding.UTF8);
 		}
 
 
 		//	Checks if the user exists in the database
-		//	Generates token for the user
 		//	Returns information about the user
 		[Microsoft.AspNetCore.Mvc.HttpPost]
 		[Microsoft.AspNetCore.Mvc.ActionName("UserLogin")]
 		public ContentResult UserLogin()
 		{
-			LoggedParent loggedParent = new LoggedParent();
+			ParentInfo loggedParent = new ParentInfo();
 			//  Get email and password from the request 
 			Console.WriteLine("Email: " + Request.Headers["email"]);
 			Console.WriteLine("Password: " + Request.Headers["password"]);
@@ -97,7 +106,7 @@ namespace WebsiteApi.Controllers
 				loggedParent.AddChildren(GetChildrenForParent(loggedParent.Id));
 			}
 
-			//TokenManager.GenerateToken(loggedParent.Username);
+			//	TODO: Return username, id and children 
 			return base.Content(JsonConvert.SerializeObject(new { ParentInfo = loggedParent, UserExists = userExists }));
 			//  Return a json object containing the username, id and login confirmation
 			//return base.Content(JsonConvert.SerializeObject(new { UserInfo = loggedParentInfo, Authenticated = userExists }), "application/json", System.Text.Encoding.UTF8);
@@ -110,15 +119,23 @@ namespace WebsiteApi.Controllers
 		public ContentResult AddChild()
 		{
 			Child newChild = new Child(ConvertToUnicode(Request.Headers["childName"]), int.Parse(Request.Headers["childAge"]));
+			int parentId = int.Parse(Request.Headers["parentId"]);
 
 			bool childAddConfirm = false;
 			try
 			{
 				//  Add child to database
-				newChild.Id = ChildMethods.AddChild(int.Parse(Request.Headers["parentId"]), int.Parse(Request.Headers["childAge"]), ConvertToUnicode(Request.Headers["childName"]));
+				newChild.Id = ChildMethods.AddChild(parentId, int.Parse(Request.Headers["childAge"]), ConvertToUnicode(Request.Headers["childName"]));
 				Console.Write("Added child, id: {0}", newChild.Id);
 
 				childAddConfirm = true;
+
+				//  If no child is selected, select the first one
+				if (IsNoChildSelectedForParent(parentId))
+				{
+					ChildMethods.SelectChild(GetFirstChildId(parentId));
+					Console.WriteLine("Switching child...");
+				}
 			}
 			catch (Exception e)
 			{
@@ -127,55 +144,9 @@ namespace WebsiteApi.Controllers
 
 			//	TODO: Check if you really need to return info
 			return base.Content(JsonConvert.SerializeObject(new { confirmed = childAddConfirm, name = ConvertToUnicode(Request.Headers["childName"]), age = int.Parse(Request.Headers["childAge"]), id = newChild.Id }), "application/json", System.Text.Encoding.UTF8);
+		
+		
 		}
-		#endregion
-
-		public List<Child> GetChildrenForParent(int parentId)
-		{
-			Console.WriteLine("Getting children for parent {0}", parentId);
-			DataTable children = ChildMethods.GetChildrenForParent(parentId);
-
-			children.Columns["child_name"].ColumnName = "name";
-			children.Columns["child_id"].ColumnName = "id";
-			children.Columns["child_age"].ColumnName = "age";
-			children.Columns["child_is_selected"].ColumnName = "isSelected";
-
-			//  Return children as a json object
-			return ChildrenDataTableToObject(children);
-		}
-        //[Microsoft.AspNetCore.Mvc.HttpPost]
-        //[Microsoft.AspNetCore.Mvc.ActionName("GetChildrenForParent")]
-        //public ContentResult GetChildrenForParent()
-        //{
-        //    Console.WriteLine("Sending children...");
-        //    DataTable children = ChildMethods.GetChildrenForParent(int.Parse(Request.Headers["parentId"]));
-        //    children.Columns["child_name"].ColumnName = "name";
-        //    children.Columns["child_id"].ColumnName = "id";
-        //    children.Columns["child_age"].ColumnName = "age";
-        //    children.Columns["child_is_selected"].ColumnName = "isSelected";
-
-        //    //  Return children as a json object
-        //    return base.Content(JsonConvert.SerializeObject(children), "application/json", Encoding.UTF8;
-        //}
-
-        private List<Child> ChildrenDataTableToObject(DataTable childrenDt)
-		{
-			List<Child> children = new List<Child>();
-
-			foreach(DataRow row in childrenDt.Rows)
-			{
-				//  Convering child properties
-				string childName = row.ItemArray[1].ToString();
-				int childId = int.Parse(row.ItemArray[2].ToString());
-				int childAge = int.Parse(row.ItemArray[0].ToString());
-				bool childIsSelected = bool.Parse(row.ItemArray[3].ToString());
-			   
-				children.Add(new Child(childName, childAge, childIsSelected, childId));
-				Console.WriteLine(children[children.Count - 1].ToString());
-			}
-
-			return children;
-		} 
 
 		[Microsoft.AspNetCore.Mvc.HttpPost]
 		[Microsoft.AspNetCore.Mvc.ActionName("DeleteChild")]
@@ -205,6 +176,51 @@ namespace WebsiteApi.Controllers
 			//  Return the deleted child id
 			return base.Content(JsonConvert.SerializeObject(new { DeletedChildId = childId }), "application/json", System.Text.Encoding.UTF8);
 		}
+
+		[Microsoft.AspNetCore.Mvc.HttpPost]
+		[Microsoft.AspNetCore.Mvc.ActionName("GetChildren")]
+		public ContentResult GetChildren()
+		{
+			//  Return children as a json object
+			return base.Content(JsonConvert.SerializeObject(GetChildrenForParent(int.Parse(Request.Headers["parentId"]))), "application/json", Encoding.UTF8);
+		}
+		#endregion
+
+		public List<Child> GetChildrenForParent(int parentId)
+		{
+			Console.WriteLine("Getting children for parent {0}", parentId);
+			DataTable children = ChildMethods.GetChildrenForParent(parentId);
+
+			children.Columns["child_name"].ColumnName = "name";
+			children.Columns["child_id"].ColumnName = "id";
+			children.Columns["child_age"].ColumnName = "age";
+			children.Columns["child_is_selected"].ColumnName = "isSelected";
+
+			return ChildrenDataTableToObject(children);
+		}
+
+		
+
+		private List<Child> ChildrenDataTableToObject(DataTable childrenDt)
+		{
+			List<Child> children = new List<Child>();
+
+			foreach(DataRow row in childrenDt.Rows)
+			{
+				//  Convering child properties
+				string childName = row.ItemArray[1].ToString();
+				int childId = int.Parse(row.ItemArray[2].ToString());
+				int childAge = int.Parse(row.ItemArray[0].ToString());
+				bool childIsSelected = bool.Parse(row.ItemArray[3].ToString());
+			   
+				children.Add(new Child(childName, childAge, childIsSelected, childId));
+				Console.WriteLine(children[children.Count - 1].ToString());
+			}
+
+			return children;
+		} 
+
+		
 
 		/// <summary>
 		/// Returns true if no child is selected (for the given parent), false otherwise

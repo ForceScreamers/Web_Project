@@ -57,19 +57,22 @@ app.post('/register', (req, res) => {
     }
   })
     .then((apiRegisterResponse) => {
-      console.log(apiRegisterResponse)
+      let registerInfo = {
+        registered: apiRegisterResponse.data.Registered,
+        userExists: apiRegisterResponse.data.UserExists,
+      }
+      console.log(registerInfo);
 
-      if (apiRegisterResponse.data.Registered === true && apiRegisterResponse.data.Exists === false) {
-        //  Generate token
-        const token = jwt.sign({}, "secret", {
+      //  If the user was registered and doesn't exists in the system
+      if (registerInfo.registered === true && registerInfo.userExists === false) {
+
+        //  Generate token and add to info
+        registerInfo.token = jwt.sign({}, "secret", {
           expiresIn: 300, // 5 Min
-        })
-
-        //  Add to response
-        apiRegisterResponse.token = token;
+        });
       }
 
-      res.end(JSON.stringify(loginResponse))
+      res.end(JSON.stringify(registerInfo));
     })
 })
 
@@ -94,33 +97,28 @@ app.post('/login', (req, res) => {
   })
     .catch(err => console.log(err))
     .then((apiResponse) => {
-      //  Token instance
-      const token = jwt.sign({}, "secret", {
-        expiresIn: 300, // 5 Min
-      })
 
-      //  Add token to api response
-      console.log(apiResponse)
-      apiResponse.token = token;
+      //  Extract login info from the api response
+      loginInfo = {
+        username: apiResponse.data.ParentInfo.Username,
+        id: apiResponse.data.ParentInfo.Id,
+        children: apiResponse.data.ParentInfo.Children,
+        userExists: apiResponse.data.UserExists,
 
-      res.status(200).end(JSON.stringify(apiResponse))
+        //  Generate token
+        token: jwt.sign({}, "secret", {
+          expiresIn: 300, // 5 Min
+        })
+      }
+      console.log(loginInfo)
+
+      res.status(200).end(JSON.stringify(loginInfo))
     })
 })
 
 const GetChildren = (parentId) => {
   //  Get the children from the webapi
-  return axios({
-    hostname: 'localhost',
-    port: 5000,
-    url: 'http://localhost:5000/api/Parent/GetChildrenForParent',
-    method: 'POST',
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Content-Type': 'application/json',
-
-      parentId: parentId
-    }
-  })
+  return
 }
 
 //  TODO: Clear console logs
@@ -161,16 +159,13 @@ app.post('/add-child', (req, res) => {
   let status = 200;
 
   let reqData = JSON.parse(req.headers.data)
-  //console.log(reqData);
-  //console.log("Child name decoded: " + utf8.decode(reqData.childName))
-  //console.log("Child name encoded: " + reqData.childName)
 
   //  Send login request to webapi
   axios({
     hostname: 'localhost',
     port: 5000,
-    url: 'http://localhost:5000/api/Parent/GetAddChildConfirmation',
-    method: 'GET',
+    url: 'http://localhost:5000/api/Parent/AddChild',
+    method: 'POST',
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Content-Type': 'application/json',
@@ -199,9 +194,23 @@ app.post('/add-child', (req, res) => {
 })
 
 app.get('/get-children-for-parent', (req, res) => {
-  let reqData = JSON.parse(req.headers.data)
-  GetChildren(reqData)
+  let parentId = JSON.parse(req.headers.data)
+  console.log(parentId);
+  axios({
+    hostname: 'localhost',
+    port: 5000,
+    url: 'http://localhost:5000/api/Parent/GetChildren',
+    method: 'POST',
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Content-Type': 'application/json',
+
+      parentId: parentId
+    }
+  })
+    .catch(err => console.log(err))
     .then((response) => {
+      console.log(response);
       res.status(200).end(JSON.stringify(response.data))
     })
 });
@@ -235,8 +244,8 @@ app.get('/delete-child', (req, res) => {
   axios({
     hostname: 'localhost',
     port: 5000,
-    url: 'http://localhost:5000/api/Parent/GetDeleteChild',
-    method: 'GET',
+    url: 'http://localhost:5000/api/Parent/DeleteChild',
+    method: 'POST',
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Content-Type': 'application/json',
@@ -254,6 +263,7 @@ app.get('/delete-child', (req, res) => {
 })
 
 app.post('/select-child', (req, res) => {
+  console.log(req.headers);
   let reqData = JSON.parse(req.headers.data);
 
   axios({
@@ -265,7 +275,7 @@ app.post('/select-child', (req, res) => {
       'Access-Control-Allow-Origin': '*',
       'Content-Type': 'application/json',
 
-      childId: reqData.childId
+      childId: reqData
     }
   })
     .catch(err => console.log(err))

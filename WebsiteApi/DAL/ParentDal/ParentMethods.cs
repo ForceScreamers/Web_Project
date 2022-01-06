@@ -34,7 +34,7 @@ namespace ParentDal
         /// <param name="parentEmail"></param>
         /// <param name="parentPassword"></param>
         /// <returns></returns>
-        public static LoggedParent GetParentLoggedInfo(string parentEmail, string parentPassword)
+        public static ParentInfo GetParentLoggedInfo(string parentEmail, string parentPassword)
         {
             string com = "SELECT parent_id, parent_username FROM parent WHERE parent_email=? AND parent_password=?";
             OdbcParameter[] queryParameters = {
@@ -53,7 +53,7 @@ namespace ParentDal
             Console.WriteLine("Parent id: " + parentId);
             Console.WriteLine("Parent username: " + parentUsername);
 
-            return new LoggedParent(parentUsername, parentId);
+            return new ParentInfo(parentUsername, parentId);
         }
 
         public static int DeleteParent(int parentId)

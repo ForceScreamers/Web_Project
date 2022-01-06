@@ -69,7 +69,7 @@ const RequestRegister = async (userData) => {
 
 	return axios({
 		method: 'POST',
-		url: "http://localhost:5000/UserRegister",
+		url: "http://localhost:5001/register",
 		timeout: REQUEST_TIMEOUT_LENGTH,
 		headers: {
 			data: JSON.stringify(userData),
@@ -113,7 +113,7 @@ const AddchildInputValidation = (input) => {
 
 // * React app component
 const App = () => {
-	const [currentChild, setCurrentChild] = useState('no name');
+	const [currentChild, setCurrentChild] = useState(undefined);
 	const [username, setUsername] = useState('no username');
 	//const history = useHistory();
 	let history = useHistory();
@@ -121,10 +121,13 @@ const App = () => {
 	/**Gets the children belonging to the logged parent
 	 * Set current children profiles to the matching children
 	 */
-	const LoadChildrenFromServer = () => {
+	const LoadChildrenFromServer = (e) => {
+		e.preventDefault();
+
 		let parentId = JSON.parse(localStorage.getItem('userId'));
 
 		//!HERE
+		console.log(parentId);
 		if (parentId) {
 			axios({
 				method: 'get',
@@ -139,6 +142,7 @@ const App = () => {
 					if (res) {
 						localStorage.setItem('children', JSON.stringify(res.data));
 						let children = JSON.parse(localStorage.getItem('children'));
+						console.log(children);
 
 						localStorage.setItem('currentChild', JSON.stringify(GetSelectedChild(children)))
 						setCurrentChild(JSON.parse(localStorage.getItem('currentChild')));
@@ -147,15 +151,20 @@ const App = () => {
 		}
 	}
 
+	const SetCurrentChildInLocalstorage = () => {
+
+	}
+
 	const GetSelectedChild = (childrenArray) => {
 		let tempArray = childrenArray;
 		let child = undefined;
 
 		tempArray.forEach((tempChild) => {
-			if (tempChild.isSelected) {
+			if (tempChild.IsSelected) {
 				child = tempChild;
 			}
 		});
+		console.log(child);
 
 		return child;
 	}
@@ -164,22 +173,25 @@ const App = () => {
 	 * Changes the selected child from edit profile to the current child
 	 * Used to keep track of progress for this child
 	 */
-	const HandleSelectChild = (childToSelect) => {
+	const HandleSelectChild = (e, childToSelect) => {
+		e.preventDefault();
+
+		console.log(childToSelect)
 		axios({
 			method: 'post',
 			url: "http://localhost:5001/select-child",
 			timeout: REQUEST_TIMEOUT_LENGTH,
 			headers: {
-				data: JSON.stringify({ childId: childToSelect.id })
+				data: JSON.stringify(childToSelect.Id)
 			}
 		})
 			.catch(err => console.log(err))
 			.then((response) => {
 				//TODO: Get correct response, it's adding just need to change it inside the client
-
+				console.log(response)
 				if (response.data.IsSelected) {//	The child was selected in the database 
 					//	Change the current child
-					LoadChildrenFromServer();
+					LoadChildrenFromServer(e);
 				}
 				else {
 					console.error("SOMETHING WENT WRONG WITH CHILD SELECT");
@@ -188,7 +200,6 @@ const App = () => {
 
 
 	}
-
 
 
 
@@ -209,54 +220,48 @@ const App = () => {
 			password: "1234",
 		};
 
-		if (ENABLE_LOGIN) {
-			if (ValidateLoginInput(userData)) {
+		if (ValidateLoginInput(userData)) {
 
-				//TODO: Deal with unable to connect
-				RequestLogin(userData)
-					.catch(err => console.log(err))
-					.then((response) => {
+			//TODO: Deal with unable to connect
+			RequestLogin(userData)
+				.catch(err => console.log(err))
+				.then((response) => {
 
-						if (response) {
-							console.log(response);
+					if (response) {
+						console.log(response);
 
-							//	If the user is authorized
-							if (response.data.authorized === true) {
+						//	If the user is authorized
+						if (response.data.userExists === true) {
 
-								//	Set localstorage items and states
-								localStorage.setItem("token", response.data.token);
-								localStorage.setItem("userId", response.data.userId);
-								localStorage.setItem("username", response.data.username);
-								setUsername(localStorage.getItem("username"));
+							//	Set localstorage items and states
+							localStorage.setItem("token", response.data.token);
+							localStorage.setItem("userId", response.data.id);
+							localStorage.setItem("username", response.data.username);
+							setUsername(localStorage.getItem("username"));
 
-								localStorage.setItem("children", JSON.stringify(response.data.children));
+							localStorage.setItem("children", JSON.stringify(response.data.children));
 
-								let children = JSON.parse(localStorage.getItem("children"));
-								localStorage.setItem('currentChild', JSON.stringify(GetSelectedChild(children)))
+							let children = JSON.parse(localStorage.getItem("children"));
+							localStorage.setItem('currentChild', JSON.stringify(GetSelectedChild(children)))
 
-								setCurrentChild(JSON.parse(localStorage.getItem("currentChild")))
+							setCurrentChild(JSON.parse(localStorage.getItem("currentChild")))
 
-								//	Redirect to welcome page
-								history.push("/Welcome");
-							}
-							else {
-								//	TODO Handle user doesn't exist
-								alert("user not found");
-							}
+							//	Redirect to welcome page
+							history.push("/Welcome");
 						}
 						else {
-							console.error("server error, maybe webapi")
+							//	TODO Handle user doesn't exist
+							alert("user not found");
 						}
-					});
-			}
-		}
-		else {
-			//! FOR DEBUGGING	//
-			console.warn("Login disabled")
-			//setIsAuth(true)
-			history.push('/Welcome')
+					}
+					else {
+						console.error("server error, maybe webapi")
+					}
+				});
 		}
 	}
+
+
 
 	const HandleRegister = async (e, formValid) => {
 		e.preventDefault();
@@ -272,30 +277,37 @@ const App = () => {
 		console.log("Form valid: " + formValid)
 		if (formValid) {//	If the form is valid (Writing here !valid because the validation works the opposite way)
 
-			let hasRegistered = await RequestRegister(userData);
-			if (hasRegistered) {
-				console.log(hasRegistered);
+			let response = await RequestRegister(userData);
+			if (response) {
+				console.log(response);
 
 				//	If the user is authorized
-				if (hasRegistered.data.registered === true) {
+				if (response.data.registered === true) {
 
-					//	Set localstorage items and states
-					localStorage.setItem("token", hasRegistered.data.token);
-					localStorage.setItem("userId", hasRegistered.data.userId);
-					localStorage.setItem("username", hasRegistered.data.username);
-					setUsername(localStorage.getItem("username"));
+					//	Log in the newly registered user
+					//? Check properties
+					RequestLogin(userData)
+						.then((loginResponse) => {
+							console.log(loginResponse)
+							//	Set localstorage items and states
+							localStorage.setItem("token", loginResponse.data.token);
+							localStorage.setItem("userId", loginResponse.data.id);
+							localStorage.setItem("username", loginResponse.data.username);
+							setUsername(localStorage.getItem("username"));
 
-					localStorage.setItem("children", JSON.stringify(hasRegistered.data.children));
+							//localStorage.setItem("children", JSON.stringify(loginResponse.data.children));
+							//SetChildrenToLocalstorage(loginResponse.data.children);
+							//let children = JSON.parse(localStorage.getItem("children"));
+							//	localStorage.setItem('currentChild', JSON.stringify(GetSelectedChild(children)))
 
-					let children = JSON.parse(localStorage.getItem("children"));
-					localStorage.setItem('currentChild', JSON.stringify(GetSelectedChild(children)))
+							//if()
+							//setCurrentChild(JSON.parse(localStorage.getItem("currentChild")))
 
-					setCurrentChild(JSON.parse(localStorage.getItem("currentChild")))
-
-					//	Redirect to welcome page
-					history.push("/Welcome");
+							//	Redirect to welcome page
+							history.push("/Welcome");
+						});
 				}
-				else if (hasRegistered.data.exists) {
+				else if (response.data.userExists) {
 					alert("User already exists");
 				}
 				else {
@@ -309,7 +321,18 @@ const App = () => {
 		}
 	}
 
-	const HandleDeleteChild = (childId) => {
+	const SetChildrenToLocalstorage = (children) => {
+		if (children.length > 0) {
+			localStorage.setItem("children", JSON.stringify(children));
+		}
+		else {
+			localStorage.setItem("children", JSON.stringify([]));
+			localStorage.setItem("currentChild", JSON.stringify({}));
+		}
+		console.log(localStorage)
+	}
+
+	const HandleDeleteChild = (e, childId) => {
 		// Get the delete confirmation from the server then delete 
 		//	the child from the state array
 		axios({
@@ -326,7 +349,7 @@ const App = () => {
 			.then((response) => {
 				//TODO: User verify delete child
 
-				LoadChildrenFromServer();
+				LoadChildrenFromServer(e);
 			})
 	}
 
@@ -356,10 +379,10 @@ const App = () => {
 				.catch(err => console.log(err))
 
 				.then((response) => {//	Get confirmation that the child was added
-
+					console.log(response);
 					//	Response will be HasAddedChild
 					if (response) {
-						LoadChildrenFromServer();
+						LoadChildrenFromServer(e);
 					}
 					else { console.log("No response from server") }
 				})
@@ -369,7 +392,13 @@ const App = () => {
 	useEffect(() => {
 		//	Load username and current child
 		setUsername(localStorage.getItem('username'));
+		console.log(localStorage.getItem('currentChild'));
+
 		setCurrentChild(JSON.parse(localStorage.getItem('currentChild')));
+
+		// if (localStorage.getItem('currentChild') === undefined) {
+		// 	setCurrentChild(JSON.parse(localStorage.getItem('currentChild')));
+		// }
 	}, [])
 
 

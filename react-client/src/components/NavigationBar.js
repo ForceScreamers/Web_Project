@@ -9,7 +9,10 @@ import { NavBarContext } from '../NavBarContext'
 
 function NavigationBar() {
   const LogoutUser = useContext(LogoutContext);
+
+  //  If there's no child
   const currentChildNameFromContext = useContext(NavBarContext).child.name;
+
   const usernameFromContext = useContext(NavBarContext).username;
 
 

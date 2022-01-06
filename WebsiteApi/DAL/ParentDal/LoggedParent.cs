@@ -38,24 +38,26 @@ namespace WebsiteApi.HelperClasses
         }
     }
 
-    public class LoggedParent
+    public class ParentInfo
     {
         public string Username { get; set; }
         public int Id { get; set; }
-        public List<Child> Children { get; }
-        public void AddChildren(List<Child> children)
+        public List<Child> Children { get; private set; }
+        public void AddChildren(List<Child> childrenToAdd)
         {
-            Children.Concat(children);
+            //  Concatenate the given list to this prop's list
+            foreach(Child child in childrenToAdd) { Children.Add(child); }
         }
 
-        public LoggedParent()
+
+        public ParentInfo()
         {
             Username = "DEFAULT USERNAME";
             Id = -1;
             Children = new List<Child>();
         }
 
-        public LoggedParent(string username, int id)
+        public ParentInfo(string username, int id)
         {
             Username = username;
             Id = id;

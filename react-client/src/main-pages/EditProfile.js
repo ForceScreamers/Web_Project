@@ -13,6 +13,7 @@ function EditProfile({ HandleSelectChild, HandleDeleteChild, HandleAddChild }) {
 
 
   useEffect(() => {
+    console.log(childrenProfiles)
     setChildrenProfiles(JSON.parse(localStorage.getItem('children')));
   }, [])
 
@@ -25,6 +26,7 @@ function EditProfile({ HandleSelectChild, HandleDeleteChild, HandleAddChild }) {
             <Col>
 
               {
+
                 childrenProfiles != undefined//  If there are no children
 
                   //  i - index inside the state array, using it because react wants to use it...

@@ -1,4 +1,5 @@
 import { Card, CloseButton, Button } from 'react-bootstrap'
+import '../components-styles/button-styles.scss'
 function ChildCard({ HandleSelectChild, HandleDeleteChild, ChildProfile }) {
 
   return (
@@ -14,19 +15,20 @@ function ChildCard({ HandleSelectChild, HandleDeleteChild, ChildProfile }) {
 
         <Card.Body>
           <Card.Title>
-            <CloseButton aria-label='מחיקה' onClick={() => HandleDeleteChild(ChildProfile.id)} /> {ChildProfile.name}
+            <CloseButton aria-label='מחיקה' onClick={(e) => HandleDeleteChild(e, ChildProfile.Id)} /> {ChildProfile.Name}
 
             <Button
+              className='test-class'
               // disabled={isSelected ? "true" : "false"}
-              disabled={ChildProfile.isSelected}
-              onClick={() => HandleSelectChild(ChildProfile)} variant="primary"
+              disabled={ChildProfile.IsSelected}
+              onClick={(e) => HandleSelectChild(e, ChildProfile)} variant="primary"
             >
-              {ChildProfile.isSelected ? "ילד נוכחי" : "בחר ילד"}
+              {ChildProfile.IsSelected ? "ילד נוכחי" : "בחר ילד"}
             </Button>
 
           </Card.Title>
           <Card.Text>
-            {"גיל: " + ChildProfile.age}
+            {"גיל: " + ChildProfile.Age}
           </Card.Text>
 
 

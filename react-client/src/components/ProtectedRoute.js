@@ -12,8 +12,6 @@ export const ProtectedRoute = ({ component: Component, ...rest }) => {
   let history = useHistory();
 
   return (
-
-
     <Suspense fallback={<h1 > Loading...</h1 >}>
       <Route {...rest} render={
         (props) => {
