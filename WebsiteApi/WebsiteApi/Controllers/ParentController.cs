@@ -21,7 +21,7 @@ using Microsoft.AspNetCore.Cors;
 namespace WebsiteApi.Controllers
 {
 	[ApiController]
-	[EnableCors("CorsPolicy")]
+	//[EnableCors("CorsPolicy")]
 	[Microsoft.AspNetCore.Mvc.Route("api/[controller]/[action]")]
 
 	public class ParentController : Controller
@@ -67,24 +67,13 @@ namespace WebsiteApi.Controllers
 				Console.WriteLine("User exists");
 			}
 
-			return base.Content(JsonConvert.SerializeObject(new { Registered = userRegistered, Exists = userExists }), "application/json", System.Text.Encoding.UTF8);
+			return base.Content(JsonConvert.SerializeObject(new { Registered = userRegistered, UserExists = userExists }), "application/json", System.Text.Encoding.UTF8);
 		}
 
 
 		//	Checks if the user exists in the database
 		//	Generates token for the user
 		//	Returns information about the user
-		//[EnableCors("CorsPolicy")]
-
-		[EnableCors("CorsPolicy")]
-		[Microsoft.AspNetCore.Mvc.HttpPost]
-		[Microsoft.AspNetCore.Mvc.ActionName("Test")]
-
-		public ContentResult Test()
-		{
-			return base.Content(JsonConvert.SerializeObject(new { Test = true }));
-		}
-
 		[Microsoft.AspNetCore.Mvc.HttpPost]
 		[Microsoft.AspNetCore.Mvc.ActionName("UserLogin")]
 		public ContentResult UserLogin()
@@ -108,8 +97,8 @@ namespace WebsiteApi.Controllers
 				loggedParent.AddChildren(GetChildrenForParent(loggedParent.Id));
 			}
 
-			TokenManager.GenerateToken(loggedParent.Username);
-			return base.Content(JsonConvert.SerializeObject(loggedParent));
+			//TokenManager.GenerateToken(loggedParent.Username);
+			return base.Content(JsonConvert.SerializeObject(new { ParentInfo = loggedParent, UserExists = userExists }));
 			//  Return a json object containing the username, id and login confirmation
 			//return base.Content(JsonConvert.SerializeObject(new { UserInfo = loggedParentInfo, Authenticated = userExists }), "application/json", System.Text.Encoding.UTF8);
 		}
@@ -154,35 +143,35 @@ namespace WebsiteApi.Controllers
 			//  Return children as a json object
 			return ChildrenDataTableToObject(children);
 		}
-		//[Microsoft.AspNetCore.Mvc.HttpPost]
-		//[Microsoft.AspNetCore.Mvc.ActionName("GetChildrenForParent")]
-		//public ContentResult GetChildrenForParent()
-		//{
-		//    Console.WriteLine("Sending children...");
-		//    DataTable children = ChildMethods.GetChildrenForParent(int.Parse(Request.Headers["parentId"]));
-		//    children.Columns["child_name"].ColumnName = "name";
-		//    children.Columns["child_id"].ColumnName = "id";
-		//    children.Columns["child_age"].ColumnName = "age";
-		//    children.Columns["child_is_selected"].ColumnName = "isSelected";
+        //[Microsoft.AspNetCore.Mvc.HttpPost]
+        //[Microsoft.AspNetCore.Mvc.ActionName("GetChildrenForParent")]
+        //public ContentResult GetChildrenForParent()
+        //{
+        //    Console.WriteLine("Sending children...");
+        //    DataTable children = ChildMethods.GetChildrenForParent(int.Parse(Request.Headers["parentId"]));
+        //    children.Columns["child_name"].ColumnName = "name";
+        //    children.Columns["child_id"].ColumnName = "id";
+        //    children.Columns["child_age"].ColumnName = "age";
+        //    children.Columns["child_is_selected"].ColumnName = "isSelected";
 
-		//    //  Return children as a json object
-		//   return base.Content(JsonConvert.SerializeObject(children), "application/json", Encoding.UTF8;
-		//}
+        //    //  Return children as a json object
+        //    return base.Content(JsonConvert.SerializeObject(children), "application/json", Encoding.UTF8;
+        //}
 
-		private List<Child> ChildrenDataTableToObject(DataTable childrenDt)
+        private List<Child> ChildrenDataTableToObject(DataTable childrenDt)
 		{
 			List<Child> children = new List<Child>();
 
 			foreach(DataRow row in childrenDt.Rows)
 			{
 				//  Convering child properties
-				string childName = row["child_name"].ToString();
-				int childId = int.Parse(row["child_id"].ToString());
-				int childAge = int.Parse(row["child_age"].ToString());
-				bool childIsSelected = int.Parse(row["child_is_selected"].ToString()) == -1;
+				string childName = row.ItemArray[1].ToString();
+				int childId = int.Parse(row.ItemArray[2].ToString());
+				int childAge = int.Parse(row.ItemArray[0].ToString());
+				bool childIsSelected = bool.Parse(row.ItemArray[3].ToString());
 			   
 				children.Add(new Child(childName, childAge, childIsSelected, childId));
-				Console.WriteLine(children[children.Count].ToString());
+				Console.WriteLine(children[children.Count - 1].ToString());
 			}
 
 			return children;

@@ -232,3 +232,7 @@ C:\Users\Kfir\Desktop\Web_Project\WebsiteApi\WebsiteApi\bin\Debug\netcoreapp3.1\
 C:\Users\Kfir\Desktop\Web_Project\WebsiteApi\WebsiteApi\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.JsonWebTokens.dll
 C:\Users\Kfir\Desktop\Web_Project\WebsiteApi\WebsiteApi\bin\Debug\netcoreapp3.1\System.IdentityModel.Tokens.Jwt.dll
 C:\Users\Kfir\Desktop\Web_Project\WebsiteApi\WebsiteApi\obj\Debug\netcoreapp3.1\WebsiteApi.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\Administrator\Desktop\Web_Project\WebsiteApi\WebsiteApi\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\Administrator\Desktop\Web_Project\WebsiteApi\WebsiteApi\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Logging.dll
+C:\Users\Administrator\Desktop\Web_Project\WebsiteApi\WebsiteApi\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Tokens.dll
+C:\Users\Administrator\Desktop\Web_Project\WebsiteApi\WebsiteApi\bin\Debug\netcoreapp3.1\System.IdentityModel.Tokens.Jwt.dll

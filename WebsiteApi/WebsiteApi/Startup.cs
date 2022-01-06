@@ -27,15 +27,15 @@ namespace WebsiteApi
         {
             services.AddControllers();
 
-            // Named Policy
-            services.AddCors(options =>
-            {
-                options.AddPolicy("CorsPolicy",
-                    builder =>
-                    {
-                        builder.WithOrigins("http://localhost:3000");
-                    });
-            });
+            //// Named Policy
+            //services.AddCors(options =>
+            //{
+            //    options.AddPolicy("CorsPolicy",
+            //        builder =>
+            //        {
+            //            builder.WithOrigins("http://localhost:3000");
+            //        });
+            //});
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,7 +49,7 @@ namespace WebsiteApi
             app.UseRouting();
 
             //  My cors auth
-            app.UseCors();
+            //app.UseCors();
 
             app.UseAuthorization();
 

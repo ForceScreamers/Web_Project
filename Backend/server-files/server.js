@@ -19,11 +19,6 @@ app.use(bodyParser.json());
 app.use(express.static('src'))
 app.use(cors())
 
-//  TODO: Remove node server ?
-//  TODO: Remove node server ?
-//  TODO: Remove node server ?
-//  TODO: Remove node server ?
-
 
 //  Listen on a port
 /*let server =*/ app.listen(PORT, () => {
@@ -44,127 +39,73 @@ app.get('/backend', (req, res) => {
 });
 
 app.post('/register', (req, res) => {
-
   let reqData = JSON.parse(req.headers.data)
 
-  let userEmail = reqData.email;
-  let userUsername = reqData.username;
-  let userPassword = reqData.password;
-
-  RegisterUser(userEmail, userUsername, userPassword)
-    .then((registerResponse) => {
-      console.log(registerResponse);
-      res.status(200).end(JSON.stringify(registerResponse))
-    })
-})
-
-const RegisterUser = async (email, username, password) => {
-  let registerResponse = await RequestRegisterFromWebapi(email, username, password);
-  console.log(registerResponse)
-  let userRegistered = registerResponse.data.Registered;
-  let userExists = registerResponse.data.Exists;
-  let loginData;
-
-  if (userRegistered === true && userExists === false) {
-    loginData = await LogInUser(email, password);
-    loginData.registered = userRegistered;
-    loginData.exists = userExists;
-  }
-  else {
-    // ! Error registering the user
-    console.log("Cannot register user");
-  }
-
-  console.log(loginData);
-
-
-  return loginData;
-
-  //  TODO: return the user data , if the use already exists and if the user is registered
-}
-
-const RequestRegisterFromWebapi = (username, email, password) => {
-  //  Send login request to webapi
-  return axios({
+  axios({
     hostname: 'localhost',
     port: 5000,
-    url: 'http://localhost:5000/api/Parent/GetRegisterConfirmation',
+    url: 'http://localhost:5000/api/Parent/UserRegister',
     method: 'POST',
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Content-Type': 'application/json',
 
       //  Send the recived  user data to the webapi
-      'username': username,
-      'email': email,
-      'password': password,
+      'username': reqData.username,
+      'email': reqData.email,
+      'password': reqData.password,
     }
   })
-}
+    .then((apiRegisterResponse) => {
+      console.log(apiRegisterResponse)
 
+      if (apiRegisterResponse.data.Registered === true && apiRegisterResponse.data.Exists === false) {
+        //  Generate token
+        const token = jwt.sign({}, "secret", {
+          expiresIn: 300, // 5 Min
+        })
+
+        //  Add to response
+        apiRegisterResponse.token = token;
+      }
+
+      res.end(JSON.stringify(loginResponse))
+    })
+})
+
+//TODO: change secret to .env variable
 //  TODO: FINISH REGISTER AND LOGIN!!!!
 app.post('/login', (req, res) => {
   let reqData = JSON.parse(req.headers.data)
 
-  //  Log the user and return the login data as a response
-  LogInUser(reqData.email, reqData.password)
-    .then((loginResponse) => {
-      console.log(loginResponse);
-      res.status(200).end(JSON.stringify(loginResponse))
-    })
-})
-
-/**
- * Calls login from webapi
- * Returns the login data (username, user id and the children of that user)
- */
-const LogInUser = async (email, password) => {
-  //  Log the user and return the login data as a response
-
-  let apiResponse = await RequestLoginFromWebapi(email, password);
-
-  //  User data from webapi
-  let userInfo = apiResponse.data.UserInfo;
-  let userAuthenticated = apiResponse.data.Authenticated;
-
-  console.log(apiResponse);
-
-  //  Token instance
-  //TODO: change secret to .env variable
-  const token = jwt.sign({}, "secret", {
-    expiresIn: 300, // 5 Min
-  })
-
-  let loginData = {
-    authorized: userAuthenticated,
-    token: token,
-    username: userInfo.username, // User information from server (just need username and id)
-    userId: userInfo.id, // User information from server (just need username and id)
-  }
-
-  let apiResonse = await GetChildren(loginData.userId);
-
-  loginData.children = apiResonse.data;
-  return loginData;
-}
-
-const RequestLoginFromWebapi = (email, password) => {
-  //  Send login request to webapi
-  return axios({
+  axios({
     hostname: 'localhost',
     port: 5000,
-    url: 'http://localhost:5000/api/Parent/GetLoginConfirmation',
-    method: 'GET',
+    url: 'http://localhost:5000/api/Parent/UserLogin',
+    method: 'POST',
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Content-Type': 'application/json',
 
       //  Send the recived  user data to the webapi
-      'email': email,
-      'password': password,
+      'email': reqData.email,
+      'password': reqData.password,
     }
   })
-}
+    .catch(err => console.log(err))
+    .then((apiResponse) => {
+      //  Token instance
+      const token = jwt.sign({}, "secret", {
+        expiresIn: 300, // 5 Min
+      })
+
+      //  Add token to api response
+      console.log(apiResponse)
+      apiResponse.token = token;
+
+      res.status(200).end(JSON.stringify(apiResponse))
+    })
+})
 
 const GetChildren = (parentId) => {
   //  Get the children from the webapi
