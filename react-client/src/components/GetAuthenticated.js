@@ -45,7 +45,7 @@ const GetIsAuth = async () => {
     url: "http://localhost:5001/is-auth",
     timeout: 2000,
     headers: {
-      "x-access-token": localStorage.getItem('token'),
+      "x-access-token": sessionStorage.getItem('token'),
     }
   }).then(res => res.data.isAuth)
 }

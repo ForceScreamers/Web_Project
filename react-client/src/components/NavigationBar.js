@@ -11,9 +11,10 @@ function NavigationBar() {
   const LogoutUser = useContext(LogoutContext);
 
   //  If there's no child
-  const currentChildNameFromContext = useContext(NavBarContext).child.name;
-
+  console.log(useContext(NavBarContext))
+  //const currentChildNameFromContext = useContext(NavBarContext).child.Name;
   const usernameFromContext = useContext(NavBarContext).username;
+  const currentChildFromContext = useContext(NavBarContext).child;
 
 
   const S_CURRENT_CHILD = "ילד נוכחי";
@@ -26,7 +27,8 @@ function NavigationBar() {
           <Navbar.Brand href="/Home">כפתור בית</Navbar.Brand>
           <Navbar.Brand> מחובר בתור: {usernameFromContext}</Navbar.Brand>
           <Navbar.Brand>
-            {currentChildNameFromContext === undefined ? S_NO_CHILD_SELECTED : `${S_CURRENT_CHILD}:${currentChildNameFromContext}`}
+            {/* {currentChildNameFromContext.length === 0 ? S_NO_CHILD_SELECTED : `${S_CURRENT_CHILD}:${currentChildNameFromContext}`} */}
+            {currentChildFromContext === null ? S_NO_CHILD_SELECTED : `${S_CURRENT_CHILD}:${currentChildFromContext.Name}`}
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">

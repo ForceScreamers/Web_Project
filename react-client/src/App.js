@@ -111,9 +111,10 @@ const AddchildInputValidation = (input) => {
 }
 
 
+
 // * React app component
 const App = () => {
-	const [currentChild, setCurrentChild] = useState(undefined);
+	const [currentChild, setCurrentChild] = useState({});
 	const [username, setUsername] = useState('no username');
 	//const history = useHistory();
 	let history = useHistory();
@@ -124,7 +125,7 @@ const App = () => {
 	const LoadChildrenFromServer = (e) => {
 		e.preventDefault();
 
-		let parentId = JSON.parse(localStorage.getItem('userId'));
+		let parentId = JSON.parse(sessionStorage.getItem('userId'));
 
 		//!HERE
 		console.log(parentId);
@@ -140,19 +141,20 @@ const App = () => {
 				.catch(err => console.log(err))
 				.then(res => {
 					if (res) {
-						localStorage.setItem('children', JSON.stringify(res.data));
-						let children = JSON.parse(localStorage.getItem('children'));
-						console.log(children);
-
-						localStorage.setItem('currentChild', JSON.stringify(GetSelectedChild(children)))
-						setCurrentChild(JSON.parse(localStorage.getItem('currentChild')));
+						sessionStorage.setItem('children', JSON.stringify(res.data));
+						let children = JSON.parse(sessionStorage.getItem('children'));
+						if (children.length === 0) {
+							console.log(children);
+							setCurrentChild(null);
+							sessionStorage.setItem('currentChild', 'null')
+						}
+						else {
+							sessionStorage.setItem('currentChild', JSON.stringify(GetSelectedChild(children)))
+							setCurrentChild(JSON.parse(sessionStorage.getItem('currentChild')));
+						}
 					}
 				})
 		}
-	}
-
-	const SetCurrentChildInLocalstorage = () => {
-
 	}
 
 	const GetSelectedChild = (childrenArray) => {
@@ -164,7 +166,7 @@ const App = () => {
 				child = tempChild;
 			}
 		});
-		console.log(child);
+		console.log(childrenArray);
 
 		return child;
 	}
@@ -197,8 +199,6 @@ const App = () => {
 					console.error("SOMETHING WENT WRONG WITH CHILD SELECT");
 				}
 			})
-
-
 	}
 
 
@@ -233,18 +233,20 @@ const App = () => {
 						//	If the user is authorized
 						if (response.data.userExists === true) {
 
-							//	Set localstorage items and states
-							localStorage.setItem("token", response.data.token);
-							localStorage.setItem("userId", response.data.id);
-							localStorage.setItem("username", response.data.username);
-							setUsername(localStorage.getItem("username"));
+							//	Set sessionStorage items and states
+							sessionStorage.setItem("token", response.data.token);
+							sessionStorage.setItem("userId", response.data.id);
+							sessionStorage.setItem("username", response.data.username);
+							setUsername(sessionStorage.getItem("username"));
 
-							localStorage.setItem("children", JSON.stringify(response.data.children));
 
-							let children = JSON.parse(localStorage.getItem("children"));
-							localStorage.setItem('currentChild', JSON.stringify(GetSelectedChild(children)))
+							LoadChildrenFromServer(e)
+							// sessionStorage.setItem("children", JSON.stringify(response.data.children));
 
-							setCurrentChild(JSON.parse(localStorage.getItem("currentChild")))
+							// let children = JSON.parse(sessionStorage.getItem("children"));
+							// sessionStorage.setItem('currentChild', JSON.stringify(GetSelectedChild(children)))
+
+							// setCurrentChild(JSON.parse(sessionStorage.getItem("currentChild")))
 
 							//	Redirect to welcome page
 							history.push("/Welcome");
@@ -289,19 +291,21 @@ const App = () => {
 					RequestLogin(userData)
 						.then((loginResponse) => {
 							console.log(loginResponse)
-							//	Set localstorage items and states
-							localStorage.setItem("token", loginResponse.data.token);
-							localStorage.setItem("userId", loginResponse.data.id);
-							localStorage.setItem("username", loginResponse.data.username);
-							setUsername(localStorage.getItem("username"));
+							//	Set sessionStorage items and states
+							sessionStorage.setItem("token", loginResponse.data.token);
+							sessionStorage.setItem("userId", loginResponse.data.id);
+							sessionStorage.setItem("username", loginResponse.data.username);
+							setUsername(sessionStorage.getItem("username"));
 
-							//localStorage.setItem("children", JSON.stringify(loginResponse.data.children));
-							//SetChildrenToLocalstorage(loginResponse.data.children);
-							//let children = JSON.parse(localStorage.getItem("children"));
-							//	localStorage.setItem('currentChild', JSON.stringify(GetSelectedChild(children)))
+							//LoadChildrenFromServer(e);
+							// let childrenFromResponse = response.data.children;
+							// sessionStorage.setItem('children', JSON.stringify(childrenFromResponse));
 
-							//if()
-							//setCurrentChild(JSON.parse(localStorage.getItem("currentChild")))
+
+							// let children = JSON.parse(sessionStorage.getItem("children"));
+							// sessionStorage.setItem('currentChild', JSON.stringify(GetSelectedChild(children)))
+
+							// setCurrentChild(JSON.parse(sessionStorage.getItem("currentChild")))
 
 							//	Redirect to welcome page
 							history.push("/Welcome");
@@ -321,16 +325,11 @@ const App = () => {
 		}
 	}
 
-	const SetChildrenToLocalstorage = (children) => {
-		if (children.length > 0) {
-			localStorage.setItem("children", JSON.stringify(children));
+	useEffect(() => {
+		if (currentChild === undefined) {
+			//	Get child 
 		}
-		else {
-			localStorage.setItem("children", JSON.stringify([]));
-			localStorage.setItem("currentChild", JSON.stringify({}));
-		}
-		console.log(localStorage)
-	}
+	}, [currentChild])
 
 	const HandleDeleteChild = (e, childId) => {
 		// Get the delete confirmation from the server then delete 
@@ -342,7 +341,7 @@ const App = () => {
 			headers: {
 				data: JSON.stringify({
 					childId: childId,
-					parentId: JSON.parse(localStorage.getItem('userId'))
+					parentId: JSON.parse(sessionStorage.getItem('userId'))
 				})
 			}
 		}).catch(err => console.log(err))
@@ -370,7 +369,7 @@ const App = () => {
 				timeout: REQUEST_TIMEOUT_LENGTH,
 				headers: {
 					data: JSON.stringify({
-						parentId: JSON.parse(localStorage.getItem('userId')), // Will be the logged in parent id
+						parentId: JSON.parse(sessionStorage.getItem('userId')), // Will be the logged in parent id
 						childName: utf8.encode(formChildName),
 						childAge: formChildAge
 					}),
@@ -391,13 +390,16 @@ const App = () => {
 
 	useEffect(() => {
 		//	Load username and current child
-		setUsername(localStorage.getItem('username'));
-		console.log(localStorage.getItem('currentChild'));
+		setUsername(sessionStorage.getItem('username'));
+		console.log(sessionStorage.getItem('currentChild'));
+		// if (sessionStorage.getItem('currentChild') !== "undefined") {
+		// }
 
-		setCurrentChild(JSON.parse(localStorage.getItem('currentChild')));
+		setCurrentChild(JSON.parse(sessionStorage.getItem('currentChild')));
 
-		// if (localStorage.getItem('currentChild') === undefined) {
-		// 	setCurrentChild(JSON.parse(localStorage.getItem('currentChild')));
+
+		// if (sessionStorage.getItem('currentChild') === undefined) {
+		// 	setCurrentChild(JSON.parse(sessionStorage.getItem('currentChild')));
 		// }
 	}, [])
 
@@ -406,7 +408,7 @@ const App = () => {
 
 
 	const LogoutUser = () => {
-		localStorage.clear();
+		sessionStorage.clear();
 		history.replace("/");
 	}
 

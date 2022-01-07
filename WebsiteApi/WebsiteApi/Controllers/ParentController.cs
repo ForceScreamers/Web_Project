@@ -144,8 +144,6 @@ namespace WebsiteApi.Controllers
 
 			//	TODO: Check if you really need to return info
 			return base.Content(JsonConvert.SerializeObject(new { confirmed = childAddConfirm, name = ConvertToUnicode(Request.Headers["childName"]), age = int.Parse(Request.Headers["childAge"]), id = newChild.Id }), "application/json", System.Text.Encoding.UTF8);
-		
-		
 		}
 
 		[Microsoft.AspNetCore.Mvc.HttpPost]
@@ -161,7 +159,7 @@ namespace WebsiteApi.Controllers
 				ChildMethods.DeleteChild(childId);
 
 				//  If no child is selected, select the first one
-				if (IsNoChildSelectedForParent(parentId))
+				if (GetChildrenForParent(parentId).Count > 0 && IsNoChildSelectedForParent(parentId))
 				{
 					ChildMethods.SelectChild(GetFirstChildId(parentId));
 					Console.WriteLine("Switching child...");
@@ -181,25 +179,38 @@ namespace WebsiteApi.Controllers
 		[Microsoft.AspNetCore.Mvc.ActionName("GetChildren")]
 		public ContentResult GetChildren()
 		{
+			int parentId = int.Parse(Request.Headers["parentId"]);
+			//  If no child is selected, select the first one
+			if (GetChildrenForParent(parentId).Count > 0 && IsNoChildSelectedForParent(parentId))
+			{
+				ChildMethods.SelectChild(GetFirstChildId(parentId));
+				Console.WriteLine("Switching child...");
+			}
+
 			//  Return children as a json object
-			return base.Content(JsonConvert.SerializeObject(GetChildrenForParent(int.Parse(Request.Headers["parentId"]))), "application/json", Encoding.UTF8);
+			return base.Content(JsonConvert.SerializeObject(GetChildrenForParent(parentId)), "application/json", Encoding.UTF8);
 		}
 		#endregion
 
 		public List<Child> GetChildrenForParent(int parentId)
 		{
 			Console.WriteLine("Getting children for parent {0}", parentId);
-			DataTable children = ChildMethods.GetChildrenForParent(parentId);
+			DataTable childrenDt = ChildMethods.GetChildrenForParent(parentId);
+			List<Child> childrenList = ChildrenDataTableToObject(childrenDt);
 
-			children.Columns["child_name"].ColumnName = "name";
-			children.Columns["child_id"].ColumnName = "id";
-			children.Columns["child_age"].ColumnName = "age";
-			children.Columns["child_is_selected"].ColumnName = "isSelected";
+			if(childrenList.Count > 0)
+			{
 
-			return ChildrenDataTableToObject(children);
+			}
+
+			//	TODO: CHECK IF NEEDED \/ \/
+			childrenDt.Columns["child_name"].ColumnName = "name";
+			childrenDt.Columns["child_id"].ColumnName = "id";
+			childrenDt.Columns["child_age"].ColumnName = "age";
+			childrenDt.Columns["child_is_selected"].ColumnName = "isSelected";
+
+			return ChildrenDataTableToObject(childrenDt);
 		}
-
-		
 
 		private List<Child> ChildrenDataTableToObject(DataTable childrenDt)
 		{
@@ -254,6 +265,7 @@ namespace WebsiteApi.Controllers
 		/// <returns></returns>
 		private int GetFirstChildId(int parentId)
 		{
+
 			return (int)ChildMethods.GetChildrenForParent(parentId).Rows[0]["child_id"];
 		}
 

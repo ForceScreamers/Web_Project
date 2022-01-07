@@ -12,15 +12,15 @@ export const ProtectedRoute = ({ component: Component, ...rest }) => {
   let history = useHistory();
 
   return (
-    <Suspense fallback={<h1 > Loading...</h1 >}>
+    <Suspense fallback={<Component />}>
       <Route {...rest} render={
         (props) => {
           let isAuth = reasource.isAuth.read();
 
-          //  If the localstorage is clear
-          if (localStorage.length === 0 && history.location.pathname !== "/") {
+          //  If the sessionStorage is clear
+          if (sessionStorage.length === 0 && history.location.pathname !== "/") {
 
-            localStorage.clear();
+            sessionStorage.clear();
             return <Redirect to="/" />
           }
 
@@ -29,7 +29,7 @@ export const ProtectedRoute = ({ component: Component, ...rest }) => {
             return <Component {...props} />
           }
           else {
-            localStorage.clear();
+            sessionStorage.clear();
             return <Redirect to="/" />
           }
         }

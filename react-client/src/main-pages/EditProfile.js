@@ -9,12 +9,12 @@ import { useEffect, useState } from "react"
 
 function EditProfile({ HandleSelectChild, HandleDeleteChild, HandleAddChild }) {
 
-  const [childrenProfiles, setChildrenProfiles] = useState(JSON.parse(localStorage.getItem('children')))
+  const [childrenProfiles, setChildrenProfiles] = useState(JSON.parse(sessionStorage.getItem('children')))
 
 
   useEffect(() => {
     console.log(childrenProfiles)
-    setChildrenProfiles(JSON.parse(localStorage.getItem('children')));
+    setChildrenProfiles(JSON.parse(sessionStorage.getItem('children')));
   }, [])
 
   return (
