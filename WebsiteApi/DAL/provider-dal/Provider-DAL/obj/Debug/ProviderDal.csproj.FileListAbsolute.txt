@@ -1,0 +1,9 @@
+C:\Users\Kfir\Desktop\Web_Project\WebsiteApi\DAL\provider-dal\Provider-DAL\obj\Debug\ProviderDal.csprojAssemblyReference.cache
+C:\Users\Kfir\Desktop\Web_Project\WebsiteApi\DAL\provider-dal\Provider-DAL\obj\Debug\Provider-DAL.exe
+C:\Users\Kfir\Desktop\Web_Project\WebsiteApi\DAL\provider-dal\Provider-DAL\obj\Debug\Provider-DAL.pdb
+C:\Users\Kfir\Desktop\Web_Project\WebsiteApi\DAL\provider-dal\Provider-DAL\bin\Debug\Provider-DAL.exe.config
+C:\Users\Kfir\Desktop\Web_Project\WebsiteApi\DAL\provider-dal\Provider-DAL\bin\Debug\Provider-DAL.exe
+C:\Users\Kfir\Desktop\Web_Project\WebsiteApi\DAL\provider-dal\Provider-DAL\bin\Debug\Provider-DAL.pdb
+C:\Users\Kfir\Desktop\Web_Project\WebsiteApi\DAL\provider-dal\Provider-DAL\bin\Debug\System.Data.Odbc.dll
+C:\Users\Kfir\Desktop\Web_Project\WebsiteApi\DAL\provider-dal\Provider-DAL\bin\Debug\System.Data.Odbc.xml
+C:\Users\Kfir\Desktop\Web_Project\WebsiteApi\DAL\provider-dal\Provider-DAL\obj\Debug\ProviderDal.csproj.CopyComplete

@@ -54,12 +54,16 @@ app.post('/register', (req, res) => {
       'username': reqData.username,
       'email': reqData.email,
       'password': reqData.password,
+      'userType': reqData.userType,
     }
   })
     .then((apiRegisterResponse) => {
+
+
       let registerInfo = {
         registered: apiRegisterResponse.data.Registered,
         userExists: apiRegisterResponse.data.UserExists,
+        userType: apiRegisterResponse.data.UserType,
       }
       console.log(registerInfo);
 
@@ -93,6 +97,7 @@ app.post('/login', (req, res) => {
       //  Send the recived  user data to the webapi
       'email': reqData.email,
       'password': reqData.password,
+      'userType': reqData.userType,
     }
   })
     .catch(err => console.log(err))

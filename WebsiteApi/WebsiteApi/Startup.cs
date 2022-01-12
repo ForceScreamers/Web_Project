@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WebsiteApi
+namespace ParentsApi
 {
     public class Startup
     {
@@ -21,21 +21,14 @@ namespace WebsiteApi
         
         public IConfiguration Configuration { get; }
 
+        private readonly string _policyName = "CorsPolicy";
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
             services.AddControllers();
 
-            //// Named Policy
-            //services.AddCors(options =>
-            //{
-            //    options.AddPolicy("CorsPolicy",
-            //        builder =>
-            //        {
-            //            builder.WithOrigins("http://localhost:3000");
-            //        });
-            //});
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,9 +42,15 @@ namespace WebsiteApi
             app.UseRouting();
 
             //  My cors auth
-            //app.UseCors();
+            // global cors policy
+            app.UseCors(x => x
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .SetIsOriginAllowed(origin => true) // allow any origin
+                .AllowCredentials()); // allow credentials
 
             app.UseAuthorization();
+
 
             app.UseEndpoints(endpoints =>
             {

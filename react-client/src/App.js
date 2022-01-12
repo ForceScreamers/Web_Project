@@ -3,25 +3,24 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
 
-//	Import main pages
-import Login from "./main-pages/Login";
-
 import { Route, useHistory } from "react-router-dom";
 
 //	Import main pages
-import Welcome from './main-pages/Welcome';
-import Register from './main-pages/Register';
-import EditProfile from './main-pages/EditProfile';
-import Games from './main-pages/Games'
-import About from './main-pages/About';
-import Info from './main-pages/Info';
-import Avatar from './main-pages/Avatar';
-import Journal from './main-pages/Journal';
-import Home from './main-pages/Home';
+import Welcome from './Pages/GeneralPages/Welcome'
+import About from './Pages/GeneralPages/About';
+
+import ParentRegister from './Pages/ParentsPages/ParentRegister';
+import ParentLogin from './Pages/ParentsPages/ParentLogin';
+import EditProfile from './Pages/ParentsPages/EditProfile';
+import Games from './Pages/ParentsPages/Games'
+import Info from './Pages/ParentsPages/Info';
+import Avatar from './Pages/ParentsPages/Avatar';
+import Journal from './Pages/ParentsPages/Journal';
+import Home from './Pages/ParentsPages/Home';
 
 //import AuthenticatedRoute from "./components/ProtectedRoute";
-import { ProtectedRoute } from './components/ProtectedRoute'
-import { PublicRoute } from './components/PublicRoute'
+import { ProtectedRoute } from './Components/GeneralComponents/ProtectedRoute'
+import { PublicRoute } from './Components/GeneralComponents/PublicRoute'
 
 import axios from 'axios';
 
@@ -34,10 +33,10 @@ import utf8 from 'utf8';
 
 
 //	Import helper functions
-import { LogoutContext } from './LogoutContext';
+import { LogoutContext } from './Contexts/LogoutContext';
 import { ValidateLoginInput, ValidateRegisterInput } from './Project-Modules/ValidateUserInput';
 
-import { NavBarContext } from './NavBarContext';
+import { NavBarContext } from './Contexts/NavBarContext';
 
 //	#endregion
 
@@ -67,12 +66,20 @@ const RequestRegister = async (userData) => {
 	//	Encode the username
 	userData.username = utf8.encode(userData.username)
 
+	// username: e.target.registerUsernameField.value,
+	// 		email: e.target.registerEmailField.value,
+	// 		password: e.target.registerPasswordField.value,
+	// 		confirmPassword: e.target.registerPasswordConfirmField.value,
+
 	return axios({
 		method: 'POST',
-		url: "http://localhost:5001/register",
+		url: "http://localhost:5000/api/Parent/ParentRegister",
 		timeout: REQUEST_TIMEOUT_LENGTH,
 		headers: {
-			data: JSON.stringify(userData),
+			// data: JSON.stringify(userData),
+			'username': userData.username,
+			'email': userData.email,
+			'password': userData.password,
 		}
 	})
 }
@@ -82,13 +89,15 @@ const RequestLogin = async (userData) => {
 	return axios({
 		method: 'POST',
 		hostname: 'localhost',
-		url: "http://localhost:5001/login",
+		url: "http://localhost:5000/api/Parent/ParentLogin",
 		port: 5000,
 		timeout: REQUEST_TIMEOUT_LENGTH,
 		headers: {
 			'Access-Control-Allow-Origin': '*',
 			'Content-Type': 'application/json',
 			data: JSON.stringify(userData),
+			'email': userData.email,
+			'password': userData.password,
 		}
 	})
 }
@@ -111,6 +120,22 @@ const AddchildInputValidation = (input) => {
 }
 
 
+//TODO: Fix - Protected route sends 30 requests to authenticate, it needs to send one
+//TODO: Fix - Login and register response have unnessesary headers i.e. \/	\/	\/
+// Data: {
+// 		FromParent: {
+// 				ParentInfo: {
+// 					some data
+// 				},
+// 			more data
+// 		}
+// }
+//* DONE: Validate login input at client
+//TODO: Fix input validation at add child,
+//TODO: Add text to input error
+//TODO: Add errors in login and register as text to screen
+//TODO: HandleLogin and HandleRegister are too long
+//TODO: Combine contexts
 
 // * React app component
 const App = () => {
@@ -131,16 +156,18 @@ const App = () => {
 		console.log(parentId);
 		if (parentId) {
 			axios({
-				method: 'get',
-				url: "http://localhost:5001/get-children-for-parent",
+				method: 'POST',
+				url: "http://localhost:5000/api/Parent/GetChildren",
 				timeout: REQUEST_TIMEOUT_LENGTH,
 				headers: {
-					data: parentId,
+					'parentId': parentId,
 				}
 			})
 				.catch(err => console.log(err))
 				.then(res => {
 					if (res) {
+						console.log("CHILDREN:")
+						console.log(res)
 						sessionStorage.setItem('children', JSON.stringify(res.data));
 						let children = JSON.parse(sessionStorage.getItem('children'));
 						if (children.length === 0) {
@@ -181,17 +208,18 @@ const App = () => {
 		console.log(childToSelect)
 		axios({
 			method: 'post',
-			url: "http://localhost:5001/select-child",
+			url: "http://localhost:5000/api/Parent/SelectChild",
 			timeout: REQUEST_TIMEOUT_LENGTH,
 			headers: {
-				data: JSON.stringify(childToSelect.Id)
+				'childId': JSON.stringify(childToSelect.Id),
+				'parentId': sessionStorage.getItem('userId'),
 			}
 		})
 			.catch(err => console.log(err))
 			.then((response) => {
-				//TODO: Get correct response, it's adding just need to change it inside the client
-				console.log(response)
+
 				if (response.data.IsSelected) {//	The child was selected in the database 
+
 					//	Change the current child
 					LoadChildrenFromServer(e);
 				}
@@ -204,23 +232,26 @@ const App = () => {
 
 
 
-	const HandleLogin = async (e) => {
+	const HandleLogin = async (e, formValid) => {
 
 		e.preventDefault();
 
-		//! For debugging
-		// let userData = {
-		// 	email: e.target.loginEmailField.value,
-		// 	password: e.target.loginPasswordField.value,
-		// };
+		console.log(formValid);
+
+		if (formValid) {
+
+			let userData = {
+				email: e.target.loginEmailField.value,
+				password: e.target.loginPasswordField.value,
+			};
 
 
-		let userData = {
-			email: "test@test.com",
-			password: "1234",
-		};
+			//! For debugging
+			// let userData = {
+			// 	email: "test@test.com",
+			// 	password: "1234",
+			// };
 
-		if (ValidateLoginInput(userData)) {
 
 			//TODO: Deal with unable to connect
 			RequestLogin(userData)
@@ -231,22 +262,15 @@ const App = () => {
 						console.log(response);
 
 						//	If the user is authorized
-						if (response.data.userExists === true) {
+						if (response.data.FromParent.UserExists === true) {
 
 							//	Set sessionStorage items and states
 							sessionStorage.setItem("token", response.data.token);
-							sessionStorage.setItem("userId", response.data.id);
-							sessionStorage.setItem("username", response.data.username);
+							sessionStorage.setItem("userId", response.data.FromParent.ParentInfo.Id);
+							sessionStorage.setItem("username", response.data.FromParent.ParentInfo.Username);
 							setUsername(sessionStorage.getItem("username"));
 
-
 							LoadChildrenFromServer(e)
-							// sessionStorage.setItem("children", JSON.stringify(response.data.children));
-
-							// let children = JSON.parse(sessionStorage.getItem("children"));
-							// sessionStorage.setItem('currentChild', JSON.stringify(GetSelectedChild(children)))
-
-							// setCurrentChild(JSON.parse(sessionStorage.getItem("currentChild")))
 
 							//	Redirect to welcome page
 							history.push("/Welcome");
@@ -268,23 +292,25 @@ const App = () => {
 	const HandleRegister = async (e, formValid) => {
 		e.preventDefault();
 
-		let userData = {
-			username: e.target.registerUsernameField.value,
-			email: e.target.registerEmailField.value,
-			password: e.target.registerPasswordField.value,
-			confirmPassword: e.target.registerPasswordConfirmField.value,
-		};
-		//!	Note, i'm sending the confirm password too
+
 
 		console.log("Form valid: " + formValid)
 		if (formValid) {//	If the form is valid (Writing here !valid because the validation works the opposite way)
+
+			let userData = {
+				username: e.target.registerUsernameField.value,
+				email: e.target.registerEmailField.value,
+				password: e.target.registerPasswordField.value,
+				confirmPassword: e.target.registerPasswordConfirmField.value,
+			};
+			//!	Note, i'm sending the confirm password too
 
 			let response = await RequestRegister(userData);
 			if (response) {
 				console.log(response);
 
 				//	If the user is authorized
-				if (response.data.registered === true) {
+				if (response.data.Registered === true) {
 
 					//	Log in the newly registered user
 					//? Check properties
@@ -293,25 +319,13 @@ const App = () => {
 							console.log(loginResponse)
 							//	Set sessionStorage items and states
 							sessionStorage.setItem("token", loginResponse.data.token);
-							sessionStorage.setItem("userId", loginResponse.data.id);
-							sessionStorage.setItem("username", loginResponse.data.username);
+							sessionStorage.setItem("userId", loginResponse.data.FromParent.ParentInfo.Id);
+							sessionStorage.setItem("username", loginResponse.data.FromParent.ParentInfo.Username);
 							setUsername(sessionStorage.getItem("username"));
-
-							//LoadChildrenFromServer(e);
-							// let childrenFromResponse = response.data.children;
-							// sessionStorage.setItem('children', JSON.stringify(childrenFromResponse));
-
-
-							// let children = JSON.parse(sessionStorage.getItem("children"));
-							// sessionStorage.setItem('currentChild', JSON.stringify(GetSelectedChild(children)))
-
-							// setCurrentChild(JSON.parse(sessionStorage.getItem("currentChild")))
-
-							//	Redirect to welcome page
 							history.push("/Welcome");
 						});
 				}
-				else if (response.data.userExists) {
+				else if (response.data.FromParent.UserExists) {
 					alert("User already exists");
 				}
 				else {
@@ -325,24 +339,19 @@ const App = () => {
 		}
 	}
 
-	useEffect(() => {
-		if (currentChild === undefined) {
-			//	Get child 
-		}
-	}, [currentChild])
+
 
 	const HandleDeleteChild = (e, childId) => {
 		// Get the delete confirmation from the server then delete 
 		//	the child from the state array
 		axios({
-			method: 'get',
-			url: "http://localhost:5001/delete-child",
+			method: 'POST',
+			url: "http://localhost:5000/api/Parent/DeleteChild",
 			timeout: REQUEST_TIMEOUT_LENGTH,
 			headers: {
-				data: JSON.stringify({
-					childId: childId,
-					parentId: JSON.parse(sessionStorage.getItem('userId'))
-				})
+				'childId': childId,
+				'parentId': JSON.parse(sessionStorage.getItem('userId'))
+
 			}
 		}).catch(err => console.log(err))
 			.then((response) => {
@@ -353,26 +362,27 @@ const App = () => {
 	}
 
 	//  Handles child add logic
-	const HandleAddChild = (e) => {
+	const HandleAddChild = async (e, formValid) => {
 		e.preventDefault();
 
-		let formChildName = e.target.childNameField.value;
-		let formChildAge = e.target.childAgeSelect.value;
+		console.log(`Add child? ${formValid}`)
 
-		//	Validate input
-		if (AddchildInputValidation(formChildName)) {
+		if (formValid) {
+
+			let formChildName = e.target.childNameField.value;
+			let formChildAge = e.target.childAgeSelect.value;
+
+
 			//Send request to server to add child
 			axios({
 
 				method: 'post',
-				url: "http://localhost:5001/add-child",
+				url: "http://localhost:5000/api/Parent/AddChild",
 				timeout: REQUEST_TIMEOUT_LENGTH,
 				headers: {
-					data: JSON.stringify({
-						parentId: JSON.parse(sessionStorage.getItem('userId')), // Will be the logged in parent id
-						childName: utf8.encode(formChildName),
-						childAge: formChildAge
-					}),
+					'parentId': JSON.parse(sessionStorage.getItem('userId')),
+					'childName': utf8.encode(formChildName),
+					'childAge': formChildAge
 				}
 			})
 				.catch(err => console.log(err))
@@ -385,6 +395,7 @@ const App = () => {
 					}
 					else { console.log("No response from server") }
 				})
+
 		}
 	}
 
@@ -429,9 +440,12 @@ const App = () => {
 	return (
 		<div className="App" >
 
-			<PublicRoute exact path="/" component={() => <Login HandleLogin={HandleLogin} />} />
+			<PublicRoute exact path="/" component={() =>
+				<ParentLogin HandleLogin={(e, isValid) => HandleLogin(e, isValid)} />}
+			/>
+
 			<PublicRoute exact path="/Register" component={() =>
-				<Register
+				<ParentRegister
 					HandleRegister={(e, isValid) => HandleRegister(e, isValid)}
 				/>} />
 
@@ -449,7 +463,7 @@ const App = () => {
 						<EditProfile
 							HandleSelectChild={HandleSelectChild}
 							HandleDeleteChild={HandleDeleteChild}
-							HandleAddChild={HandleAddChild}
+							HandleAddChild={(e, isValid) => HandleAddChild(e, isValid)}
 						/>}
 					/>
 					<ProtectedRoute exact path="/Games" component={Games} />

@@ -44,17 +44,22 @@ namespace ParentDal
         /// </summary>
         /// <param name="childId"></param>
         /// <returns></returns>
-        public static bool SelectChild(int childId)
+        public static bool SelectChild(int childId, int parentId)
         {
             int result = -1;
             OdbcParameter[] queryParameters = {
-                new OdbcParameter("@child_id", childId)
+                new OdbcParameter("@child_id", childId),
             };
 
             //  Switch selection to the child with the given id
             try
             {
-                result = OdbcHelper.Execute("UPDATE child SET child_is_selected=0 WHERE child_is_selected=-1", new OdbcParameter[0]);
+                //  De-select the children of that parent 
+                //;
+                string updateChildQuery = "UPDATE parent INNER JOIN child ON parent.parent_id = child.parent_id SET child.child_is_selected = 0 WHERE(((parent.parent_id) =?));";
+                result = OdbcHelper.Execute(updateChildQuery, new[] { new OdbcParameter("@parent_id", parentId) });
+
+                //  Select the child with the given id
                 result = OdbcHelper.Execute("UPDATE child SET child_is_selected=-1 WHERE child_id=?", queryParameters);
             }
             catch (Exception e) { Console.WriteLine(e); }

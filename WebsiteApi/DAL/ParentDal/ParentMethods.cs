@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Data;
 using System.Data.Odbc;
 using DAL;
-using WebsiteApi.HelperClasses;
+using ParentsApi.HelperClasses;
 
 namespace ParentDal
 {

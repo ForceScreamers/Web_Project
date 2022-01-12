@@ -5,36 +5,56 @@ using System.Text;
 using System.Threading.Tasks;
 
 using System.Data;
-using System.Data.OleDb;
+using System.Data.Odbc;
 using DAL;
 
-namespace Provider_DAL
+namespace ProviderDal
 {
-    class PostMethods
+    public class PostMethods
     {
+
+        public static DataTable GetPostsForProvider(int providerId)
+        {
+            //  Select post description and topic name
+            string com ="SELECT topic.topic_name, post.post_description, provider.provider_id FROM provider INNER JOIN(topic INNER JOIN post ON topic.topic_id = post.topic_id) ON provider.provider_id = post.provider_id WHERE(((provider.provider_id) =[?]));";
+
+            OdbcParameter[] queryParameters = {
+                new OdbcParameter("@provider_id", providerId)
+            };
+            return OdbcHelper.GetTable(com, queryParameters);
+        }
         public static int AddPost(int providerId, string postDescription, int topicId, int postStatus)
         {
             string com = "INSERT INTO post (provider_id, post_description, topic_id, post_status) VALUES (@provider_id, @post_description, @topic_id, @post_status)";
 
             //  Pass as sql parameters for the parameterized query
-            OleDbParameter[] queryParameters = {
-                new OleDbParameter("@provider_id", providerId),
-                new OleDbParameter("@post_description", postDescription),
-                new OleDbParameter("@topic_id", topicId),
-                new OleDbParameter("@post_status", postStatus)
+            OdbcParameter[] queryParameters = {
+                new OdbcParameter("@provider_id", providerId),
+                new OdbcParameter("@post_description", postDescription),
+                new OdbcParameter("@topic_id", topicId),
+                new OdbcParameter("@post_status", postStatus)
             };
 
-            return oledbhelper.Execute(com, queryParameters);
+            return OdbcHelper.Execute(com, queryParameters);
         }
         public static int DeletePost(int postId)
         {
             string com = "DELETE FROM post WHERE post_id=@post_id";
-            OleDbParameter[] queryParameters = {
-                new OleDbParameter("@post_id", postId)
+            OdbcParameter[] queryParameters = {
+                new OdbcParameter("@post_id", postId)
             };
 
-            return oledbhelper.Execute(com, queryParameters);
+            return OdbcHelper.Execute(com, queryParameters);
 
+        }
+        public static int ApprovePost(int postId)
+        {
+            string com = "UPDATE post SET post_status=-1 WHERE post_id=?";
+            OdbcParameter[] queryParameters =
+            {
+                new OdbcParameter("@post_id", postId),
+            };
+            return OdbcHelper.Execute(com, queryParameters);
         }
         
     }

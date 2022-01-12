@@ -1,7 +1,7 @@
 import React from "react";
 import classnames from "classnames";
 import "./card.scss";
-import image from '../MemoryGame/images/image.jpg'
+import image from './images/image.jpg'
 
 const Card = ({ onClick, card, index, isInactive, isFlipped, isDisabled, cardType }) => {
   const handleClick = () => {

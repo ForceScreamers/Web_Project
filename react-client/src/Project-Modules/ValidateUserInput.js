@@ -18,7 +18,7 @@ function ValidateUserInput_Eng(input) {
 }
 
 //  Returns true if the input contains only hebrew characters and spaces
-function ValidateUserInput_Heb(input) {
+export function ValidateUserInput_Heb(input) {
   return ((/[\u0590-\u05FF\s]/).test(input))
 }
 
