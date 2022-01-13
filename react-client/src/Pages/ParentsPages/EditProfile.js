@@ -7,7 +7,7 @@ import { useEffect, useState } from "react"
 
 
 
-function EditProfile({ HandleSelectChild, HandleDeleteChild, HandleAddChild }) {
+export default function EditProfile({ HandleSelectChild, HandleDeleteChild, HandleAddChild }) {
 
   const [childrenProfiles, setChildrenProfiles] = useState(JSON.parse(sessionStorage.getItem('children')))
 
@@ -55,5 +55,3 @@ function EditProfile({ HandleSelectChild, HandleDeleteChild, HandleAddChild }) {
     </div>
   )
 }
-
-export default EditProfile
