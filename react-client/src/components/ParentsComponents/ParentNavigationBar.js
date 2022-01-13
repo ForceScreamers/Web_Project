@@ -20,6 +20,7 @@ export default function ParentNavigationBar() {
   const S_CURRENT_CHILD = "ילד נוכחי";
   const S_NO_CHILD_SELECTED = "לא נבחר ילד";
 
+  //TODO: Fix collapse or navbar width when resizing the window
   return (
     <div dir="rtl" >
       <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">

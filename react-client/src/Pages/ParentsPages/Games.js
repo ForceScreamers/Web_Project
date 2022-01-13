@@ -3,8 +3,11 @@ import MemoryGame from "../../Games/MemoryGame/MemoryGame";
 import ParentMainPage from "../../Components/ParentsComponents/ParentMainPage"
 import GamePreviewCard from "../../Components/GeneralComponents/GamesComponents/GamePreviewCard";
 import Img from '../../images/download.jpg'
+import GamePreviewCardsGrid from "../../Components/GeneralComponents/GamesComponents/GamePreviewCardsGrid";
 
 export default function Games() {
+
+  const GAMES = ['', '', '', '', '', ''];
 
   return (
     <div>
@@ -12,10 +15,11 @@ export default function Games() {
 
         <h1>Games</h1>
 
-        <GamePreviewCard Name="משחק הזיכרון" Description="תיאור" PreviewImage={Img} />
+        {/* <GamePreviewCardsGrid /> */}
+        {/* <GamePreviewCard Name="משחק הזיכרון" Description="תיאור" PreviewImage={Img} /> */}
 
 
-        <MemoryGame />
+        {/* <MemoryGame /> */}
       </ParentMainPage>
     </div>
   )
