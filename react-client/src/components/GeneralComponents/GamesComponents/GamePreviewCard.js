@@ -1,24 +1,46 @@
-import { Card, Button } from "react-bootstrap";
+import { Card, Button, Container, Accordion } from "react-bootstrap";
+import { useHistory } from "react-router-dom";
+import CustomAccordionToggle from "./CustomAccordionToggle"
 
+export default function GamePreviewCard({ Name, PreviewImage, Description, Game }) {
 
-export default function GamePreviewCard({ Name, PreviewImage, Description }) {
+  const history = useHistory();
+
+  const HandleGameClick = () => {
+    history.push("/")
+  }
+
   return (
     <div>
       {/*//TODO: FINISH CARD STYLES*/}
-      <Card >
+      <Accordion>
+        <Card bg='light'>
+          <Card.Header className='d-flex align-items-center justify-content-center '>
+            <Card.Img src={PreviewImage} />
+          </Card.Header>
+          <Card.Body  >
+            <Card.Title>{Name + " "}</Card.Title>
 
-        <Card.Img variant='top' src={PreviewImage} />
-        <Card.Body className='d-flex flex-column align-items-start justify-content-start' >
-          <Card.Title>{Name}</Card.Title>
-          <Button className='' size="sm" >שחק!</Button>
+            <div className="d-grid text-center p-1">
+              <Button variant="success" size="sm" >שחק!</Button>
+            </div>
 
-          <Button size="sm">עוד פרטים</Button>
-          <Card.Text>היי פה כתוב עוד פרטים איזה</Card.Text>
+            <div className='d-flex flex-column align-items-start justify-content-start'>
+              <CustomAccordionToggle variant="link" eventKey="0" size="sm">עוד פרטים</CustomAccordionToggle>
+            </div>
 
 
-        </Card.Body>
-      </Card>
+          </Card.Body>
 
+          <Accordion.Collapse eventKey="0">
+            <Card.Footer>
+              פה יהיו עוד פרטים על המשחק! אההההההההההההההההההההההההההההההההההההה
+            </Card.Footer>
+          </Accordion.Collapse>
+
+
+        </Card>
+      </Accordion>
       {/* <Card>
         <Card.Img variant="top" src="holder.js/100px160" />
         <Card.Body>

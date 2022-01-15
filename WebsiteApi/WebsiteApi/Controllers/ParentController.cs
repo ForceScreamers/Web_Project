@@ -51,7 +51,7 @@ namespace ParentsApi.Controllers
 			return base.Content(JsonConvert.SerializeObject(new
 			{
 				FromParent = ParentHelperFunctions.ParentLogin(Request.Headers["email"].ToString(), Request.Headers["password"].ToString()),
-				token = JwtManager.GenerateToken(Request.Headers["email"].ToString(), 10/*CHANGE TO CONSTANT*/),
+				token = AuthController.GetToken(Request.Headers["email"].ToString()),
 			}));
 		}
 

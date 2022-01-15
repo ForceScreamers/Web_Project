@@ -9,13 +9,13 @@ export default function GamePreviewCardsGrid({ PreviewCards }) {
 
   return (
     <div >
-      <Container fluid="sm">
-        <Row>
+      <Container fluid="sm" className="p-5">
+        <Row className="gy-4">
           {
-            [0, 1, 2, 3, 4].map((card, index) => {
+            PreviewCards.map((card, index) => {
               return (
-                <Col xs='3'>
-                  <GamePreviewCard key={index} Name={card} Description="תיאור" PreviewImage={Img} />
+                <Col md='4'>
+                  <GamePreviewCard key={index} Name={card.gameName} Description="תיאור" PreviewImage={Img} />
                 </Col>
               )
             })

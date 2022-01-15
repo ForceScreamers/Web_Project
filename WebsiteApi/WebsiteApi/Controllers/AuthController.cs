@@ -14,6 +14,27 @@ namespace ParentsApi.Controllers
 	[Microsoft.AspNetCore.Mvc.Route("api/[controller]/[action]")]
 	public class AuthController : Controller
     {
+		
+
+		[Microsoft.AspNetCore.Mvc.HttpGet]
+		[Microsoft.AspNetCore.Mvc.ActionName("GetNewToken")]
+		public ContentResult GetNewToken()
+		{
+			bool isAuth = ValidateToken(Request.Headers["x-access-token"]);
+
+			return base.Content(JsonConvert.SerializeObject(new
+			{
+				IsAuth = isAuth,
+				NewToken = isAuth ? GetToken(Request.Headers["email"].ToString()) : null,
+			}));
+		}
+
+		public static string GetToken(string email)
+		{
+			return JwtManager.GenerateToken(email);
+		}
+
+
 		[Microsoft.AspNetCore.Mvc.HttpPost]
 		[Microsoft.AspNetCore.Mvc.ActionName("IsAuth")]
 		public ContentResult IsAuth()

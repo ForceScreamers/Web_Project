@@ -13,9 +13,14 @@ namespace WebApi.Jwt
         ///     var hmac = new HMACSHA256();
         ///     var key = Convert.ToBase64String(hmac.Key);
         /// </summary>
+        
+        //  Change to .env variable
         private const string Secret = "db3OIsj+BXE9NZDy0t8W3TcNekrF+2d/1sFnWG4HnV8TZY30iTOdtVWJG8abWvB1GlOgJuQZdcF2Luqm/hccMw==";
 
-        public static string GenerateToken(string username, int expireMinutes = 20)
+        private const int TOKEN_EXPIRE_MINUTES = 20;
+        private const int HOURS_TO_MINUTES = 1440;
+
+        public static string GenerateToken(string username)
         {
             var symmetricKey = Convert.FromBase64String(Secret);
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -28,7 +33,7 @@ namespace WebApi.Jwt
                             new Claim(ClaimTypes.Name, username)
                         }),
 
-                Expires = now.AddMinutes(Convert.ToInt32(expireMinutes)),
+                Expires = now.AddMinutes(Convert.ToInt32(TOKEN_EXPIRE_MINUTES * HOURS_TO_MINUTES)),
 
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(symmetricKey), SecurityAlgorithms.HmacSha256Signature)
             };

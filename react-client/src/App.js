@@ -37,6 +37,7 @@ import { LogoutContext } from './Contexts/LogoutContext';
 import { ValidateLoginInput, ValidateRegisterInput } from './Project-Modules/ValidateUserInput';
 
 import { NavBarContext } from './Contexts/NavBarContext';
+import createRoutes from './Routes';
 
 //	#endregion
 
@@ -136,6 +137,7 @@ const AddchildInputValidation = (input) => {
 //TODO: Add errors in login and register as text to screen
 //TODO: HandleLogin and HandleRegister are too long
 //TODO: Combine contexts
+//TODO: Fix when token is expired
 
 // * React app component
 const App = () => {
@@ -403,20 +405,9 @@ const App = () => {
 		//	Load username and current child
 		setUsername(sessionStorage.getItem('username'));
 		console.log(sessionStorage.getItem('currentChild'));
-		// if (sessionStorage.getItem('currentChild') !== "undefined") {
-		// }
-
 		setCurrentChild(JSON.parse(sessionStorage.getItem('currentChild')));
 
-
-		// if (sessionStorage.getItem('currentChild') === undefined) {
-		// 	setCurrentChild(JSON.parse(sessionStorage.getItem('currentChild')));
-		// }
 	}, [])
-
-
-
-
 
 	const LogoutUser = () => {
 		sessionStorage.clear();
@@ -437,7 +428,12 @@ const App = () => {
 	}, []);
 	//#endregion
 
+	//TODO: Fix routes external file
+	//const routes = createRoutes();
 	return (
+		// <div className="App">
+		// 	{routes}
+		// </div>
 		<div className="App" >
 
 			<PublicRoute exact path="/" component={() =>

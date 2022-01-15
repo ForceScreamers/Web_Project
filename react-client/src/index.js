@@ -5,9 +5,10 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter as Router } from 'react-router-dom'
 import history from './History'
+import createRoutes from './Routes';
+
 
 ReactDOM.render(
-
   <React.StrictMode>
     <Router>
       <App />

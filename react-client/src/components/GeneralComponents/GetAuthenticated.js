@@ -43,7 +43,6 @@ const wrapPromise = (promise) => {
 }
 
 const GetIsAuth = async () => {
-  console.log(sessionStorage.getItem('token'));
   return axios({
     method: 'POST',
     url: "http://localhost:5000/api/Auth/IsAuth",

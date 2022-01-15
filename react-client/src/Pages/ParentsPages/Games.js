@@ -4,10 +4,30 @@ import ParentMainPage from "../../Components/ParentsComponents/ParentMainPage"
 import GamePreviewCard from "../../Components/GeneralComponents/GamesComponents/GamePreviewCard";
 import Img from '../../images/download.jpg'
 import GamePreviewCardsGrid from "../../Components/GeneralComponents/GamesComponents/GamePreviewCardsGrid";
+import { useState } from "react";
 
 export default function Games() {
 
-  const GAMES = ['', '', '', '', '', ''];
+  const [currentGame, setCurrentGame] = useState();
+
+  //TODO: get games from db
+  const GAMES = [
+    {
+      gameName: "משחק הזיכרון",
+      game: MemoryGame,
+    },
+    {
+      gameName: "צורות",
+      game: null,
+    },
+    {
+      gameName: ""
+    },
+
+
+
+  ];
+
 
   return (
     <div>
@@ -15,7 +35,10 @@ export default function Games() {
 
         <h1>Games</h1>
 
-        {/* <GamePreviewCardsGrid /> */}
+
+        <GamePreviewCardsGrid PreviewCards={GAMES} />
+
+
         {/* <GamePreviewCard Name="משחק הזיכרון" Description="תיאור" PreviewImage={Img} /> */}
 
 
