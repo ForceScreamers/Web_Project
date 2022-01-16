@@ -1,6 +1,6 @@
 import ParentMainPage from "../../Components/ParentsComponents/ParentMainPage"
 
-function Avatar() {
+export default function AvatarPage() {
   return (
     <div>
       <ParentMainPage title='שינוי אווטאר'>
@@ -9,5 +9,3 @@ function Avatar() {
     </div>
   )
 }
-
-export default Avatar

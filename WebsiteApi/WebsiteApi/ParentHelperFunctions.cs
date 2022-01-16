@@ -16,6 +16,11 @@ namespace ParentsApi
 {
     public class ParentHelperFunctions
     {
+		public static string GetGames()
+		{
+			return JsonConvert.SerializeObject(GameMethods.GetGames());
+		}
+
 		//	TODO: Change return type to string and convert the result to string
 		public static string SelectChild(int childId, int parentId)
 		{
@@ -160,7 +165,7 @@ namespace ParentsApi
 
 
 
-		private static List<Child> ChildrenDataTableToObject(DataTable childrenDt)
+		private static List<Child> ChildrenDataTableToList(DataTable childrenDt)
 		{
 			List<Child> children = new List<Child>();
 
@@ -215,7 +220,7 @@ namespace ParentsApi
 		private static List<Child> GetChildrenForParent(int parentId)
 		{
 			DataTable childrenDt = ChildMethods.GetChildrenForParent(parentId);
-			List<Child> childrenList = ChildrenDataTableToObject(childrenDt);
+			List<Child> childrenList = ChildrenDataTableToList(childrenDt);
 
 			//	TODO: CHECK IF NEEDED \/ \/
 			//childrenDt.Columns["child_name"].ColumnName = "name";
@@ -226,6 +231,6 @@ namespace ParentsApi
 			return childrenList;
 		}
 
-
+		
 	}
 }

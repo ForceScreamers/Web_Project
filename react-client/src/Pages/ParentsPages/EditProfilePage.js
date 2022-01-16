@@ -7,7 +7,7 @@ import { useEffect, useState } from "react"
 
 
 
-export default function EditProfile({ HandleSelectChild, HandleDeleteChild, HandleAddChild }) {
+export default function EditProfilePage({ HandleSelectChild, HandleDeleteChild, HandleAddChild }) {
 
   const [childrenProfiles, setChildrenProfiles] = useState(JSON.parse(sessionStorage.getItem('children')))
 

@@ -97,28 +97,36 @@ namespace ParentsApi.Controllers
 
 			return base.Content(ParentHelperFunctions.SelectChild(childId, parentId));
 		}
+
+
+		[Microsoft.AspNetCore.Mvc.HttpGet]
+		[Microsoft.AspNetCore.Mvc.ActionName("GetGames")]
+		public ContentResult GetGames()
+		{
+			return base.Content(ParentHelperFunctions.GetGames());
+		}
 		#endregion
 
 
 
-		private List<Child> ChildrenDataTableToObject(DataTable childrenDt)
-		{
-			List<Child> children = new List<Child>();
+		//private List<Child> ChildrenDataTableToList(DataTable childrenDt)
+		//{
+		//	List<Child> children = new List<Child>();
 
-			foreach(DataRow row in childrenDt.Rows)
-			{
-				//  Convering child properties
-				string childName = row.ItemArray[1].ToString();
-				int childId = int.Parse(row.ItemArray[2].ToString());
-				int childAge = int.Parse(row.ItemArray[0].ToString());
-				bool childIsSelected = bool.Parse(row.ItemArray[3].ToString());
+		//	foreach(DataRow row in childrenDt.Rows)
+		//	{
+		//		//  Convering child properties
+		//		string childName = row.ItemArray[1].ToString();
+		//		int childId = int.Parse(row.ItemArray[2].ToString());
+		//		int childAge = int.Parse(row.ItemArray[0].ToString());
+		//		bool childIsSelected = bool.Parse(row.ItemArray[3].ToString());
 			   
-				children.Add(new Child(childName, childAge, childIsSelected, childId));
-				Console.WriteLine(children[children.Count - 1].ToString());
-			}
+		//		children.Add(new Child(childName, childAge, childIsSelected, childId));
+		//		Console.WriteLine(children[children.Count - 1].ToString());
+		//	}
 
-			return children;
-		} 
+		//	return children;
+		//} 
 
 		
 
@@ -127,36 +135,36 @@ namespace ParentsApi.Controllers
 		/// </summary>
 		/// <param name="parentId"></param>
 		/// <returns></returns>
-		private bool IsNoChildSelectedForParent(int parentId)
-		{
-			DataTable children = ChildMethods.GetChildrenForParent(parentId);
-			bool isSelected = false;
+		//private bool IsNoChildSelectedForParent(int parentId)
+		//{
+		//	DataTable children = ChildMethods.GetChildrenForParent(parentId);
+		//	bool isSelected = false;
 
-			Console.WriteLine("All children ids");
+		//	Console.WriteLine("All children ids");
 
-			//  Iterate through children
-			foreach (DataRow row in children.Rows)
-			{
-				Console.WriteLine((int)row["child_id"]);
-				if ((bool)row["child_is_selected"])//If the child is selected
-				{
-					isSelected = true;
-				}
-			}
+		//	//  Iterate through children
+		//	foreach (DataRow row in children.Rows)
+		//	{
+		//		Console.WriteLine((int)row["child_id"]);
+		//		if ((bool)row["child_is_selected"])//If the child is selected
+		//		{
+		//			isSelected = true;
+		//		}
+		//	}
 
-			return !isSelected;
-		}
+		//	return !isSelected;
+		//}
 
 		/// <summary>
 		/// Returns the id of the first child to the given parent
 		/// </summary>
 		/// <param name="parentId"></param>
 		/// <returns></returns>
-		private int GetFirstChildId(int parentId)
-		{
+		//private int GetFirstChildId(int parentId)
+		//{
 
-			return (int)ChildMethods.GetChildrenForParent(parentId).Rows[0]["child_id"];
-		}
+		//	return (int)ChildMethods.GetChildrenForParent(parentId).Rows[0]["child_id"];
+		//}
 
 		
 
@@ -164,8 +172,8 @@ namespace ParentsApi.Controllers
 		/// Converts a given UTF-8 encoded string to Unicode and returns unicode as string
 		/// </summary>
 		/// <param name="utf8text"></param>
-		/// <returns></returns>
-		private string ConvertToUnicode(string utf8text)
-		{ return Encoding.Unicode.GetString(UTF8Encoding.Convert(Encoding.UTF8, Encoding.Unicode, Encoding.UTF8.GetBytes(utf8text))); }
+		///// <returns></returns>
+		//private string ConvertToUnicode(string utf8text)
+		//{ return Encoding.Unicode.GetString(UTF8Encoding.Convert(Encoding.UTF8, Encoding.Unicode, Encoding.UTF8.GetBytes(utf8text))); }
 	}
 }

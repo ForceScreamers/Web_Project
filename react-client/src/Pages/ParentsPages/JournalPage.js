@@ -1,6 +1,6 @@
 import ParentMainPage from "../../Components/ParentsComponents/ParentMainPage"
 
-function Journal() {
+export default function JournalPage() {
   return (
     <div>
       <ParentMainPage title='היומן שלי'>
@@ -9,5 +9,3 @@ function Journal() {
     </div>
   )
 }
-
-export default Journal

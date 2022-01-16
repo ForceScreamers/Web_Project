@@ -3,7 +3,7 @@ import GamePreviewCard from "./GamePreviewCard";
 import Img from '../../../images/download.jpg'
 import './GamePreviewCardsGrid.scss'
 
-export default function GamePreviewCardsGrid({ PreviewCards }) {
+export default function GamePreviewCardsGrid({ Games, HandlePlay }) {
 
 
 
@@ -12,10 +12,16 @@ export default function GamePreviewCardsGrid({ PreviewCards }) {
       <Container fluid="sm" className="p-5">
         <Row className="gy-4">
           {
-            PreviewCards.map((card, index) => {
+            Games.map((game, index) => {
               return (
                 <Col md='4'>
-                  <GamePreviewCard key={index} Name={card.gameName} Description="תיאור" PreviewImage={Img} />
+                  <GamePreviewCard
+                    HandlePlay={HandlePlay}
+                    key={index}
+                    Name={game.name}
+                    Description={game.description}
+                    GameId={game.id}
+                    PreviewImage={Img} />
                 </Col>
               )
             })

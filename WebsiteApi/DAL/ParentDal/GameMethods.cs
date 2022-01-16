@@ -10,7 +10,7 @@ using DAL;
 
 namespace ParentDal
 {
-    class GameMethods
+    public class GameMethods
     {
 
         //  GOOD
@@ -34,6 +34,11 @@ namespace ParentDal
                 new OdbcParameter("@game_id", gameId)
             };
             return OdbcHelper.Execute(com, queryParameters);
+        }
+
+        public static DataTable GetGames()
+        {
+            return OdbcHelper.GetTable("SELECT * FROM game", new OdbcParameter[0]);
         }
     }
 }

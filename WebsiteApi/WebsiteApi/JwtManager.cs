@@ -8,12 +8,6 @@ namespace WebApi.Jwt
 {
     public static class JwtManager
     {
-        /// <summary>
-        /// Use the below code to generate symmetric Secret Key
-        ///     var hmac = new HMACSHA256();
-        ///     var key = Convert.ToBase64String(hmac.Key);
-        /// </summary>
-        
         //  Change to .env variable
         private const string Secret = "db3OIsj+BXE9NZDy0t8W3TcNekrF+2d/1sFnWG4HnV8TZY30iTOdtVWJG8abWvB1GlOgJuQZdcF2Luqm/hccMw==";
 

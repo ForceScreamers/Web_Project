@@ -11,12 +11,12 @@ import About from './Pages/GeneralPages/About';
 
 import ParentRegister from './Pages/ParentsPages/ParentRegister';
 import ParentLogin from './Pages/ParentsPages/ParentLogin';
-import EditProfile from './Pages/ParentsPages/EditProfile';
-import Games from './Pages/ParentsPages/Games'
-import Info from './Pages/ParentsPages/Info';
-import Avatar from './Pages/ParentsPages/Avatar';
-import Journal from './Pages/ParentsPages/Journal';
-import Home from './Pages/ParentsPages/Home';
+import EditProfilePage from './Pages/ParentsPages/EditProfilePage';
+import GamesPage from './Pages/ParentsPages/GamesPage'
+import InfoPage from './Pages/ParentsPages/InfoPage';
+import AvatarPage from './Pages/ParentsPages/AvatarPage';
+import JournalPage from './Pages/ParentsPages/JournalPage';
+import HomePage from './Pages/ParentsPages/HomePage';
 
 //import AuthenticatedRoute from "./components/ProtectedRoute";
 import { ProtectedRoute } from './Components/GeneralComponents/ProtectedRoute'
@@ -37,14 +37,13 @@ import { LogoutContext } from './Contexts/LogoutContext';
 import { ValidateLoginInput, ValidateRegisterInput } from './Project-Modules/ValidateUserInput';
 
 import { NavBarContext } from './Contexts/NavBarContext';
-import createRoutes from './Routes';
 
 //	#endregion
 
 //	var sharedsession = require("express-socket.io-session");
 //	io.use(sharedsession(express_session));
 
-const REQUEST_TIMEOUT_LENGTH = 6000;
+//const REQUEST_TIMEOUT_LENGTH = 6000;
 const ENABLE_LOGIN = true;//! Used for debugging
 
 /**
@@ -75,7 +74,7 @@ const RequestRegister = async (userData) => {
 	return axios({
 		method: 'POST',
 		url: "http://localhost:5000/api/Parent/ParentRegister",
-		timeout: REQUEST_TIMEOUT_LENGTH,
+		timeout: process.env.REACT_APP_REQUEST_TIMEOUT_LENGTH,
 		headers: {
 			// data: JSON.stringify(userData),
 			'username': userData.username,
@@ -92,7 +91,7 @@ const RequestLogin = async (userData) => {
 		hostname: 'localhost',
 		url: "http://localhost:5000/api/Parent/ParentLogin",
 		port: 5000,
-		timeout: REQUEST_TIMEOUT_LENGTH,
+		timeout: process.env.REACT_APP_REQUEST_TIMEOUT_LENGTH,
 		headers: {
 			'Access-Control-Allow-Origin': '*',
 			'Content-Type': 'application/json',
@@ -138,6 +137,7 @@ const AddchildInputValidation = (input) => {
 //TODO: HandleLogin and HandleRegister are too long
 //TODO: Combine contexts
 //TODO: Fix when token is expired
+//TODO: Disconnect when the same user relogs
 
 // * React app component
 const App = () => {
@@ -160,7 +160,7 @@ const App = () => {
 			axios({
 				method: 'POST',
 				url: "http://localhost:5000/api/Parent/GetChildren",
-				timeout: REQUEST_TIMEOUT_LENGTH,
+				timeout: process.env.REACT_APP_REQUEST_TIMEOUT_LENGTH,
 				headers: {
 					'parentId': parentId,
 				}
@@ -211,7 +211,7 @@ const App = () => {
 		axios({
 			method: 'post',
 			url: "http://localhost:5000/api/Parent/SelectChild",
-			timeout: REQUEST_TIMEOUT_LENGTH,
+			timeout: process.env.REACT_APP_REQUEST_TIMEOUT_LENGTH,
 			headers: {
 				'childId': JSON.stringify(childToSelect.Id),
 				'parentId': sessionStorage.getItem('userId'),
@@ -349,7 +349,7 @@ const App = () => {
 		axios({
 			method: 'POST',
 			url: "http://localhost:5000/api/Parent/DeleteChild",
-			timeout: REQUEST_TIMEOUT_LENGTH,
+			timeout: process.env.REACT_APP_REQUEST_TIMEOUT_LENGTH,
 			headers: {
 				'childId': childId,
 				'parentId': JSON.parse(sessionStorage.getItem('userId'))
@@ -380,7 +380,7 @@ const App = () => {
 
 				method: 'post',
 				url: "http://localhost:5000/api/Parent/AddChild",
-				timeout: REQUEST_TIMEOUT_LENGTH,
+				timeout: process.env.REACT_APP_REQUEST_TIMEOUT_LENGTH,
 				headers: {
 					'parentId': JSON.parse(sessionStorage.getItem('userId')),
 					'childName': utf8.encode(formChildName),
@@ -428,12 +428,8 @@ const App = () => {
 	}, []);
 	//#endregion
 
-	//TODO: Fix routes external file
-	//const routes = createRoutes();
 	return (
-		// <div className="App">
-		// 	{routes}
-		// </div>
+
 		<div className="App" >
 
 			<PublicRoute exact path="/" component={() =>
@@ -456,17 +452,17 @@ const App = () => {
 					<ProtectedRoute exact path="/About" component={About} />
 
 					<ProtectedRoute path="/EditProfile" component={() =>
-						<EditProfile
+						<EditProfilePage
 							HandleSelectChild={HandleSelectChild}
 							HandleDeleteChild={HandleDeleteChild}
 							HandleAddChild={(e, isValid) => HandleAddChild(e, isValid)}
 						/>}
 					/>
-					<ProtectedRoute exact path="/Games" component={Games} />
-					<ProtectedRoute exact path="/Info" component={Info} />
-					<ProtectedRoute exact path="/Avatar" component={Avatar} />
-					<ProtectedRoute exact path="/Journal" component={Journal} />
-					<ProtectedRoute exact path="/Home" component={Home} />
+					<ProtectedRoute exact path="/Games" component={GamesPage} />
+					<ProtectedRoute exact path="/Info" component={InfoPage} />
+					<ProtectedRoute exact path="/Avatar" component={AvatarPage} />
+					<ProtectedRoute exact path="/Journal" component={JournalPage} />
+					<ProtectedRoute exact path="/Home" component={HomePage} />
 				</NavBarContext.Provider>
 
 			</LogoutContext.Provider>

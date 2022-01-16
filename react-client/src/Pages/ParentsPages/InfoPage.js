@@ -1,13 +1,11 @@
 import ParentMainPage from "../../Components/ParentsComponents/ParentMainPage"
 
-function Home() {
+export default function InfoPage() {
   return (
     <div>
-      <ParentMainPage title='בית'>
-        <h2> עמוד בית</h2>
+      <ParentMainPage title='מידע ומאמרים'>
+        <h2> כל מיני מאמרים</h2>
       </ParentMainPage>
     </div>
   )
 }
-
-export default Home

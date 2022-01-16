@@ -46,7 +46,7 @@ const GetIsAuth = async () => {
   return axios({
     method: 'POST',
     url: "http://localhost:5000/api/Auth/IsAuth",
-    timeout: 2000,
+    timeout: process.env.REACT_APP_REQUEST_TIMEOUT_LENGTH,
     headers: {
       "x-access-token": sessionStorage.getItem('token'),
     }
