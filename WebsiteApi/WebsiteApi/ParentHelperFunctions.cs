@@ -20,6 +20,32 @@ namespace ParentsApi
 		{
 			return JsonConvert.SerializeObject(GameMethods.GetGames());
 		}
+		public static void UpdateChildEvaluation(int childId, int gameId, int scoreToAdd)
+        {
+            try
+            {
+
+				if (EvaluationMethods.IsExists(childId, gameId))
+				{
+
+					EvaluationMethods.AddScoreToEvaluation(childId, scoreToAdd);
+				}
+				else
+				{
+
+					EvaluationMethods.AddEvaluation(childId, gameId, 0);
+				}
+			}
+			catch(Exception err)
+            {
+				Console.WriteLine(err);
+            }
+        }
+		public static string GetEvaluation(int parentId)
+        {
+			return JsonConvert.SerializeObject(EvaluationMethods.GetEvaluationsForParent(parentId));
+        }
+
 
 		//	TODO: Change return type to string and convert the result to string
 		public static string SelectChild(int childId, int parentId)

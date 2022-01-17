@@ -10,20 +10,47 @@ using DAL;
 
 namespace ParentDal
 {
-    class EvaluationMethods
+    public class EvaluationMethods
     {
-        //  GOOD
-        public static int AddEvaluation(int evaluationChildId, int evaluationGameId)
+        public static DataTable GetEvaluationsForParent(int parentId)
         {
-            string com = "INSERT INTO evaluation (evaluation_child_id, evaluation_game_id) VALUES (?, ?)";
+            OdbcParameter[] queryParameters =
+            {
+                new OdbcParameter("@parent_id", parentId)
+            };
+
+            return OdbcHelper.GetTable("SELECT evaluation... FROM evaluation WHERE parent_id=?", queryParameters);
+        }
+
+        //  GOOD
+        public static int AddEvaluation(int evaluationChildId, int evaluationGameId, int evaluationScore)
+        {
+            string com = "INSERT INTO evaluation (evaluation_child_id, evaluation_game_id, evaluation_score) VALUES (?, ?, ?)";
 
             OdbcParameter[] queryParameters = {
                 new OdbcParameter("@evaluation_child_id", evaluationChildId),
+                new OdbcParameter("@evaluation_score", evaluationScore),
                 new OdbcParameter("@evaluation_game_id", evaluationGameId),
             };
 
             return OdbcHelper.Execute(com, queryParameters);
         }
+        public static int AddScoreToEvaluation(int evaluationChildId, int scoreToAdd)
+        {
+            string command = string.Format("UPDATE evaluation SET evaluation_score = evaluation_score + {0} WHERE evaluation_child_id = ?", scoreToAdd);
+
+            OdbcParameter[] queryParameters =
+            {
+                new OdbcParameter("@evaluation_child_id", evaluationChildId)
+            };
+
+            return OdbcHelper.Execute(command, queryParameters);
+        }
+
+
+
+
+
         public static int DeleteEvaluation(int evaluationChildId, int evaluationGameId)
         {
             string com = "DELETE FROM evaluation WHERE evaluation_child_id=? AND evaluation_game_id=?";

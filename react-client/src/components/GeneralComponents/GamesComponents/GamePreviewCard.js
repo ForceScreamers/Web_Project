@@ -4,11 +4,6 @@ import CustomAccordionToggle from "./CustomAccordionToggle"
 
 export default function GamePreviewCard({ HandlePlay, Name, PreviewImage, Description, GameId }) {
 
-  const history = useHistory();
-
-  const HandleGameClick = () => {
-    history.push("/")
-  }
 
   return (
     <div>

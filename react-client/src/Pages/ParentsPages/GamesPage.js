@@ -4,7 +4,7 @@ import ParentMainPage from "../../Components/ParentsComponents/ParentMainPage"
 import GamePreviewCard from "../../Components/GeneralComponents/GamesComponents/GamePreviewCard";
 import Img from '../../images/download.jpg'
 import GamePreviewCardsGrid from "../../Components/GeneralComponents/GamesComponents/GamePreviewCardsGrid";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 
 export default function GamesPage() {
@@ -28,7 +28,21 @@ export default function GamesPage() {
 
   }
 
+  useEffect(() => {
+    console.log("Getting games...")
+
+  }, [])
+
+
   GetGamesFromApi();
+
+  const DatabaseGamesTo = () => {
+    //  foreach game
+    //  if the game id of the component matches 
+
+    //  Send the data from the game with the matching id to the database upon exiting or finishing the game
+
+  }
 
 
   //TODO: Create game template

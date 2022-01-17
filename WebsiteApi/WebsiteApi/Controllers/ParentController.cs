@@ -105,15 +105,16 @@ namespace ParentsApi.Controllers
 		{
 			return base.Content(ParentHelperFunctions.GetGames());
 		}
+
 		#endregion
 
 
 
 		//private List<Child> ChildrenDataTableToList(DataTable childrenDt)
-		//{
 		//	List<Child> children = new List<Child>();
 
-		//	foreach(DataRow row in childrenDt.Rows)
+		//{enDt.Rows)		//	foreach(DataRow row in childr
+
 		//	{
 		//		//  Convering child properties
 		//		string childName = row.ItemArray[1].ToString();
