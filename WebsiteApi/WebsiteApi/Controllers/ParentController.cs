@@ -41,6 +41,8 @@ namespace ParentsApi.Controllers
 			return base.Content(result);
 		}
 
+
+
 		//	Checks if the user exists in the database
 		//	Returns information about the user
 		[Microsoft.AspNetCore.Mvc.HttpPost]
@@ -57,7 +59,6 @@ namespace ParentsApi.Controllers
 
 		
 
-
 		//	Adds a new child to the database
 		//	Returns if the child was added, and information about the child
 		[Microsoft.AspNetCore.Mvc.HttpPost]
@@ -70,6 +71,8 @@ namespace ParentsApi.Controllers
 			return base.Content(ParentHelperFunctions.AddChild(int.Parse(Request.Headers["parentId"].ToString()), child));
 		}
 
+
+
 		[Microsoft.AspNetCore.Mvc.HttpPost]
 		[Microsoft.AspNetCore.Mvc.ActionName("DeleteChild")]
 		public ContentResult DeleteChild()
@@ -81,12 +84,16 @@ namespace ParentsApi.Controllers
 				);
 		}
 
+
+
 		[Microsoft.AspNetCore.Mvc.HttpPost]
 		[Microsoft.AspNetCore.Mvc.ActionName("GetChildren")]
 		public ContentResult GetChildren()
 		{
 			return base.Content(ParentHelperFunctions.GetChildren(int.Parse(Request.Headers["parentId"].ToString())));
 		}
+
+
 
 		[Microsoft.AspNetCore.Mvc.HttpPost]
 		[Microsoft.AspNetCore.Mvc.ActionName("SelectChild")]
@@ -99,82 +106,24 @@ namespace ParentsApi.Controllers
 		}
 
 
-		[Microsoft.AspNetCore.Mvc.HttpGet]
-		[Microsoft.AspNetCore.Mvc.ActionName("GetGames")]
-		public ContentResult GetGames()
+
+
+		//	---	Evaluations ---
+
+		[Microsoft.AspNetCore.Mvc.HttpPost]
+		[Microsoft.AspNetCore.Mvc.ActionName("UpdateEvaluationScore")]
+		public ContentResult UpdateEvaluationScore()
 		{
-			return base.Content(ParentHelperFunctions.GetGames());
+			int childId = int.Parse(Request.Headers["childId"].ToString());
+			int gameId = int.Parse(Request.Headers["gameId"].ToString());
+			int finishedGameScore = int.Parse(Request.Headers["gameScore"].ToString());
+
+			ParentHelperFunctions.UpdateChildEvaluation(childId, gameId, finishedGameScore);
+			
+			//	TODO: return confirmed update
+			return null;
 		}
 
 		#endregion
-
-
-
-		//private List<Child> ChildrenDataTableToList(DataTable childrenDt)
-		//	List<Child> children = new List<Child>();
-
-		//{enDt.Rows)		//	foreach(DataRow row in childr
-
-		//	{
-		//		//  Convering child properties
-		//		string childName = row.ItemArray[1].ToString();
-		//		int childId = int.Parse(row.ItemArray[2].ToString());
-		//		int childAge = int.Parse(row.ItemArray[0].ToString());
-		//		bool childIsSelected = bool.Parse(row.ItemArray[3].ToString());
-			   
-		//		children.Add(new Child(childName, childAge, childIsSelected, childId));
-		//		Console.WriteLine(children[children.Count - 1].ToString());
-		//	}
-
-		//	return children;
-		//} 
-
-		
-
-		/// <summary>
-		/// Returns true if no child is selected (for the given parent), false otherwise
-		/// </summary>
-		/// <param name="parentId"></param>
-		/// <returns></returns>
-		//private bool IsNoChildSelectedForParent(int parentId)
-		//{
-		//	DataTable children = ChildMethods.GetChildrenForParent(parentId);
-		//	bool isSelected = false;
-
-		//	Console.WriteLine("All children ids");
-
-		//	//  Iterate through children
-		//	foreach (DataRow row in children.Rows)
-		//	{
-		//		Console.WriteLine((int)row["child_id"]);
-		//		if ((bool)row["child_is_selected"])//If the child is selected
-		//		{
-		//			isSelected = true;
-		//		}
-		//	}
-
-		//	return !isSelected;
-		//}
-
-		/// <summary>
-		/// Returns the id of the first child to the given parent
-		/// </summary>
-		/// <param name="parentId"></param>
-		/// <returns></returns>
-		//private int GetFirstChildId(int parentId)
-		//{
-
-		//	return (int)ChildMethods.GetChildrenForParent(parentId).Rows[0]["child_id"];
-		//}
-
-		
-
-		/// <summary>
-		/// Converts a given UTF-8 encoded string to Unicode and returns unicode as string
-		/// </summary>
-		/// <param name="utf8text"></param>
-		///// <returns></returns>
-		//private string ConvertToUnicode(string utf8text)
-		//{ return Encoding.Unicode.GetString(UTF8Encoding.Convert(Encoding.UTF8, Encoding.Unicode, Encoding.UTF8.GetBytes(utf8text))); }
 	}
 }

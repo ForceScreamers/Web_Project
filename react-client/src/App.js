@@ -136,8 +136,9 @@ const AddchildInputValidation = (input) => {
 //TODO: Add errors in login and register as text to screen
 //TODO: HandleLogin and HandleRegister are too long
 //TODO: Combine contexts
-//TODO: Fix when token is expired
+//TODO: Fix handle when token is expired
 //TODO: Disconnect when the same user relogs
+//TODO: Remove unnecessary e parameter from various functions 
 
 // * React app component
 const App = () => {
@@ -154,7 +155,6 @@ const App = () => {
 
 		let parentId = JSON.parse(sessionStorage.getItem('userId'));
 
-		//!HERE
 		console.log(parentId);
 		if (parentId) {
 			axios({
@@ -172,6 +172,13 @@ const App = () => {
 						console.log(res)
 						sessionStorage.setItem('children', JSON.stringify(res.data));
 						let children = JSON.parse(sessionStorage.getItem('children'));
+
+						// children.forEach(child => {
+						// 	child.Evaluations = [];
+						// })
+						//InitializeEvaluationsForChildren(children);
+
+						console.log(children);
 						if (children.length === 0) {
 							console.log(children);
 							setCurrentChild(null);
@@ -184,6 +191,10 @@ const App = () => {
 					}
 				})
 		}
+	}
+
+	function InitializeEvaluationsForChildren(children) {
+
 	}
 
 	const GetSelectedChild = (childrenArray) => {

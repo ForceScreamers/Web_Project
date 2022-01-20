@@ -4,18 +4,23 @@ import ChildCard from "../../Components/ParentsComponents/EditProfileComponents/
 import ParentMainPage from "../../Components/ParentsComponents/ParentMainPage"
 
 import { useEffect, useState } from "react"
-
+import axios from "axios"
 
 
 export default function EditProfilePage({ HandleSelectChild, HandleDeleteChild, HandleAddChild }) {
 
   const [childrenProfiles, setChildrenProfiles] = useState(JSON.parse(sessionStorage.getItem('children')))
 
-
   useEffect(() => {
     console.log(childrenProfiles)
     setChildrenProfiles(JSON.parse(sessionStorage.getItem('children')));
+
+
   }, [])
+
+
+
+
 
   return (
     <div>
@@ -35,7 +40,8 @@ export default function EditProfilePage({ HandleSelectChild, HandleDeleteChild, 
                       HandleSelectChild={HandleSelectChild}
                       HandleDeleteChild={HandleDeleteChild}
                       ChildProfile={childProfile}
-                      key={childProfile.id}  // Key for the component's index
+                      key={childProfile.Id}  // Key for the component's index
+
                     />
                   ))
                   : <></>

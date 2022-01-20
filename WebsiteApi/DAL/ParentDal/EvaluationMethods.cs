@@ -12,29 +12,37 @@ namespace ParentDal
 {
     public class EvaluationMethods
     {
-        public static DataTable GetEvaluationsForParent(int parentId)
+        public static DataTable GetEvaluationsForChild(int childId)
         {
             OdbcParameter[] queryParameters =
             {
-                new OdbcParameter("@parent_id", parentId)
+                new OdbcParameter("@child_id", childId)
             };
 
-            return OdbcHelper.GetTable("SELECT evaluation... FROM evaluation WHERE parent_id=?", queryParameters);
+
+            string command = @"SELECT game.game_name, evaluation.evaluation_score, child.child_id
+                            FROM game INNER JOIN (child INNER JOIN evaluation ON child.child_id = evaluation.evaluation_child_id) ON game.game_id = evaluation.evaluation_game_id
+                            WHERE (((child.child_id)=[?]));";
+            return OdbcHelper.GetTable(command, queryParameters);
         }
 
-        //  GOOD
+
+
         public static int AddEvaluation(int evaluationChildId, int evaluationGameId, int evaluationScore)
         {
             string com = "INSERT INTO evaluation (evaluation_child_id, evaluation_game_id, evaluation_score) VALUES (?, ?, ?)";
 
             OdbcParameter[] queryParameters = {
                 new OdbcParameter("@evaluation_child_id", evaluationChildId),
-                new OdbcParameter("@evaluation_score", evaluationScore),
                 new OdbcParameter("@evaluation_game_id", evaluationGameId),
+                new OdbcParameter("@evaluation_score", evaluationScore),
             };
 
             return OdbcHelper.Execute(com, queryParameters);
         }
+
+
+
         public static int AddScoreToEvaluation(int evaluationChildId, int scoreToAdd)
         {
             string command = string.Format("UPDATE evaluation SET evaluation_score = evaluation_score + {0} WHERE evaluation_child_id = ?", scoreToAdd);
@@ -49,8 +57,6 @@ namespace ParentDal
 
 
 
-
-
         public static int DeleteEvaluation(int evaluationChildId, int evaluationGameId)
         {
             string com = "DELETE FROM evaluation WHERE evaluation_child_id=? AND evaluation_game_id=?";
@@ -62,6 +68,8 @@ namespace ParentDal
 
             return OdbcHelper.Execute(com, queryParameters);
         }
+
+
 
         public static bool IsExists(int evaluationChildId, int evaluationGameId)
         {

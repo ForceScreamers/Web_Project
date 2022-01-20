@@ -6,6 +6,7 @@ import Img from '../../images/download.jpg'
 import GamePreviewCardsGrid from "../../Components/GeneralComponents/GamesComponents/GamePreviewCardsGrid";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import GameTemplate from "../../Games/GameTemplate";
 
 export default function GamesPage() {
 
@@ -34,20 +35,36 @@ export default function GamesPage() {
   }, [])
 
 
-  GetGamesFromApi();
-
-  const DatabaseGamesTo = () => {
-    //  foreach game
-    //  if the game id of the component matches 
-
-    //  Send the data from the game with the matching id to the database upon exiting or finishing the game
-
-  }
-
 
   //TODO: Create game template
   //TODO: Add ADDeval when leaving or finishing 
   //TODO: Add return to games menu when clicking the games page
+
+
+  function HandleExit(score, gameId) {
+    alert("testing" + score);
+    console.log(score);
+
+    axios({
+      method: 'POST',
+      url: "http://localhost:5000/api/Parent/UpdateEvaluationScore",
+      timeout: process.env.REACT_APP_REQUEST_TIMEOUT_LENGTH,
+      headers: {
+        'childId': JSON.parse(sessionStorage.getItem('currentChild')).Id,
+        'gameId': gameId,
+        'gameScore': score,
+      }
+    })
+      .catch(err => console.log(err))
+      .then(response => {
+        console.log(response)
+
+      })
+    //  Send the game score to the webapi
+    //  Game score: The time it took the player to complete
+  }
+
+
 
   //Mock data
   const GAMES = [
@@ -55,7 +72,9 @@ export default function GamesPage() {
       name: "משחק הזיכרון",
       description: "תיאור משחק זיכרון",
       id: 1,
-      gameComponent: <MemoryGame />
+      gameComponent: <GameTemplate HandleExit={HandleExit} GameId={4}>
+        <MemoryGame />
+      </GameTemplate>
     },
     {
       name: "צורות",

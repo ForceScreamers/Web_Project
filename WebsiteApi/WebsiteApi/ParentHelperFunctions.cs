@@ -16,10 +16,6 @@ namespace ParentsApi
 {
     public class ParentHelperFunctions
     {
-		public static string GetGames()
-		{
-			return JsonConvert.SerializeObject(GameMethods.GetGames());
-		}
 		public static void UpdateChildEvaluation(int childId, int gameId, int scoreToAdd)
         {
             try
@@ -33,7 +29,7 @@ namespace ParentsApi
 				else
 				{
 
-					EvaluationMethods.AddEvaluation(childId, gameId, 0);
+					EvaluationMethods.AddEvaluation(childId, gameId, scoreToAdd);
 				}
 			}
 			catch(Exception err)
@@ -41,10 +37,10 @@ namespace ParentsApi
 				Console.WriteLine(err);
             }
         }
-		public static string GetEvaluation(int parentId)
-        {
-			return JsonConvert.SerializeObject(EvaluationMethods.GetEvaluationsForParent(parentId));
-        }
+		//public static string GetEvaluationsForParent(int parentId)
+  //      {
+		//	return JsonConvert.SerializeObject(EvaluationMethods.GetEvaluationsForParent(parentId));
+  //      }
 
 
 		//	TODO: Change return type to string and convert the result to string
@@ -56,6 +52,9 @@ namespace ParentsApi
 
 			return JsonConvert.SerializeObject(new { IsSelected = result });
 		}
+
+
+
 		public static string DeleteChild(int childId, int parentId)
 		{
 			try
@@ -80,6 +79,9 @@ namespace ParentsApi
 			return JsonConvert.SerializeObject(new { DeletedChildId = childId });
 
 		}
+
+
+
 		public static string GetChildren(int parentId)
 		{
 
@@ -93,9 +95,26 @@ namespace ParentsApi
 				Console.WriteLine("Switching child...");
 			}
 
+			AddEvaluationsToChildren(children);
+			
 			//  Return children as a json object
 			return JsonConvert.SerializeObject(children);
 		}
+
+		/// <summary>
+		/// Adds all of the children's evaluations, each to it's matching child
+		/// </summary>
+		private static void AddEvaluationsToChildren(List<Child> children)
+		{
+			foreach (Child child in children)
+			{
+				List<Evaluation> childEvaluations = GetEvaluationsForChild(child.Id);
+				child.AddEvaluations(childEvaluations);
+			}
+		}
+
+
+
 		public static string AddChild(int parentId, Child child)
 		{
 			bool childAddConfirm = false;
@@ -122,9 +141,12 @@ namespace ParentsApi
 			//	TODO: Check if you really need to return info
 			return JsonConvert.SerializeObject(new { confirmed = childAddConfirm, name = ConvertToUnicode(child.Name), age = child.Age, id = child.Id});
 		}
+
+
+
 		public static object ParentLogin(string email, string password)
 		{
-			ParentInfo loggedParent = new ParentInfo();
+			Parent loggedParent = new Parent();
 			//  Get email and password from the request 
 			//Console.WriteLine("Email: " + Request.Headers["email"]);
 			//Console.WriteLine("Password: " + Request.Headers["password"]);
@@ -147,6 +169,9 @@ namespace ParentsApi
 			JsonResult result = new JsonResult(new { ParentInfo = loggedParent, UserExists = userExists });
 			return result.Value;
 		}
+
+
+
         public static string ParentRegister(string username, string email, string password)
         {
 			Console.WriteLine("Registering parent: {0} {1} {2}", username, email, password);
@@ -190,25 +215,8 @@ namespace ParentsApi
 		}
 
 
+		
 
-		private static List<Child> ChildrenDataTableToList(DataTable childrenDt)
-		{
-			List<Child> children = new List<Child>();
-
-			foreach (DataRow row in childrenDt.Rows)
-			{
-				//  Convering child properties
-				string childName = row.ItemArray[1].ToString();
-				int childId = int.Parse(row.ItemArray[2].ToString());
-				int childAge = int.Parse(row.ItemArray[0].ToString());
-				bool childIsSelected = bool.Parse(row.ItemArray[3].ToString());
-
-				children.Add(new Child(childName, childAge, childIsSelected, childId));
-				Console.WriteLine(children[children.Count - 1].ToString());
-			}
-
-			return children;
-		}
 		private static string ConvertToUnicode(string utf8text)
 		{ return Encoding.Unicode.GetString(UTF8Encoding.Convert(Encoding.UTF8, Encoding.Unicode, Encoding.UTF8.GetBytes(utf8text))); }
 
@@ -243,11 +251,17 @@ namespace ParentsApi
 
 			return (int)ChildMethods.GetChildrenForParent(parentId).Rows[0]["child_id"];
 		}
+
+
+		private static List<Evaluation> GetEvaluationsForChild(int childId)
+		{
+			DataTable evaluationsDt = EvaluationMethods.GetEvaluationsForChild(childId);
+			return EvaluationsDataTableToList(evaluationsDt);
+		}
 		private static List<Child> GetChildrenForParent(int parentId)
 		{
 			DataTable childrenDt = ChildMethods.GetChildrenForParent(parentId);
 			List<Child> childrenList = ChildrenDataTableToList(childrenDt);
-
 			//	TODO: CHECK IF NEEDED \/ \/
 			//childrenDt.Columns["child_name"].ColumnName = "name";
 			//childrenDt.Columns["child_id"].ColumnName = "id";
@@ -257,6 +271,38 @@ namespace ParentsApi
 			return childrenList;
 		}
 
-		
+		private static List<Evaluation> EvaluationsDataTableToList(DataTable evaluationsDt)
+		{
+			List<Evaluation> evaluations = new List<Evaluation>();
+
+			foreach (DataRow row in evaluationsDt.Rows)
+			{
+				//  Convering properties
+				string gameName = row.ItemArray[0].ToString();
+				int score = int.Parse(row.ItemArray[1].ToString());
+
+				evaluations.Add(new Evaluation(score, gameName));
+			}
+
+			return evaluations;
+		}
+		private static List<Child> ChildrenDataTableToList(DataTable childrenDt)
+		{
+			List<Child> children = new List<Child>();
+
+			foreach (DataRow row in childrenDt.Rows)
+			{
+				//  Convering properties
+				string childName = row.ItemArray[1].ToString();
+				int childId = int.Parse(row.ItemArray[2].ToString());
+				int childAge = int.Parse(row.ItemArray[0].ToString());
+				bool childIsSelected = bool.Parse(row.ItemArray[3].ToString());
+
+				children.Add(new Child(childName, childAge, childIsSelected, childId));
+				Console.WriteLine(children[children.Count - 1].ToString());
+			}
+
+			return children;
+		}
 	}
 }
