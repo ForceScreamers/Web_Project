@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 
 const SECONDS_TO_COMPLETE = 60;
 
-export default function GameTemplate({ children, HandleExit, GameId }) {
+export default function GameTemplate({ children, HandleEvaluationUpdate, GameId }) {
 
   // initialize timeLeft with the seconds prop
   const [secondsLeft, setSecondsLeft] = useState(SECONDS_TO_COMPLETE);
@@ -52,7 +52,7 @@ export default function GameTemplate({ children, HandleExit, GameId }) {
 
   return (
     <div>
-      <Button onClick={() => HandleExit(CalculateGameScore(), GameId)}>יציאה</Button>
+      <Button onClick={() => HandleEvaluationUpdate(CalculateGameScore(), GameId)}>יציאה</Button>
       <Button onClick={() => ResetTimer()}>ריסטרט</Button>
       <Button onClick={() => CalculateGameScore()}>calc</Button>
       {children}

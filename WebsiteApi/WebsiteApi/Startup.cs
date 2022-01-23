@@ -10,6 +10,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+using JwtManager
+
 namespace ParentsApi
 {
     public class Startup
@@ -28,6 +30,7 @@ namespace ParentsApi
         {
             services.AddCors();
             services.AddControllers();
+            services.AddSingleton<ActiveUsersManager>();
 
         }
 

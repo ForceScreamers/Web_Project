@@ -18,7 +18,6 @@ using ParentsApi.HelperClasses;
 
 //	--- To remove ---
 using Microsoft.AspNetCore.Cors;
-using WebApi.Jwt;
 using System.Security.Claims;
 //using Microsoft.AspNet.WebApi.Core;
 
@@ -118,10 +117,10 @@ namespace ParentsApi.Controllers
 			int gameId = int.Parse(Request.Headers["gameId"].ToString());
 			int finishedGameScore = int.Parse(Request.Headers["gameScore"].ToString());
 
-			ParentHelperFunctions.UpdateChildEvaluation(childId, gameId, finishedGameScore);
-			
+			bool hasUpdatedEvaluation = ParentHelperFunctions.UpdateChildEvaluation(childId, gameId, finishedGameScore);
+
 			//	TODO: return confirmed update
-			return null;
+			return base.Content(JsonConvert.SerializeObject(new { UpdatedEvaluation = hasUpdatedEvaluation }));
 		}
 
 		#endregion

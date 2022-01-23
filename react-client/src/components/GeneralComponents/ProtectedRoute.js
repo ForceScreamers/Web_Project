@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import { Route, Redirect, useHistory } from 'react-router-dom';
 import { fetchIsAuth } from './GetAuthenticated';
 
@@ -17,6 +17,9 @@ export const ProtectedRoute = ({ component: Component, ...rest }) => {
       <Route {...rest} render={
 
         (props) => {
+
+
+          console.log(reasource)
           let isAuth = reasource.isAuth.read();
           console.log(isAuth)
 

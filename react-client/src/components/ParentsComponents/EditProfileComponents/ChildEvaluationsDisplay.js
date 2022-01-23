@@ -1,8 +1,5 @@
-import axios from "axios";
 
 export default function ChildEvaluationsDisplay({ Evaluations }) {
-
-  //  Evaluations consists of Topic and score
 
   console.log(Evaluations)
   function GameNameToHeb(gameName) {

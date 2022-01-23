@@ -16,27 +16,31 @@ namespace ParentsApi
 {
     public class ParentHelperFunctions
     {
-		public static void UpdateChildEvaluation(int childId, int gameId, int scoreToAdd)
+		public static bool UpdateChildEvaluation(int childId, int gameId, int scoreToAdd)
         {
+			int result = -1;
             try
             {
 
 				if (EvaluationMethods.IsExists(childId, gameId))
 				{
 
-					EvaluationMethods.AddScoreToEvaluation(childId, scoreToAdd);
+					result = EvaluationMethods.AddScoreToEvaluation(childId, scoreToAdd);
 				}
 				else
 				{
 
-					EvaluationMethods.AddEvaluation(childId, gameId, scoreToAdd);
+					result = EvaluationMethods.AddEvaluation(childId, gameId, scoreToAdd);
 				}
 			}
 			catch(Exception err)
             {
 				Console.WriteLine(err);
             }
+			
+			return result == 1;
         }
+
 		//public static string GetEvaluationsForParent(int parentId)
   //      {
 		//	return JsonConvert.SerializeObject(EvaluationMethods.GetEvaluationsForParent(parentId));
@@ -164,6 +168,21 @@ namespace ParentsApi
 				//  Add the children that belong to this parent
 				loggedParent.AddChildren(GetChildrenForParent(loggedParent.Id));
 			}
+
+
+			//	email, password
+			
+
+			//if(LoggedParents.LoggedParentIsExist() == false)
+			//{
+			//	LoggedParents.AddLoggedParent();
+			//}
+			//else
+			//{
+			//	//	Replace user data
+
+			//	//	Invalidate token
+			//}
 
 			//	TODO: Return username, id and children 
 			JsonResult result = new JsonResult(new { ParentInfo = loggedParent, UserExists = userExists });

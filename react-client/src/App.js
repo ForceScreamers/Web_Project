@@ -40,12 +40,6 @@ import { NavBarContext } from './Contexts/NavBarContext';
 
 //	#endregion
 
-//	var sharedsession = require("express-socket.io-session");
-//	io.use(sharedsession(express_session));
-
-//const REQUEST_TIMEOUT_LENGTH = 6000;
-const ENABLE_LOGIN = true;//! Used for debugging
-
 /**
  * normal comment
  * *Important highlighted
@@ -58,18 +52,12 @@ const ENABLE_LOGIN = true;//! Used for debugging
 
 
 
-
 const RequestRegister = async (userData) => {
 	// Register req
 	console.log("Requesting reg...")
 
 	//	Encode the username
 	userData.username = utf8.encode(userData.username)
-
-	// username: e.target.registerUsernameField.value,
-	// 		email: e.target.registerEmailField.value,
-	// 		password: e.target.registerPasswordField.value,
-	// 		confirmPassword: e.target.registerPasswordConfirmField.value,
 
 	return axios({
 		method: 'POST',
@@ -139,6 +127,13 @@ const AddchildInputValidation = (input) => {
 //TODO: Fix handle when token is expired
 //TODO: Disconnect when the same user relogs
 //TODO: Remove unnecessary e parameter from various functions 
+//TODO: Finish game template
+//TODO: Update evaluation when a game ends
+//TODO: Deal with unable to connect
+//TODO Handle user doesn't exist
+//TODO: User verify delete child
+//TODO: NEED TO CALL THE ROUTES ONLY WHEN THE WELCOME PAGE LOADS
+
 
 // * React app component
 const App = () => {
@@ -150,8 +145,7 @@ const App = () => {
 	/**Gets the children belonging to the logged parent
 	 * Set current children profiles to the matching children
 	 */
-	const LoadChildrenFromServer = (e) => {
-		e.preventDefault();
+	const LoadChildrenFromServer = () => {
 
 		let parentId = JSON.parse(sessionStorage.getItem('userId'));
 
@@ -193,9 +187,7 @@ const App = () => {
 		}
 	}
 
-	function InitializeEvaluationsForChildren(children) {
 
-	}
 
 	const GetSelectedChild = (childrenArray) => {
 		let tempArray = childrenArray;
@@ -215,8 +207,7 @@ const App = () => {
 	 * Changes the selected child from edit profile to the current child
 	 * Used to keep track of progress for this child
 	 */
-	const HandleSelectChild = (e, childToSelect) => {
-		e.preventDefault();
+	const HandleSelectChild = (childToSelect) => {
 
 		console.log(childToSelect)
 		axios({
@@ -234,7 +225,7 @@ const App = () => {
 				if (response.data.IsSelected) {//	The child was selected in the database 
 
 					//	Change the current child
-					LoadChildrenFromServer(e);
+					LoadChildrenFromServer();
 				}
 				else {
 					console.error("SOMETHING WENT WRONG WITH CHILD SELECT");
@@ -248,8 +239,6 @@ const App = () => {
 	const HandleLogin = async (e, formValid) => {
 
 		e.preventDefault();
-
-		console.log(formValid);
 
 		if (formValid) {
 
@@ -265,8 +254,6 @@ const App = () => {
 			// 	password: "1234",
 			// };
 
-
-			//TODO: Deal with unable to connect
 			RequestLogin(userData)
 				.catch(err => console.log(err))
 				.then((response) => {
@@ -283,13 +270,12 @@ const App = () => {
 							sessionStorage.setItem("username", response.data.FromParent.ParentInfo.Username);
 							setUsername(sessionStorage.getItem("username"));
 
-							LoadChildrenFromServer(e)
+							LoadChildrenFromServer()
 
 							//	Redirect to welcome page
 							history.push("/Welcome");
 						}
 						else {
-							//	TODO Handle user doesn't exist
 							alert("user not found");
 						}
 					}
@@ -342,7 +328,6 @@ const App = () => {
 					alert("User already exists");
 				}
 				else {
-					//	TODO Handle user doesn't exist
 					console.error("ERROR IN REGISTER USER");
 				}
 			}
@@ -354,7 +339,7 @@ const App = () => {
 
 
 
-	const HandleDeleteChild = (e, childId) => {
+	const HandleDeleteChild = (childId) => {
 		// Get the delete confirmation from the server then delete 
 		//	the child from the state array
 		axios({
@@ -368,9 +353,8 @@ const App = () => {
 			}
 		}).catch(err => console.log(err))
 			.then((response) => {
-				//TODO: User verify delete child
 
-				LoadChildrenFromServer(e);
+				LoadChildrenFromServer();
 			})
 	}
 
@@ -404,7 +388,7 @@ const App = () => {
 					console.log(response);
 					//	Response will be HasAddedChild
 					if (response) {
-						LoadChildrenFromServer(e);
+						LoadChildrenFromServer();
 					}
 					else { console.log("No response from server") }
 				})
@@ -439,6 +423,35 @@ const App = () => {
 	}, []);
 	//#endregion
 
+
+
+
+
+	function HandleEvaluationUpdate(score, gameId) {
+		alert("testing" + score);
+		console.log(score);
+
+		axios({
+			method: 'POST',
+			url: "http://localhost:5000/api/Parent/UpdateEvaluationScore",
+			timeout: process.env.REACT_APP_REQUEST_TIMEOUT_LENGTH,
+			headers: {
+				'childId': JSON.parse(sessionStorage.getItem('currentChild')).Id,
+				'gameId': gameId,
+				'gameScore': score,
+			}
+		})
+			.catch(err => console.log(err))
+			.then(response => {
+
+				//	If the server has updated the evaluation
+				if (response.data.UpdatedEvaluation) {
+					LoadChildrenFromServer();
+				}
+			})
+	}
+
+
 	return (
 
 		<div className="App" >
@@ -447,12 +460,16 @@ const App = () => {
 				<ParentLogin HandleLogin={(e, isValid) => HandleLogin(e, isValid)} />}
 			/>
 
-			<PublicRoute exact path="/Register" component={() =>
-				<ParentRegister
-					HandleRegister={(e, isValid) => HandleRegister(e, isValid)}
-				/>} />
+			<PublicRoute exact path="/Register" component={() => {
+				return (
+					<ParentRegister
+						HandleRegister={(e, isValid) => HandleRegister(e, isValid)}
+					/>
+				)
+			}
 
-			{/* //TODO: NEED TO CALL THE ROUTES ONLY WHEN THE WELCOME PAGE LOADS*/}
+			} />
+
 			<LogoutContext.Provider value={LogoutUser}>
 				<NavBarContext.Provider value={{
 					child: currentChild,
@@ -469,7 +486,9 @@ const App = () => {
 							HandleAddChild={(e, isValid) => HandleAddChild(e, isValid)}
 						/>}
 					/>
-					<ProtectedRoute exact path="/Games" component={GamesPage} />
+					<ProtectedRoute exact path="/Games" component={() => {
+						return <GamesPage HandleEvaluationUpdate={HandleEvaluationUpdate} />
+					}} />
 					<ProtectedRoute exact path="/Info" component={InfoPage} />
 					<ProtectedRoute exact path="/Avatar" component={AvatarPage} />
 					<ProtectedRoute exact path="/Journal" component={JournalPage} />

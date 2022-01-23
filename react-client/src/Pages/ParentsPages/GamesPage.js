@@ -4,65 +4,20 @@ import ParentMainPage from "../../Components/ParentsComponents/ParentMainPage"
 import GamePreviewCard from "../../Components/GeneralComponents/GamesComponents/GamePreviewCard";
 import Img from '../../images/download.jpg'
 import GamePreviewCardsGrid from "../../Components/GeneralComponents/GamesComponents/GamePreviewCardsGrid";
-import { useState, useEffect } from "react";
-import axios from "axios";
+import { useState } from "react";
 import GameTemplate from "../../Games/GameTemplate";
 
-export default function GamesPage() {
+export default function GamesPage({ HandleEvaluationUpdate }) {
 
   const [currentGameId, setCurrentGameId] = useState(-1);
 
 
   console.log(process.env.REACT_APP_REQUEST_TIMEOUT_LENGTH)
-  //TODO: get games from db
-  const GetGamesFromApi = async () => {
-    return axios({
-      method: 'GET',
-      url: "http://localhost:5000/api/Parent/GetGames",
-      timeout: process.env.REACT_APP_REQUEST_TIMEOUT_LENGTH,
-    })
-      .catch(err => console.log(err))
-      .then(response => {
-        console.log(response)
-
-      })
-
-  }
-
-  useEffect(() => {
-    console.log("Getting games...")
-
-  }, [])
 
 
 
-  //TODO: Create game template
-  //TODO: Add ADDeval when leaving or finishing 
-  //TODO: Add return to games menu when clicking the games page
 
 
-  function HandleExit(score, gameId) {
-    alert("testing" + score);
-    console.log(score);
-
-    axios({
-      method: 'POST',
-      url: "http://localhost:5000/api/Parent/UpdateEvaluationScore",
-      timeout: process.env.REACT_APP_REQUEST_TIMEOUT_LENGTH,
-      headers: {
-        'childId': JSON.parse(sessionStorage.getItem('currentChild')).Id,
-        'gameId': gameId,
-        'gameScore': score,
-      }
-    })
-      .catch(err => console.log(err))
-      .then(response => {
-        console.log(response)
-
-      })
-    //  Send the game score to the webapi
-    //  Game score: The time it took the player to complete
-  }
 
 
 
@@ -72,7 +27,7 @@ export default function GamesPage() {
       name: "משחק הזיכרון",
       description: "תיאור משחק זיכרון",
       id: 1,
-      gameComponent: <GameTemplate HandleExit={HandleExit} GameId={4}>
+      gameComponent: <GameTemplate HandleEvaluationUpdate={HandleEvaluationUpdate} GameId={4}>
         <MemoryGame />
       </GameTemplate>
     },

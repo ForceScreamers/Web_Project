@@ -2,7 +2,7 @@ import { Card, CloseButton, Button } from 'react-bootstrap'
 import '../../components-styles/button-styles.scss'
 import ChildEvaluationsDisplay from './ChildEvaluationsDisplay'
 function ChildCard({ HandleSelectChild, HandleDeleteChild, ChildProfile }) {
-
+  console.log(ChildProfile.Evaluations);
   return (
     <div>
       <Card
@@ -16,13 +16,13 @@ function ChildCard({ HandleSelectChild, HandleDeleteChild, ChildProfile }) {
 
         <Card.Body>
           <Card.Title>
-            <CloseButton aria-label='מחיקה' onClick={(e) => HandleDeleteChild(e, ChildProfile.Id)} /> {ChildProfile.Name}
+            <CloseButton aria-label='מחיקה' onClick={() => HandleDeleteChild(ChildProfile.Id)} /> {ChildProfile.Name}
 
             <Button
               className='test-class'
               // disabled={isSelected ? "true" : "false"}
               disabled={ChildProfile.IsSelected}
-              onClick={(e) => HandleSelectChild(e, ChildProfile)} variant="primary"
+              onClick={() => HandleSelectChild(ChildProfile)} variant="primary"
             >
               {ChildProfile.IsSelected ? "ילד נוכחי" : "בחר ילד"}
             </Button>

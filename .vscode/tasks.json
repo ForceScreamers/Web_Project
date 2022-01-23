@@ -2,32 +2,12 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "runDevelopment",
-      "runOptions": {
-        "runOn": "folderOpen"
-      },
-      "dependsOrder": "parallel",
-      "dependsOn": [
-        "react-client-server",
-        "node-server"
-        //"website-api"
-      ]
-    },
-    {
       "label": "react-client-server",
       "type": "shell",
       "command": "cd react-client/src && npm start",
       "presentation": {
         "panel": "dedicated"
-      }
-    },
-    {
-      "label": "node-server",
-      "type": "shell",
-      "command": "cd Backend/server-files && nodemon server",
-      "presentation": {
-        "panel": "dedicated"
-      }
+      },
     },
     {
       "label": "website-api",
