@@ -28,8 +28,16 @@ namespace ParentsApi.Controllers
 
 	public class ParentController : Controller
 	{
+		private JwtManager jwtManager;
+
+		public ParentController(JwtManager jwtManager)
+		{
+			this.jwtManager = jwtManager;
+		}
+
+
 		#region -------------  HTTP functions  -------------
-		
+
 		// Puts a new user into the database
 		// Returns is the register was successful or failed, returns if the user alreadt exists in the database
 		[Microsoft.AspNetCore.Mvc.HttpPost]
@@ -52,11 +60,18 @@ namespace ParentsApi.Controllers
 			return base.Content(JsonConvert.SerializeObject(new
 			{
 				FromParent = ParentHelperFunctions.ParentLogin(Request.Headers["email"].ToString(), Request.Headers["password"].ToString()),
-				token = AuthController.GetToken(Request.Headers["email"].ToString()),
+				token = jwtManager.GenerateToken(Request.Headers["email"].ToString()),
 			}));
 		}
 
-		
+		[Microsoft.AspNetCore.Mvc.HttpPost]
+		[Microsoft.AspNetCore.Mvc.ActionName("ParentDisconnect")]
+		public void ParentDisconnect()
+		{
+			jwtManager.DisconnectActiveUser(Request.Headers["email"].ToString());
+		}
+
+
 
 		//	Adds a new child to the database
 		//	Returns if the child was added, and information about the child

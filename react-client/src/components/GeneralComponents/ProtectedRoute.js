@@ -1,16 +1,18 @@
 import React, { Suspense, useEffect } from 'react';
 import { Route, Redirect, useHistory } from 'react-router-dom';
 import { fetchIsAuth } from './GetAuthenticated';
-
-
-
+import axios from 'axios';
 
 //TODO: Find a way to create a protected route
 export const ProtectedRoute = ({ component: Component, ...rest }) => {
 
-  let reasource = fetchIsAuth();
   let history = useHistory();
+  let reasource = fetchIsAuth();
 
+  // useEffect(() => {
+  //   reasource = ;
+
+  // }, [])
 
   return (
     <Suspense fallback={<Component />}>
@@ -19,9 +21,12 @@ export const ProtectedRoute = ({ component: Component, ...rest }) => {
         (props) => {
 
 
-          console.log(reasource)
+
+          //console.log(reasource.isAuth)
+          //let isAuth = fetchIsAuth().isAuth.read();
+          //let isAuth = GetIsAuth();
+          console.log()
           let isAuth = reasource.isAuth.read();
-          console.log(isAuth)
 
           //  If the sessionStorage is clear
           if (sessionStorage.length === 0 && history.location.pathname !== "/") {

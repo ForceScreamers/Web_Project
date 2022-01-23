@@ -13,25 +13,20 @@ namespace ParentsApi.Controllers
 	[Microsoft.AspNetCore.Mvc.Route("api/[controller]/[action]")]
 	public class AuthController : Controller
     {
-		
 
-		[Microsoft.AspNetCore.Mvc.HttpGet]
-		[Microsoft.AspNetCore.Mvc.ActionName("GetNewToken")]
-		public ContentResult GetNewToken()
+		private JwtManager jwtManager;
+
+		public AuthController(JwtManager jwtManager)
 		{
-			bool isAuth = JwtManager.IsTokenValid(Request.Headers["x-access-token"]);
-
-			return base.Content(JsonConvert.SerializeObject(new
-			{
-				IsAuth = isAuth,
-				NewToken = isAuth ? GetToken(Request.Headers["email"].ToString()) : null,
-			}));
+			this.jwtManager = jwtManager;
 		}
 
-		public static string GetToken(string email)
+		public string GetToken(string email)
 		{
-			return JwtManager.GenerateToken(email);
+			return jwtManager.GenerateToken(email);
 		}
+
+
 
 
 		[Microsoft.AspNetCore.Mvc.HttpPost]
@@ -46,7 +41,7 @@ namespace ParentsApi.Controllers
 			bool isTokenValid = false;
 			if (token != "null")
 			{
-				isTokenValid = JwtManager.IsTokenValid(Request.Headers["x-access-token"]);
+				isTokenValid = jwtManager.IsTokenValid(Request.Headers["x-access-token"]);
 			}
 			else
 			{

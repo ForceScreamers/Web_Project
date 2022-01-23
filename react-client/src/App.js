@@ -246,7 +246,7 @@ const App = () => {
 				email: e.target.loginEmailField.value,
 				password: e.target.loginPasswordField.value,
 			};
-
+			sessionStorage.setItem('userEmail', e.target.loginEmailField.value);
 
 			//! For debugging
 			// let userData = {
@@ -303,6 +303,8 @@ const App = () => {
 				confirmPassword: e.target.registerPasswordConfirmField.value,
 			};
 			//!	Note, i'm sending the confirm password too
+
+			sessionStorage.setItem('userEmail', e.target.loginEmailField.value);
 
 			let response = await RequestRegister(userData);
 			if (response) {
@@ -405,8 +407,20 @@ const App = () => {
 	}, [])
 
 	const LogoutUser = () => {
+		RequestLogout();
 		sessionStorage.clear();
 		history.replace("/");
+	}
+
+	async function RequestLogout() {
+		axios({
+			method: 'POST',
+			url: "http://localhost:5000/api/Parent/ParentDisconnect",
+			timeout: process.env.REACT_APP_REQUEST_TIMEOUT_LENGTH,
+			headers: {
+				'email': sessionStorage.getItem('userEmail'),
+			}
+		})
 	}
 
 	//#region	Control the website zoom level

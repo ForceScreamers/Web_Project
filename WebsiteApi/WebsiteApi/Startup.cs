@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using JwtManager
+//using ParentsApi.JwtManager
 
 namespace ParentsApi
 {
@@ -30,8 +30,7 @@ namespace ParentsApi
         {
             services.AddCors();
             services.AddControllers();
-            services.AddSingleton<ActiveUsersManager>();
-
+            services.AddSingleton<JwtManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
