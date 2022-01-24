@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ValidateUserInput_Heb } from "../../../Project-Modules/ValidateUserInput";
+import { IsInputValid_OnlyHebrew } from "../../../Project-Modules/ValidateUserInput";
 import FormInputField from "../../GeneralComponents/FormInputField";
 
 function AddChildForm({ HandleAddChild }) {
@@ -10,9 +10,9 @@ function AddChildForm({ HandleAddChild }) {
   const OnSubmit = (e) => {
     e.preventDefault();
 
-    childNameValid = ValidateUserInput_Heb(childName);
+    childNameValid = IsInputValid_OnlyHebrew(childName);
+
     setChildNameValidState(childNameValid);
-    console.log(childNameValid)
 
     HandleAddChild(e, childNameValid)
   }

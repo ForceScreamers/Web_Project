@@ -15,7 +15,6 @@ export default function EditProfilePage({ HandleSelectChild, HandleDeleteChild, 
     console.log(childrenProfiles)
     setChildrenProfiles(JSON.parse(sessionStorage.getItem('children')));
 
-
   }, [])
 
 
@@ -23,7 +22,7 @@ export default function EditProfilePage({ HandleSelectChild, HandleDeleteChild, 
 
 
   return (
-    <div>
+    <div >
       <ParentMainPage title='עריכת פרופיל'>
         <h1>רשימת ילדים</h1>
         <Container fluid className="d-flex justify-content-around align-center">

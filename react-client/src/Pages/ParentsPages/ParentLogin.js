@@ -41,7 +41,7 @@ export default function ParentLogin({ HandleLogin }) {
 	return (
 		<div className="LoginContainer">
 
-			<h1>Login</h1>
+			<h1>התחברות הורים</h1>
 			<Link to="/Register" >הרשמה</Link>
 
 			<form onSubmit={OnSubmit}>
@@ -56,6 +56,9 @@ export default function ParentLogin({ HandleLogin }) {
 					<input type="submit" value="התחברות" />
 				</div>
 			</form>
+
+			<Link to="/ProviderLogin" >התחברות בתור בעל מקצוע</Link>
+
 
 		</div>
 	)

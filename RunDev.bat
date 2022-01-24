@@ -1,1 +1,1 @@
-code .
+code . && WebsiteApi/websiteApi.sln

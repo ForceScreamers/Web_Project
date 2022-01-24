@@ -1,4 +1,7 @@
 import { USER_INPUT_ERR } from "./UserErrorEnums";
+
+export const REXGEX_OnlyHebrew = new RegExp(/^[\u0590-\u05FF]+$/)
+
 /**
  * Returns true if given input is valid (No special characters)
  * Takes a string input and the language to check 
@@ -7,7 +10,7 @@ import { USER_INPUT_ERR } from "./UserErrorEnums";
 */
 export function ValidateUserInput(input, lang) {
   let result;
-  if (lang === "Heb" && ValidateUserInput_Heb(input)) { result = true }
+  if (lang === "Heb" && IsInputValid_OnlyHebrew(input)) { result = true }
   if (lang === "Eng" && ValidateUserInput_Eng(input)) { result = true }
   return result;
 }
@@ -18,8 +21,8 @@ function ValidateUserInput_Eng(input) {
 }
 
 //  Returns true if the input contains only hebrew characters and spaces
-export function ValidateUserInput_Heb(input) {
-  return ((/[\u0590-\u05FF\s]/).test(input))
+export function IsInputValid_OnlyHebrew(input) {
+  return input.match(/^[\u0590-\u05FF]+$/);
 }
 
 //  Returns true if the input contains only numbers

@@ -8,36 +8,15 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import GameTemplate from "../../Games/GameTemplate";
 
+const GAMES_MENU_ID = -1;
+
 export default function GamesPage() {
 
-  const [currentGameId, setCurrentGameId] = useState(-1);
+  const [currentGameId, setCurrentGameId] = useState(GAMES_MENU_ID);
 
 
   console.log(process.env.REACT_APP_REQUEST_TIMEOUT_LENGTH)
-  //TODO: get games from db
-  const GetGamesFromApi = async () => {
-    return axios({
-      method: 'GET',
-      url: "http://localhost:5000/api/Parent/GetGames",
-      timeout: process.env.REACT_APP_REQUEST_TIMEOUT_LENGTH,
-    })
-      .catch(err => console.log(err))
-      .then(response => {
-        console.log(response)
-
-      })
-
-  }
-
-  useEffect(() => {
-    console.log("Getting games...")
-
-  }, [])
-
-
-
   //TODO: Create game template
-  //TODO: Add ADDeval when leaving or finishing 
   //TODO: Add return to games menu when clicking the games page
 
 
@@ -56,12 +35,11 @@ export default function GamesPage() {
       }
     })
       .catch(err => console.log(err))
-      .then(response => {
-        console.log(response)
+      .then(() => {
 
+        //  Reset the current game id
+        setCurrentGameId(GAMES_MENU_ID);
       })
-    //  Send the game score to the webapi
-    //  Game score: The time it took the player to complete
   }
 
 
@@ -97,6 +75,8 @@ export default function GamesPage() {
     console.log(gameId);
   }
 
+
+
   const RenderCurrentGame = () => {
     let gameToRender = <div>Hello!</div>
     GAMES.forEach(game => {
@@ -112,21 +92,15 @@ export default function GamesPage() {
     <div>
       <ParentMainPage>
 
-        <h1>Games</h1>
-
+        <h1>משחקים</h1>
 
         {
-          currentGameId === -1 ?
+          currentGameId === GAMES_MENU_ID ?
             <GamePreviewCardsGrid HandlePlay={HandlePlay} Games={GAMES} />
             :
             RenderCurrentGame()
         }
 
-
-        {/* <GamePreviewCard Name="משחק הזיכרון" Description="תיאור" PreviewImage={Img} /> */}
-
-
-        {/* <MemoryGame /> */}
       </ParentMainPage>
     </div>
   )

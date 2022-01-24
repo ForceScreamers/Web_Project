@@ -121,7 +121,7 @@ namespace ParentsApi.Controllers
 			ParentHelperFunctions.UpdateChildEvaluation(childId, gameId, finishedGameScore);
 			
 			//	TODO: return confirmed update
-			return null;
+			return base.Content(JsonConvert.SerializeObject(new { UpdatedScore = true}));
 		}
 
 		#endregion

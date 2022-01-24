@@ -18,6 +18,8 @@ import AvatarPage from './Pages/ParentsPages/AvatarPage';
 import JournalPage from './Pages/ParentsPages/JournalPage';
 import HomePage from './Pages/ParentsPages/HomePage';
 
+import ProviderLogin from './Pages/ProvidersPages/ProviderLogin';
+
 //import AuthenticatedRoute from "./components/ProtectedRoute";
 import { ProtectedRoute } from './Components/GeneralComponents/ProtectedRoute'
 import { PublicRoute } from './Components/GeneralComponents/PublicRoute'
@@ -102,23 +104,6 @@ const RequestLogin = async (userData) => {
 	})
 }
 
-//	Checks if the user input for the child add form is valid
-//	All letters in hebrew and not empty
-const AddchildInputValidation = (input) => {
-	let valid = true;
-
-	if (input === "") {
-		valid = false;
-		alert("חסר שם הילד")
-	}
-	else if (!(/[\u0590-\u05FF]/).test(input)) {
-		valid = false;
-		alert("שם הילד צריך להיות בעברית")
-	}
-
-	return valid;
-}
-
 
 //TODO: Fix - Protected route sends 30 requests to authenticate, it needs to send one
 //TODO: Fix - Login and register response have unnessesary headers i.e. \/	\/	\/
@@ -131,14 +116,15 @@ const AddchildInputValidation = (input) => {
 // 		}
 // }
 //* DONE: Validate login input at client
-//TODO: Fix input validation at add child,
+//* DONE: Fix input validation at add child,
 //TODO: Add text to input error
 //TODO: Add errors in login and register as text to screen
 //TODO: HandleLogin and HandleRegister are too long
 //TODO: Combine contexts
-//TODO: Fix handle when token is expired
-//TODO: Disconnect when the same user relogs
+//* DONE: Fix handle when token is expired
 //TODO: Remove unnecessary e parameter from various functions 
+//* DONE: Finish updating the game scores when the user leaves a game
+//TODO: Swap all anonymously declared functions to "function(){}"
 
 // * React app component
 const App = () => {
@@ -150,8 +136,7 @@ const App = () => {
 	/**Gets the children belonging to the logged parent
 	 * Set current children profiles to the matching children
 	 */
-	const LoadChildrenFromServer = (e) => {
-		e.preventDefault();
+	const LoadChildrenFromServer = () => {
 
 		let parentId = JSON.parse(sessionStorage.getItem('userId'));
 
@@ -193,9 +178,6 @@ const App = () => {
 		}
 	}
 
-	function InitializeEvaluationsForChildren(children) {
-
-	}
 
 	const GetSelectedChild = (childrenArray) => {
 		let tempArray = childrenArray;
@@ -230,15 +212,7 @@ const App = () => {
 		})
 			.catch(err => console.log(err))
 			.then((response) => {
-
-				if (response.data.IsSelected) {//	The child was selected in the database 
-
-					//	Change the current child
-					LoadChildrenFromServer(e);
-				}
-				else {
-					console.error("SOMETHING WENT WRONG WITH CHILD SELECT");
-				}
+				LoadChildrenFromServer();
 			})
 	}
 
@@ -353,7 +327,6 @@ const App = () => {
 	}
 
 
-
 	const HandleDeleteChild = (e, childId) => {
 		// Get the delete confirmation from the server then delete 
 		//	the child from the state array
@@ -418,6 +391,7 @@ const App = () => {
 		console.log(sessionStorage.getItem('currentChild'));
 		setCurrentChild(JSON.parse(sessionStorage.getItem('currentChild')));
 
+		LoadChildrenFromServer();
 	}, [])
 
 	const LogoutUser = () => {
@@ -439,13 +413,22 @@ const App = () => {
 	}, []);
 	//#endregion
 
+	// useEffect(() => {
+	// 	window.onbeforeunload = function (e) {
+	// 		LoadChildrenFromServer(e);
+	// 	}
+	// }, [])
+
 	return (
 
 		<div className="App" >
 
-			<PublicRoute exact path="/" component={() =>
+
+			<PublicRoute exact path={"/"} component={() =>
 				<ParentLogin HandleLogin={(e, isValid) => HandleLogin(e, isValid)} />}
 			/>
+
+
 
 			<PublicRoute exact path="/Register" component={() =>
 				<ParentRegister
@@ -478,6 +461,15 @@ const App = () => {
 
 			</LogoutContext.Provider>
 			{/* //  The main pages are: Games, info, about, edit profile, avatar, journal */}
+
+
+			<PublicRoute exact path="/ProviderLogin" component={ProviderLogin} />
+
+
+
+
+
+
 		</div >
 	);
 }
