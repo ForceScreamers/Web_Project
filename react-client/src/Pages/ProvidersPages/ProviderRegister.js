@@ -5,7 +5,7 @@ import { ValidateUsername, ValidateEmail, ValidatePassword, ValidateConfirmPassw
 import { useState, useEffect } from 'react'
 import FormInputField from '../../Components/GeneralComponents/FormInputField'
 
-export default function ParentRegister({ HandleRegister }) {
+export default function ProviderRegister({ HandleRegister }) {
   let usernameValid = true;
   let emailValid = true;
   let passwordValid = true;
@@ -58,14 +58,19 @@ export default function ParentRegister({ HandleRegister }) {
     <div>
 
       <div className="RegisterContainer">
-        <h1>הרשמת הורים</h1>
-        <Link to="/" >התחברות הורים</Link>
+        <h1>הרשמה בתור בעל מקצוע</h1>
+        <Link to="/Providers/Login" >התחברות בתור בעל מקצוע</Link>
 
         <form onSubmit={OnSubmit}>
           <div className="InputContainer">
 
-            <label>שם משתמש:</label>
+            <label>שם פרטי:</label>
             <FormInputField Valid={usernameValidState} Name={"registerUsernameField"} OnChange={(e) => { onChangeHandler("username", e.target.value) }} />
+
+            <label>שם משפחה:</label>
+            <label>תעסוקה:</label>
+
+
 
             <label>אי-מייל:</label>
             <FormInputField Valid={emailValidState} Name={"registerEmailField"} OnChange={(e) => { onChangeHandler("email", e.target.value) }} />
@@ -76,9 +81,12 @@ export default function ParentRegister({ HandleRegister }) {
             <label>אשר סיסמה:</label>
             <FormInputField Valid={confirmPasswordValidState} Name={"registerPasswordConfirmField"} OnChange={(e) => { onChangeHandler("confirmPassword", e.target.value) }} />
 
-            <input type="submit" value="הירשם" />
+
+
+            <input type="submit" value="Register" />
           </div>
         </form>
+        <Link to="/" >התחברות בתור הורה</Link>
 
       </div>
     </div >

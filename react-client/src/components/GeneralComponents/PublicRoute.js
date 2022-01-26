@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 
 
-export const PublicRoute = ({ DumpToken, component: Component, ...rest }) => {
+export const PublicRoute = ({ component: Component, ...rest }) => {
 
   return (
     <Route {...rest} render={
