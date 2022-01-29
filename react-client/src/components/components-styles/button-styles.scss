@@ -1,7 +1,35 @@
-
-@keyframes button-click {
-  to {transform: scaleX(10);}
+.select-child-button {
+  box-shadow: none !important;
+  margin-right: 3px;
 }
-.test-class{
-  background-color: red;
+.select-child-button:focus, .select-child-button:hover {
+  animation: wobble 0.3s 1 forwards;
+  
+}
+
+
+
+.select-child-button:active{
+  border: none;
+}
+
+@keyframes wobble {
+  50% {
+    transform: scale(1.1);
+  }
+
+  // 50% {
+  //   transform: rotate(-30deg);
+  // }
+  // 75% {
+  //   transform: rotate(5deg);
+  // }
+  // 100% {
+  //   transform: rotate(0deg);
+  // }
+}
+
+.select-child-card-title-container{
+  display: flex;
+  align-items: center;
 }

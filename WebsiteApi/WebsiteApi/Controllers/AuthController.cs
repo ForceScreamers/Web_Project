@@ -52,8 +52,9 @@ namespace ParentsApi.Controllers
 			{
 				Console.WriteLine("NO TOKEN");
 			}
-
-			Console.WriteLine(isTokenValid);
+			Console.WriteLine();
+			Console.WriteLine(token);
+			Console.WriteLine("Is valid: " + isTokenValid);
 			return base.Content(JsonConvert.SerializeObject(new 
 			{
 				IsAuth = isTokenValid 

@@ -119,68 +119,18 @@ const RequestLogin = async (userData) => {
 //TODO: Swap all anonymously declared functions to "function(){}"
 //TODO: Handle user doesn't exist
 //TODO: Update games page to load all children
+//TODO: Verify delete child click
+//TODO: Deal with unable to connect 
+
+
 
 // * React app component
-export default function ParentsApp() {
-  const [currentChild, setCurrentChild] = useState({});
-  const [username, setUsername] = useState('no username');
-  //const history = useHistory();
+export default function ParentsApp({ Username, ChildrenProfiles, UpdateChildren }) {
+  //const [childrenProfiles, setChildrenProfiles] = useState(ChildrenProfiles);
+
   let history = useHistory();
 
-  /**Gets the children belonging to the logged parent
-   * Set current children profiles to the matching children
-   */
-  const LoadChildrenFromServer = () => {
 
-    let parentId = JSON.parse(sessionStorage.getItem('userId'));
-
-    console.log(parentId);
-    if (parentId) {
-      axios({
-        method: 'POST',
-        url: "http://localhost:5000/api/Parent/GetChildren",
-        timeout: process.env.REACT_APP_REQUEST_TIMEOUT_LENGTH,
-        headers: {
-          'parentId': parentId,
-        }
-      })
-        .catch(err => console.log(err))
-        .then(res => {
-          if (res) {
-            console.log("CHILDREN:")
-            console.log(res)
-            sessionStorage.setItem('children', JSON.stringify(res.data));
-            let children = JSON.parse(sessionStorage.getItem('children'));
-
-            console.log(children);
-            if (children.length === 0) {
-              console.log(children);
-              setCurrentChild(null);
-              sessionStorage.setItem('currentChild', 'null')
-            }
-            else {
-              sessionStorage.setItem('currentChild', JSON.stringify(GetSelectedChild(children)))
-              setCurrentChild(JSON.parse(sessionStorage.getItem('currentChild')));
-            }
-          }
-        })
-    }
-  }
-
-
-  const GetSelectedChild = (childrenArray) => {
-    let tempArray = childrenArray;
-    let child = undefined;
-
-    tempArray.forEach((tempChild) => {
-      if (tempChild.IsSelected) {
-        child = tempChild;
-      }
-    });
-    console.log(childrenArray);
-
-    return child;
-  }
   //  Handles child add logic
   const HandleAddChild = async (e, formValid) => {
     e.preventDefault();
@@ -188,46 +138,34 @@ export default function ParentsApp() {
     console.log(`Add child? ${formValid}`)
 
     if (formValid) {
-
-      let formChildName = e.target.childNameField.value;
+      let encodedChildName = utf8.encode(e.target.childNameField.value);
       let formChildAge = e.target.childAgeSelect.value;
+      let parsedUserId = JSON.parse(sessionStorage.getItem('userId'));
 
-
-      //Send request to server to add child
-      axios({
-
-        method: 'post',
-        url: "http://localhost:5000/api/Parent/AddChild",
-        timeout: process.env.REACT_APP_REQUEST_TIMEOUT_LENGTH,
-        headers: {
-          'parentId': JSON.parse(sessionStorage.getItem('userId')),
-          'childName': utf8.encode(formChildName),
-          'childAge': formChildAge
-        }
-      })
+      ChildHandler.RequestAddChild(parsedUserId, encodedChildName, formChildAge)
         .catch(err => console.log(err))
-
-        .then((response) => {//	Get confirmation that the child was added
+        .then((response) => {//TODO: Get confirmation that the child was added
           console.log(response);
           //	Response will be HasAddedChild
           if (response) {
-            LoadChildrenFromServer(e);
+            // LoadChildrenFromServer(e);
+            UpdateChildren();
           }
           else { console.log("No response from server") }
         })
-
     }
   }
+
   /**
    * Changes the selected child from edit profile to the current child
    * Used to keep track of progress for this child
    */
   const HandleSelectChild = (e, childToSelect) => {
 
-    ChildHandler.SelectChild(e, childToSelect)
+    ChildHandler.RequestSelectChild(e, childToSelect)
       .catch(err => console.log(err))
       .then(() => {
-        LoadChildrenFromServer();
+        UpdateChildren();
       })
   }
 
@@ -247,125 +185,72 @@ export default function ParentsApp() {
       .then((response) => {
         //TODO: User verify delete child
 
-        LoadChildrenFromServer(e);
+        UpdateChildren();
       })
   }
 
 
 
 
-  const HandleLogin = async (e, formValid) => {
 
-    e.preventDefault();
-
-    console.log(formValid);
-
-    if (formValid) {
-
-      let userData = {
-        email: e.target.loginEmailField.value,
-        password: e.target.loginPasswordField.value,
-      };
-
-
-      //! For debugging
-      // let userData = {
-      // 	email: "test@test.com",
-      // 	password: "1234",
-      // };
-
-
-      //TODO: Deal with unable to connect
-      RequestLogin(userData)
-        .catch(err => console.log(err))
-        .then((response) => {
-
-          if (response) {
-            console.log(response);
-
-            //	If the user is authorized
-            if (response.data.FromParent.UserExists === true) {
-
-              //	Set sessionStorage items and states
-              sessionStorage.setItem("token", response.data.token);
-              sessionStorage.setItem("userId", response.data.FromParent.ParentInfo.Id);
-              sessionStorage.setItem("username", response.data.FromParent.ParentInfo.Username);
-              setUsername(sessionStorage.getItem("username"));
-
-              LoadChildrenFromServer(e)
-
-              //	Redirect to welcome page
-              history.push("/Parents/Welcome");
-            }
-            else {
-              //	TODO Handle user doesn't exist
-              alert("user not found");
-            }
-          }
-          else {
-            console.error("server error, maybe webapi")
-          }
-        });
-    }
-  }
 
   const HandleRegister = async (e, formValid) => {
-    e.preventDefault();
+    // e.preventDefault();
 
 
 
-    console.log("Form valid: " + formValid)
-    if (formValid) {//	If the form is valid (Writing here !valid because the validation works the opposite way)
+    // console.log("Form valid: " + formValid)
+    // if (formValid) {//	If the form is valid (Writing here !valid because the validation works the opposite way)
 
-      let userData = {
-        username: e.target.registerUsernameField.value,
-        email: e.target.registerEmailField.value,
-        password: e.target.registerPasswordField.value,
-        confirmPassword: e.target.registerPasswordConfirmField.value,
-      };
-      //!	Note, i'm sending the confirm password too
+    //   let userData = {
+    //     username: e.target.registerUsernameField.value,
+    //     email: e.target.registerEmailField.value,
+    //     password: e.target.registerPasswordField.value,
+    //     confirmPassword: e.target.registerPasswordConfirmField.value,
+    //   };
+    //   //!	Note, i'm sending the confirm password too
 
-      let response = await RequestRegister(userData);
-      if (response) {
-        console.log(response);
+    //   let response = await RequestRegister(userData);
+    //   if (response) {
+    //     console.log(response);
 
-        //	If the user is authorized
-        if (response.data.Registered === true) {
+    //     //	If the user is authorized
+    //     if (response.data.Registered === true) {
 
-          //	Log in the newly registered user
-          //? Check properties
-          RequestLogin(userData)
-            .then((loginResponse) => {
-              console.log(loginResponse)
-              //	Set sessionStorage items and states
-              sessionStorage.setItem("token", loginResponse.data.token);
-              sessionStorage.setItem("userId", loginResponse.data.FromParent.ParentInfo.Id);
-              sessionStorage.setItem("username", loginResponse.data.FromParent.ParentInfo.Username);
-              setUsername(sessionStorage.getItem("username"));
-              history.push("/Welcome");
-            });
-        }
-        else if (response.data.FromParent.UserExists) {
-          alert("User already exists");
-        }
-        else {
-          //	TODO Handle user doesn't exist
-          console.error("ERROR IN REGISTER USER");
-        }
-      }
-      else {
-        console.error("server error, maybe webapi")
-      }
-    }
+    //       //	Log in the newly registered user
+    //       //? Check properties
+    //       RequestLogin(userData)
+    //         .then((loginResponse) => {
+    //           console.log(loginResponse)
+    //           //	Set sessionStorage items and states
+    //           sessionStorage.setItem("token", loginResponse.data.token);
+    //           sessionStorage.setItem("userId", loginResponse.data.FromParent.ParentInfo.Id);
+    //           sessionStorage.setItem("username", loginResponse.data.FromParent.ParentInfo.Username);
+    //           setUsername(sessionStorage.getItem("username"));
+    //           history.push("/Welcome");
+    //         });
+    //     }
+    //     else if (response.data.FromParent.UserExists) {
+    //       alert("User already exists");
+    //     }
+    //     else {
+    //       //	TODO Handle user doesn't exist
+    //       console.error("ERROR IN REGISTER USER");
+    //     }
+    //   }
+    //   else {
+    //     console.error("server error, maybe webapi")
+    //   }
+    // }
   }
 
   useEffect(() => {
     //	Load username and current child
-    setUsername(sessionStorage.getItem('username'));
-    console.log(sessionStorage.getItem('currentChild'));
-    setCurrentChild(JSON.parse(sessionStorage.getItem('currentChild')));
-
-    LoadChildrenFromServer();
+    //setUsername(Us);
+    //console.log(sessionStorage.getItem('currentChild'));
+    //setCurrentChild(JSON.parse(sessionStorage.getItem('currentChild')));
+    sessionStorage.setItem('children', JSON.stringify(ChildrenProfiles.read()))
+    //UpdateChildren();
   }, [])
 
   const LogoutUser = () => {
@@ -373,30 +258,11 @@ export default function ParentsApp() {
     history.replace("/");
   }
 
-  //#region	Control the website zoom level
-  useEffect(() => {
-    const initialValue = document.body.style.zoom;
 
-    // Change zoom level on mount
-    document.body.style.zoom = "125%";
-
-    return () => {
-      // Restore default value
-      document.body.style.zoom = initialValue;
-    };
-  }, []);
-  //#endregion
 
   return (
 
     <div>
-
-
-      <PublicRoute exact path="/" component={() =>
-        <ParentLogin
-          HandleLogin={(e, isValid) => HandleLogin(e, isValid)}
-        />} />
-
       <PublicRoute exact path="/Parents/Register" component={() =>
         <ParentRegister
           HandleRegister={(e, isValid) => HandleRegister(e, isValid)}
@@ -405,12 +271,13 @@ export default function ParentsApp() {
       {/* //TODO: NEED TO CALL THE ROUTES ONLY WHEN THE WELCOME PAGE LOADS*/}
       <LogoutContext.Provider value={LogoutUser}>
         <NavBarContext.Provider value={{
-          child: currentChild,
-          username: username,
+          //child: GetSelectedChild(sessionStorage.getItem('children')),
+          username: Username,
+          childrenProfiles: ChildrenProfiles.read(),
         }}>
 
           <ProtectedRoute exact path="/Parents/Welcome" component={Welcome} />
-          <ProtectedRoute exact path="/ParentsAbout" component={About} />
+          <ProtectedRoute exact path="/Parents/About" component={About} />
 
           <ProtectedRoute exact path="/Parents/EditProfile" component={() =>
             <EditProfilePage

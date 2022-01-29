@@ -16,19 +16,27 @@ function ChildCard({ HandleSelectChild, HandleDeleteChild, ChildProfile }) {
 
         <Card.Body>
           <Card.Title>
-            <CloseButton aria-label='מחיקה' onClick={(e) => HandleDeleteChild(e, ChildProfile.Id)} /> {ChildProfile.Name}
 
-            <Button
-              className='test-class'
-              // disabled={isSelected ? "true" : "false"}
-              disabled={ChildProfile.IsSelected}
-              onClick={(e) => HandleSelectChild(e, ChildProfile)} variant="primary"
-            >
-              {ChildProfile.IsSelected ? "ילד נוכחי" : "בחר ילד"}
-            </Button>
+            <div className="select-child-card-title-container">
+              <CloseButton aria-label='מחיקה' onClick={(e) => HandleDeleteChild(e, ChildProfile.Id)} />
 
+              {ChildProfile.Name}
+
+              <Button
+                className='select-child-button'
+                // disabled={isSelected ? "true" : "false"}
+                disabled={ChildProfile.IsSelected}
+                onClick={(e) => HandleSelectChild(e, ChildProfile)} variant="primary"
+              >
+
+                {ChildProfile.IsSelected ? "ילד נוכחי" : "בחר ילד"}
+
+              </Button>
+
+            </div>
           </Card.Title>
           <Card.Text>
+
             {"גיל: " + ChildProfile.Age}
           </Card.Text>
 

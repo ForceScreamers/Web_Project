@@ -59,7 +59,7 @@ export default function ParentRegister({ HandleRegister }) {
 
       <div className="RegisterContainer">
         <h1>הרשמת הורים</h1>
-        <Link to="/" >התחברות הורים</Link>
+        <Link to="/" >התחברות</Link>
 
         <form onSubmit={OnSubmit}>
           <div className="InputContainer">

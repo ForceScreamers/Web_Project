@@ -59,7 +59,7 @@ export default function ProviderRegister({ HandleRegister }) {
 
       <div className="RegisterContainer">
         <h1>הרשמה בתור בעל מקצוע</h1>
-        <Link to="/Providers/Login" >התחברות בתור בעל מקצוע</Link>
+        <Link to="/" >התחברות</Link>
 
         <form onSubmit={OnSubmit}>
           <div className="InputContainer">
@@ -86,7 +86,6 @@ export default function ProviderRegister({ HandleRegister }) {
             <input type="submit" value="Register" />
           </div>
         </form>
-        <Link to="/" >התחברות בתור הורה</Link>
 
       </div>
     </div >

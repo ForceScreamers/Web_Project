@@ -19,20 +19,21 @@ export const ProtectedRoute = ({ component: Component, ...rest }) => {
         (props) => {
           let isAuth = reasource.isAuth.read();
           console.log(isAuth)
+          console.log(reasource)
 
-          //  If the sessionStorage is clear
-          if (sessionStorage.length === 0 && history.location.pathname !== "/") {
+          // If the sessionStorage is clear
+          // if (sessionStorage.length === 0 && history.location.pathname !== "/") {
 
-            sessionStorage.clear();
-            return <Redirect to="/" />
-          }
+          //   sessionStorage.clear();
+          //   return <Redirect to="/" />
+          // }
 
           //  If the user is authenticated
           if (isAuth) {
             return <Component {...props} />
           }
           else {
-            sessionStorage.clear();
+            //sessionStorage.clear();
             return <Redirect to="/" />
           }
         }
