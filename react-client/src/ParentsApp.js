@@ -41,7 +41,7 @@ import { LogoutContext } from './Contexts/LogoutContext';
 import { NavBarContext } from './Contexts/NavBarContext';
 
 //  Import helper classes
-import { ChildHandler } from './ChildHandler';
+import { ChildrenHandlerApi } from './ChildrenHandlerApi';
 
 
 
@@ -59,7 +59,7 @@ import { ChildHandler } from './ChildHandler';
 
 
 
-const RequestRegister = async (userData) => {
+async function RequestRegister(userData) {
   // Register req
   console.log("Requesting reg...")
 
@@ -79,7 +79,7 @@ const RequestRegister = async (userData) => {
   })
 }
 
-const RequestLogin = async (userData) => {
+async function RequestLogin(userData) {
   return axios({
     method: 'POST',
     hostname: 'localhost',
@@ -94,6 +94,7 @@ const RequestLogin = async (userData) => {
       'password': userData.password,
     }
   })
+    .catch(err => console.log(err))
 }
 
 
@@ -119,56 +120,49 @@ const RequestLogin = async (userData) => {
 //TODO: Swap all anonymously declared functions to "function(){}"
 //TODO: Handle user doesn't exist
 //TODO: Update games page to load all children
+//TODO: User verify delete child
+//TODO: Deal with unable to connect
+//TODO Handle user doesn't exist
+
 
 // * React app component
 export default function ParentsApp() {
   const [currentChild, setCurrentChild] = useState({});
   const [username, setUsername] = useState('no username');
-  //const history = useHistory();
+
   let history = useHistory();
 
   /**Gets the children belonging to the logged parent
    * Set current children profiles to the matching children
    */
-  const LoadChildrenFromServer = () => {
+  function LoadChildrenFromServer() {
 
     let parentId = JSON.parse(sessionStorage.getItem('userId'));
 
     console.log(parentId);
     if (parentId) {
-      axios({
-        method: 'POST',
-        url: "http://localhost:5000/api/Parent/GetChildren",
-        timeout: process.env.REACT_APP_REQUEST_TIMEOUT_LENGTH,
-        headers: {
-          'parentId': parentId,
-        }
-      })
-        .catch(err => console.log(err))
+      ChildrenHandlerApi.GetChildren(parentId)
         .then(res => {
-          if (res) {
-            console.log("CHILDREN:")
-            console.log(res)
-            sessionStorage.setItem('children', JSON.stringify(res.data));
-            let children = JSON.parse(sessionStorage.getItem('children'));
 
-            console.log(children);
-            if (children.length === 0) {
-              console.log(children);
-              setCurrentChild(null);
-              sessionStorage.setItem('currentChild', 'null')
-            }
-            else {
-              sessionStorage.setItem('currentChild', JSON.stringify(GetSelectedChild(children)))
-              setCurrentChild(JSON.parse(sessionStorage.getItem('currentChild')));
-            }
+          //  Set children
+          sessionStorage.setItem('children', JSON.stringify(res.data));
+          let children = JSON.parse(sessionStorage.getItem('children'));
+
+          //  Set current child
+          if (children.length === 0) {
+            sessionStorage.setItem('currentChild', 'null');
+            setCurrentChild(null);
+          }
+          else {
+            sessionStorage.setItem('currentChild', JSON.stringify(GetSelectedChild(children)))
+            setCurrentChild(JSON.parse(sessionStorage.getItem('currentChild')));
           }
         })
     }
   }
 
 
-  const GetSelectedChild = (childrenArray) => {
+  function GetSelectedChild(childrenArray) {
     let tempArray = childrenArray;
     let child = undefined;
 
@@ -181,31 +175,21 @@ export default function ParentsApp() {
 
     return child;
   }
+
   //  Handles child add logic
-  const HandleAddChild = async (e, formValid) => {
+  function HandleAddChild(e, formValid) {
     e.preventDefault();
 
     console.log(`Add child? ${formValid}`)
 
     if (formValid) {
 
-      let formChildName = e.target.childNameField.value;
-      let formChildAge = e.target.childAgeSelect.value;
-
+      let childAge = e.target.childAgeSelect.value;
+      let parentId = JSON.parse(sessionStorage.getItem('userId'));
+      let childName = utf8.encode(e.target.childNameField.value);
 
       //Send request to server to add child
-      axios({
-
-        method: 'post',
-        url: "http://localhost:5000/api/Parent/AddChild",
-        timeout: process.env.REACT_APP_REQUEST_TIMEOUT_LENGTH,
-        headers: {
-          'parentId': JSON.parse(sessionStorage.getItem('userId')),
-          'childName': utf8.encode(formChildName),
-          'childAge': formChildAge
-        }
-      })
-        .catch(err => console.log(err))
+      ChildrenHandlerApi.AddChild(parentId, childName, childAge)
 
         .then((response) => {//	Get confirmation that the child was added
           console.log(response);
@@ -215,38 +199,28 @@ export default function ParentsApp() {
           }
           else { console.log("No response from server") }
         })
-
     }
   }
+
   /**
    * Changes the selected child from edit profile to the current child
    * Used to keep track of progress for this child
    */
-  const HandleSelectChild = (e, childToSelect) => {
+  function HandleSelectChild(e, childToSelect) {
 
-    ChildHandler.SelectChild(e, childToSelect)
+    ChildrenHandlerApi.SelectChild(e, childToSelect)
       .catch(err => console.log(err))
       .then(() => {
         LoadChildrenFromServer();
       })
   }
 
-  const HandleDeleteChild = (e, childId) => {
-    // Get the delete confirmation from the server then delete 
-    //	the child from the state array
-    axios({
-      method: 'POST',
-      url: "http://localhost:5000/api/Parent/DeleteChild",
-      timeout: process.env.REACT_APP_REQUEST_TIMEOUT_LENGTH,
-      headers: {
-        'childId': childId,
-        'parentId': JSON.parse(sessionStorage.getItem('userId'))
+  function HandleDeleteChild(e, childId) {
 
-      }
-    }).catch(err => console.log(err))
-      .then((response) => {
-        //TODO: User verify delete child
+    let parentId = JSON.parse(sessionStorage.getItem('userId'));
 
+    ChildrenHandlerApi.DeleteChild(childId, parentId)
+      .then(() => {
         LoadChildrenFromServer(e);
       })
   }
@@ -254,7 +228,7 @@ export default function ParentsApp() {
 
 
 
-  const HandleLogin = async (e, formValid) => {
+  function HandleLogin(e, formValid) {
 
     e.preventDefault();
 
@@ -267,7 +241,6 @@ export default function ParentsApp() {
         password: e.target.loginPasswordField.value,
       };
 
-
       //! For debugging
       // let userData = {
       // 	email: "test@test.com",
@@ -275,35 +248,27 @@ export default function ParentsApp() {
       // };
 
 
-      //TODO: Deal with unable to connect
       RequestLogin(userData)
-        .catch(err => console.log(err))
         .then((response) => {
 
-          if (response) {
-            console.log(response);
+          console.log(response);
 
-            //	If the user is authorized
-            if (response.data.FromParent.UserExists === true) {
+          //	If the user is authorized
+          if (response.data.FromParent.UserExists === true) {
 
-              //	Set sessionStorage items and states
-              sessionStorage.setItem("token", response.data.token);
-              sessionStorage.setItem("userId", response.data.FromParent.ParentInfo.Id);
-              sessionStorage.setItem("username", response.data.FromParent.ParentInfo.Username);
-              setUsername(sessionStorage.getItem("username"));
+            //	Set sessionStorage items and states
+            sessionStorage.setItem("token", response.data.token);
+            sessionStorage.setItem("userId", response.data.FromParent.ParentInfo.Id);
+            sessionStorage.setItem("username", response.data.FromParent.ParentInfo.Username);
+            setUsername(sessionStorage.getItem("username"));
 
-              LoadChildrenFromServer(e)
+            LoadChildrenFromServer(e)
 
-              //	Redirect to welcome page
-              history.push("/Parents/Welcome");
-            }
-            else {
-              //	TODO Handle user doesn't exist
-              alert("user not found");
-            }
+            //	Redirect to welcome page
+            history.push("/Parents/Welcome");
           }
           else {
-            console.error("server error, maybe webapi")
+            alert("user not found");
           }
         });
     }
@@ -313,9 +278,8 @@ export default function ParentsApp() {
     e.preventDefault();
 
 
-
     console.log("Form valid: " + formValid)
-    if (formValid) {//	If the form is valid (Writing here !valid because the validation works the opposite way)
+    if (formValid) {
 
       let userData = {
         username: e.target.registerUsernameField.value,
@@ -349,7 +313,6 @@ export default function ParentsApp() {
           alert("User already exists");
         }
         else {
-          //	TODO Handle user doesn't exist
           console.error("ERROR IN REGISTER USER");
         }
       }
@@ -391,7 +354,6 @@ export default function ParentsApp() {
 
     <div>
 
-
       <PublicRoute exact path="/" component={() =>
         <ParentLogin
           HandleLogin={(e, isValid) => HandleLogin(e, isValid)}
@@ -410,7 +372,7 @@ export default function ParentsApp() {
         }}>
 
           <ProtectedRoute exact path="/Parents/Welcome" component={Welcome} />
-          <ProtectedRoute exact path="/ParentsAbout" component={About} />
+          <ProtectedRoute exact path="/Parents/About" component={About} />
 
           <ProtectedRoute exact path="/Parents/EditProfile" component={() =>
             <EditProfilePage
@@ -427,12 +389,7 @@ export default function ParentsApp() {
         </NavBarContext.Provider>
 
       </LogoutContext.Provider>
-      {/* //  The main pages are: Games, info, about, edit profile, avatar, journal */}
 
-
-
-
-      {/* </Router> */}
     </div >
   );
 }

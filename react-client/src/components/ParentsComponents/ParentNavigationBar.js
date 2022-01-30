@@ -25,7 +25,7 @@ export default function ParentNavigationBar() {
     <div dir="rtl" >
       <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
         <Container fluid className="h-25">
-          <Navbar.Brand href="/Home">כפתור בית</Navbar.Brand>
+          <Navbar.Brand href="/Parents/Home">כפתור בית</Navbar.Brand>
           <Navbar.Brand> מחובר בתור: {usernameFromContext}</Navbar.Brand>
           <Navbar.Brand>
             {/* {currentChildNameFromContext.length === 0 ? S_NO_CHILD_SELECTED : `${S_CURRENT_CHILD}:${currentChildNameFromContext}`} */}
@@ -34,12 +34,12 @@ export default function ParentNavigationBar() {
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto">
-              <Link to="/Games" className="nav-link">משחקייה</Link>
-              <Link to="/Info" className="nav-link">מאמרים</Link>
-              <Link to="/About" className="nav-link">אודות</Link>
-              <Link to="/EditProfile" className="nav-link">עריכת פרופיל</Link>
-              <Link to="/Avatar" className="nav-link">שינוי אווטר</Link>
-              <Link to="/Journal" className="nav-link">היומן שלי</Link>
+              <Link to="/Parents/Games" className="nav-link">משחקייה</Link>
+              <Link to="/Parents/Info" className="nav-link">מאמרים</Link>
+              <Link to="/Parents/About" className="nav-link">אודות</Link>
+              <Link to="/Parents/EditProfile" className="nav-link">עריכת פרופיל</Link>
+              <Link to="/Parents/Avatar" className="nav-link">שינוי אווטר</Link>
+              <Link to="/Parents/Journal" className="nav-link">היומן שלי</Link>
               {/* <NavDropdown title="Dropdown" id="collasible-nav-dropdown">
                 <NavDropdown.Item href="#action/3.1">דברים</NavDropdown.Item>
                 <NavDropdown.Item href="#action/3.2">עוד דברים</NavDropdown.Item>

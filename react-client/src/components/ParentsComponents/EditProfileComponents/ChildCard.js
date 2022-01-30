@@ -1,5 +1,4 @@
 import { Card, CloseButton, Button } from 'react-bootstrap'
-import '../../components-styles/button-styles.scss'
 import ChildEvaluationsDisplay from './ChildEvaluationsDisplay'
 function ChildCard({ HandleSelectChild, HandleDeleteChild, ChildProfile }) {
 
