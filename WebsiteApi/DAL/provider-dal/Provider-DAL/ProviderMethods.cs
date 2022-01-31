@@ -13,19 +13,18 @@ namespace ProviderDal
 {
     public class ProviderMethods
     {
-        public static int AddProvider(string providerUsername, string providerEmail, string providerPassword, string providerRegistrationDate, string providerOccupation, int providerStatus)
+        public static int AddProvider(string providerFullName, string providerEmail, string providerPassword, string providerRegistrationDate, string providerOccupation)
         {
-            string com = "INSERT INTO provider (provider_username, provider_email, provider_password, provider_registration_date, provider_occupation, provider_status) VALUES (@provider_username, @provider_email, @provider_password, @provider_registration_date, @provider_occupation, @provider_status)";
+            string com = "INSERT INTO provider (provider_full_name, provider_email, provider_password, provider_registration_date, provider_occupation) VALUES (@provider_full_name, @provider_email, @provider_password, @provider_registration_date, @provider_occupation)";
 
             //  Pass as sql parameters for the parameterized query
             OdbcParameter[] queryParameters = {
                 
-                new OdbcParameter("@provider_username", providerUsername),
+                new OdbcParameter("@provider_full_name", providerFullName),
                 new OdbcParameter("@provider_email", providerEmail),
                 new OdbcParameter("@provider_password", providerPassword),
                 new OdbcParameter("@provider_registration_date", providerRegistrationDate),
                 new OdbcParameter("@provider_occupation", providerOccupation),
-                new OdbcParameter("@provider_status", providerStatus)
             };
 
             return OdbcHelper.Execute(com, queryParameters);

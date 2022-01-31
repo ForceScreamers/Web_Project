@@ -20,15 +20,12 @@ namespace ParentsApi
         {
             try
             {
-
 				if (EvaluationMethods.IsExists(childId, gameId))
 				{
-
 					EvaluationMethods.AddScoreToEvaluation(childId, scoreToAdd);
 				}
 				else
 				{
-
 					EvaluationMethods.AddEvaluation(childId, gameId, scoreToAdd);
 				}
 			}
@@ -37,10 +34,7 @@ namespace ParentsApi
 				Console.WriteLine(err);
             }
         }
-		//public static string GetEvaluationsForParent(int parentId)
-  //      {
-		//	return JsonConvert.SerializeObject(EvaluationMethods.GetEvaluationsForParent(parentId));
-  //      }
+
 
 
 		//	TODO: Change return type to string and convert the result to string

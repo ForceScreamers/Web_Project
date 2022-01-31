@@ -28,7 +28,7 @@ namespace ParentsApi.Controllers
 
 	public class ProviderController : Controller
 	{
-		#region -------------  HTTP functions  -------------
+	#region -------------  HTTP functions  -------------
 
 		// Puts a new user into the database
 		// Returns is the register was successful or failed, returns if the user alreadt exists in the database
@@ -36,8 +36,7 @@ namespace ParentsApi.Controllers
 		[Microsoft.AspNetCore.Mvc.ActionName("ProviderRegister")]
 		public ContentResult ProviderRegister()
 		{
-			string result = ProviderHelperFunctions.ProviderRegister(Request.Headers["username"].ToString(), Request.Headers["email"].ToString(), Request.Headers["password"].ToString());
-
+			string result = ProviderHelperFunctions.ProviderRegister(Request.Headers["username"].ToString(), Request.Headers["email"].ToString(), Request.Headers["password"].ToString(), Request.Headers["occupation"].ToString());
 			return base.Content(result);
 		}
 
@@ -45,71 +44,15 @@ namespace ParentsApi.Controllers
 		//	Returns information about the user
 		[Microsoft.AspNetCore.Mvc.HttpPost]
 		[Microsoft.AspNetCore.Mvc.ActionName("UserLogin")]
-		public ContentResult UserLogin()
+		public ContentResult ProviderLogin()
 		{
-			string userType = Request.Headers["userType"].ToString();
-			string result = JsonConvert.SerializeObject("NO USER TYPE");
-
-			if (userType == "parent")
-				result = ProviderHelperFunctions.ProviderLogin(Request.Headers["email"].ToString(), Request.Headers["password"].ToString());
+			//	Check if this works
+			string result = ProviderHelperFunctions.ProviderLogin(Request.Headers["email"].ToString(), Request.Headers["password"].ToString());
 
 			return base.Content(result);
 		}
-
-		//	Adds a new child to the database
-		//	Returns if the child was added, and information about the child
-		//[Microsoft.AspNetCore.Mvc.HttpPost]
-		//[Microsoft.AspNetCore.Mvc.ActionName("AddPost")]
-		//public ContentResult AddChild()
-		//{
-
-		//	//Post child = new Post(Request.Headers["childName"].ToString(), int.Parse(Request.Headers["childAge"].ToString()));
-
-		//	return base.Content(ProviderHelperFunctions.AddPost();
-
-		//}
-
-		//[Microsoft.AspNetCore.Mvc.HttpPost]
-		//[Microsoft.AspNetCore.Mvc.ActionName("DeleteChild")]
-		//public ContentResult DeletePost()
-		//{
-		//	return base.Content(ProviderHelperFunctions.DeleteChild
-		//		(
-		//			int.Parse(Request.Headers["childId"].ToString()),
-		//			int.Parse(Request.Headers["parentId"].ToString()))
-		//		);
-		//}
-
-		//[Microsoft.AspNetCore.Mvc.HttpPost]
-		//[Microsoft.AspNetCore.Mvc.ActionName("GetChildren")]
-		//public ContentResult GetPosts()
-		//{
-		//	return base.Content(ProviderHelperFunctions.GetChildren(int.Parse(Request.Headers["parentId"].ToString())));
-		//}
-		#endregion
-
-
-
-		//private List<Child> ChildrenDataTableToObject(DataTable childrenDt)
-		//{
-		//	List<Child> children = new List<Child>();
-
-		//	foreach (DataRow row in childrenDt.Rows)
-		//	{
-		//		//  Convering child properties
-		//		string childName = row.ItemArray[1].ToString();
-		//		int childId = int.Parse(row.ItemArray[2].ToString());
-		//		int childAge = int.Parse(row.ItemArray[0].ToString());
-		//		bool childIsSelected = bool.Parse(row.ItemArray[3].ToString());
-
-		//		children.Add(new Child(childName, childAge, childIsSelected, childId));
-		//		Console.WriteLine(children[children.Count - 1].ToString());
-		//	}
-
-		//	return children;
-		//}
-
-
+	
+	#endregion
 
 		/// <summary>
 		/// Converts a given UTF-8 encoded string to Unicode and returns unicode as string

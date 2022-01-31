@@ -1,5 +1,7 @@
 import ParentMainPage from "../../Components/ParentsComponents/ParentMainPage"
 
+
+
 export default function JournalPage() {
   return (
     <div>

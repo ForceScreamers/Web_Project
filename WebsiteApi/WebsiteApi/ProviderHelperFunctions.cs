@@ -90,47 +90,38 @@ namespace ProvidersApi
 			
 			return JsonConvert.SerializeObject(new { UserExists = userExists });
 		}
-		public static string ProviderRegister(string username, string email, string password)
+		public static string ProviderRegister(string username, string email, string password, string occupation)
 		{
-			//Console.WriteLine("Registering parent: {0} {1} {2}", username, email, password);
+            Console.WriteLine("Registering provider: {0} {1} {2} {3}", username, email, password, occupation);
 
-			//bool userRegistered = false;//  If the parent is registered in the system
-			//bool userExists = false;//  If the user already exists in the system
+            bool userRegistered = false;//  If the parent is registered in the system
+            bool userExists = ProviderMethods.IsExists(email, password);
 
-			//if (ParentMethods.IsExists(email, password) == false)
-			//{
-			//	int result = 0;
+            if (userExists == false)
+            {
+                int result = 0;
 
-			//	try
-			//	{
-			//		//  Add parent to db
-			//		result = ParentMethods.AddParent(username, email, password, DateTime.Today.ToString());
-			//	}
-			//	catch (Exception e)
-			//	{
-			//		Console.WriteLine(e);
-			//	}
+                try
+                {
+                    //  Add provider to db
+                    result = ProviderMethods.AddProvider(username, email, password, DateTime.Today.ToString(), occupation);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
 
-			//	//  If there are no errors, the parent is registered
-			//	userRegistered = (result == 1);
-			//}
-			//else
-			//{
-			//	//  The user already exists
-			//	userExists = true;
-			//	Console.WriteLine("User exists");
-			//}
+                //  If there are no errors, the provider is registered
+                userRegistered = (result == 1);
+            }
 
-			//return JsonConvert.SerializeObject(
-			//	new
-			//	{
-			//		Registered = userRegistered,
-			//		UserExists = userExists,
-			//		Children = userRegistered
-			//				? GetChildrenForParent(ParentMethods.GetParentLoggedInfo(email, password).Id)
-			//				: null,
-			//	});
-			return null;
+            return JsonConvert.SerializeObject(
+                new
+                {
+                    Registered = userRegistered,
+                    UserExists = userExists,
+                    //	Posts perhaps?
+                });
 		}
 
 

@@ -19,7 +19,8 @@ import InfoPage from './Pages/ParentsPages/InfoPage';
 import AvatarPage from './Pages/ParentsPages/AvatarPage';
 import JournalPage from './Pages/ParentsPages/JournalPage';
 import HomePage from './Pages/ParentsPages/HomePage';
-import ProviderLogin from './Pages/ProvidersPages/ProviderLogin';
+// import ProviderLogin from './Pages/ProvidersPages/ProviderLogin';
+
 
 
 //import AuthenticatedRoute from "./components/ProtectedRoute";
@@ -42,6 +43,7 @@ import { NavBarContext } from './Contexts/NavBarContext';
 
 //  Import helper classes
 import { ChildrenHandlerApi } from './ChildrenHandlerApi';
+import { RequestLoginAsParent } from "./LoginAndRegisterHandlers/LoginHandler";
 
 
 
@@ -226,8 +228,6 @@ export default function ParentsApp() {
   }
 
 
-
-
   function HandleLogin(e, formValid) {
 
     e.preventDefault();
@@ -236,19 +236,10 @@ export default function ParentsApp() {
 
     if (formValid) {
 
-      let userData = {
-        email: e.target.loginEmailField.value,
-        password: e.target.loginPasswordField.value,
-      };
+      let email = e.target.loginEmailField.value;
+      let password = e.target.loginPasswordField.value;
 
-      //! For debugging
-      // let userData = {
-      // 	email: "test@test.com",
-      // 	password: "1234",
-      // };
-
-
-      RequestLogin(userData)
+      RequestLoginAsParent(email, password)
         .then((response) => {
 
           console.log(response);
