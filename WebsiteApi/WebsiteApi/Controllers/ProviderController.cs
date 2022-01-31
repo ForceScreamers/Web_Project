@@ -43,7 +43,7 @@ namespace ParentsApi.Controllers
 		//	Checks if the user exists in the database
 		//	Returns information about the user
 		[Microsoft.AspNetCore.Mvc.HttpPost]
-		[Microsoft.AspNetCore.Mvc.ActionName("UserLogin")]
+		[Microsoft.AspNetCore.Mvc.ActionName("ProviderLogin")]
 		public ContentResult ProviderLogin()
 		{
 			//	Check if this works

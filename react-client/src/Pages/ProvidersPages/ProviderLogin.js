@@ -7,7 +7,7 @@ import FormInputField from '../../Components/GeneralComponents/FormInputField';
 import { useState } from 'react';
 import { ValidateEmail, ValidatePassword } from '../../Project-Modules/ValidateUserInput';
 
-export default function ProviderLogin({ HandleLogin }) {
+export default function ProviderLogin({ HandleProviderLogin }) {
   let emailValid = true;
   let passwordValid = true;
 
@@ -26,7 +26,7 @@ export default function ProviderLogin({ HandleLogin }) {
     setEmailValidState(emailValid)
     setPasswordValidState(passwordValid)
 
-    HandleLogin(e, emailValid && passwordValid);
+    HandleProviderLogin(e, emailValid && passwordValid);
   }
 
   const onChangeHandler = (fieldName, value) => {

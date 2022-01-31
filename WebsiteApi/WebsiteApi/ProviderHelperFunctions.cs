@@ -72,12 +72,14 @@ namespace ProvidersApi
 
 		public static string ProviderLogin(string email, string password)
 		{
-			//  Check if the email and password exist
-			bool userExists = false;
+			bool canProviderLogIn = false;
 
 			try
 			{
-				userExists = ProviderMethods.IsExists(email, password);
+				if(ProviderMethods.IsExists(email, password))
+				{
+					canProviderLogIn = ProviderMethods.IsPermitted(email);
+				}
 			}
 			catch(Exception e)
 			{
@@ -85,19 +87,20 @@ namespace ProvidersApi
 			}
 			finally	//For debugging
 			{
-				Console.WriteLine("User exists: {0}", userExists);
+				Console.WriteLine("User exists: {0}", canProviderLogIn);
 			}
 			
-			return JsonConvert.SerializeObject(new { UserExists = userExists });
+			return JsonConvert.SerializeObject(new { AllowedToLogin = canProviderLogIn });
 		}
+
 		public static string ProviderRegister(string username, string email, string password, string occupation)
 		{
             Console.WriteLine("Registering provider: {0} {1} {2} {3}", username, email, password, occupation);
 
-            bool userRegistered = false;//  If the parent is registered in the system
-            bool userExists = ProviderMethods.IsExists(email, password);
+            bool providerRegistered = false;
+            bool providerExists = ProviderMethods.IsExists(email, password);
 
-            if (userExists == false)
+            if (providerExists == false)
             {
                 int result = 0;
 
@@ -112,14 +115,14 @@ namespace ProvidersApi
                 }
 
                 //  If there are no errors, the provider is registered
-                userRegistered = (result == 1);
+                providerRegistered = (result == 1);
             }
 
             return JsonConvert.SerializeObject(
                 new
                 {
-                    Registered = userRegistered,
-                    UserExists = userExists,
+                    Registered = providerRegistered,
+                    UserExists = providerExists,
                     //	Posts perhaps?
                 });
 		}

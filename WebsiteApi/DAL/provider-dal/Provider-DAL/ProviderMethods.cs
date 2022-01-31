@@ -67,6 +67,22 @@ namespace ProviderDal
 
             return exists;
         }
+        public static bool IsPermitted(string providerEmail)
+        {
+            string com = "SELECT provider.provider_status, provider.provider_email, provider.provider_id FROM provider WHERE(((provider.provider_email) =[?])); ";
+            OdbcParameter[] queryParameters =
+            {
+                new OdbcParameter("@provider_email", providerEmail),
+            };
+
+            DataTable dt = OdbcHelper.GetTable(com, queryParameters);
+
+            //  The field inside the db table which indicates whether or not a provider has been permitted
+            bool permitted = (bool)dt.Rows[0].ItemArray[0];
+
+            return permitted;
+        }
+
         public static ProviderInfo GetProviderInfo(string parentEmail, string parentPassword)
         {
             string com = "SELECT parent_id, parent_username FROM parent WHERE parent_email=? AND parent_password=?";
@@ -90,6 +106,6 @@ namespace ProviderDal
             return null;
         }
 
-
+        
     }
 }
