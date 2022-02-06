@@ -1,4 +1,5 @@
 import axios from 'axios'
+import utf8 from 'utf8'
 
 export async function RequestRegisterAsParent({ username, email, password }) {
   return axios({
@@ -18,7 +19,7 @@ export async function RequestRegisterAsParent({ username, email, password }) {
     .catch(err => console.log(err))
 }
 
-export async function RequestRegisterAsProvider({ fullName, email, password, occupation }) {
+export async function RequestRegisterAsProvider(fullName, email, password, occupation) {
   return axios({
     method: 'POST',
     hostname: 'localhost',
@@ -28,10 +29,10 @@ export async function RequestRegisterAsProvider({ fullName, email, password, occ
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Content-Type': 'application/json',
-      'fullName': fullName,
+      'fullName': utf8.encode(fullName),
       'email': email,
       'password': password,
-      'occupation': occupation,
+      'occupation': utf8.encode(occupation),
     }
   })
     .catch(err => console.log(err))

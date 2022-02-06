@@ -44,6 +44,7 @@ import { NavBarContext } from './Contexts/NavBarContext';
 //  Import helper classes
 import { ChildrenHandlerApi } from './ChildrenHandlerApi';
 import { RequestLoginAsParent } from "./LoginAndRegisterHandlers/LoginHandler";
+import PageDoesntExist from './PageDoesntExist';
 
 
 
@@ -60,7 +61,7 @@ import { RequestLoginAsParent } from "./LoginAndRegisterHandlers/LoginHandler";
  */
 
 
-
+/** */
 async function RequestRegister(userData) {
   // Register req
   console.log("Requesting reg...")
@@ -116,9 +117,6 @@ async function RequestLogin(userData) {
 //TODO: Add errors in login and register as text to screen
 //TODO: HandleLogin and HandleRegister are too long
 //TODO: Combine contexts
-//* DONE: Fix handle when token is expired
-//TODO: Remove unnecessary e parameter from various functions 
-//* DONE: Finish updating the game scores when the user leaves a game
 //TODO: Swap all anonymously declared functions to "function(){}"
 //TODO: Handle user doesn't exist
 //TODO: Update games page to load all children
@@ -282,7 +280,6 @@ export default function ParentsApp() {
 
       let response = await RequestRegister(userData);
       if (response) {
-        console.log(response);
 
         //	If the user is authorized
         if (response.data.Registered === true) {
@@ -341,6 +338,8 @@ export default function ParentsApp() {
   }, []);
   //#endregion
 
+
+
   return (
 
     <div>
@@ -377,10 +376,13 @@ export default function ParentsApp() {
           <ProtectedRoute exact path="/Parents/Avatar" component={AvatarPage} />
           <ProtectedRoute exact path="/Parents/Journal" component={JournalPage} />
           <ProtectedRoute exact path="/Parents/Home" component={HomePage} />
+
+          {/* <PublicRoute exactpath={"/Parents/*"} component={PageDoesntExist} /> */}
+
         </NavBarContext.Provider>
 
       </LogoutContext.Provider>
 
-    </div >
+    </div>
   );
 }

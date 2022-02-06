@@ -2,7 +2,7 @@ import React, { Suspense } from 'react';
 import { Route, Redirect, useHistory } from 'react-router-dom';
 import { fetchIsAuth } from './GetAuthenticated';
 
-
+import { useEffect } from 'react';
 
 
 //TODO: Find a way to create a protected route
@@ -10,7 +10,6 @@ export const ProtectedRoute = ({ component: Component, ...rest }) => {
 
   let reasource = fetchIsAuth();
   let history = useHistory();
-
 
   return (
     <Suspense fallback={<Component />}>

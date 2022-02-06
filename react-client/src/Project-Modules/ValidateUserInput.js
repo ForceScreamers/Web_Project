@@ -22,7 +22,7 @@ function ValidateUserInput_Eng(input) {
 
 //  Returns true if the input contains only hebrew characters and spaces
 export function IsInputValid_OnlyHebrew(input) {
-  return input.match(/^[\u0590-\u05FF]+$/);
+  return (/^[\u0590-\u05FF]+$/).test(input);
 }
 
 //  Returns true if the input contains only numbers
@@ -81,8 +81,8 @@ export const ValidateLoginInput = (userData) => {
   return emailValid && passwordValid;
 }
 
-export const ValidateConfirmPassword = (password1, password2) => {
-  return password1 === password2;
+export const ValidateConfirmPassword = (password, passwordToCompare) => {
+  return password === passwordToCompare && password !== "" && passwordToCompare !== "";
 }
 
 /**
@@ -90,6 +90,16 @@ export const ValidateConfirmPassword = (password1, password2) => {
  */
 export const ValidateUsername = (username) => {
   return ValidateUserInput_All(username);
+}
+
+//TODO: Make all functions is this file match this function's pattern
+/**
+ * @param {string} input 
+ * @returns true or false whether the input is in hebrew or isn't empty
+ */
+export function IsHebrewInputValid(input) {
+
+  return IsInputValid_OnlyHebrew(input) && input !== "";
 }
 
 /**
