@@ -74,12 +74,14 @@ namespace ProvidersApi
 		public static string ProviderLogin(string email, string password)
 		{
 			bool canProviderLogIn = false;
+			ProviderInfo providerInfo = new ProviderInfo();
 
 			try
 			{
 				if(ProviderMethods.IsExists(email, password))
 				{
 					canProviderLogIn = ProviderMethods.IsPermitted(email);
+					providerInfo = ProviderMethods.GetProviderInfo(email, password);
 				}
 			}
 			catch(Exception e)
@@ -91,7 +93,7 @@ namespace ProvidersApi
 				Console.WriteLine("User exists: {0}", canProviderLogIn);
 			}
 			
-			return JsonConvert.SerializeObject(new { AllowedToLogin = canProviderLogIn });
+			return JsonConvert.SerializeObject(new { AllowedToLogin = canProviderLogIn, Info = providerInfo, IsAdmin = AdminMethods.IsAdmin(email, password) });
 		}
 
 		public static string ProviderRegister(string fullName, string email, string password, string occupation)

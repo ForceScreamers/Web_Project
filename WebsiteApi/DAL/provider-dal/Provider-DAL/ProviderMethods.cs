@@ -85,25 +85,21 @@ namespace ProviderDal
 
         public static ProviderInfo GetProviderInfo(string parentEmail, string parentPassword)
         {
-            string com = "SELECT parent_id, parent_username FROM parent WHERE parent_email=? AND parent_password=?";
+            string com = "SELECT provider_id, provider_full_name, provider_occupation, provider_email FROM provider WHERE provider_email=?";
             OdbcParameter[] queryParameters = {
                 new OdbcParameter("@parent_email", parentEmail),
-                new OdbcParameter("@parent_password", parentPassword)
             };
 
             //  Execute command
             DataTable dt = OdbcHelper.GetTable(com, queryParameters);
 
-            //  Parse id
-            int parentId = int.Parse(dt.Rows[0].ItemArray[0].ToString());
-            string parentUsername = dt.Rows[0].ItemArray[1].ToString();
+            int providerId = int.Parse(dt.Rows[0].ItemArray[0].ToString());
+            string providerFullName = dt.Rows[0].ItemArray[1].ToString();
+            string providerOccupation = dt.Rows[0].ItemArray[2].ToString();
+            string providerEmail = dt.Rows[0].ItemArray[3].ToString();
 
-
-            Console.WriteLine("Parent id: " + parentId);
-            Console.WriteLine("Parent username: " + parentUsername);
-
-            //return new ProviderInfo(parentUsername, parentId);
-            return null;
+            return new ProviderInfo(providerFullName, providerId, providerOccupation, providerEmail);
+            //return null;
         }
 
         

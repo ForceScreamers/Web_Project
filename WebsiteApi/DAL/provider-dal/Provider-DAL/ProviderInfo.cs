@@ -8,10 +8,8 @@ namespace Provider_DAL
 {
     public class ProviderInfo
     {
-        //  full name, sex, email, password, occupation, workplace, phone number, experience
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        //public string Sex { get; set; }
+        //  full name, email, password, occupation, workplace, phone number, experience
+        public string FullName { get; set; }
         public int Id { get; set; }
         public string Email { get; set; }
         public string Occupation { get; set; }
@@ -28,10 +26,17 @@ namespace Provider_DAL
 
         public ProviderInfo()
         {
-            FirstName = "DEFAULT FIRST NAME";
-            LastName = "DEFAULT LAST NAME";
+            FullName = "DEFAULT FULL NAME";
             Id = -1;
             Posts = new List<Post>();
+        }
+
+        public ProviderInfo(string fullName, int id, string occupation, string email)
+        {
+            this.FullName = fullName;
+            this.Id = id;
+            this.Occupation = occupation;
+            this.Email = email;
         }
     }
 

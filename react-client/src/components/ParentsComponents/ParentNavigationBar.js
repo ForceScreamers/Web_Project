@@ -1,14 +1,22 @@
 import { Navbar, Container, Nav, NavDropdown, NavItem, Button } from 'react-bootstrap'
 import { Link } from "react-router-dom"
 import { useContext, useEffect, useState } from 'react'
-import { LogoutContext } from '../../Contexts/LogoutContext'
 import { NavBarContext } from '../../Contexts/NavBarContext'
+import { useHistory } from 'react-router-dom'
 
 //  היומן שלי, שינוי אווטר, עריכת פרופיל, משחקייה, מאמרים, אודותר
 //  The main pages are: Games, info, about, edit profile, avatar, journal
 
 export default function ParentNavigationBar() {
-  const LogoutUser = useContext(LogoutContext);
+
+  const history = useHistory();
+
+  function LogoutUser() {
+    sessionStorage.clear();
+    history.replace("/");
+  }
+
+
 
   //  If there's no child
   console.log(useContext(NavBarContext))
