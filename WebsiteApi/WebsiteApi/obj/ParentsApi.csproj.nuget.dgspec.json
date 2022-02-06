@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Kfir\\Desktop\\Web_Project\\WebsiteApi\\WebsiteApi\\ParentsApi.csproj": {}
+    "C:\\Users\\Kfir\\Desktop\\Web_Project 06.02\\WebsiteApi\\WebsiteApi\\ParentsApi.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Kfir\\Desktop\\Web_Project\\WebsiteApi\\DAL\\ParentDal\\ParentDal.csproj": {
+    "C:\\Users\\Kfir\\Desktop\\Web_Project 06.02\\WebsiteApi\\DAL\\ParentDal\\ParentDal.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Kfir\\Desktop\\Web_Project\\WebsiteApi\\DAL\\ParentDal\\ParentDal.csproj",
+        "projectUniqueName": "C:\\Users\\Kfir\\Desktop\\Web_Project 06.02\\WebsiteApi\\DAL\\ParentDal\\ParentDal.csproj",
         "projectName": "ParentDal",
-        "projectPath": "C:\\Users\\Kfir\\Desktop\\Web_Project\\WebsiteApi\\DAL\\ParentDal\\ParentDal.csproj",
+        "projectPath": "C:\\Users\\Kfir\\Desktop\\Web_Project 06.02\\WebsiteApi\\DAL\\ParentDal\\ParentDal.csproj",
         "packagesPath": "C:\\Users\\Kfir\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Kfir\\Desktop\\Web_Project\\WebsiteApi\\DAL\\ParentDal\\obj\\",
+        "outputPath": "C:\\Users\\Kfir\\Desktop\\Web_Project 06.02\\WebsiteApi\\DAL\\ParentDal\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\"
@@ -66,25 +66,25 @@
         }
       }
     },
-    "C:\\Users\\Kfir\\Desktop\\Web_Project\\WebsiteApi\\DAL\\provider-dal\\Provider-DAL\\ProviderDal.csproj": {
+    "C:\\Users\\Kfir\\Desktop\\Web_Project 06.02\\WebsiteApi\\DAL\\provider-dal\\Provider-DAL\\ProviderDal.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Kfir\\Desktop\\Web_Project\\WebsiteApi\\DAL\\provider-dal\\Provider-DAL\\ProviderDal.csproj",
+        "projectUniqueName": "C:\\Users\\Kfir\\Desktop\\Web_Project 06.02\\WebsiteApi\\DAL\\provider-dal\\Provider-DAL\\ProviderDal.csproj",
         "projectName": "ProviderDal",
-        "projectPath": "C:\\Users\\Kfir\\Desktop\\Web_Project\\WebsiteApi\\DAL\\provider-dal\\Provider-DAL\\ProviderDal.csproj"
+        "projectPath": "C:\\Users\\Kfir\\Desktop\\Web_Project 06.02\\WebsiteApi\\DAL\\provider-dal\\Provider-DAL\\ProviderDal.csproj"
       },
       "frameworks": {
         "net472": {}
       }
     },
-    "C:\\Users\\Kfir\\Desktop\\Web_Project\\WebsiteApi\\WebsiteApi\\ParentsApi.csproj": {
+    "C:\\Users\\Kfir\\Desktop\\Web_Project 06.02\\WebsiteApi\\WebsiteApi\\ParentsApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Kfir\\Desktop\\Web_Project\\WebsiteApi\\WebsiteApi\\ParentsApi.csproj",
+        "projectUniqueName": "C:\\Users\\Kfir\\Desktop\\Web_Project 06.02\\WebsiteApi\\WebsiteApi\\ParentsApi.csproj",
         "projectName": "ParentsApi",
-        "projectPath": "C:\\Users\\Kfir\\Desktop\\Web_Project\\WebsiteApi\\WebsiteApi\\ParentsApi.csproj",
+        "projectPath": "C:\\Users\\Kfir\\Desktop\\Web_Project 06.02\\WebsiteApi\\WebsiteApi\\ParentsApi.csproj",
         "packagesPath": "C:\\Users\\Kfir\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Kfir\\Desktop\\Web_Project\\WebsiteApi\\WebsiteApi\\obj\\",
+        "outputPath": "C:\\Users\\Kfir\\Desktop\\Web_Project 06.02\\WebsiteApi\\WebsiteApi\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\"
@@ -104,11 +104,11 @@
         "frameworks": {
           "netcoreapp3.1": {
             "projectReferences": {
-              "C:\\Users\\Kfir\\Desktop\\Web_Project\\WebsiteApi\\DAL\\ParentDal\\ParentDal.csproj": {
-                "projectPath": "C:\\Users\\Kfir\\Desktop\\Web_Project\\WebsiteApi\\DAL\\ParentDal\\ParentDal.csproj"
+              "C:\\Users\\Kfir\\Desktop\\Web_Project 06.02\\WebsiteApi\\DAL\\ParentDal\\ParentDal.csproj": {
+                "projectPath": "C:\\Users\\Kfir\\Desktop\\Web_Project 06.02\\WebsiteApi\\DAL\\ParentDal\\ParentDal.csproj"
               },
-              "C:\\Users\\Kfir\\Desktop\\Web_Project\\WebsiteApi\\DAL\\provider-dal\\Provider-DAL\\ProviderDal.csproj": {
-                "projectPath": "C:\\Users\\Kfir\\Desktop\\Web_Project\\WebsiteApi\\DAL\\provider-dal\\Provider-DAL\\ProviderDal.csproj"
+              "C:\\Users\\Kfir\\Desktop\\Web_Project 06.02\\WebsiteApi\\DAL\\provider-dal\\Provider-DAL\\ProviderDal.csproj": {
+                "projectPath": "C:\\Users\\Kfir\\Desktop\\Web_Project 06.02\\WebsiteApi\\DAL\\provider-dal\\Provider-DAL\\ProviderDal.csproj"
               }
             }
           }

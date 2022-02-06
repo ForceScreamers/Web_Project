@@ -199,11 +199,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Kfir\\Desktop\\Web_Project\\WebsiteApi\\DAL\\ParentDal\\ParentDal.csproj",
+      "projectUniqueName": "C:\\Users\\Kfir\\Desktop\\Web_Project 06.02\\WebsiteApi\\DAL\\ParentDal\\ParentDal.csproj",
       "projectName": "ParentDal",
-      "projectPath": "C:\\Users\\Kfir\\Desktop\\Web_Project\\WebsiteApi\\DAL\\ParentDal\\ParentDal.csproj",
+      "projectPath": "C:\\Users\\Kfir\\Desktop\\Web_Project 06.02\\WebsiteApi\\DAL\\ParentDal\\ParentDal.csproj",
       "packagesPath": "C:\\Users\\Kfir\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Kfir\\Desktop\\Web_Project\\WebsiteApi\\DAL\\ParentDal\\obj\\",
+      "outputPath": "C:\\Users\\Kfir\\Desktop\\Web_Project 06.02\\WebsiteApi\\DAL\\ParentDal\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Microsoft\\Xamarin\\NuGet\\"

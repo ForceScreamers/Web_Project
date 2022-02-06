@@ -10,6 +10,7 @@ using System.Text;
 using System.Web.Http;
 using Microsoft.AspNetCore.Mvc;
 using Provider_DAL;
+using ParentsApi;
 
 namespace ProvidersApi
 {
@@ -93,9 +94,9 @@ namespace ProvidersApi
 			return JsonConvert.SerializeObject(new { AllowedToLogin = canProviderLogIn });
 		}
 
-		public static string ProviderRegister(string username, string email, string password, string occupation)
+		public static string ProviderRegister(string fullName, string email, string password, string occupation)
 		{
-            Console.WriteLine("Registering provider: {0} {1} {2} {3}", username, email, password, occupation);
+            Console.WriteLine("Registering provider: {0} {1} {2} {3}", fullName, email, password, occupation);
 
             bool providerRegistered = false;
             bool providerExists = ProviderMethods.IsExists(email, password);
@@ -107,7 +108,12 @@ namespace ProvidersApi
                 try
                 {
                     //  Add provider to db
-                    result = ProviderMethods.AddProvider(username, email, password, DateTime.Today.ToString(), occupation);
+                    result = ProviderMethods.AddProvider(
+						UnicodeHelper.ConvertToUnicode(fullName), 
+						email, 
+						password, 
+						DateTime.Today.ToString(), 
+						UnicodeHelper.ConvertToUnicode(occupation));
                 }
                 catch (Exception e)
                 {

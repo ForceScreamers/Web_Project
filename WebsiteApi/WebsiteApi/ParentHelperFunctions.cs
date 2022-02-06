@@ -115,7 +115,7 @@ namespace ParentsApi
 			try
 			{
 				//  Add child to database
-				child.Id = ChildMethods.AddChild(parentId, child.Age, ConvertToUnicode(child.Name));
+				child.Id = ChildMethods.AddChild(parentId, child.Age, UnicodeHelper.ConvertToUnicode(child.Name));
 				Console.Write("Added child, id: {0}", child.Id);
 
 				childAddConfirm = true;
@@ -133,7 +133,7 @@ namespace ParentsApi
 			}
 			
 			//	TODO: Check if you really need to return info
-			return JsonConvert.SerializeObject(new { confirmed = childAddConfirm, name = ConvertToUnicode(child.Name), age = child.Age, id = child.Id});
+			return JsonConvert.SerializeObject(new { confirmed = childAddConfirm, name = UnicodeHelper.ConvertToUnicode(child.Name), age = child.Age, id = child.Id});
 		}
 
 
@@ -210,9 +210,6 @@ namespace ParentsApi
 
 
 		
-
-		private static string ConvertToUnicode(string utf8text)
-		{ return Encoding.Unicode.GetString(UTF8Encoding.Convert(Encoding.UTF8, Encoding.Unicode, Encoding.UTF8.GetBytes(utf8text))); }
 
 		/// <summary>
 		/// Returns true if no child is selected (for the given parent), false otherwise

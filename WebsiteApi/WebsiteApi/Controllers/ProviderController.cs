@@ -36,7 +36,7 @@ namespace ParentsApi.Controllers
 		[Microsoft.AspNetCore.Mvc.ActionName("ProviderRegister")]
 		public ContentResult ProviderRegister()
 		{
-			string result = ProviderHelperFunctions.ProviderRegister(Request.Headers["username"].ToString(), Request.Headers["email"].ToString(), Request.Headers["password"].ToString(), Request.Headers["occupation"].ToString());
+			string result = ProviderHelperFunctions.ProviderRegister(Request.Headers["fullName"].ToString(), Request.Headers["email"].ToString(), Request.Headers["password"].ToString(), Request.Headers["occupation"].ToString());
 			return base.Content(result);
 		}
 

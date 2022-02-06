@@ -15,7 +15,7 @@ namespace ProviderDal
     {
         public static int AddProvider(string providerFullName, string providerEmail, string providerPassword, string providerRegistrationDate, string providerOccupation)
         {
-            string com = "INSERT INTO provider (provider_full_name, provider_email, provider_password, provider_registration_date, provider_occupation) VALUES (@provider_full_name, @provider_email, @provider_password, @provider_registration_date, @provider_occupation)";
+            string com = "INSERT INTO provider (provider_full_name, provider_email, provider_password, provider_registration_date, provider_occupation) VALUES (?, ?, ?, ?, ?)";
 
             //  Pass as sql parameters for the parameterized query
             OdbcParameter[] queryParameters = {
