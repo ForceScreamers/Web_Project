@@ -24,7 +24,7 @@ namespace ParentDal
                 new OdbcParameter("@game_link", gameLink), 
             };
 
-            return OdbcHelper.Execute(com, queryParameters);
+            return ParentOdbcHelper.Execute(com, queryParameters);
         }
         public static int DeleteGame(int gameId)
         {
@@ -33,12 +33,12 @@ namespace ParentDal
             OdbcParameter[] queryParameters = {
                 new OdbcParameter("@game_id", gameId)
             };
-            return OdbcHelper.Execute(com, queryParameters);
+            return ParentOdbcHelper.Execute(com, queryParameters);
         }
 
         public static DataTable GetGames()
         {
-            return OdbcHelper.GetTable("SELECT * FROM game", new OdbcParameter[0]);
+            return ParentOdbcHelper.GetTable("SELECT * FROM game", new OdbcParameter[0]);
         }
     }
 }

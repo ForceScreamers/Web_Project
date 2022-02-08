@@ -9,7 +9,7 @@ using System.Data.Odbc;
 
 namespace DAL
 {
-    public class OdbcHelper
+    public class ParentOdbcHelper
     {
         static OdbcConnection connection = new OdbcConnection(ConnectionString);
 

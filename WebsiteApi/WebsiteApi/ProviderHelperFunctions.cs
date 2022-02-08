@@ -114,7 +114,7 @@ namespace ProvidersApi
 						UnicodeHelper.ConvertToUnicode(fullName), 
 						email, 
 						password, 
-						DateTime.Today.ToString(), 
+						DateTime.Today.ToString(),
 						UnicodeHelper.ConvertToUnicode(occupation));
                 }
                 catch (Exception e)
@@ -135,26 +135,33 @@ namespace ProvidersApi
                 });
 		}
 
+		public static List<ProviderInfo> GetProviderInfos()
+        {
+			DataTable providersDt = ProviderMethods.GetProviders();
 
+			//  Convert datatable to list object
+			List<ProviderInfo> providerInfos = ProvidersDataTableToObject(providersDt);
 
-		private static List<Post> ChildrenDataTableToObject(DataTable childrenDt)
+			return providerInfos;
+		}
+
+		private static List<ProviderInfo> ProvidersDataTableToObject(DataTable providersDt)
 		{
-			//List<Child> children = new List<Child>();
+            List<ProviderInfo> providerInfosList = new List<ProviderInfo>();
 
-			//foreach (DataRow row in childrenDt.Rows)
-			//{
-			//	//  Convering child properties
-			//	string childName = row.ItemArray[1].ToString();
-			//	int childId = int.Parse(row.ItemArray[2].ToString());
-			//	int childAge = int.Parse(row.ItemArray[0].ToString());
-			//	bool childIsSelected = bool.Parse(row.ItemArray[3].ToString());
+            foreach (DataRow row in providersDt.Rows)
+            {
+                //  Convering child properties
+                
+				int providerId = int.Parse(row.ItemArray[0].ToString());
+				string providerFullName = row.ItemArray[1].ToString();
+				string providerOccupation = row.ItemArray[2].ToString();
+				string providerEmail = row.ItemArray[3].ToString();
 
-			//	children.Add(new Child(childName, childAge, childIsSelected, childId));
-			//	Console.WriteLine(children[children.Count - 1].ToString());
-			//}
+				providerInfosList.Add(new ProviderInfo(providerFullName, providerId, providerOccupation, providerEmail));
+			}
 
-			//return children;
-			return null;
+            return providerInfosList;
 		}
 		private static string ConvertToUnicode(string utf8text)
 		{ return Encoding.Unicode.GetString(UTF8Encoding.Convert(Encoding.UTF8, Encoding.Unicode, Encoding.UTF8.GetBytes(utf8text))); }

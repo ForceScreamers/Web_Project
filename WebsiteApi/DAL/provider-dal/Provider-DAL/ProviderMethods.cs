@@ -102,6 +102,15 @@ namespace ProviderDal
             //return null;
         }
 
-        
+        public static DataTable GetProviders()
+        {
+
+            string com = "SELECT provider_id, provider_full_name, provider_occupation, provider_email FROM provider WHERE provider_status=0";
+
+            //  Execute command
+            return OdbcHelper.GetTable(com, new OdbcParameter[0]);
+        }
+
+         
     }
 }

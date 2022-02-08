@@ -23,7 +23,7 @@ namespace ParentDal
             string command = @"SELECT game.game_name, evaluation.evaluation_score, child.child_id
                             FROM game INNER JOIN (child INNER JOIN evaluation ON child.child_id = evaluation.evaluation_child_id) ON game.game_id = evaluation.evaluation_game_id
                             WHERE (((child.child_id)=[?]));";
-            return OdbcHelper.GetTable(command, queryParameters);
+            return ParentOdbcHelper.GetTable(command, queryParameters);
         }
 
 
@@ -38,7 +38,7 @@ namespace ParentDal
                 new OdbcParameter("@evaluation_score", evaluationScore),
             };
 
-            return OdbcHelper.Execute(com, queryParameters);
+            return ParentOdbcHelper.Execute(com, queryParameters);
         }
 
 
@@ -52,7 +52,7 @@ namespace ParentDal
                 new OdbcParameter("@evaluation_child_id", evaluationChildId)
             };
 
-            return OdbcHelper.Execute(command, queryParameters);
+            return ParentOdbcHelper.Execute(command, queryParameters);
         }
 
 
@@ -66,7 +66,7 @@ namespace ParentDal
                 new OdbcParameter("@evaluation_game_id", evaluationGameId),
             };
 
-            return OdbcHelper.Execute(com, queryParameters);
+            return ParentOdbcHelper.Execute(com, queryParameters);
         }
 
 
@@ -82,7 +82,7 @@ namespace ParentDal
             };
 
             //Add if check for existing users
-            DataTable dt = OdbcHelper.GetTable(com, queryParameters);
+            DataTable dt = ParentOdbcHelper.GetTable(com, queryParameters);
 
             if (dt.Rows.Count > 0)
             {

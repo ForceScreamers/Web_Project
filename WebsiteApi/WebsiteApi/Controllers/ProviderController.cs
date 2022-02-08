@@ -51,8 +51,17 @@ namespace ParentsApi.Controllers
 
 			return base.Content(result);
 		}
-	
-	#endregion
+
+
+		[Microsoft.AspNetCore.Mvc.HttpGet]
+		[Microsoft.AspNetCore.Mvc.ActionName("GetProviders")]
+		public ContentResult GetProviders()
+		{
+			return base.Content(JsonConvert.SerializeObject(
+				ProviderHelperFunctions.GetProviderInfos()
+				));
+		}
+		#endregion
 
 		/// <summary>
 		/// Converts a given UTF-8 encoded string to Unicode and returns unicode as string

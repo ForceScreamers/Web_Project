@@ -64,14 +64,16 @@ export default function ProvidersApp() {
       RequestRegisterAsProvider(fullName, email, password, occupation)
         .then(response => {
           console.log(response);
-          if (response.data.UserExists === true) {
-            //  User already exists
-          }
-          else if (response.data.Registered === true) {
-            //  Redirect provider
-          }
-          else {
-            //  Something went wrong
+          if (response) {
+            if (response.data.UserExists === true) {
+              //  User already exists
+            }
+            else if (response.data.Registered === true) {
+              //  Redirect provider
+            }
+            else {
+              //  Something went wrong
+            }
           }
         })
     }

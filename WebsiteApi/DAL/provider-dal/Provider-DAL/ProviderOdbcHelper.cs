@@ -19,7 +19,7 @@ namespace DAL
         {
             get
             {
-                return @"Dsn=ParentDatabase;Dsn=ProviderDatabase";               
+                return @"Dsn=ProviderDatabase";               
             }
         }
 
