@@ -1,10 +1,9 @@
-import ParentNavigationBar from "../../Components/ParentsComponents/ParentNavigationBar";
 import MemoryGame from "../../Games/MemoryGame/MemoryGame";
 import ParentMainPage from "../../Components/ParentsComponents/ParentMainPage"
 import GamePreviewCard from "../../Components/GeneralComponents/GamesComponents/GamePreviewCard";
 import Img from '../../images/download.jpg'
 import GamePreviewCardsGrid from "../../Components/GeneralComponents/GamesComponents/GamePreviewCardsGrid";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import axios from "axios";
 import GameTemplate from "../../Games/GameTemplate";
 
@@ -13,7 +12,6 @@ const GAMES_MENU_ID = -1;
 export default function GamesPage({ LoadChildrenFromServer: UpdateChildrenProfiles }) {
 
   const [currentGameId, setCurrentGameId] = useState(GAMES_MENU_ID);
-
 
   console.log(process.env.REACT_APP_REQUEST_TIMEOUT_LENGTH)
   //TODO: Create game template

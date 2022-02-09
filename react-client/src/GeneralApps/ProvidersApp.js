@@ -1,10 +1,8 @@
-import { Route } from "react-router-dom";
 import { PublicRoute } from "../Components/GeneralComponents/PublicRoute";
 import { useHistory } from "react-router-dom";
 import { useEffect } from "react";
 import { RequestLoginAsProvider } from "../LoginAndRegisterHandlers/LoginHandler";
 import { RequestRegisterAsProvider } from "../LoginAndRegisterHandlers/RegisterHandler";
-import utf8 from 'utf8'
 
 
 //  Import main pages
@@ -18,6 +16,10 @@ export default function ProvidersApp() {
     console.log(history.location)
   })
 
+  function HandleProviderLoginResponse(response) {
+    sessionStorage.setItem('Info', JSON.stringify(response.data.Info));
+    history.push("/Providers/Games");
+  }
 
   async function HandleProviderLogin(e, formValid) {
 
@@ -30,18 +32,14 @@ export default function ProvidersApp() {
         console.log(response.data);
 
         if (response.data.AllowedToLogin) {
-          //    Set needed items in session storage
-          //    Redirect to homepage (providers)
-
-          sessionStorage.setItem('Info', JSON.stringify(response.data.Info));
-
-          history.push("/Providers/Games");
+          HandleProviderLoginResponse(response);
         }
         else if (response.data.IsAdmin) {
           console.log("Admin");
           history.push("/Admins");
         }
         else {
+          alert("בעל מקצוע לא מורשה להתחבר")
           console.log("Provider isn't permitted to login")
         }
       }
@@ -50,6 +48,7 @@ export default function ProvidersApp() {
     }
   }
 
+  // TODO: Finish provider register
   function HandleProviderRegister(e, formValid) {
     if (formValid) {
 

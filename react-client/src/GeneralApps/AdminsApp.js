@@ -3,38 +3,7 @@ import ProvidersTable from "../Components/AdminsComponents/ProvidersTable";
 import { useState } from "react";
 
 import axios from "axios";
-import { Suspense } from "react";
 import { useEffect } from "react";
-
-const providers = [
-  {
-    name: "shalom",
-    email: "lalalala",
-    phone: "123456",
-  },
-  {
-    name: "ssrtstfjgshtrfghsrtfh",
-    email: "arsfdgarg",
-    phone: "12312313542345",
-  },
-  {
-    name: "shalom",
-    email: "lalalala",
-    phone: "123456",
-  },
-  {
-    name: "shalom",
-    email: "lalalala",
-    phone: "123456",
-  },
-  {
-    name: "shalom",
-    email: "lalalala",
-    phone: "123456",
-  },
-]
-
-
 
 
 export default function AdminsApp() {

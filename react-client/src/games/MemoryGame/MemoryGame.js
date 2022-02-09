@@ -15,7 +15,7 @@ const GenerateGameCards = () => {
       //image: 
     }
 
-    if (i % 2 != 0) {
+    if (i % 2 !== 0) {
       typeCounter++;
     }
   }

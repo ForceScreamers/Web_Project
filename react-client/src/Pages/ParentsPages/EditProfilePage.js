@@ -4,12 +4,10 @@ import ChildCard from "../../Components/ParentsComponents/EditProfileComponents/
 import ParentMainPage from "../../Components/ParentsComponents/ParentMainPage"
 
 import { useEffect, useState } from "react"
-import axios from "axios"
 import { ChildrenHandlerApi } from "../../ChildrenHandlerApi"
 import utf8 from 'utf8'
 
-
-export default function EditProfilePage({ HandleSelectChild, HandleDeleteChild, HandleAddChild, LoadChildrenFromServer }) {
+export default function EditProfilePage({ LoadChildrenFromServer }) {
 
   const [childrenProfiles, setChildrenProfiles] = useState(JSON.parse(sessionStorage.getItem('children')))
 
@@ -56,17 +54,18 @@ export default function EditProfilePage({ HandleSelectChild, HandleDeleteChild, 
     ChildrenHandlerApi.SelectChild(e, childToSelect)
       .catch(err => console.log(err))
       .then(() => {
+
         LoadChildrenFromServer();
       })
   }
 
-  function HandleDeleteChild(e, childId) {
+  function DeleteChild(childId) {
 
     let parentId = JSON.parse(sessionStorage.getItem('userId'));
 
     ChildrenHandlerApi.DeleteChild(childId, parentId)
       .then(() => {
-        LoadChildrenFromServer(e);
+        LoadChildrenFromServer();
       })
   }
 
@@ -81,13 +80,13 @@ export default function EditProfilePage({ HandleSelectChild, HandleDeleteChild, 
 
               {
 
-                childrenProfiles != undefined//  If there are no children
+                childrenProfiles !== undefined//  If there are no children
 
                   //  i - index inside the state array, using it because react wants to use it...
                   ? childrenProfiles.map((childProfile) => (
                     <ChildCard
                       HandleSelectChild={HandleSelectChild}
-                      HandleDeleteChild={HandleDeleteChild}
+                      DeleteChild={DeleteChild}
                       ChildProfile={childProfile}
                       key={childProfile.Id}  // Key for the component's index
 
@@ -101,8 +100,7 @@ export default function EditProfilePage({ HandleSelectChild, HandleDeleteChild, 
             </Col>
           </Row>
 
-          <Row></Row>
-          <Row></Row>
+
 
 
         </Container>

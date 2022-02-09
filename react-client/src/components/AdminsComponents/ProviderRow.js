@@ -1,7 +1,7 @@
 import { Col, Button, Row } from 'react-bootstrap';
 
 export default function ProviderRow({ Provider, Index, ConfirmProvider }) {
-  return <Row style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: Index % 2 == 0 ? 'skyblue' : 'lightblue', marginTop: 3 }}>
+  return <Row style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: Index % 2 === 0 ? 'skyblue' : 'lightblue', marginTop: 3 }}>
     <ProviderTableCol Text={Provider.FullName} />
     <ProviderTableCol Text={Provider.Email} />
     <ProviderTableCol Text={Provider.PhoneNumber} />

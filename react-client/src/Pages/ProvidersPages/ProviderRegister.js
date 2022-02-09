@@ -1,8 +1,7 @@
 import '../../CSS/pages-css/Register.css'
 import { Link } from "react-router-dom"
-import { USER_INPUT_ERR } from '../../Project-Modules/UserErrorEnums'
-import { ValidateUsername, ValidateEmail, ValidatePassword, ValidateConfirmPassword, IsHebrewInputValid } from '../../Project-Modules/ValidateUserInput'
-import { useState, useEffect } from 'react'
+import { ValidateEmail, ValidatePassword, ValidateConfirmPassword, IsHebrewInputValid } from '../../Project-Modules/ValidateUserInput'
+import { useState } from 'react'
 import FormInputField from '../../Components/GeneralComponents/FormInputField'
 
 class InputField {

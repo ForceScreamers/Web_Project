@@ -1,5 +1,4 @@
-import { Card, Button, Container, Accordion } from "react-bootstrap";
-import { useHistory } from "react-router-dom";
+import { Card, Button, Accordion } from "react-bootstrap";
 import CustomAccordionToggle from "./CustomAccordionToggle"
 
 export default function GamePreviewCard({ HandlePlay, Name, PreviewImage, Description, GameId }) {

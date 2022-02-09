@@ -100,24 +100,7 @@ async function RequestLogin(userData) {
 }
 
 
-//TODO: Fix - Protected route sends 30 requests to authenticate, it needs to send one
-//TODO: Fix - Login and register response have unnessesary headers i.e. \/	\/	\/
-// Data: {
-// 		FromParent: {
-// 				ParentInfo: {
-// 					some data
-// 				},
-// 			more data
-// 		}
-// }
-//TODO: Add text to input error
-//TODO: Add errors in login and register as text to screen
-//TODO: HandleLogin and HandleRegister are too long
-//TODO: Handle user doesn't exist
-//TODO: Update games page to load all children
-//TODO: User verify delete child
-//TODO: Deal with unable to connect
-//TODO Handle user doesn't exist
+
 
 
 // * React app component
@@ -174,98 +157,50 @@ export default function ParentsApp() {
     return child;
   }
 
-  // //  Handles child add logic
-  // function HandleAddChild(e, formValid) {
-  //   e.preventDefault();
+  //TODO: Find a better name for this function
+  function HandleLoginResponse(response) {
+    //  Clear previous data
+    sessionStorage.clear();
 
-  //   console.log(`Add child? ${formValid}`)
+    //	Set sessionStorage items and states
+    sessionStorage.setItem("token", response.data.token);
+    sessionStorage.setItem("userId", response.data.FromParent.ParentInfo.Id);
+    sessionStorage.setItem("username", response.data.FromParent.ParentInfo.Username);
+    setUsername(sessionStorage.getItem("username"));
 
-  //   if (formValid) {
+    //  Load children
+    LoadChildrenFromServer();
 
-  //     let childAge = e.target.childAgeSelect.value;
-  //     let parentId = JSON.parse(sessionStorage.getItem('userId'));
-  //     let childName = utf8.encode(e.target.childNameField.value);
-
-  //     //Send request to server to add child
-  //     ChildrenHandlerApi.AddChild(parentId, childName, childAge)
-
-  //       .then((response) => {//	Get confirmation that the child was added
-  //         console.log(response);
-  //         //	Response will be HasAddedChild
-  //         if (response) {
-  //           LoadChildrenFromServer(e);
-  //         }
-  //         else { console.log("No response from server") }
-  //       })
-  //   }
-  // }
-
-  // /**
-  //  * Changes the selected child from edit profile to the current child
-  //  * Used to keep track of progress for this child
-  //  */
-  // function HandleSelectChild(e, childToSelect) {
-
-  //   ChildrenHandlerApi.SelectChild(e, childToSelect)
-  //     .catch(err => console.log(err))
-  //     .then(() => {
-  //       LoadChildrenFromServer();
-  //     })
-  // }
-
-  // function HandleDeleteChild(e, childId) {
-
-  //   let parentId = JSON.parse(sessionStorage.getItem('userId'));
-
-  //   ChildrenHandlerApi.DeleteChild(childId, parentId)
-  //     .then(() => {
-  //       LoadChildrenFromServer(e);
-  //     })
-  // }
+    //	Redirect to welcome page
+    history.push("/Parents/Welcome");
+  }
 
 
-  function HandleLogin(e, formValid) {
+  async function HandleParentLogin(e, formValid) {
 
     e.preventDefault();
-
-    console.log(formValid);
 
     if (formValid) {
 
       let email = e.target.loginEmailField.value;
       let password = e.target.loginPasswordField.value;
 
-      RequestLoginAsParent(email, password)
-        .then((response) => {
+      let loginResponse = await RequestLoginAsParent(email, password)
+      console.log(loginResponse);
 
-          console.log(response);
-
-          //	If the user is authorized
-          if (response.data.FromParent.UserExists === true) {
-
-            //	Set sessionStorage items and states
-            sessionStorage.setItem("token", response.data.token);
-            sessionStorage.setItem("userId", response.data.FromParent.ParentInfo.Id);
-            sessionStorage.setItem("username", response.data.FromParent.ParentInfo.Username);
-            setUsername(sessionStorage.getItem("username"));
-
-            LoadChildrenFromServer(e)
-
-            //	Redirect to welcome page
-            history.push("/Parents/Welcome");
-          }
-          else {
-            alert("user not found");
-          }
-        });
+      //	If the user is authorized
+      if (loginResponse.data.FromParent.UserExists === true) {
+        HandleLoginResponse(loginResponse);
+      }
+      else {
+        alert("user not found");
+      }
     }
   }
 
-  async function HandleRegister(e, formValid) {
+  async function HandleParentRegister(e, formValid) {
     e.preventDefault();
 
-
-    console.log("Form valid: " + formValid)
     if (formValid) {
 
       let userData = {
@@ -284,16 +219,11 @@ export default function ParentsApp() {
 
           //	Log in the newly registered user
           //? Check properties
-          RequestLogin(userData)
-            .then((loginResponse) => {
-              console.log(loginResponse)
-              //	Set sessionStorage items and states
-              sessionStorage.setItem("token", loginResponse.data.token);
-              sessionStorage.setItem("userId", loginResponse.data.FromParent.ParentInfo.Id);
-              sessionStorage.setItem("username", loginResponse.data.FromParent.ParentInfo.Username);
-              setUsername(sessionStorage.getItem("username"));
-              history.push("/Welcome");
-            });
+          let loginResponse = await RequestLogin(userData)
+          console.log(loginResponse)
+
+          HandleLoginResponse(response);
+
         }
         else if (response.data.FromParent.UserExists) {
           alert("User already exists");
@@ -302,35 +232,17 @@ export default function ParentsApp() {
           console.error("ERROR IN REGISTER USER");
         }
       }
-      else {
-        console.error("server error, maybe webapi")
-      }
     }
   }
+
 
   useEffect(() => {
     //	Load username and current child
     setUsername(sessionStorage.getItem('username'));
-    console.log(sessionStorage.getItem('currentChild'));
     setCurrentChild(JSON.parse(sessionStorage.getItem('currentChild')));
 
     LoadChildrenFromServer();
   }, [])
-
-  //#region	Control the website zoom level
-  useEffect(() => {
-    const initialValue = document.body.style.zoom;
-
-    // Change zoom level on mount
-    document.body.style.zoom = "125%";
-
-    return () => {
-      // Restore default value
-      document.body.style.zoom = initialValue;
-    };
-  }, []);
-  //#endregion
-
 
 
   return (
@@ -339,12 +251,12 @@ export default function ParentsApp() {
 
       <PublicRoute exact path="/" component={() =>
         <ParentLogin
-          HandleLogin={(e, isValid) => HandleLogin(e, isValid)}
+          HandleLogin={(e, isValid) => HandleParentLogin(e, isValid)}
         />} />
 
       <PublicRoute exact path="/Parents/Register" component={() =>
         <ParentRegister
-          HandleRegister={(e, isValid) => HandleRegister(e, isValid)}
+          HandleRegister={(e, isValid) => HandleParentRegister(e, isValid)}
         />} />
 
       {/* //TODO: NEED TO CALL THE ROUTES ONLY WHEN THE WELCOME PAGE LOADS*/}
@@ -358,9 +270,9 @@ export default function ParentsApp() {
 
         <ProtectedRoute exact path="/Parents/EditProfile" component={() =>
           <EditProfilePage
-            HandleSelectChild={HandleSelectChild}
-            HandleDeleteChild={HandleDeleteChild}
-            HandleAddChild={(e, isValid) => HandleAddChild(e, isValid)}
+            // HandleSelectChild={HandleSelectChild}
+            // HandleDeleteChild={HandleDeleteChild}
+            // HandleAddChild={(e, isValid) => HandleAddChild(e, isValid)}
             LoadChildrenFromServer={LoadChildrenFromServer}
           />}
         />

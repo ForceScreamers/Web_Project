@@ -1,6 +1,23 @@
 import { Card, CloseButton, Button } from 'react-bootstrap'
 import ChildEvaluationsDisplay from './ChildEvaluationsDisplay'
-function ChildCard({ HandleSelectChild, HandleDeleteChild, ChildProfile }) {
+import { useState } from 'react';
+import ChildDeleteConfirmationModal from './ChildDeleteConfirmationModal';
+
+function ChildCard({ HandleSelectChild, DeleteChild, ChildProfile }) {
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+
+  function HandleDeleteChild() {
+    setShowDeleteConfirmation(true);
+  }
+
+  function HandleDeleteConfirmation() {
+    setShowDeleteConfirmation(false);
+    DeleteChild(ChildProfile.Id);
+  }
+
+  function CloseDeleteConfirmation() {
+    setShowDeleteConfirmation(false);
+  }
 
   return (
     <div>
@@ -15,7 +32,7 @@ function ChildCard({ HandleSelectChild, HandleDeleteChild, ChildProfile }) {
 
         <Card.Body>
           <Card.Title>
-            <CloseButton aria-label='מחיקה' onClick={(e) => HandleDeleteChild(e, ChildProfile.Id)} /> {ChildProfile.Name}
+            <CloseButton aria-label='מחיקה' onClick={() => HandleDeleteChild()} /> {ChildProfile.Name}
 
             <Button
               className='test-class'
@@ -24,6 +41,8 @@ function ChildCard({ HandleSelectChild, HandleDeleteChild, ChildProfile }) {
               onClick={(e) => HandleSelectChild(e, ChildProfile)} variant="primary"
             >
               {ChildProfile.IsSelected ? "ילד נוכחי" : "בחר ילד"}
+
+
             </Button>
 
           </Card.Title>
@@ -32,9 +51,14 @@ function ChildCard({ HandleSelectChild, HandleDeleteChild, ChildProfile }) {
           </Card.Text>
 
           <ChildEvaluationsDisplay Evaluations={ChildProfile.Evaluations} />
-
-
         </Card.Body>
+
+        <ChildDeleteConfirmationModal
+          ShowDeleteConfirmation={showDeleteConfirmation}
+          HandleDeleteConfirmation={HandleDeleteConfirmation}
+          CloseDeleteConfirmation={CloseDeleteConfirmation}
+        />
+
       </Card>
     </div >
   )

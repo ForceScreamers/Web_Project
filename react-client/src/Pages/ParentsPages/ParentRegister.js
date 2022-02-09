@@ -1,11 +1,11 @@
 import '../../CSS/pages-css/Register.css'
 import { Link } from "react-router-dom"
-import { USER_INPUT_ERR } from '../../Project-Modules/UserErrorEnums'
 import { ValidateUsername, ValidateEmail, ValidatePassword, ValidateConfirmPassword } from '../../Project-Modules/ValidateUserInput'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import FormInputField from '../../Components/GeneralComponents/FormInputField'
 
 export default function ParentRegister({ HandleRegister }) {
+
   let usernameValid = true;
   let emailValid = true;
   let passwordValid = true;

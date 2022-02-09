@@ -9,7 +9,7 @@ import { useEffect } from 'react';
 export const ProtectedRoute = ({ component: Component, ...rest }) => {
 
   let reasource = fetchIsAuth();
-  let history = useHistory();
+  const history = useHistory();
 
   return (
     <Suspense fallback={<Component />}>
@@ -32,6 +32,7 @@ export const ProtectedRoute = ({ component: Component, ...rest }) => {
           }
           else {
             sessionStorage.clear();
+            history.replace("/");
             return <Redirect to="/" />
           }
         }
