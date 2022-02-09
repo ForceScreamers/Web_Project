@@ -50,8 +50,27 @@ export default function AdminsApp() {
     })
       .catch(err => console.log(err))
       .then(response => {
-        console.log(response);
-        setProviderInfos(response.data);
+        if (response) {
+          console.log(response);
+          setProviderInfos(response.data);
+        }
+      })
+  }
+
+  async function ConfirmProvider(providerId) {
+    return axios({
+      method: 'POST',
+      hostname: 'localhost',
+      url: "http://localhost:5000/api/Admin/ConfirmProvider",
+      port: 5000,
+      timeout: process.env.REACT_APP_REQUEST_TIMEOUT_LENGTH,
+      headers: {
+        'providerId': providerId,
+      }
+    })
+      .catch(err => console.log(err))
+      .then(() => {
+        LoadProviders();
       })
   }
 
@@ -65,6 +84,6 @@ export default function AdminsApp() {
     <h1>דף מנהל</h1>
     <h2>בעלי מקצוע לאשר</h2>
 
-    <ProvidersTable ProviderInfos={providerInfos} />
+    <ProvidersTable ProviderInfos={providerInfos} ConfirmProvider={ConfirmProvider} />
   </div>;
 }

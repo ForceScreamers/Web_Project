@@ -38,7 +38,7 @@ namespace ProviderDal
 
             return OdbcHelper.Execute(com, queryParameters);
         }
-        public static int ApproveProvider(int providerId)
+        public static int ConfirmProvider(int providerId)
         {
             string com = "UPDATE provider SET provider_status=-1 WHERE provider_id=?";
             OdbcParameter[] queryParameters =

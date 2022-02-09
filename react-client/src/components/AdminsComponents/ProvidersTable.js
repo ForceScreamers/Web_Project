@@ -5,7 +5,7 @@ import ProviderHeadersRow from "./ProviderHeadersRow";
 
 const headers = ['שם מלא', 'כתובת מייל', 'מספר טלפון', 'תעסוקה', 'מקום עבודה', 'אישור'];
 
-export default function ProvidersTable({ ProviderInfos }) {
+export default function ProvidersTable({ ProviderInfos, ConfirmProvider }) {
 
   return <Container fluid>
     {/* <Row>
@@ -19,7 +19,7 @@ export default function ProvidersTable({ ProviderInfos }) {
     {
       ProviderInfos.map((provider, index) => {
         return (
-          <ProviderRow Provider={provider} key={index} Index={index} />
+          <ProviderRow Provider={provider} ConfirmProvider={ConfirmProvider} key={index} Index={index} />
         )
       })
     }

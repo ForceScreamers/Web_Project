@@ -5,20 +5,70 @@ import ParentMainPage from "../../Components/ParentsComponents/ParentMainPage"
 
 import { useEffect, useState } from "react"
 import axios from "axios"
+import { ChildrenHandlerApi } from "../../ChildrenHandlerApi"
+import utf8 from 'utf8'
 
 
-export default function EditProfilePage({ HandleSelectChild, HandleDeleteChild, HandleAddChild }) {
+export default function EditProfilePage({ HandleSelectChild, HandleDeleteChild, HandleAddChild, LoadChildrenFromServer }) {
 
   const [childrenProfiles, setChildrenProfiles] = useState(JSON.parse(sessionStorage.getItem('children')))
 
   useEffect(() => {
+
     console.log(childrenProfiles)
     setChildrenProfiles(JSON.parse(sessionStorage.getItem('children')));
 
   }, [])
 
 
+  //  Handles child add logic
+  function HandleAddChild(e, formValid) {
+    e.preventDefault();
 
+    console.log(`Add child? ${formValid}`)
+
+    if (formValid) {
+
+      let childAge = e.target.childAgeSelect.value;
+      let parentId = JSON.parse(sessionStorage.getItem('userId'));
+      let childName = utf8.encode(e.target.childNameField.value);
+
+      //Send request to server to add child
+      ChildrenHandlerApi.AddChild(parentId, childName, childAge)
+
+        .then((response) => {//	Get confirmation that the child was added
+          console.log(response);
+          //	Response will be HasAddedChild
+          if (response) {
+            LoadChildrenFromServer(e);
+          }
+          else { console.log("No response from server") }
+        })
+    }
+  }
+
+  /**
+   * Changes the selected child from edit profile to the current child
+   * Used to keep track of progress for this child
+   */
+  function HandleSelectChild(e, childToSelect) {
+
+    ChildrenHandlerApi.SelectChild(e, childToSelect)
+      .catch(err => console.log(err))
+      .then(() => {
+        LoadChildrenFromServer();
+      })
+  }
+
+  function HandleDeleteChild(e, childId) {
+
+    let parentId = JSON.parse(sessionStorage.getItem('userId'));
+
+    ChildrenHandlerApi.DeleteChild(childId, parentId)
+      .then(() => {
+        LoadChildrenFromServer(e);
+      })
+  }
 
 
   return (

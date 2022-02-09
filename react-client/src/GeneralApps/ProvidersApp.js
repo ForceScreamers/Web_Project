@@ -51,13 +51,11 @@ export default function ProvidersApp() {
   }
 
   function HandleProviderRegister(e, formValid) {
-    //! Need to finish provider register
-    //TODO: Move encoding into the request function
     if (formValid) {
 
-      let fullName = utf8.encode(e.target.fullNameField.value);
+      let fullName = e.target.fullNameField.value;
       let email = e.target.emailField.value;
-      let occupation = utf8.encode(e.target.occupationField.value);
+      let occupation = e.target.occupationField.value;
       let password = e.target.passwordField.value;
 
       //  fullname, occupation, email, password

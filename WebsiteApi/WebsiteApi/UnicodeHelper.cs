@@ -9,7 +9,9 @@ namespace ParentsApi
     public class UnicodeHelper
     {
         public static string ConvertToUnicode(string utf8text)
-        { return Encoding.Unicode.GetString(UTF8Encoding.Convert(Encoding.UTF8, Encoding.Unicode, Encoding.UTF8.GetBytes(utf8text))); }
+        {
+            return Encoding.Unicode.GetString(Encoding.Convert(Encoding.UTF8, Encoding.Unicode, Encoding.UTF8.GetBytes(utf8text))); 
+        }
 
     }
 }

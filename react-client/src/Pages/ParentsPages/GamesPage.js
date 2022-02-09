@@ -10,7 +10,7 @@ import GameTemplate from "../../Games/GameTemplate";
 
 const GAMES_MENU_ID = -1;
 
-export default function GamesPage() {
+export default function GamesPage({ LoadChildrenFromServer: UpdateChildrenProfiles }) {
 
   const [currentGameId, setCurrentGameId] = useState(GAMES_MENU_ID);
 
@@ -39,6 +39,8 @@ export default function GamesPage() {
 
         //  Reset the current game id
         setCurrentGameId(GAMES_MENU_ID);
+
+        UpdateChildrenProfiles();
       })
   }
 

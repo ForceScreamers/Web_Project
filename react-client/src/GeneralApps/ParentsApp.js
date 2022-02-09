@@ -113,8 +113,6 @@ async function RequestLogin(userData) {
 //TODO: Add text to input error
 //TODO: Add errors in login and register as text to screen
 //TODO: HandleLogin and HandleRegister are too long
-//TODO: Combine contexts
-//TODO: Swap all anonymously declared functions to "function(){}"
 //TODO: Handle user doesn't exist
 //TODO: Update games page to load all children
 //TODO: User verify delete child
@@ -148,6 +146,7 @@ export default function ParentsApp() {
           //  Set current child
           if (children.length === 0) {
             sessionStorage.setItem('currentChild', 'null');
+            console.log('EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE')
             setCurrentChild(null);
           }
           else {
@@ -160,10 +159,12 @@ export default function ParentsApp() {
 
 
   function GetSelectedChild(childrenArray) {
-    let tempArray = childrenArray;
+    let tempArray = [...childrenArray];
     let child = undefined;
 
     tempArray.forEach((tempChild) => {
+      console.log(child);
+      console.log(tempArray);
       if (tempChild.IsSelected) {
         child = tempChild;
       }
@@ -173,54 +174,54 @@ export default function ParentsApp() {
     return child;
   }
 
-  //  Handles child add logic
-  function HandleAddChild(e, formValid) {
-    e.preventDefault();
+  // //  Handles child add logic
+  // function HandleAddChild(e, formValid) {
+  //   e.preventDefault();
 
-    console.log(`Add child? ${formValid}`)
+  //   console.log(`Add child? ${formValid}`)
 
-    if (formValid) {
+  //   if (formValid) {
 
-      let childAge = e.target.childAgeSelect.value;
-      let parentId = JSON.parse(sessionStorage.getItem('userId'));
-      let childName = utf8.encode(e.target.childNameField.value);
+  //     let childAge = e.target.childAgeSelect.value;
+  //     let parentId = JSON.parse(sessionStorage.getItem('userId'));
+  //     let childName = utf8.encode(e.target.childNameField.value);
 
-      //Send request to server to add child
-      ChildrenHandlerApi.AddChild(parentId, childName, childAge)
+  //     //Send request to server to add child
+  //     ChildrenHandlerApi.AddChild(parentId, childName, childAge)
 
-        .then((response) => {//	Get confirmation that the child was added
-          console.log(response);
-          //	Response will be HasAddedChild
-          if (response) {
-            LoadChildrenFromServer(e);
-          }
-          else { console.log("No response from server") }
-        })
-    }
-  }
+  //       .then((response) => {//	Get confirmation that the child was added
+  //         console.log(response);
+  //         //	Response will be HasAddedChild
+  //         if (response) {
+  //           LoadChildrenFromServer(e);
+  //         }
+  //         else { console.log("No response from server") }
+  //       })
+  //   }
+  // }
 
-  /**
-   * Changes the selected child from edit profile to the current child
-   * Used to keep track of progress for this child
-   */
-  function HandleSelectChild(e, childToSelect) {
+  // /**
+  //  * Changes the selected child from edit profile to the current child
+  //  * Used to keep track of progress for this child
+  //  */
+  // function HandleSelectChild(e, childToSelect) {
 
-    ChildrenHandlerApi.SelectChild(e, childToSelect)
-      .catch(err => console.log(err))
-      .then(() => {
-        LoadChildrenFromServer();
-      })
-  }
+  //   ChildrenHandlerApi.SelectChild(e, childToSelect)
+  //     .catch(err => console.log(err))
+  //     .then(() => {
+  //       LoadChildrenFromServer();
+  //     })
+  // }
 
-  function HandleDeleteChild(e, childId) {
+  // function HandleDeleteChild(e, childId) {
 
-    let parentId = JSON.parse(sessionStorage.getItem('userId'));
+  //   let parentId = JSON.parse(sessionStorage.getItem('userId'));
 
-    ChildrenHandlerApi.DeleteChild(childId, parentId)
-      .then(() => {
-        LoadChildrenFromServer(e);
-      })
-  }
+  //   ChildrenHandlerApi.DeleteChild(childId, parentId)
+  //     .then(() => {
+  //       LoadChildrenFromServer(e);
+  //     })
+  // }
 
 
   function HandleLogin(e, formValid) {
@@ -260,7 +261,7 @@ export default function ParentsApp() {
     }
   }
 
-  const HandleRegister = async (e, formValid) => {
+  async function HandleRegister(e, formValid) {
     e.preventDefault();
 
 
@@ -360,9 +361,10 @@ export default function ParentsApp() {
             HandleSelectChild={HandleSelectChild}
             HandleDeleteChild={HandleDeleteChild}
             HandleAddChild={(e, isValid) => HandleAddChild(e, isValid)}
+            LoadChildrenFromServer={LoadChildrenFromServer}
           />}
         />
-        <ProtectedRoute exact path="/Parents/Games" component={GamesPage} />
+        <ProtectedRoute exact path="/Parents/Games" component={() => <GamesPage LoadChildrenFromServer={LoadChildrenFromServer} />} />
         <ProtectedRoute exact path="/Parents/Info" component={InfoPage} />
         <ProtectedRoute exact path="/Parents/Avatar" component={AvatarPage} />
         <ProtectedRoute exact path="/Parents/Journal" component={JournalPage} />
