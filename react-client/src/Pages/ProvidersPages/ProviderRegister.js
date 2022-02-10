@@ -1,65 +1,94 @@
 import '../../CSS/pages-css/Register.css'
 import { Link } from "react-router-dom"
-import { ValidateEmail, ValidatePassword, ValidateConfirmPassword, IsHebrewInputValid } from '../../Project-Modules/ValidateUserInput'
+import { ValidateEmail, ValidatePassword, ValidateConfirmPassword, IsHebrewInputValid } from '../../Project-Modules/UserInputValidation'
 import { useState } from 'react'
 import FormInputField from '../../Components/GeneralComponents/FormInputField'
-
-class InputField {
-  constructor(fieldName, value, labelText) {
-    this.name = fieldName;
-    this.value = value;
-    this.isValid = true;
-    this.labelText = labelText;
-  }
-}
+import { InputField } from '../../Project-Modules/UserInputValidation'
 
 export default function ProviderRegister({ HandleProviderRegister }) {
-  const [test, setTest] = useState("false");
 
   const [inputFields, setInputFields] = useState([
-    new InputField("fullNameField", "", "שם מלא:"),
-    new InputField("emailField", "", "כתובת מייל:"),
-    new InputField("occupationField", "", "תעסוקה:"),
-    new InputField("passwordField", "", "סיסמה:"),
-    new InputField("confirmPasswordField", "", "אשר סיסמה"),
+    new InputField("fullNameField", "", "שם מלא:", IsHebrewInputValid),
+    new InputField("emailField", "", "כתובת מייל:", ValidateEmail),
+    new InputField("occupationField", "", "תעסוקה:", IsHebrewInputValid),
+    new InputField("passwordField", "", "סיסמה:", ValidatePassword),
+    new InputField("confirmPasswordField", "", "אשר סיסמה", ValidateConfirmPassword),
   ]);
 
+  function OnSubmit(e) {
+    e.preventDefault();
+
+    ValidateInputFields();
+
+    console.log(IsFormValid())
+    HandleProviderRegister(e, IsFormValid())
+  }
+
+
+
+  /**
+   * Validates all input fields
+   * @returns void
+   */
   function ValidateInputFields() {
     let newInputFields = [...inputFields];
 
+    //  Validate every field
     newInputFields.forEach(inputField => {
+      inputField.Validate();
+    })
 
-      switch (inputField.name) {
-        case "fullNameField":
-          inputField.isValid = IsHebrewInputValid(inputField.value);
+    //  Validate confirm password
+    SetConfirmPasswordFieldIsValid(IsValidConfirmPasswordField());
 
-          break;
-        case "emailField":
-          inputField.isValid = ValidateEmail(inputField.value);
+    //  Update the input fields
+    setInputFields(newInputFields);
+  }
 
-          break;
-        case "passwordField":
-          inputField.isValid = ValidatePassword(inputField.value);
 
-          break;
-        case "occupationField":
-          inputField.isValid = IsHebrewInputValid(inputField.value);
 
-          break;
-        case "confirmPasswordField":
-          inputField.isValid = ValidateConfirmPassword(inputField.value, GetPassword());
+  /**
+   * Sets the confirm password field to the given value
+   * @param {bool} isValid 
+   * @returns void
+   */
+  function SetConfirmPasswordFieldIsValid(isValid) {
+    let newInputFields = [...inputFields];
 
-          break;
-
-        //TODO: Check if the default is needed
-        // default:
-        //   break;
+    newInputFields.forEach(inputField => {
+      if (inputField.name === "confirmPasswordField") {
+        inputField.isValid = isValid;
       }
     })
 
-    setTest("true");
+    //  Update the input fields
     setInputFields(newInputFields);
   }
+
+
+
+  /**
+   * @returns Is the confirm password field valid
+   */
+  function IsValidConfirmPasswordField() {
+    let password = GetPassword();
+    let passwordToCompare = GetPasswordToCompare();
+    return ValidateConfirmPassword(password, passwordToCompare);
+  }
+
+  function GetPasswordToCompare() {
+    let passwordToCompare = "";
+
+    inputFields.forEach(field => {
+      if (field.name === "confirmPasswordField") {
+        passwordToCompare = field.value;
+      }
+    })
+
+    return passwordToCompare;
+  }
+
+
 
   function GetPassword() {
     let password = "";
@@ -67,25 +96,13 @@ export default function ProviderRegister({ HandleProviderRegister }) {
     inputFields.forEach(field => {
       if (field.name === "passwordField") {
         password = field.value;
-        console.log(field)
       }
     })
+
     return password;
   }
 
 
-  function OnSubmit(e) {
-    e.preventDefault();
-
-    ValidateInputFields();
-
-    //  Test inputs
-    // console.log(inputFields)
-
-
-    console.log(IsFormValid())
-    HandleProviderRegister(e, IsFormValid())
-  }
 
   function IsFormValid() {
     let isFormValid = true;
@@ -100,6 +117,13 @@ export default function ProviderRegister({ HandleProviderRegister }) {
   }
 
 
+
+  /**
+   * Updates a specific field with the given value
+   * @param {string} fieldName 
+   * @param {any} newValue 
+   * @returns void
+   */
   function UpdateFieldValue(fieldName, newValue) {
     let newInputFields = [...inputFields];
 
@@ -111,6 +135,7 @@ export default function ProviderRegister({ HandleProviderRegister }) {
 
     setInputFields(newInputFields);
   }
+
 
 
   return (

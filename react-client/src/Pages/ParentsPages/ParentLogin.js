@@ -1,10 +1,9 @@
-//TODO: Add verify inputs as a function to import (a function that is not in this file)
 import '../../CSS/pages-css/Login.css';
 
 import { Link } from 'react-router-dom';
 import FormInputField from '../../Components/GeneralComponents/FormInputField';
 import { useState } from 'react';
-import { ValidateEmail, ValidatePassword } from '../../Project-Modules/ValidateUserInput';
+import { ValidateEmail, ValidatePassword } from '../../Project-Modules/UserInputValidation';
 
 export default function ParentLogin({ HandleLogin }) {
 	let emailValid = true;

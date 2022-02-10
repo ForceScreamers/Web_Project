@@ -15,7 +15,6 @@ export default function GamesPage({ LoadChildrenFromServer: UpdateChildrenProfil
 
   console.log(process.env.REACT_APP_REQUEST_TIMEOUT_LENGTH)
   //TODO: Create game template
-  //TODO: Add return to games menu when clicking the games page
 
 
   function HandleExit(score, gameId) {

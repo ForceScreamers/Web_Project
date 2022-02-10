@@ -1,6 +1,6 @@
 import '../../CSS/pages-css/Register.css'
 import { Link } from "react-router-dom"
-import { ValidateUsername, ValidateEmail, ValidatePassword, ValidateConfirmPassword } from '../../Project-Modules/ValidateUserInput'
+import { ValidateUsername, ValidateEmail, ValidatePassword, ValidateConfirmPassword } from '../../Project-Modules/UserInputValidation'
 import { useState } from 'react'
 import FormInputField from '../../Components/GeneralComponents/FormInputField'
 

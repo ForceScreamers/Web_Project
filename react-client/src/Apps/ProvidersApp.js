@@ -1,14 +1,18 @@
-import { PublicRoute } from "../Components/GeneralComponents/PublicRoute";
 import { useHistory } from "react-router-dom";
 import { useEffect } from "react";
+
+// Import handlers
 import { RequestLoginAsProvider } from "../LoginAndRegisterHandlers/LoginHandler";
 import { RequestRegisterAsProvider } from "../LoginAndRegisterHandlers/RegisterHandler";
 
+//  Import components
+import { PublicRoute } from "../Components/GeneralComponents/PublicRoute";
 
 //  Import main pages
 import ProviderRegister from "../Pages/ProvidersPages/ProviderRegister";
 import ProviderLogin from "../Pages/ProvidersPages/ProviderLogin";
 import ProviderGames from "../Pages/ProvidersPages/ProviderGames";
+import { ProtectedRoute } from "../Components/GeneralComponents/ProtectedRoute";
 
 export default function ProvidersApp() {
   const history = useHistory();
@@ -48,7 +52,6 @@ export default function ProvidersApp() {
     }
   }
 
-  // TODO: Finish provider register
   function HandleProviderRegister(e, formValid) {
     if (formValid) {
 

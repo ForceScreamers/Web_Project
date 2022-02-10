@@ -6,7 +6,6 @@ export default function GamePreviewCard({ HandlePlay, Name, PreviewImage, Descri
 
   return (
     <div>
-      {/*//TODO: FINISH CARD STYLES*/}
       <Accordion>
         <Card bg='light'>
           <Card.Header className='d-flex align-items-center justify-content-center '>

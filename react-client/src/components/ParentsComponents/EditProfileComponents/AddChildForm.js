@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { IsInputValid_OnlyHebrew } from "../../../Project-Modules/ValidateUserInput";
+import { IsInputValid_OnlyHebrew } from "../../../Project-Modules/UserInputValidation";
 import FormInputField from "../../GeneralComponents/FormInputField";
 
 function AddChildForm({ HandleAddChild }) {
@@ -23,7 +23,6 @@ function AddChildForm({ HandleAddChild }) {
       <form onSubmit={OnSubmit} >
 
         <div className="InputContainer">
-          {/* TODO: Add name validation */}
           <label>שם:</label>
 
           <FormInputField Valid={childNameValidState} Name={"childNameField"} OnChange={(e) => setChildName(e.target.value)} />

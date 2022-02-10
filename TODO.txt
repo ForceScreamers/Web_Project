@@ -1,78 +1,53 @@
-Finish ProviderDal:
-  Should use the same webapi for both systems?
-
-Finish main pages
-
-Add session
-
-
-
+General:
+  [ ] Check if #property is valid in all browser as a valid private property in js
+  [ ] Protected route sends 30 requests to authenticate, it needs to send one
+  [ ] Add text to input error
+  [ ] Add errors in login and register as text to screen
+  [ ] Deal with unable to connect to webapi
+  [ ] Fix collapse or navbar width when resizing the window
 
 
+Admins App:
+  [ ] Token validation between pages
+  [ ] 
+
+
+Parents App:
+
+  [ ] Login and register response have unnessesary headers i.e.:
+    Data: {
+        FromParent: {
+            ParentInfo: {
+              some data
+            },
+          more data
+        }
+    }
+
+  [ ] Add welcome opener
+
+  Games - 
+    [ ] Add return to games menu when clicking the games page
 
 
 
-
-
-
-
-hello
-
-Set up a template for the main pages at MainPage.js
-
-Database:
-  Create MySql DB
-  Connect DB
-  profile pictures of users inside DB? 
+Providers App:
   
-  DAL:
-	Done DAL class methods:
-	
-	parents DB
-		parent x 
-		game x 
-		child x
-		evaluation	x 
-		game type x 
-		
-	provider DB
-		post 
-		provider 
-		topic
-
-
-Registeration page:
-  Email, username, password, profile picture
-  Registeration verification (special characters, username not taken)
-
-Validation:
-  Login:
-    Special characters, 
-
-  Registeration:
-    (Client) Max characters, Special characters 
-    (Server) Is in database, username matches password
-
-
-BEM:
-Block: container
-Element: container__button
-Modifier: container--hidden
-
-example:
-.form__submit--disabled { }
-
-
-Frontend
-  Finish InviteButton component
-
-C# functions to js functions
-C# Web api
-Check CORS Security
+  Register - 
+    [ ] Validation wont update component without the "Test" state need to fix
+    [ ] Show does user exist error
 
 
 
+Small additions:
+  [ ] Add comments to every function:
+    /**
+    * @param {string} input 
+    * @returns true or false whether the input is in hebrew or isn't empty
+    */
 
-----  DONE ----
-Restricted routes
-FIX - 'Access voilation' when running any function to manipulate data
+
+  [ ] Check that every input field is validated correctly
+
+
+  

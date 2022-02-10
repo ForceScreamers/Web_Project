@@ -5,7 +5,6 @@ import { fetchIsAuth } from './GetAuthenticated';
 import { useEffect } from 'react';
 
 
-//TODO: Find a way to create a protected route
 export const ProtectedRoute = ({ component: Component, ...rest }) => {
 
   let reasource = fetchIsAuth();

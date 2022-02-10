@@ -5,9 +5,6 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 import { useHistory } from "react-router-dom";
 
-//  Import components
-import { Link } from 'react-router-dom';
-
 //	Import main pages as components
 import Welcome from '../Pages/GeneralPages/Welcome'
 import About from '../Pages/GeneralPages/About';
@@ -157,7 +154,6 @@ export default function ParentsApp() {
     return child;
   }
 
-  //TODO: Find a better name for this function
   function HandleLoginResponse(response) {
     //  Clear previous data
     sessionStorage.clear();

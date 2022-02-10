@@ -1,5 +1,22 @@
 import { USER_INPUT_ERR } from "./UserErrorEnums";
 
+
+export class InputField {
+
+  constructor(name, value, labelText, validationFunction) {
+    this.name = name;
+    this.value = value;
+    this.isValid = true;
+    this.labelText = labelText;
+    this.validationFunction = validationFunction;
+  }
+
+  Validate() {
+    this.isValid = this.validationFunction(this.value);
+  }
+}
+
+
 export const REXGEX_OnlyHebrew = new RegExp(/^[\u0590-\u05FF]+$/)
 
 /**
@@ -92,27 +109,18 @@ export const ValidateUsername = (username) => {
   return ValidateUserInput_All(username);
 }
 
-//TODO: Make all functions is this file match this function's pattern
-/**
- * @param {string} input 
- * @returns true or false whether the input is in hebrew or isn't empty
- */
 export function IsHebrewInputValid(input) {
 
   return IsInputValid_OnlyHebrew(input) && input !== "";
 }
 
 /**
- * Returns true or false whether the password isn't empty
+ * Returns true or false whether or not the password is empty
  */
 export const ValidatePassword = (password) => {
-
   let valid = false;
   if (password !== "") {
     valid = true;
-  }
-  else {
-    // alert("empty password")
   }
 
   return valid;
@@ -138,6 +146,8 @@ export const ValidateEmail = (email) => {
 
   return valid;
 };
+
+
 
 
 

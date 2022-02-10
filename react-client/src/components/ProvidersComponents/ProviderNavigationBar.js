@@ -9,7 +9,6 @@ export default function ProviderNavigationBar() {
     history.replace("/Providers/Login");
   }
 
-  //TODO: Fix collapse or navbar width when resizing the window
   return (
     <div dir="rtl" >
       <Navbar collapseOnSelect expand="lg" bg="secondary" variant="dark">
