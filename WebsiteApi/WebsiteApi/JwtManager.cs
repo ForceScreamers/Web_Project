@@ -68,5 +68,17 @@ namespace WebApi.Jwt
                 return null;
             }
         }
+
+        public static bool IsTokenValid(string token)
+        {
+            Console.WriteLine(token);
+            var simplePrinciple = GetPrincipal(token);
+            var identity = simplePrinciple.Identity as ClaimsIdentity;
+
+            if (identity == null || !identity.IsAuthenticated)
+                return false;
+
+            return true;
+        }
     }
 }

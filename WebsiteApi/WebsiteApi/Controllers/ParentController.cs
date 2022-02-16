@@ -20,6 +20,7 @@ using ParentsApi.HelperClasses;
 using Microsoft.AspNetCore.Cors;
 using WebApi.Jwt;
 using System.Security.Claims;
+using ParentsApi.CustomAttributes;
 //using Microsoft.AspNet.WebApi.Core;
 
 namespace ParentsApi.Controllers
@@ -63,6 +64,7 @@ namespace ParentsApi.Controllers
 		//	Returns if the child was added, and information about the child
 		[Microsoft.AspNetCore.Mvc.HttpPost]
 		[Microsoft.AspNetCore.Mvc.ActionName("AddChild")]
+
 		public ContentResult AddChild()
 		{
 

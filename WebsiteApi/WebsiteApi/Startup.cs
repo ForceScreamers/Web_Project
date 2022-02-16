@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using ParentsApi.CustomAttributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,11 +30,15 @@ namespace ParentsApi
             services.AddCors();
             services.AddControllers();
 
+            //  Mine 
+            //services.AddTransient<AuthenticationRequired>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+           
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -48,6 +53,8 @@ namespace ParentsApi
                 .AllowAnyHeader()
                 .SetIsOriginAllowed(origin => true) // allow any origin
                 .AllowCredentials()); // allow credentials
+
+            app.UseAuthenticationRequired();
 
             app.UseAuthorization();
 

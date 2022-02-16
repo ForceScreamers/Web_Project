@@ -53,10 +53,13 @@ namespace ParentsApi.Controllers
 		}
 
 
+		[TokenRequired]
 		[Microsoft.AspNetCore.Mvc.HttpGet]
 		[Microsoft.AspNetCore.Mvc.ActionName("GetProviders")]
 		public ContentResult GetProviders()
 		{
+			object a = Request.HttpContext.Items["Valid"];
+
 			return base.Content(JsonConvert.SerializeObject(
 				ProviderHelperFunctions.GetProviderInfos()
 				));

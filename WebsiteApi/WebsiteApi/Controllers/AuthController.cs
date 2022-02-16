@@ -34,7 +34,7 @@ namespace ParentsApi.Controllers
 			return JwtManager.GenerateToken(email);
 		}
 
-
+		//	TODO: Remove 
 		[Microsoft.AspNetCore.Mvc.HttpPost]
 		[Microsoft.AspNetCore.Mvc.ActionName("IsAuth")]
 		public ContentResult IsAuth()
