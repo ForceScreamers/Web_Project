@@ -1,0 +1,10 @@
+C:\Users\Administrator\Desktop\Web_Project\WebsiteApi\DAL\provider-dal\Provider-DAL\bin\Release\Provider-DAL.exe.config
+C:\Users\Administrator\Desktop\Web_Project\WebsiteApi\DAL\provider-dal\Provider-DAL\bin\Release\Provider-DAL.exe
+C:\Users\Administrator\Desktop\Web_Project\WebsiteApi\DAL\provider-dal\Provider-DAL\bin\Release\Provider-DAL.pdb
+C:\Users\Administrator\Desktop\Web_Project\WebsiteApi\DAL\provider-dal\Provider-DAL\bin\Release\System.Data.Odbc.dll
+C:\Users\Administrator\Desktop\Web_Project\WebsiteApi\DAL\provider-dal\Provider-DAL\bin\Release\System.Data.Odbc.xml
+C:\Users\Administrator\Desktop\Web_Project\WebsiteApi\DAL\provider-dal\Provider-DAL\obj\Release\ProviderDal.csproj.AssemblyReference.cache
+C:\Users\Administrator\Desktop\Web_Project\WebsiteApi\DAL\provider-dal\Provider-DAL\obj\Release\ProviderDal.csproj.CoreCompileInputs.cache
+C:\Users\Administrator\Desktop\Web_Project\WebsiteApi\DAL\provider-dal\Provider-DAL\obj\Release\ProviderDal.csproj.CopyComplete
+C:\Users\Administrator\Desktop\Web_Project\WebsiteApi\DAL\provider-dal\Provider-DAL\obj\Release\Provider-DAL.exe
+C:\Users\Administrator\Desktop\Web_Project\WebsiteApi\DAL\provider-dal\Provider-DAL\obj\Release\Provider-DAL.pdb

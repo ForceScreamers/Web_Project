@@ -5,7 +5,7 @@ export async function RequestRegisterAsParent({ username, email, password }) {
   return axios({
     method: 'POST',
     hostname: 'localhost',
-    url: 'http://localhost:5000/api/Parent/ParentRegister',
+    url: `http://${process.env.REACT_APP_DOMAIN_NAME}/api/Parent/ParentRegister`,
     port: 5000,
     timeout: process.env.REACT_APP_REQUEST_TIMEOUT_LENGTH,
     headers: {
@@ -23,7 +23,7 @@ export async function RequestRegisterAsProvider(fullName, email, password, occup
   return axios({
     method: 'POST',
     hostname: 'localhost',
-    url: 'http://localhost:5000/api/Provider/ProviderRegister',
+    url: `http://${process.env.REACT_APP_DOMAIN_NAME}/api/Provider/ProviderRegister`,
     port: 5000,
     timeout: process.env.REACT_APP_REQUEST_TIMEOUT_LENGTH,
     headers: {

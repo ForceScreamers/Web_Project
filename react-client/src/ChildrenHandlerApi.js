@@ -7,7 +7,7 @@ export class ChildrenHandlerApi {
     console.log(childToSelect)
     axios({
       method: 'post',
-      url: "http://localhost:5000/api/Parent/SelectChild",
+      url: `http://${process.env.REACT_APP_DOMAIN_NAME}/api/Parent/SelectChild`,
       timeout: process.env.REACT_APP_REQUEST_TIMEOUT_LENGTH,
       headers: {
         'childId': JSON.stringify(childToSelect.Id),
@@ -21,7 +21,7 @@ export class ChildrenHandlerApi {
   static async GetChildren(parentId) {
     return axios({
       method: 'POST',
-      url: "http://localhost:5000/api/Parent/GetChildren",
+      url: `http://${process.env.REACT_APP_DOMAIN_NAME}/api/Parent/GetChildren`,
       timeout: process.env.REACT_APP_REQUEST_TIMEOUT_LENGTH,
       headers: {
         'parentId': parentId,
@@ -33,7 +33,7 @@ export class ChildrenHandlerApi {
   static async AddChild(userId, childToAddName, childToAddAge) {
     return axios({
       method: 'post',
-      url: "http://localhost:5000/api/Parent/AddChild",
+      url: `http://${process.env.REACT_APP_DOMAIN_NAME}/api/Parent/AddChild`,
       timeout: process.env.REACT_APP_REQUEST_TIMEOUT_LENGTH,
       headers: {
         'parentId': userId,
@@ -47,7 +47,7 @@ export class ChildrenHandlerApi {
   static async DeleteChild(childId, parentId) {
     axios({
       method: 'POST',
-      url: "http://localhost:5000/api/Parent/DeleteChild",
+      url: `http://${process.env.REACT_APP_DOMAIN_NAME}/api/Parent/DeleteChild`,
       timeout: process.env.REACT_APP_REQUEST_TIMEOUT_LENGTH,
       headers: {
         'childId': childId,

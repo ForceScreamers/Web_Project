@@ -3,12 +3,13 @@ import { USER_INPUT_ERR } from "./UserErrorEnums";
 
 export class InputField {
 
-  constructor(name, value, labelText, validationFunction) {
+  constructor(name, value, labelText, validationFunction, testErrorMessage) {
     this.name = name;
     this.value = value;
     this.isValid = true;
     this.labelText = labelText;
     this.validationFunction = validationFunction;
+    this.textErrorMessage = testErrorMessage;
   }
 
   Validate() {

@@ -4,7 +4,8 @@ export async function RequestLoginAsProvider(email, password) {
   return axios({
     method: 'POST',
     hostname: 'localhost',
-    url: `http://localhost:5000/api/Provider/ProviderLogin`,
+    // url: `http://localhost:5000/api/Provider/ProviderLogin`,
+    url: `http://${process.env.REACT_APP_DOMAIN_NAME}/api/Provider/ProviderLogin`,
     port: 5000,
     timeout: process.env.REACT_APP_REQUEST_TIMEOUT_LENGTH,
     headers: {
@@ -21,7 +22,7 @@ export async function RequestLoginAsParent(email, password) {
   return axios({
     method: 'POST',
     hostname: 'localhost',
-    url: `http://localhost:5000/api/Parent/ParentLogin`,
+    url: `http://${process.env.REACT_APP_DOMAIN_NAME}/api/Parent/ParentLogin`,
     port: 5000,
     timeout: process.env.REACT_APP_REQUEST_TIMEOUT_LENGTH,
     headers: {

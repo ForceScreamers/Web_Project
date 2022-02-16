@@ -45,7 +45,8 @@ const wrapPromise = (promise) => {
 const GetIsAuth = async () => {
   return axios({
     method: 'POST',
-    url: "http://localhost:5000/api/Auth/IsAuth",
+    // url: "http://localhost:5000/api/Auth/IsAuth",
+    url: `http://${process.env.REACT_APP_DOMAIN_NAME}/api/Auth/IsAuth`,
     timeout: process.env.REACT_APP_REQUEST_TIMEOUT_LENGTH,
     headers: {
       "x-access-token": sessionStorage.getItem('token'),

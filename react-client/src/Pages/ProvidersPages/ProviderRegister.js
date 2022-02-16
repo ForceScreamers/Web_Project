@@ -8,7 +8,7 @@ import { InputField } from '../../Project-Modules/UserInputValidation'
 export default function ProviderRegister({ HandleProviderRegister }) {
 
   const [inputFields, setInputFields] = useState([
-    new InputField("fullNameField", "", "שם מלא:", IsHebrewInputValid),
+    new InputField("fullNameField", "", "שם מלא:", IsHebrewInputValid, "שם משתמש שגוי"),
     new InputField("emailField", "", "כתובת מייל:", ValidateEmail),
     new InputField("occupationField", "", "תעסוקה:", IsHebrewInputValid),
     new InputField("passwordField", "", "סיסמה:", ValidatePassword),
@@ -154,7 +154,12 @@ export default function ProviderRegister({ HandleProviderRegister }) {
                   <div key={index}>
                     <label>{field.labelText + " " + field.isValid}</label>
                     <br />
-                    <FormInputField Valid={field.isValid} Name={field.name} OnChange={(e) => { UpdateFieldValue(field.name, e.target.value) }} />
+                    <FormInputField
+                      Valid={field.isValid}
+                      Name={field.name}
+                      OnChange={(e) => { UpdateFieldValue(field.name, e.target.value) }}
+                      UserErrorMessageText={field.textErrorMessage}
+                    />
                   </div>
                 )
               })

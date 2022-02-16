@@ -13,13 +13,15 @@ export default function AdminsApp() {
     return axios({
       method: 'GET',
       hostname: 'localhost',
-      url: "http://localhost:5000/api/Provider/GetProviders",
+      // url: "http://localhost:5000/api/Provider/GetProviders",
+      url: `http://${process.env.REACT_APP_DOMAIN_NAME}/api/Provider/GetProviders`,
       port: 5000,
       timeout: process.env.REACT_APP_REQUEST_TIMEOUT_LENGTH,
     })
       .catch(err => console.log(err))
       .then(response => {
         if (response) {
+          console.log("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
           console.log(response);
           setProviderInfos(response.data);
         }
@@ -30,7 +32,7 @@ export default function AdminsApp() {
     return axios({
       method: 'POST',
       hostname: 'localhost',
-      url: "http://localhost:5000/api/Admin/ConfirmProvider",
+      url: `http://${process.env.REACT_APP_DOMAIN_NAME}/api/Admin/ConfirmProvider`,
       port: 5000,
       timeout: process.env.REACT_APP_REQUEST_TIMEOUT_LENGTH,
       headers: {

@@ -23,7 +23,7 @@ export default function GamesPage({ LoadChildrenFromServer: UpdateChildrenProfil
 
     axios({
       method: 'POST',
-      url: "http://localhost:5000/api/Parent/UpdateEvaluationScore",
+      url: `http://${process.env.REACT_APP_DOMAIN_NAME}/api/Parent/UpdateEvaluationScore`,
       timeout: process.env.REACT_APP_REQUEST_TIMEOUT_LENGTH,
       headers: {
         'childId': JSON.parse(sessionStorage.getItem('currentChild')).Id,

@@ -67,7 +67,7 @@ async function RequestRegister(userData) {
 
   return axios({
     method: 'POST',
-    url: "http://localhost:5000/api/Parent/ParentRegister",
+    url: `http://${process.env.REACT_APP_DOMAIN_NAME}/api/Parent/ParentRegister`,
     timeout: process.env.REACT_APP_REQUEST_TIMEOUT_LENGTH,
     headers: {
       // data: JSON.stringify(userData),
@@ -82,7 +82,7 @@ async function RequestLogin(userData) {
   return axios({
     method: 'POST',
     hostname: 'localhost',
-    url: "http://localhost:5000/api/Parent/ParentLogin",
+    url: `http://${process.env.REACT_APP_DOMAIN_NAME}/api/Parent/ParentLogin`,
     port: 5000,
     timeout: process.env.REACT_APP_REQUEST_TIMEOUT_LENGTH,
     headers: {

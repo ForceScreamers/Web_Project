@@ -5,11 +5,12 @@ General:
   [ ] Add errors in login and register as text to screen
   [ ] Deal with unable to connect to webapi
   [ ] Fix collapse or navbar width when resizing the window
+  [ ] Split user input field into 2 nested components
 
 
 Admins App:
   [ ] Token validation between pages
-  [ ] 
+  [ ] Add logout
 
 
 Parents App:
