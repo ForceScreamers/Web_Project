@@ -20,8 +20,7 @@ import HomePage from '../Pages/ParentsPages/HomePage';
 
 
 
-//import AuthenticatedRoute from "./components/ProtectedRoute";
-import { ProtectedRoute } from '../Components/GeneralComponents/ProtectedRoute'
+//import AuthenticatedRoute from "./components/PublicRoute";
 import { PublicRoute } from '../Components/GeneralComponents/PublicRoute'
 
 
@@ -41,6 +40,7 @@ import { NavBarContext } from '../Contexts/NavBarContext';
 import { ChildrenHandlerApi } from '../ChildrenHandlerApi';
 import { RequestLoginAsParent } from "../LoginAndRegisterHandlers/LoginHandler";
 import PageDoesntExist from '../PageDoesntExist';
+import { ParentsApiRequest } from '../RequestHeadersToWebApi';
 
 
 
@@ -117,6 +117,7 @@ export default function ParentsApp() {
     console.log(parentId);
     if (parentId) {
       ChildrenHandlerApi.GetChildren(parentId)
+      ParentsApiRequest('GET', 'GetChildren', parentId)
         .then(res => {
 
           //  Set children
@@ -215,7 +216,8 @@ export default function ParentsApp() {
 
           //	Log in the newly registered user
           //? Check properties
-          let loginResponse = await RequestLogin(userData)
+          // let loginResponse = await RequestLogin(userData)
+          let loginResponse = await ParentsApiRequest('POST', 'ParentLogin', userData);
           console.log(loginResponse)
 
           HandleLoginResponse(response);
@@ -261,10 +263,10 @@ export default function ParentsApp() {
         username: username,
       }}>
 
-        <ProtectedRoute exact path="/Parents/Welcome" component={Welcome} />
-        <ProtectedRoute exact path="/Parents/About" component={About} />
+        <PublicRoute exact path="/Parents/Welcome" component={Welcome} />
+        <PublicRoute exact path="/Parents/About" component={About} />
 
-        <ProtectedRoute exact path="/Parents/EditProfile" component={() =>
+        <PublicRoute exact path="/Parents/EditProfile" component={() =>
           <EditProfilePage
             // HandleSelectChild={HandleSelectChild}
             // HandleDeleteChild={HandleDeleteChild}
@@ -272,11 +274,11 @@ export default function ParentsApp() {
             LoadChildrenFromServer={LoadChildrenFromServer}
           />}
         />
-        <ProtectedRoute exact path="/Parents/Games" component={() => <GamesPage LoadChildrenFromServer={LoadChildrenFromServer} />} />
-        <ProtectedRoute exact path="/Parents/Info" component={InfoPage} />
-        <ProtectedRoute exact path="/Parents/Avatar" component={AvatarPage} />
-        <ProtectedRoute exact path="/Parents/Journal" component={JournalPage} />
-        <ProtectedRoute exact path="/Parents/Home" component={HomePage} />
+        <PublicRoute exact path="/Parents/Games" component={() => <GamesPage LoadChildrenFromServer={LoadChildrenFromServer} />} />
+        <PublicRoute exact path="/Parents/Info" component={InfoPage} />
+        <PublicRoute exact path="/Parents/Avatar" component={AvatarPage} />
+        <PublicRoute exact path="/Parents/Journal" component={JournalPage} />
+        <PublicRoute exact path="/Parents/Home" component={HomePage} />
 
 
       </NavBarContext.Provider>

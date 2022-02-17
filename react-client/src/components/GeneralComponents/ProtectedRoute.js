@@ -5,7 +5,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 
 
-export const ProtectedRoute = ({ component: Component, ...rest }) => {
+export const PublicRoute = ({ component: Component, ...rest }) => {
 
   //let reasource = fetchIsAuth();
   const history = useHistory();

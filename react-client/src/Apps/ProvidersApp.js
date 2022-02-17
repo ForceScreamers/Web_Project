@@ -6,13 +6,12 @@ import { RequestLoginAsProvider } from "../LoginAndRegisterHandlers/LoginHandler
 import { RequestRegisterAsProvider } from "../LoginAndRegisterHandlers/RegisterHandler";
 
 //  Import components
-import { PublicRoute } from "../Components/GeneralComponents/PublicRoute";
 
 //  Import main pages
 import ProviderRegister from "../Pages/ProvidersPages/ProviderRegister";
 import ProviderLogin from "../Pages/ProvidersPages/ProviderLogin";
 import ProviderGames from "../Pages/ProvidersPages/ProviderGames";
-import { ProtectedRoute } from "../Components/GeneralComponents/ProtectedRoute";
+import { PublicRoute } from "../Components/GeneralComponents/PublicRoute";
 
 export default function ProvidersApp() {
   const history = useHistory();

@@ -20,7 +20,6 @@ using ParentsApi.HelperClasses;
 using Microsoft.AspNetCore.Cors;
 using WebApi.Jwt;
 using System.Security.Claims;
-using ParentsApi.CustomAttributes;
 //using Microsoft.AspNet.WebApi.Core;
 
 namespace ParentsApi.Controllers
