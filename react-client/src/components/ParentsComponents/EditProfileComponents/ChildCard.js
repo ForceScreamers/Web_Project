@@ -3,7 +3,7 @@ import ChildEvaluationsDisplay from './ChildEvaluationsDisplay'
 import { useState } from 'react';
 import ChildDeleteConfirmationModal from './ChildDeleteConfirmationModal';
 
-function ChildCard({ HandleSelectChild, DeleteChild, ChildProfile }) {
+function ChildCard({ SelectChild, DeleteChild, ChildProfile }) {
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
   function HandleDeleteChild() {
@@ -38,7 +38,7 @@ function ChildCard({ HandleSelectChild, DeleteChild, ChildProfile }) {
               className='test-class'
               // disabled={isSelected ? "true" : "false"}
               disabled={ChildProfile.IsSelected}
-              onClick={(e) => HandleSelectChild(e, ChildProfile)} variant="primary"
+              onClick={(e) => SelectChild(e, ChildProfile.Id)} variant="primary"
             >
               {ChildProfile.IsSelected ? "ילד נוכחי" : "בחר ילד"}
 

@@ -1,11 +1,11 @@
 //	#region Imports
 
-//	Import hooks
+//	Hooks
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { useHistory } from "react-router-dom";
 
-//	Import main pages as components
+//	Main pages 
 import Welcome from '../Pages/GeneralPages/Welcome'
 import About from '../Pages/GeneralPages/About';
 import ParentRegister from '../Pages/ParentsPages/ParentRegister';
@@ -16,33 +16,20 @@ import InfoPage from '../Pages/ParentsPages/InfoPage';
 import AvatarPage from '../Pages/ParentsPages/AvatarPage';
 import JournalPage from '../Pages/ParentsPages/JournalPage';
 import HomePage from '../Pages/ParentsPages/HomePage';
-// import ProviderLogin from './Pages/ProvidersPages/ProviderLogin';
 
-
-
-//import AuthenticatedRoute from "./components/PublicRoute";
+//  Components
 import { PublicRoute } from '../Components/GeneralComponents/PublicRoute'
-
 
 //	Bootstrap css import
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-
-//	Other libraries
-import axios from 'axios';
-import utf8 from 'utf8';
-
-
-//	Import Contexts
+//	Contexts
 import { NavBarContext } from '../Contexts/NavBarContext';
 
-//  Import helper classes
-import { ChildrenHandlerApi } from '../ChildrenHandlerApi';
-import { RequestLoginAsParent } from "../LoginAndRegisterHandlers/LoginHandler";
+//  Helper classes
 import PageDoesntExist from '../PageDoesntExist';
 import { ParentsApiRequest } from '../RequestHeadersToWebApi';
 import ProtectedRoute from '../Components/GeneralComponents/ProtectedRoute';
-
 
 
 
@@ -78,7 +65,6 @@ export default function ParentsApp() {
 
     console.log(parentId);
     if (parentId) {
-      //ChildrenHandlerApi.GetChildren(parentId)
       let res = await ParentsApiRequest('GET', 'GetChildren', { parentId: parentId }).catch(err => console.log(err))
 
       //  Set children
@@ -139,21 +125,27 @@ export default function ParentsApp() {
     e.preventDefault();
 
     if (formValid) {
-
-      let email = e.target.loginEmailField.value;
-      let password = e.target.loginPasswordField.value;
-
-      let loginResponse = await RequestLoginAsParent(email, password).catch(err => console.log(err))
-      console.log(loginResponse);
-
-      if (loginResponse.data.FromParent.UserExists === true) {
-        HandleLoginResponse(loginResponse);
-      }
-      else {
-        alert("user not found");
+      let loginData = {
+        email: e.target.loginEmailField.value,
+        password: e.target.loginPasswordField.value,
       }
 
+      try {
 
+        // let loginResponse = await RequestLoginAsParent(email, password);
+        let loginResponse = await ParentsApiRequest('POST', 'ParentLogin', loginData);
+        console.log(loginResponse);
+
+        if (loginResponse.data.FromParent.UserExists === true) {
+          HandleLoginResponse(loginResponse);
+        }
+        else {
+          alert("user not found");
+        }
+      }
+      catch (err) {
+        console.log(err);
+      }
 
     }
   }
@@ -174,12 +166,8 @@ export default function ParentsApp() {
       let response = await ParentsApiRequest('POST', 'ParentRegister', userData).catch(err => console.log(err));
       if (response) {
 
-        //	If the user is authorized
         if (response.data.Registered === true) {
 
-          //	Log in the newly registered user
-          //? Check properties
-          // let loginResponse = await RequestLogin(userData)
           let loginResponse = await ParentsApiRequest('POST', 'ParentLogin', userData);
           console.log(loginResponse)
 

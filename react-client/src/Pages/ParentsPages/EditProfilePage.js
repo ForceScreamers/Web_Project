@@ -4,7 +4,6 @@ import ChildCard from "../../Components/ParentsComponents/EditProfileComponents/
 import ParentMainPage from "../../Components/ParentsComponents/ParentMainPage"
 
 import { useEffect, useState } from "react"
-import { ChildrenHandlerApi } from "../../ChildrenHandlerApi"
 import utf8 from 'utf8'
 import { ParentsApiRequest } from "../../RequestHeadersToWebApi"
 
@@ -23,8 +22,6 @@ export default function EditProfilePage({ LoadChildrenFromServer }) {
   async function HandleAddChild(e, formValid) {
     e.preventDefault();
 
-    console.log(`Add child? ${formValid}`)
-
     if (formValid) {
 
       let childData = {
@@ -32,7 +29,6 @@ export default function EditProfilePage({ LoadChildrenFromServer }) {
         parentId: JSON.parse(sessionStorage.getItem('userId')),
         childName: utf8.encode(e.target.childNameField.value),
       }
-
 
       let response = await ParentsApiRequest('POST', 'AddChild', childData).catch(err => console.log(err));
       console.log(response);
@@ -46,8 +42,13 @@ export default function EditProfilePage({ LoadChildrenFromServer }) {
   }
 
 
-  async function HandleSelectChild(e, childToSelect) {
-    ParentsApiRequest('POST', 'SelectChild', childToSelect.id).catch(err => console.log(err))
+  async function SelectChild(e, childIdToSelect) {
+    let childSelectData = {
+      childId: childIdToSelect,
+      parentId: JSON.parse(sessionStorage.getItem('userId')),
+    }
+
+    ParentsApiRequest('POST', 'SelectChild', childSelectData).catch(err => console.log(err))
       .then(() => {
         LoadChildrenFromServer();
       })
@@ -82,7 +83,7 @@ export default function EditProfilePage({ LoadChildrenFromServer }) {
                   //  i - index inside the state array, using it because react wants to use it...
                   ? childrenProfiles.map((childProfile) => (
                     <ChildCard
-                      HandleSelectChild={HandleSelectChild}
+                      SelectChild={SelectChild}
                       DeleteChild={DeleteChild}
                       ChildProfile={childProfile}
                       key={childProfile.Id}  // Key for the component's index

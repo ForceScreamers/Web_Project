@@ -78,7 +78,7 @@ namespace ProvidersApi
 
 			try
 			{
-				if(ProviderMethods.IsExists(email, password))
+				if(ProviderMethods.IsExists(email))
 				{
 					canProviderLogIn = ProviderMethods.IsPermitted(email);
 					providerInfo = ProviderMethods.GetProviderInfo(email, password);
@@ -102,7 +102,7 @@ namespace ProvidersApi
 			Console.WriteLine("Provider full name converted: {0}", UnicodeHelper.ConvertToUnicode(fullName));
 
             bool providerRegistered = false;
-            bool providerExists = ProviderMethods.IsExists(email, password);
+            bool providerExists = ProviderMethods.IsExists(email);
 
             if (providerExists == false)
             {
@@ -166,6 +166,11 @@ namespace ProvidersApi
 		}
 		private static string ConvertToUnicode(string utf8text)
 		{ return Encoding.Unicode.GetString(UTF8Encoding.Convert(Encoding.UTF8, Encoding.Unicode, Encoding.UTF8.GetBytes(utf8text))); }
+
+		public static void ConfirmProvider(int providerId)
+		{
+			ProviderMethods.ConfirmProvider(providerId);
+		}
 
 		/// <summary>
 		/// Returns true if no child is selected (for the given parent), false otherwise

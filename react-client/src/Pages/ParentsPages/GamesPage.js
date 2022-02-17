@@ -6,6 +6,7 @@ import GamePreviewCardsGrid from "../../Components/GeneralComponents/GamesCompon
 import { useState } from "react";
 import axios from "axios";
 import GameTemplate from "../../Games/GameTemplate";
+import { ParentsApiRequest } from "../../RequestHeadersToWebApi";
 
 const GAMES_MENU_ID = -1;
 
@@ -18,29 +19,21 @@ export default function GamesPage({ LoadChildrenFromServer: UpdateChildrenProfil
 
 
   function HandleExit(score, gameId) {
-    alert("testing" + score);
-    console.log(score);
+    alert("Game score: " + score);
 
-    axios({
-      method: 'POST',
-      url: `http://${process.env.REACT_APP_DOMAIN_NAME}/api/Parent/UpdateEvaluationScore`,
-      timeout: process.env.REACT_APP_REQUEST_TIMEOUT_LENGTH,
-      headers: {
-        'childId': JSON.parse(sessionStorage.getItem('currentChild')).Id,
-        'gameId': gameId,
-        'gameScore': score,
-      }
-    })
+    let evaluationScoreData = {
+      childId: JSON.parse(sessionStorage.getItem('currentChild')).Id,
+      gameId: gameId,
+      gameScore: score,
+    }
+
+    ParentsApiRequest('POST', 'UpdateEvaluationScore', evaluationScoreData)
       .catch(err => console.log(err))
       .then(() => {
-
-        //  Reset the current game id
         setCurrentGameId(GAMES_MENU_ID);
-
         UpdateChildrenProfiles();
       })
   }
-
 
 
   //Mock data
@@ -66,7 +59,7 @@ export default function GamesPage({ LoadChildrenFromServer: UpdateChildrenProfil
   ];
 
 
-  const HandlePlay = (gameId) => {
+  function HandlePlay(gameId) {
     //  Play the game by the given id
     //  the ids come from the db
 
@@ -76,7 +69,7 @@ export default function GamesPage({ LoadChildrenFromServer: UpdateChildrenProfil
 
 
 
-  const RenderCurrentGame = () => {
+  function RenderCurrentGame() {
     let gameToRender = <div>Hello!</div>
     GAMES.forEach(game => {
       if (game.id === currentGameId) {

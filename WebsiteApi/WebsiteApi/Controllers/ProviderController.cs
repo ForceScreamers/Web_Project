@@ -61,6 +61,19 @@ namespace ParentsApi.Controllers
 				ProviderHelperFunctions.GetProviderInfos()
 				));
 		}
+
+		[Microsoft.AspNetCore.Mvc.HttpPost]
+		[Microsoft.AspNetCore.Mvc.ActionName("ConfirmProvider")]
+		public ContentResult ConfirmProvider()
+		{
+			//	Get provider id
+			int providerId = int.Parse(Request.Headers["providerId"].ToString());
+
+			//	Toggle status to the provider
+			ProviderHelperFunctions.ConfirmProvider(providerId);
+
+			return base.Content(null);
+		}
 		#endregion
 
 		/// <summary>

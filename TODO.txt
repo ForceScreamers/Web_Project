@@ -1,6 +1,5 @@
 General:
-  [ ] Finish swapping all api request functions
-  [ ] Finish api request functions
+  [ ] Check for all api request functions
   [ ] Check if #property is valid in all browser as a valid private property in js
   [ ] Protected route sends 30 requests to authenticate, it needs to send one
   [ ] Add text to input error
@@ -11,7 +10,7 @@ General:
 
 
 Admins App:
-  [ ] Token validation between pages
+  [ ] Protected routes
   [ ] Add logout
 
 
@@ -31,6 +30,7 @@ Parents App:
 
   Games - 
     [ ] Add return to games menu when clicking the games page
+    [ ] Finish games page
 
 
 
@@ -39,6 +39,7 @@ Providers App:
   Register - 
     [ ] Validation wont update component without the "Test" state need to fix
     [ ] Show does user exist error
+    [ ] Add protected routes
 
 
 

@@ -1,9 +1,4 @@
-import React, { Suspense } from 'react';
 import { Route, Redirect, useHistory } from 'react-router-dom';
-import { fetchIsAuth } from './GetAuthenticated';
-import axios from 'axios';
-import { useEffect, useState } from 'react';
-
 
 export default function ProtectedRoute({ Component, ...rest }) {
   const history = useHistory();

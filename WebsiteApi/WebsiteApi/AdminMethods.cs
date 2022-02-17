@@ -15,8 +15,6 @@ namespace ParentsApi
             Admin userToCheck = new Admin(email, password);
             List<Admin> admins = GetAdminUsers();
 
-
-
             return CheckIfAdmin(admins, userToCheck);
         }
 
