@@ -87,7 +87,7 @@ namespace ParentsApi.Controllers
 
 
 
-		[Microsoft.AspNetCore.Mvc.HttpPost]
+		[Microsoft.AspNetCore.Mvc.HttpGet]
 		[Microsoft.AspNetCore.Mvc.ActionName("GetChildren")]
 		public ContentResult GetChildren()
 		{

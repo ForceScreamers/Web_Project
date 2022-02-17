@@ -41,6 +41,7 @@ import { ChildrenHandlerApi } from '../ChildrenHandlerApi';
 import { RequestLoginAsParent } from "../LoginAndRegisterHandlers/LoginHandler";
 import PageDoesntExist from '../PageDoesntExist';
 import { ParentsApiRequest } from '../RequestHeadersToWebApi';
+import ProtectedRoute from '../Components/GeneralComponents/ProtectedRoute';
 
 
 
@@ -58,50 +59,11 @@ import { ParentsApiRequest } from '../RequestHeadersToWebApi';
 
 
 /** */
-async function RequestRegister(userData) {
-  // Register req
-  console.log("Requesting reg...")
-
-  //	Encode the username
-  userData.username = utf8.encode(userData.username)
-
-  return axios({
-    method: 'POST',
-    url: `http://${process.env.REACT_APP_DOMAIN_NAME}/api/Parent/ParentRegister`,
-    timeout: process.env.REACT_APP_REQUEST_TIMEOUT_LENGTH,
-    headers: {
-      // data: JSON.stringify(userData),
-      'username': userData.username,
-      'email': userData.email,
-      'password': userData.password,
-    }
-  })
-}
-
-async function RequestLogin(userData) {
-  return axios({
-    method: 'POST',
-    hostname: 'localhost',
-    url: `http://${process.env.REACT_APP_DOMAIN_NAME}/api/Parent/ParentLogin`,
-    port: 5000,
-    timeout: process.env.REACT_APP_REQUEST_TIMEOUT_LENGTH,
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Content-Type': 'application/json',
-      data: JSON.stringify(userData),
-      'email': userData.email,
-      'password': userData.password,
-    }
-  })
-    .catch(err => console.log(err))
-}
-
-
-
 
 
 // * React app component
 export default function ParentsApp() {
+
   const [currentChild, setCurrentChild] = useState({});
   const [username, setUsername] = useState('no username');
 
@@ -110,31 +72,30 @@ export default function ParentsApp() {
   /**Gets the children belonging to the logged parent
    * Set current children profiles to the matching children
    */
-  function LoadChildrenFromServer() {
+  async function LoadChildrenFromServer() {
 
     let parentId = JSON.parse(sessionStorage.getItem('userId'));
 
     console.log(parentId);
     if (parentId) {
-      ChildrenHandlerApi.GetChildren(parentId)
-      ParentsApiRequest('GET', 'GetChildren', parentId)
-        .then(res => {
+      //ChildrenHandlerApi.GetChildren(parentId)
+      let res = await ParentsApiRequest('GET', 'GetChildren', { parentId: parentId }).catch(err => console.log(err))
 
-          //  Set children
-          sessionStorage.setItem('children', JSON.stringify(res.data));
-          let children = JSON.parse(sessionStorage.getItem('children'));
+      //  Set children
+      sessionStorage.setItem('children', JSON.stringify(res.data));
+      let children = JSON.parse(sessionStorage.getItem('children'));
 
-          //  Set current child
-          if (children.length === 0) {
-            sessionStorage.setItem('currentChild', 'null');
-            console.log('EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE')
-            setCurrentChild(null);
-          }
-          else {
-            sessionStorage.setItem('currentChild', JSON.stringify(GetSelectedChild(children)))
-            setCurrentChild(JSON.parse(sessionStorage.getItem('currentChild')));
-          }
-        })
+      //  Set current child
+      if (children.length === 0) {
+        sessionStorage.setItem('currentChild', 'null');
+        console.log('EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE')
+        setCurrentChild(null);
+      }
+      else {
+        sessionStorage.setItem('currentChild', JSON.stringify(GetSelectedChild(children)))
+        setCurrentChild(JSON.parse(sessionStorage.getItem('currentChild')));
+      }
+
     }
   }
 
@@ -182,16 +143,18 @@ export default function ParentsApp() {
       let email = e.target.loginEmailField.value;
       let password = e.target.loginPasswordField.value;
 
-      let loginResponse = await RequestLoginAsParent(email, password)
+      let loginResponse = await RequestLoginAsParent(email, password).catch(err => console.log(err))
       console.log(loginResponse);
 
-      //	If the user is authorized
       if (loginResponse.data.FromParent.UserExists === true) {
         HandleLoginResponse(loginResponse);
       }
       else {
         alert("user not found");
       }
+
+
+
     }
   }
 
@@ -208,7 +171,7 @@ export default function ParentsApp() {
       };
       //!	Note, i'm sending the confirm password too
 
-      let response = await RequestRegister(userData);
+      let response = await ParentsApiRequest('POST', 'ParentRegister', userData).catch(err => console.log(err));
       if (response) {
 
         //	If the user is authorized
@@ -263,10 +226,11 @@ export default function ParentsApp() {
         username: username,
       }}>
 
-        <PublicRoute exact path="/Parents/Welcome" component={Welcome} />
-        <PublicRoute exact path="/Parents/About" component={About} />
+        <ProtectedRoute exact path="/Parents/Welcome" Component={Welcome} />
 
-        <PublicRoute exact path="/Parents/EditProfile" component={() =>
+        <ProtectedRoute exact path="/Parents/About" Component={About} />
+
+        <ProtectedRoute exact path="/Parents/EditProfile" Component={() =>
           <EditProfilePage
             // HandleSelectChild={HandleSelectChild}
             // HandleDeleteChild={HandleDeleteChild}
@@ -274,11 +238,11 @@ export default function ParentsApp() {
             LoadChildrenFromServer={LoadChildrenFromServer}
           />}
         />
-        <PublicRoute exact path="/Parents/Games" component={() => <GamesPage LoadChildrenFromServer={LoadChildrenFromServer} />} />
-        <PublicRoute exact path="/Parents/Info" component={InfoPage} />
-        <PublicRoute exact path="/Parents/Avatar" component={AvatarPage} />
-        <PublicRoute exact path="/Parents/Journal" component={JournalPage} />
-        <PublicRoute exact path="/Parents/Home" component={HomePage} />
+        <ProtectedRoute exact path="/Parents/Games" Component={() => <GamesPage LoadChildrenFromServer={LoadChildrenFromServer} />} />
+        <ProtectedRoute exact path="/Parents/Info" Component={InfoPage} />
+        <ProtectedRoute exact path="/Parents/Avatar" Component={AvatarPage} />
+        <ProtectedRoute exact path="/Parents/Journal" Component={JournalPage} />
+        <ProtectedRoute exact path="/Parents/Home" Component={HomePage} />
 
 
       </NavBarContext.Provider>

@@ -5,60 +5,40 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 
 
-export const PublicRoute = ({ component: Component, ...rest }) => {
-
-  //let reasource = fetchIsAuth();
+export default function ProtectedRoute({ Component, ...rest }) {
   const history = useHistory();
-  const [data, updateData] = useState();
 
-  const GetIsAuth = async () => {
-    return axios({
-      method: 'POST',
-      // url: "http://localhost:5000/api/Auth/IsAuth",
-      url: `http://${process.env.REACT_APP_DOMAIN_NAME}/api/Auth/IsAuth`,
-      timeout: process.env.REACT_APP_REQUEST_TIMEOUT_LENGTH,
-      headers: {
-        "x-access-token": sessionStorage.getItem('token'),
-      }
-    }).then(res => res.data.IsAuth)
+  function IsLoggedIn() {
+    let token = sessionStorage.getItem('token');
+
+    if (token !== null) {
+      return true;
+    }
+    else {
+      return false;
+    }
   }
 
-  useEffect(() => {
-    const getData = async () => {
-      const resp = await GetIsAuth();
-      //const json = await resp.json()
-      updateData(resp);
-    }
-    getData();
-  }, []);
+  function ForceLogout() {
+    sessionStorage.clear();
+    history.replace("/");
+  }
 
-  return data && <Component />
-  // return (
-  //   <Suspense fallback={<Component />}>
-  //     <Route {...rest} render={
+  return (
+    <Route {...rest} render={
 
-  //       (props) => {
-  //         let isAuth = fetchIsAuth();
-  //         console.log(isAuth)
+      (props) => {
+        if (IsLoggedIn()) {
+          return <Component {...props} />
+        }
+        else {
+          sessionStorage.clear();
 
-  //         //  If the sessionStorage is clear
-  //         if (sessionStorage.length === 0 && history.location.pathname !== "/") {
+          //Session timed out message
 
-  //           sessionStorage.clear();
-  //           return <Redirect to="/" />
-  //         }
-
-  //         //  If the user is authenticated
-  //         if (isAuth.isAuth.read() === true) {
-  //           return <Component {...props} />
-  //         }
-  //         else {
-  //           sessionStorage.clear();
-  //           history.replace("/");
-  //           return <Redirect to="/" />
-  //         }
-  //       }
-  //     } />
-  //   </Suspense >
-  // )
+          return <Redirect to="/" />
+        }
+      }
+    } />
+  )
 };

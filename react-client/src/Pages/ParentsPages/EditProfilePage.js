@@ -6,6 +6,7 @@ import ParentMainPage from "../../Components/ParentsComponents/ParentMainPage"
 import { useEffect, useState } from "react"
 import { ChildrenHandlerApi } from "../../ChildrenHandlerApi"
 import utf8 from 'utf8'
+import { ParentsApiRequest } from "../../RequestHeadersToWebApi"
 
 export default function EditProfilePage({ LoadChildrenFromServer }) {
 
@@ -19,51 +20,48 @@ export default function EditProfilePage({ LoadChildrenFromServer }) {
   }, [])
 
 
-  //  Handles child add logic
-  function HandleAddChild(e, formValid) {
+  async function HandleAddChild(e, formValid) {
     e.preventDefault();
 
     console.log(`Add child? ${formValid}`)
 
     if (formValid) {
 
-      let childAge = e.target.childAgeSelect.value;
-      let parentId = JSON.parse(sessionStorage.getItem('userId'));
-      let childName = utf8.encode(e.target.childNameField.value);
+      let childData = {
+        childAge: e.target.childAgeSelect.value,
+        parentId: JSON.parse(sessionStorage.getItem('userId')),
+        childName: utf8.encode(e.target.childNameField.value),
+      }
 
-      //Send request to server to add child
-      ChildrenHandlerApi.AddChild(parentId, childName, childAge)
 
-        .then((response) => {//	Get confirmation that the child was added
-          console.log(response);
-          //	Response will be HasAddedChild
-          if (response) {
-            LoadChildrenFromServer(e);
-          }
-          else { console.log("No response from server") }
-        })
+      let response = await ParentsApiRequest('POST', 'AddChild', childData).catch(err => console.log(err));
+      console.log(response);
+
+      //	Response will be HasAddedChild
+      if (response) {
+        LoadChildrenFromServer(e);
+      }
+      else { console.log("No response from server") }
     }
   }
 
-  /**
-   * Changes the selected child from edit profile to the current child
-   * Used to keep track of progress for this child
-   */
-  function HandleSelectChild(e, childToSelect) {
 
-    ChildrenHandlerApi.SelectChild(e, childToSelect)
-      .catch(err => console.log(err))
+  async function HandleSelectChild(e, childToSelect) {
+    ParentsApiRequest('POST', 'SelectChild', childToSelect.id).catch(err => console.log(err))
       .then(() => {
-
         LoadChildrenFromServer();
       })
   }
 
   function DeleteChild(childId) {
-
     let parentId = JSON.parse(sessionStorage.getItem('userId'));
 
-    ChildrenHandlerApi.DeleteChild(childId, parentId)
+    let requestData = {
+      childId: childId,
+      parentId: parentId,
+    }
+
+    ParentsApiRequest('POST', 'DeleteChild', requestData)
       .then(() => {
         LoadChildrenFromServer();
       })
@@ -77,10 +75,9 @@ export default function EditProfilePage({ LoadChildrenFromServer }) {
         <Container fluid className="d-flex justify-content-around align-center">
           <Row>
             <Col>
-
               {
 
-                childrenProfiles !== undefined//  If there are no children
+                childrenProfiles !== null//  If there are no children
 
                   //  i - index inside the state array, using it because react wants to use it...
                   ? childrenProfiles.map((childProfile) => (
@@ -99,8 +96,6 @@ export default function EditProfilePage({ LoadChildrenFromServer }) {
 
             </Col>
           </Row>
-
-
 
 
         </Container>

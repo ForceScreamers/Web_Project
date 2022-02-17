@@ -36,16 +36,7 @@ export async function ParentsApiRequest(httpMethod, request, headers) {
 }
 
 
-export async function ParentsApiRequestWithToken(httpMethod, request, headers) {
-  let token = JSON.parse(sessionStorage.getItem('token'));
 
-  let requestHeaders = {
-    ...headers,
-    token,
-  };
-
-  return ApiRequest(httpMethod, request, requestHeaders, 'Parent');
-}
 
 export async function ProvidersApiRequest(httpMethod, request, headers) {
   return ApiRequest(httpMethod, request, headers, 'Provider');

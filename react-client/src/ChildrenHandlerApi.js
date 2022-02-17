@@ -6,7 +6,7 @@ export class ChildrenHandlerApi {
 
     console.log(childToSelect)
     axios({
-      method: 'post',
+      method: 'GET',
       url: `http://${process.env.REACT_APP_DOMAIN_NAME}/api/Parent/SelectChild`,
       timeout: process.env.REACT_APP_REQUEST_TIMEOUT_LENGTH,
       headers: {
