@@ -53,7 +53,6 @@ namespace ParentsApi.Controllers
 		}
 
 
-		[TokenRequired]
 		[Microsoft.AspNetCore.Mvc.HttpGet]
 		[Microsoft.AspNetCore.Mvc.ActionName("GetProviders")]
 		public ContentResult GetProviders()
