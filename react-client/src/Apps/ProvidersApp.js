@@ -10,6 +10,7 @@ import ProviderLogin from "../Pages/ProvidersPages/ProviderLogin";
 import ProviderGames from "../Pages/ProvidersPages/ProviderGames";
 import { PublicRoute } from "../Components/GeneralComponents/PublicRoute";
 import { ProvidersApiRequest } from "../RequestHeadersToWebApi";
+import ProtectedRoute from "../Components/GeneralComponents/ProtectedRoute";
 
 export default function ProvidersApp() {
   const history = useHistory();
@@ -19,7 +20,12 @@ export default function ProvidersApp() {
 
   function HandleProviderLoginResponse(response) {
     sessionStorage.setItem('Info', JSON.stringify(response.data.Info));
-    history.push("/Providers/Games");
+
+    sessionStorage.setItem('token', JSON.stringify("Logged in token"));
+    sessionStorage.setItem('userType', JSON.stringify("Provider"));
+
+
+    history.push("/Provider/Games");
   }
 
   async function HandleProviderLogin(e, formValid) {
@@ -33,12 +39,16 @@ export default function ProvidersApp() {
       try {
         let response = await ProvidersApiRequest('POST', 'ProviderLogin', loginData);
 
-        if (response.data.AllowedToLogin) {
-          HandleProviderLoginResponse(response);
-        }
-        else if (response.data.IsAdmin) {
+
+        if (response.data.IsAdmin) {
+          sessionStorage.setItem('token', JSON.stringify("Logged in token"));
+          sessionStorage.setItem('userType', JSON.stringify("Admin"));
+
           console.log("Admin");
-          history.push("/Admins");
+          history.push("/Admin");
+        }
+        else if (response.data.AllowedToLogin) {
+          HandleProviderLoginResponse(response);
         }
         else {
           alert("בעל מקצוע לא מורשה להתחבר")
@@ -68,6 +78,7 @@ export default function ProvidersApp() {
 
         if (response.data.UserExists === true) {
           //  User already exists
+          alert('משתמש כבר קיים')
         }
         else if (response.data.Registered === true) {
           //  Redirect provider
@@ -83,10 +94,10 @@ export default function ProvidersApp() {
   }
 
   return <div>
-    <PublicRoute exact path="/Providers/Login" component={() => <ProviderLogin HandleProviderLogin={HandleProviderLogin} />} />
-    <PublicRoute exact path="/Providers/Register" component={() => <ProviderRegister HandleProviderRegister={HandleProviderRegister} />} />
+    <PublicRoute exact path="/Provider/Login" component={() => <ProviderLogin HandleProviderLogin={HandleProviderLogin} />} />
+    <PublicRoute exact path="/Provider/Register" component={() => <ProviderRegister HandleProviderRegister={HandleProviderRegister} />} />
 
-    <PublicRoute exact path="/Providers/Games" component={ProviderGames} />
+    <ProtectedRoute exact path="/Provider/Games" Component={ProviderGames} />
 
   </div>;
 }

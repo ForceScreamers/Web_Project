@@ -4,15 +4,16 @@ import { ValidateEmail, ValidatePassword, ValidateConfirmPassword, IsHebrewInput
 import { useState } from 'react'
 import FormInputField from '../../Components/GeneralComponents/FormInputField'
 import { InputField } from '../../Project-Modules/UserInputValidation'
+import FormInputFieldSection from '../../Components/GeneralComponents/FormInputFieldSection'
 
 export default function ProviderRegister({ HandleProviderRegister }) {
 
   const [inputFields, setInputFields] = useState([
-    new InputField("fullNameField", "", "שם מלא:", IsHebrewInputValid, "שם משתמש שגוי"),
-    new InputField("emailField", "", "כתובת מייל:", ValidateEmail),
-    new InputField("occupationField", "", "תעסוקה:", IsHebrewInputValid),
-    new InputField("passwordField", "", "סיסמה:", ValidatePassword),
-    new InputField("confirmPasswordField", "", "אשר סיסמה", ValidateConfirmPassword),
+    new InputField("fullNameField", "", "שם מלא:", IsHebrewInputValid, "לא מתאים"),
+    new InputField("emailField", "", "כתובת מייל:", ValidateEmail, "שגיאה"),
+    new InputField("occupationField", "", "תעסוקה:", IsHebrewInputValid, "שגיאה"),
+    new InputField("passwordField", "", "סיסמה:", ValidatePassword, "ריק מתוכן"),
+    new InputField("confirmPasswordField", "", "אשר סיסמה", ValidateConfirmPassword, "שגיאה"),
   ]);
 
   function OnSubmit(e) {
@@ -23,7 +24,6 @@ export default function ProviderRegister({ HandleProviderRegister }) {
     console.log(IsFormValid())
     HandleProviderRegister(e, IsFormValid())
   }
-
 
 
   /**
@@ -143,7 +143,7 @@ export default function ProviderRegister({ HandleProviderRegister }) {
 
       <div className="RegisterContainer">
         <h1>הרשמה בתור בעל מקצוע</h1>
-        <Link to="/Providers/Login" >התחברות בתור בעל מקצוע</Link>
+        <Link to="/Provider/Login" >התחברות בתור בעל מקצוע</Link>
 
         <form onSubmit={OnSubmit}>
           <div className="InputContainer">
@@ -152,14 +152,21 @@ export default function ProviderRegister({ HandleProviderRegister }) {
               inputFields.map((field, index) => {
                 return (
                   <div key={index}>
-                    <label>{field.labelText + " " + field.isValid}</label>
-                    <br />
-                    <FormInputField
+                    <FormInputFieldSection
+                      Label={field.labelText}
                       Valid={field.isValid}
                       Name={field.name}
                       OnChange={(e) => { UpdateFieldValue(field.name, e.target.value) }}
                       UserErrorMessageText={field.textErrorMessage}
+
+
                     />
+                    {/* <FormInputField
+                      Valid={field.isValid}
+                      Name={field.name}
+                      OnChange={(e) => { UpdateFieldValue(field.name, e.target.value) }}
+                      UserErrorMessageText={field.textErrorMessage}
+                    /> */}
                   </div>
                 )
               })

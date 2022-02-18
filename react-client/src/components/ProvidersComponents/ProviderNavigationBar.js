@@ -6,7 +6,7 @@ export default function ProviderNavigationBar() {
   const history = useHistory();
   const LogoutUser = () => {
     sessionStorage.clear();
-    history.replace("/Providers/Login");
+    history.replace("/Provider/Login");
   }
 
   return (
@@ -24,7 +24,7 @@ export default function ProviderNavigationBar() {
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto">
-              <Link to="/Providers/Games" className="nav-link">משחקים</Link>
+              <Link to="/Provider/Games" className="nav-link">משחקים</Link>
               {/* <NavDropdown title="Dropdown" id="collasible-nav-dropdown">
                 <NavDropdown.Item href="#action/3.1">דברים</NavDropdown.Item>
                 <NavDropdown.Item href="#action/3.2">עוד דברים</NavDropdown.Item>

@@ -1,9 +1,16 @@
 import { Route, Redirect, useHistory } from 'react-router-dom';
 
-export default function ProtectedRoute({ Component, ...rest }) {
+export default function ProtectedRoute({ UserType, Component, ...rest }) {
   const history = useHistory();
 
   function IsLoggedIn() {
+    console.log("check")
+
+
+    return DoesHaveToken() && IsMatchingUserType();
+  }
+
+  function DoesHaveToken() {
     let token = sessionStorage.getItem('token');
 
     if (token !== null) {
@@ -14,6 +21,17 @@ export default function ProtectedRoute({ Component, ...rest }) {
     }
   }
 
+  function IsMatchingUserType() {
+    let userTypeByPath = history.location.pathname.split('/')[1];
+    let userType = JSON.parse(sessionStorage.getItem('userType'));
+
+    console.log(userTypeByPath)
+    console.log(userType)
+
+    return userTypeByPath === userType;
+  }
+
+
   function ForceLogout() {
     sessionStorage.clear();
     history.replace("/");
@@ -23,6 +41,7 @@ export default function ProtectedRoute({ Component, ...rest }) {
     <Route {...rest} render={
 
       (props) => {
+        console.log(IsLoggedIn())
         if (IsLoggedIn()) {
           return <Component {...props} />
         }

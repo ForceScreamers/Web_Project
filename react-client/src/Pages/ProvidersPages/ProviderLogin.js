@@ -43,7 +43,7 @@ export default function ProviderLogin({ HandleProviderLogin }) {
     <div className="LoginContainer">
 
       <h1>התחברות בתור בעל מקצוע</h1>
-      <Link to="/Providers/Register" >הרשמה בתור בעל מקצוע</Link>
+      <Link to="/Provider/Register" >הרשמה בתור בעל מקצוע</Link>
 
       <form onSubmit={OnSubmit}>
 

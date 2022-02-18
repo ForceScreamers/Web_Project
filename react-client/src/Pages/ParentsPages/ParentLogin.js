@@ -41,7 +41,7 @@ export default function ParentLogin({ HandleLogin }) {
 		<div className="LoginContainer">
 
 			<h1>התחברות הורים</h1>
-			<Link to="/Parents/Register" >הרשמת הורים</Link>
+			<Link to="/Parent/Register" >הרשמת הורים</Link>
 
 			<form onSubmit={OnSubmit}>
 
@@ -56,8 +56,7 @@ export default function ParentLogin({ HandleLogin }) {
 				</div>
 			</form>
 
-			{/* <Button variant='link' onClick={() => history.replace('/Providers/Login')} >התחברות בתור בעל מקצוע</Button> */}
-			<Link to="/Providers/Login" >התחברות בתור בעל מקצוע</Link>
+			<Link to="/Provider/Login" >התחברות בתור בעל מקצוע</Link>
 
 		</div>
 	)

@@ -1,13 +1,15 @@
 General:
   [ ] Check for all api request functions
   [ ] Check if #property is valid in all browser as a valid private property in js
-  [ ] Protected route sends 30 requests to authenticate, it needs to send one
   [ ] Add text to input error
   [ ] Add errors in login and register as text to screen
-  [ ] Deal with unable to connect to webapi
   [ ] Fix collapse or navbar width when resizing the window
   [ ] Split user input field into 2 nested components
 
+  Protected route:
+  [ ] Add session timeout message
+  [ ] Disconnect user on session timeout
+  [ ] Keep user in the same page if they try to access an inaccessible route
 
 Admins App:
   [ ] Protected routes
@@ -37,9 +39,8 @@ Parents App:
 Providers App:
   
   Register - 
-    [ ] Validation wont update component without the "Test" state need to fix
     [ ] Show does user exist error
-    [ ] Add protected routes
+    [ ] Full name validation shows error upon white space (" ")
 
 
 

@@ -11,7 +11,6 @@ export default function AdminsApp() {
   const [providerInfos, setProviderInfos] = useState([])
 
   async function LoadProviders() {
-
     try {
       let response = await ProvidersApiRequest('GET', 'GetProviders', null)
       setProviderInfos(response.data);
@@ -22,7 +21,6 @@ export default function AdminsApp() {
   }
 
   async function ConfirmProvider(providerId) {
-
     let confirmProviderData = {
       providerId: providerId,
     }

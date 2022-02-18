@@ -108,6 +108,10 @@ export default function ParentsApp() {
 
     //	Set sessionStorage items and states
     sessionStorage.setItem("token", response.data.token);
+    sessionStorage.setItem('userType', JSON.stringify("Parent"));
+
+
+
     sessionStorage.setItem("userId", response.data.FromParent.ParentInfo.Id);
     sessionStorage.setItem("username", response.data.FromParent.ParentInfo.Username);
     setUsername(sessionStorage.getItem("username"));
@@ -116,7 +120,7 @@ export default function ParentsApp() {
     LoadChildrenFromServer();
 
     //	Redirect to welcome page
-    history.push("/Parents/Welcome");
+    history.push("/Parent/Welcome");
   }
 
 
@@ -203,7 +207,7 @@ export default function ParentsApp() {
           HandleLogin={(e, isValid) => HandleParentLogin(e, isValid)}
         />} />
 
-      <PublicRoute exact path="/Parents/Register" component={() =>
+      <PublicRoute exact path="/Parent/Register" component={() =>
         <ParentRegister
           HandleRegister={(e, isValid) => HandleParentRegister(e, isValid)}
         />} />
@@ -214,11 +218,11 @@ export default function ParentsApp() {
         username: username,
       }}>
 
-        <ProtectedRoute exact path="/Parents/Welcome" Component={Welcome} />
+        <ProtectedRoute exact path="/Parent/Welcome" Component={Welcome} />
 
-        <ProtectedRoute exact path="/Parents/About" Component={About} />
+        <ProtectedRoute exact path="/Parent/About" Component={About} />
 
-        <ProtectedRoute exact path="/Parents/EditProfile" Component={() =>
+        <ProtectedRoute exact path="/Parent/EditProfile" Component={() =>
           <EditProfilePage
             // HandleSelectChild={HandleSelectChild}
             // HandleDeleteChild={HandleDeleteChild}
@@ -226,11 +230,11 @@ export default function ParentsApp() {
             LoadChildrenFromServer={LoadChildrenFromServer}
           />}
         />
-        <ProtectedRoute exact path="/Parents/Games" Component={() => <GamesPage LoadChildrenFromServer={LoadChildrenFromServer} />} />
-        <ProtectedRoute exact path="/Parents/Info" Component={InfoPage} />
-        <ProtectedRoute exact path="/Parents/Avatar" Component={AvatarPage} />
-        <ProtectedRoute exact path="/Parents/Journal" Component={JournalPage} />
-        <ProtectedRoute exact path="/Parents/Home" Component={HomePage} />
+        <ProtectedRoute exact path="/Parent/Games" Component={() => <GamesPage LoadChildrenFromServer={LoadChildrenFromServer} />} />
+        <ProtectedRoute exact path="/Parent/Info" Component={InfoPage} />
+        <ProtectedRoute exact path="/Parent/Avatar" Component={AvatarPage} />
+        <ProtectedRoute exact path="/Parent/Journal" Component={JournalPage} />
+        <ProtectedRoute exact path="/Parent/Home" Component={HomePage} />
 
 
       </NavBarContext.Provider>

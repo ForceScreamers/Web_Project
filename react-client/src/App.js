@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import ParentsApp from './Apps/ParentsApp';
 import ProvidersApp from './Apps/ProvidersApp';
 import AdminsApp from './Apps/AdminsApp';
+import ProtectedRoute from './Components/GeneralComponents/ProtectedRoute';
 // * React app component
 
 
@@ -18,7 +19,7 @@ const App = () => {
 				<ParentsApp />
 				<ProvidersApp />
 
-				<Route exact path={"/Admins"} component={AdminsApp} />
+				<ProtectedRoute exact path={"/Admin"} Component={AdminsApp} />
 
 			</Router>
 
