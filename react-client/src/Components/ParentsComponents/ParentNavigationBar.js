@@ -23,6 +23,7 @@ export default function ParentNavigationBar() {
   //const currentChildNameFromContext = useContext(NavBarContext).child.Name;
   const usernameFromContext = useContext(NavBarContext).username;
   const currentChildFromContext = useContext(NavBarContext).child;
+  const isVisible = useContext(NavBarContext).isVisible;
 
 
   const S_CURRENT_CHILD = "ילד נוכחי";

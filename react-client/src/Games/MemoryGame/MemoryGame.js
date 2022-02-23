@@ -38,7 +38,7 @@ function shuffleCards(array) {
 
 GenerateGameCards();
 
-export default function MemoryGame() {
+export default function MemoryGame({ SetHasEnded }) {
 
   const [cards, setCards] = useState(
     shuffleCards.bind(null, gameCards)
@@ -59,6 +59,7 @@ export default function MemoryGame() {
   const checkCompletion = () => {
     if (Object.keys(clearedCards).length === gameCards.length / 2) {
       console.log("Done!");
+      SetHasEnded(true);
     }
     isDone = true;
   };
@@ -83,6 +84,7 @@ export default function MemoryGame() {
     else {//  Picked a wrong couple
       console.log("not good")
     }
+
     // This is to flip the cards back after 500ms duration
     timeout.current = setTimeout(() => {
       setOpenCards([]);
@@ -122,10 +124,6 @@ export default function MemoryGame() {
   useEffect(() => {
     checkCompletion();
   }, [clearedCards]);
-
-  useEffect(() => {
-    //console.log("Game loaded")
-  })
 
   const checkIsFlipped = (index) => { return openCards.includes(index) };
   const checkIsInactive = (card) => { return Boolean(clearedCards[card.type]) };

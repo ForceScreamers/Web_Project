@@ -14,10 +14,9 @@ export default function GamePreviewCardsGrid({ Games, HandlePlay }) {
           {
             Games.map((game, index) => {
               return (
-                <Col md='4'>
+                <Col md='4' key={index}>
                   <GamePreviewCard
                     HandlePlay={HandlePlay}
-                    key={index}
                     Name={game.name}
                     Description={game.description}
                     GameId={game.id}

@@ -14,11 +14,11 @@ export default function GamesPage({ LoadChildrenFromServer: UpdateChildrenProfil
 
   const [currentGameId, setCurrentGameId] = useState(GAMES_MENU_ID);
 
-  console.log(process.env.REACT_APP_REQUEST_TIMEOUT_LENGTH)
-  //TODO: Create game template
+  function ExitGame() {
+    setCurrentGameId(GAMES_MENU_ID);
+  }
 
-
-  function HandleExit(score, gameId) {
+  function EndGame(score, gameId) {
     alert("Game score: " + score);
 
     let evaluationScoreData = {
@@ -42,9 +42,8 @@ export default function GamesPage({ LoadChildrenFromServer: UpdateChildrenProfil
       name: "משחק הזיכרון",
       description: "תיאור משחק זיכרון",
       id: 1,
-      gameComponent: <GameTemplate HandleExit={HandleExit} GameId={4}>
-        <MemoryGame />
-      </GameTemplate>
+      gameComponent:
+        <GameTemplate ExitGame={ExitGame} EndGame={EndGame} GameId={4} GameComponent={MemoryGame} />
     },
     {
       name: "צורות",

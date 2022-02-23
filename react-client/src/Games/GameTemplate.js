@@ -1,12 +1,14 @@
 import { Button } from "react-bootstrap";
 import { useState, useEffect } from "react";
+import { Redirect } from "react-router-dom";
 
 const SECONDS_TO_COMPLETE = 60;
 
-export default function GameTemplate({ children, HandleExit, GameId }) {
+export default function GameTemplate({ EndGame, GameId, GameComponent, ExitGame }) {
 
-  // initialize timeLeft with the seconds prop
   const [secondsLeft, setSecondsLeft] = useState(SECONDS_TO_COMPLETE);
+
+  const [hasEnded, setHasEnded] = useState(false);
 
   useEffect(() => {
     if (!secondsLeft) return;
@@ -25,13 +27,16 @@ export default function GameTemplate({ children, HandleExit, GameId }) {
     setSecondsLeft(SECONDS_TO_COMPLETE);
   }
 
+  useEffect(() => {
+    if (hasEnded === true) {
+      EndGame(CalculateGameScore(), GameId);
+    }
+  }, [hasEnded])
 
-  //  Calculate score
+
   function CalculateGameScore() {
-    //finished in 10 seconds - 10 points
-    // - "" -     9 seconds - 9 points
     let completionTime = SECONDS_TO_COMPLETE - secondsLeft;
-    let score = completionTime;
+    let score = 0;
 
     if (completionTime >= 0 && completionTime < 15)
       score = 5;
@@ -43,8 +48,6 @@ export default function GameTemplate({ children, HandleExit, GameId }) {
       score = 2;
     else
       score = 1;
-
-    alert(score);
     return score;
   }
 
@@ -52,10 +55,10 @@ export default function GameTemplate({ children, HandleExit, GameId }) {
 
   return (
     <div>
-      <Button onClick={() => HandleExit(CalculateGameScore(), GameId)}>יציאה</Button>
+      <Button onClick={() => EndGame(CalculateGameScore(), GameId)}>debug exit</Button>
+      <Button onClick={() => ExitGame()}>יציאה</Button>
       <Button onClick={() => ResetTimer()}>ריסטרט</Button>
-      <Button onClick={() => CalculateGameScore()}>calc</Button>
-      {children}
+      <GameComponent SetHasEnded={setHasEnded} />
     </div>
   )
 }
