@@ -114,7 +114,20 @@ export default function ProviderRegister({ HandleProviderRegister }) {
     setInputFields(newInputFields);
   }
 
-
+  function RenderInputField(field, index) {
+    return (
+      <div key={index}>
+        <FormInputFieldSection
+          Label={field.labelText}
+          Valid={field.isValid}
+          Name={field.name}
+          OnChange={(e) => { UpdateFieldValue(field.name, e.target.value) }}
+          UserErrorMessageText={field.textErrorMessage}
+          Type={field.type}
+        />
+      </div>
+    )
+  }
 
   return (
     <div>
@@ -128,18 +141,7 @@ export default function ProviderRegister({ HandleProviderRegister }) {
 
             {
               inputFields.map((field, index) => {
-                return (
-                  <div key={index}>
-                    <FormInputFieldSection
-                      Label={field.labelText}
-                      Valid={field.isValid}
-                      Name={field.name}
-                      OnChange={(e) => { UpdateFieldValue(field.name, e.target.value) }}
-                      UserErrorMessageText={field.textErrorMessage}
-                      Type={field.type}
-                    />
-                  </div>
-                )
+                return RenderInputField(field, index);
               })
             }
 

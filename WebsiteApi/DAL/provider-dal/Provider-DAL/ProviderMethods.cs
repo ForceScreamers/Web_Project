@@ -47,13 +47,14 @@ namespace ProviderDal
             };
             return OdbcHelper.Execute(com, queryParameters);
         }
-        public static bool IsExists(string providerEmail)
+        public static bool IsExists(string providerEmail, string providerPassword)
         {
-            string com = "SELECT provider_email, provider_password FROM provider WHERE provider_email=?";
+            string com = "SELECT provider_email, provider_password FROM provider WHERE provider_email=? AND provider_password=?";
             bool exists = false;
 
             OdbcParameter[] queryParameters = {
                 new OdbcParameter("@provider_email", providerEmail),
+                new OdbcParameter("@provider_password", providerPassword),
             };
 
             //Add if check for existing users

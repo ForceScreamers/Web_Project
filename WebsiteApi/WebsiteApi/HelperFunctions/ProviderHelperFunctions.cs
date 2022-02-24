@@ -78,7 +78,7 @@ namespace ProvidersApi
 
 			try
 			{
-				if(ProviderMethods.IsExists(email))
+				if(ProviderMethods.IsExists(email, password))
 				{
 					canProviderLogIn = ProviderMethods.IsPermitted(email);
 					providerInfo = ProviderMethods.GetProviderInfo(email, password);
@@ -102,7 +102,7 @@ namespace ProvidersApi
 			Console.WriteLine("Provider full name converted: {0}", UnicodeHelper.ConvertToUnicode(fullName));
 
             bool providerRegistered = false;
-            bool providerExists = ProviderMethods.IsExists(email);
+            bool providerExists = ProviderMethods.IsExists(email, password);
 
             if (providerExists == false)
             {

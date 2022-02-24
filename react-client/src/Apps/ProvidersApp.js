@@ -23,14 +23,14 @@ export default function ProvidersApp() {
     history.push("/Provider/Games");
   }
 
-  function SetSessionStorageItems() {
-    // sessionStorage.setItem('Info', JSON.stringify(data.Info));
+  function SetSessionStorageItems(data) {
+    sessionStorage.setItem('Info', JSON.stringify(data.Info));
     sessionStorage.setItem('token', JSON.stringify("Logged in token"));
     sessionStorage.setItem('userType', JSON.stringify("Provider"));
   }
 
-  function SetSessionStorageAndRedirect() {
-    SetSessionStorageItems();
+  function SetSessionStorageAndRedirect(data) {
+    SetSessionStorageItems(data);
     RedirectToWelcome();
   }
 
@@ -41,20 +41,21 @@ export default function ProvidersApp() {
         email: e.target.loginEmailField.value,
         password: e.target.loginPasswordField.value,
       }
+      console.log(loginData);
 
       try {
-        let response = await ProvidersApiRequest('POST', 'ProviderLogin', loginData);
+        let loginResponse = await ProvidersApiRequest('POST', 'ProviderLogin', loginData);
 
-        console.log(response);
-        if (response.data.IsAdmin) {
+        console.log(loginResponse);
+        if (loginResponse.data.IsAdmin) {
           sessionStorage.setItem('token', JSON.stringify("Logged in token"));
           sessionStorage.setItem('userType', JSON.stringify("Admin"));
 
           console.log("Admin");
           history.push("/Admin");
         }
-        else if (response.data.AllowedToLogin) {
-          SetSessionStorageAndRedirect();
+        else if (loginResponse.data.AllowedToLogin) {
+          SetSessionStorageAndRedirect(loginResponse.data);
         }
         else {
           alert("בעל מקצוע לא מורשה להתחבר")
