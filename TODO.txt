@@ -1,6 +1,5 @@
 General:
   [ ] Check for all api request functions
-  [ ] Check if #property is valid in all browser as a valid private property in js
   [ ] Add text to input error
   [ ] Add errors in login and register as text to screen
   [ ] Fix collapse or navbar width when resizing the window
@@ -9,11 +8,10 @@ General:
   Protected route:
   [ ] Add session timeout message
   [ ] Disconnect user on session timeout
-  [ ] Keep user in the same page if they try to access an inaccessible route
+  [ ] Keep user in the same page if they try to access an inaccessible route ?
 
 Admins App:
-  [ ] Protected routes
-  [ ] Add logout
+  [ ] Add logout button
 
 
 Parents App:
@@ -31,17 +29,11 @@ Parents App:
   [ ] Add welcome opener
 
   Games - 
-    [ ] Add return to games menu when clicking the games page
     [ ] Finish games page
 
 
 
 Providers App:
-  
-  Register - 
-    [ ] Show does user exist error
-    [ ] Full name validation shows error upon white space (" ")
-
 
 
 Small additions:

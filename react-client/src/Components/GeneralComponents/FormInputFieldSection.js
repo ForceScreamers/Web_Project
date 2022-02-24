@@ -1,6 +1,6 @@
 import FormInputField from "./FormInputField"
 
-export default function FormInputFieldSection({ Valid, Name, OnChange, UserErrorMessageText, Label }) {
+export default function FormInputFieldSection({ Valid, Name, OnChange, UserErrorMessageText, Label, Type }) {
   return (
     <div className="d-flex flex-column">
       <div className="d-flex justify-content-between">
@@ -12,6 +12,7 @@ export default function FormInputFieldSection({ Valid, Name, OnChange, UserError
         Valid={Valid}
         Name={Name}
         OnChange={OnChange}
+        Type={Type}
       />
       <br />
     </div>

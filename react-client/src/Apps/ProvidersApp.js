@@ -18,14 +18,20 @@ export default function ProvidersApp() {
     console.log(history.location)
   })
 
-  function HandleProviderLoginResponse(response) {
-    sessionStorage.setItem('Info', JSON.stringify(response.data.Info));
 
+  function RedirectToWelcome() {
+    history.push("/Provider/Games");
+  }
+
+  function SetSessionStorageItems() {
+    // sessionStorage.setItem('Info', JSON.stringify(data.Info));
     sessionStorage.setItem('token', JSON.stringify("Logged in token"));
     sessionStorage.setItem('userType', JSON.stringify("Provider"));
+  }
 
-
-    history.push("/Provider/Games");
+  function SetSessionStorageAndRedirect() {
+    SetSessionStorageItems();
+    RedirectToWelcome();
   }
 
   async function HandleProviderLogin(e, formValid) {
@@ -39,7 +45,7 @@ export default function ProvidersApp() {
       try {
         let response = await ProvidersApiRequest('POST', 'ProviderLogin', loginData);
 
-
+        console.log(response);
         if (response.data.IsAdmin) {
           sessionStorage.setItem('token', JSON.stringify("Logged in token"));
           sessionStorage.setItem('userType', JSON.stringify("Admin"));
@@ -48,7 +54,7 @@ export default function ProvidersApp() {
           history.push("/Admin");
         }
         else if (response.data.AllowedToLogin) {
-          HandleProviderLoginResponse(response);
+          SetSessionStorageAndRedirect();
         }
         else {
           alert("בעל מקצוע לא מורשה להתחבר")
@@ -81,7 +87,7 @@ export default function ProvidersApp() {
           alert('משתמש כבר קיים')
         }
         else if (response.data.Registered === true) {
-          //  Redirect provider
+          alert('חכה לאישור כניסה');
         }
         else {
           //  Something went wrong

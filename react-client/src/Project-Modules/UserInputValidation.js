@@ -3,13 +3,14 @@ import { USER_INPUT_ERR } from "./UserErrorEnums";
 
 export class InputField {
 
-  constructor(name, value, labelText, validationFunction, testErrorMessage) {
+  constructor(name, labelText, validationFunction, testErrorMessage, type) {
     this.name = name;
-    this.value = value;
+    this.value = "";
     this.isValid = true;
     this.labelText = labelText;
     this.validationFunction = validationFunction;
     this.textErrorMessage = testErrorMessage;
+    this.type = type;
   }
 
   Validate() {
@@ -38,9 +39,9 @@ function ValidateUserInput_Eng(input) {
   return (/[a-zA-Z\s]/).test(input)
 }
 
-//  Returns true if the input contains only hebrew characters and spaces
+//  Returns true if the input contains only hebrew characters and the space char "\u0020"
 export function IsInputValid_OnlyHebrew(input) {
-  return (/^[\u0590-\u05FF]+$/).test(input);
+  return (/^[\u0590-\u05FF\u0020]+$/).test(input);
 }
 
 //  Returns true if the input contains only numbers

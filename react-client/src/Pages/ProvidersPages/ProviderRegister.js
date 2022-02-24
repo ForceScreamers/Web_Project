@@ -9,11 +9,11 @@ import FormInputFieldSection from '../../Components/GeneralComponents/FormInputF
 export default function ProviderRegister({ HandleProviderRegister }) {
 
   const [inputFields, setInputFields] = useState([
-    new InputField("fullNameField", "", "שם מלא:", IsHebrewInputValid, "לא מתאים"),
-    new InputField("emailField", "", "כתובת מייל:", ValidateEmail, "שגיאה"),
-    new InputField("occupationField", "", "תעסוקה:", IsHebrewInputValid, "שגיאה"),
-    new InputField("passwordField", "", "סיסמה:", ValidatePassword, "ריק מתוכן"),
-    new InputField("confirmPasswordField", "", "אשר סיסמה", ValidateConfirmPassword, "שגיאה"),
+    new InputField("fullNameField", "שם מלא:", IsHebrewInputValid, "לא מתאים", "text"),
+    new InputField("emailField", "כתובת מייל:", ValidateEmail, "שגיאה", "text"),
+    new InputField("occupationField", "תעסוקה:", IsHebrewInputValid, "שגיאה", "text"),
+    new InputField("passwordField", "סיסמה:", ValidatePassword, "ריק מתוכן", "password"),
+    new InputField("confirmPasswordField", "אשר סיסמה:", ValidateConfirmPassword, "שגיאה", "password"),
   ]);
 
   function OnSubmit(e) {
@@ -25,11 +25,6 @@ export default function ProviderRegister({ HandleProviderRegister }) {
     HandleProviderRegister(e, IsFormValid())
   }
 
-
-  /**
-   * Validates all input fields
-   * @returns void
-   */
   function ValidateInputFields() {
     let newInputFields = [...inputFields];
 
@@ -38,20 +33,13 @@ export default function ProviderRegister({ HandleProviderRegister }) {
       inputField.Validate();
     })
 
-    //  Validate confirm password
     SetConfirmPasswordFieldIsValid(IsValidConfirmPasswordField());
 
-    //  Update the input fields
     setInputFields(newInputFields);
   }
 
 
 
-  /**
-   * Sets the confirm password field to the given value
-   * @param {bool} isValid 
-   * @returns void
-   */
   function SetConfirmPasswordFieldIsValid(isValid) {
     let newInputFields = [...inputFields];
 
@@ -61,15 +49,11 @@ export default function ProviderRegister({ HandleProviderRegister }) {
       }
     })
 
-    //  Update the input fields
     setInputFields(newInputFields);
   }
 
 
 
-  /**
-   * @returns Is the confirm password field valid
-   */
   function IsValidConfirmPasswordField() {
     let password = GetPassword();
     let passwordToCompare = GetPasswordToCompare();
@@ -118,12 +102,6 @@ export default function ProviderRegister({ HandleProviderRegister }) {
 
 
 
-  /**
-   * Updates a specific field with the given value
-   * @param {string} fieldName 
-   * @param {any} newValue 
-   * @returns void
-   */
   function UpdateFieldValue(fieldName, newValue) {
     let newInputFields = [...inputFields];
 
@@ -158,20 +136,12 @@ export default function ProviderRegister({ HandleProviderRegister }) {
                       Name={field.name}
                       OnChange={(e) => { UpdateFieldValue(field.name, e.target.value) }}
                       UserErrorMessageText={field.textErrorMessage}
-
-
+                      Type={field.type}
                     />
-                    {/* <FormInputField
-                      Valid={field.isValid}
-                      Name={field.name}
-                      OnChange={(e) => { UpdateFieldValue(field.name, e.target.value) }}
-                      UserErrorMessageText={field.textErrorMessage}
-                    /> */}
                   </div>
                 )
               })
             }
-
 
             <input type="submit" value="Register" />
           </div>
