@@ -5,6 +5,8 @@ General:
   [ ] Fix collapse or navbar width when resizing the window
   [ ] Split user input field into 2 nested components
 
+  [ ] Fix memory game images when playing in firefox
+
   Protected route:
   [ ] Add session timeout message
   [ ] Disconnect user on session timeout
