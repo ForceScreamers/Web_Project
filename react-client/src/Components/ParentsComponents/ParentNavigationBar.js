@@ -3,24 +3,16 @@ import { Link } from "react-router-dom"
 import { useContext, useEffect, useState } from 'react'
 import { NavBarContext } from '../../Contexts/NavBarContext'
 import { useHistory } from 'react-router-dom'
+import LogoutButton from '../GeneralComponents/LogoutButton';
+
 
 //  היומן שלי, שינוי אווטר, עריכת פרופיל, משחקייה, מאמרים, אודותר
 //  The main pages are: Games, info, about, edit profile, avatar, journal
 
 export default function ParentNavigationBar() {
 
-  const history = useHistory();
-
-  function LogoutUser() {
-    sessionStorage.clear();
-    history.replace("/");
-  }
-
-
-
-  //  If there's no child
   console.log(useContext(NavBarContext))
-  //const currentChildNameFromContext = useContext(NavBarContext).child.Name;
+
   const usernameFromContext = useContext(NavBarContext).username;
   const currentChildFromContext = useContext(NavBarContext).child;
   const isVisible = useContext(NavBarContext).isVisible;
@@ -33,7 +25,7 @@ export default function ParentNavigationBar() {
     <div dir="rtl" >
       <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
         <Container fluid className="h-25">
-          <Navbar.Brand href="/Parent/Home">כפתור בית</Navbar.Brand>
+          <Navbar.Brand href="/Parent/Welcome">כפתור בית</Navbar.Brand>
           <Navbar.Brand> מחובר בתור: {usernameFromContext}</Navbar.Brand>
           <Navbar.Brand>
             {/* {currentChildNameFromContext.length === 0 ? S_NO_CHILD_SELECTED : `${S_CURRENT_CHILD}:${currentChildNameFromContext}`} */}
@@ -56,7 +48,7 @@ export default function ParentNavigationBar() {
                 <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
               </NavDropdown> */}
 
-              <Button onClick={LogoutUser} variant='danger'>יציאה</Button>
+              <LogoutButton />
 
             </Nav>
           </Navbar.Collapse>

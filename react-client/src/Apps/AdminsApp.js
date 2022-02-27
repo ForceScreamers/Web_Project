@@ -5,6 +5,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useEffect } from "react";
 import { ProvidersApiRequest } from "../RequestHeadersToWebApi";
+import LogoutButton from "../Components/GeneralComponents/LogoutButton";
 
 
 export default function AdminsApp() {
@@ -47,5 +48,8 @@ export default function AdminsApp() {
     <h2>בעלי מקצוע לאשר</h2>
 
     <ProvidersTable ProviderInfos={providerInfos} ConfirmProvider={ConfirmProvider} />
+
+
+    <LogoutButton />
   </div>;
 }

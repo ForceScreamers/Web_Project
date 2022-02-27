@@ -11,7 +11,6 @@ General:
   [ ] Keep user in the same page if they try to access an inaccessible route ?
 
 Admins App:
-  [ ] Add logout button
 
 
 Parents App:
@@ -26,8 +25,6 @@ Parents App:
         }
     }
 
-  [ ] Add welcome opener
-
   Games - 
     [ ] Finish games page
 
@@ -37,12 +34,6 @@ Providers App:
 
 
 Small additions:
-  [ ] Add comments to every function:
-    /**
-    * @param {string} input 
-    * @returns true or false whether the input is in hebrew or isn't empty
-    */
-
 
   [ ] Check that every input field is validated correctly
 

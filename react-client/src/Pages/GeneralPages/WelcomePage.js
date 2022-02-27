@@ -2,10 +2,9 @@ import NavigationBar from '../../Components/ParentsComponents/ParentNavigationBa
 import WelcomeOpener from '../../Components/GeneralComponents/WelcomeComponents/WelcomeOpener'
 import '../../CSS/pages-css/Welcome.css'
 
-function Welcome() {
+export default function WelcomePage() {
     return (
         <div>
-
             <NavigationBar />
             <div className="WelcomeContainer">
                 <div className='HeadlineContainer'>
@@ -23,5 +22,3 @@ function Welcome() {
 
     )
 }
-
-export default Welcome

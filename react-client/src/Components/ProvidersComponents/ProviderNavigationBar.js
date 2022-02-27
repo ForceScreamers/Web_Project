@@ -1,13 +1,9 @@
 import { Navbar, Container, Nav, NavDropdown, NavItem, Button } from 'react-bootstrap'
 import { Link } from "react-router-dom"
 import { useHistory } from 'react-router-dom'
+import LogoutButton from '../GeneralComponents/LogoutButton';
 
 export default function ProviderNavigationBar() {
-  const history = useHistory();
-  const LogoutUser = () => {
-    sessionStorage.clear();
-    history.replace("/Provider/Login");
-  }
 
   return (
     <div dir="rtl" >
@@ -33,7 +29,8 @@ export default function ProviderNavigationBar() {
                 <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
               </NavDropdown> */}
 
-              <Button onClick={LogoutUser} variant='danger'>יציאה</Button>
+              {/* <Button onClick={LogoutUser} variant='danger'>יציאה</Button> */}
+              <LogoutButton />
 
             </Nav>
           </Navbar.Collapse>

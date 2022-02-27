@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { useHistory } from "react-router-dom";
 
 //	Main pages 
-import Welcome from '../Pages/GeneralPages/Welcome'
+import WelcomePage from '../Pages/GeneralPages/WelcomePage'
 import About from '../Pages/GeneralPages/About';
 import ParentRegister from '../Pages/ParentsPages/ParentRegister';
 import ParentLogin from '../Pages/ParentsPages/ParentLogin';
@@ -218,7 +218,7 @@ export default function ParentsApp() {
         username: username,
       }}>
 
-        <ProtectedRoute exact path="/Parent/Welcome" Component={Welcome} />
+        <ProtectedRoute exact path="/Parent/Welcome" Component={WelcomePage} />
 
         <ProtectedRoute exact path="/Parent/About" Component={About} />
 
