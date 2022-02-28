@@ -2,7 +2,6 @@ import '../../CSS/pages-css/Register.css'
 import { Link } from "react-router-dom"
 import { ValidateEmail, ValidatePassword, ValidateConfirmPassword, IsHebrewInputValid } from '../../Project-Modules/UserInputValidation'
 import { useState } from 'react'
-import FormInputField from '../../Components/GeneralComponents/FormInputField'
 import { InputField } from '../../Project-Modules/UserInputValidation'
 import FormInputFieldSection from '../../Components/GeneralComponents/FormInputFieldSection'
 
@@ -16,6 +15,7 @@ export default function ProviderRegister({ HandleProviderRegister }) {
     new InputField("confirmPasswordField", "אשר סיסמה:", ValidateConfirmPassword, "שגיאה", "password"),
   ]);
 
+
   function OnSubmit(e) {
     e.preventDefault();
 
@@ -24,6 +24,8 @@ export default function ProviderRegister({ HandleProviderRegister }) {
     console.log(IsFormValid())
     HandleProviderRegister(e, IsFormValid())
   }
+
+
 
   function ValidateInputFields() {
     let newInputFields = [...inputFields];

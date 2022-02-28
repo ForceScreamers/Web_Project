@@ -1,8 +1,7 @@
 import { Navbar, Container, Nav, NavDropdown, NavItem, Button } from 'react-bootstrap'
 import { Link } from "react-router-dom"
-import { useContext, useEffect, useState } from 'react'
+import { useContext } from 'react'
 import { NavBarContext } from '../../Contexts/NavBarContext'
-import { useHistory } from 'react-router-dom'
 import LogoutButton from '../GeneralComponents/LogoutButton';
 
 
@@ -15,7 +14,6 @@ export default function ParentNavigationBar() {
 
   const usernameFromContext = useContext(NavBarContext).username;
   const currentChildFromContext = useContext(NavBarContext).child;
-  const isVisible = useContext(NavBarContext).isVisible;
 
 
   const S_CURRENT_CHILD = "ילד נוכחי";
@@ -28,8 +26,7 @@ export default function ParentNavigationBar() {
           <Navbar.Brand href="/Parent/Welcome">כפתור בית</Navbar.Brand>
           <Navbar.Brand> מחובר בתור: {usernameFromContext}</Navbar.Brand>
           <Navbar.Brand>
-            {/* {currentChildNameFromContext.length === 0 ? S_NO_CHILD_SELECTED : `${S_CURRENT_CHILD}:${currentChildNameFromContext}`} */}
-            {currentChildFromContext === null ? S_NO_CHILD_SELECTED : `${S_CURRENT_CHILD}:${currentChildFromContext.Name}`}
+            {currentChildFromContext === null ? S_NO_CHILD_SELECTED : `${S_CURRENT_CHILD}: ${currentChildFromContext.Name}`}
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">

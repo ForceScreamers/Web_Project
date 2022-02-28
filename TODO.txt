@@ -1,16 +1,10 @@
 General:
   [ ] Check for all api request functions
-  [ ] Add text to input error
   [ ] Add errors in login and register as text to screen
   [ ] Fix collapse or navbar width when resizing the window
-  [ ] Split user input field into 2 nested components
-
+  [ ] Check login and registeration for both systems
   [ ] Fix memory game images when playing in firefox
 
-  Protected route:
-  [ ] Add session timeout message
-  [ ] Disconnect user on session timeout
-  [ ] Keep user in the same page if they try to access an inaccessible route ?
 
 Admins App:
 

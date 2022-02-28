@@ -1,57 +1,139 @@
 import '../../CSS/pages-css/Register.css'
 import { Link } from "react-router-dom"
-import { ValidateUsername, ValidateEmail, ValidatePassword, ValidateConfirmPassword } from '../../Project-Modules/UserInputValidation'
+import { ValidateEmail, ValidatePassword, ValidateConfirmPassword } from '../../Project-Modules/UserInputValidation'
 import { useState } from 'react'
-import FormInputField from '../../Components/GeneralComponents/FormInputField'
+import { InputField } from '../../Project-Modules/UserInputValidation'
+import FormInputFieldSection from '../../Components/GeneralComponents/FormInputFieldSection'
+import { IsHebrewInputValid } from '../../Project-Modules/UserInputValidation'
+
 
 export default function ParentRegister({ HandleRegister }) {
 
-  let usernameValid = true;
-  let emailValid = true;
-  let passwordValid = true;
-  let confirmPasswordValid = true;
+  const [inputFields, setInputFields] = useState([
+    new InputField("registerUsernameField", "שם מלא:", IsHebrewInputValid, "לא מתאים", "text"),
+    new InputField("registerEmailField", "כתובת מייל:", ValidateEmail, "שגיאה", "text"),
+    new InputField("registerPasswordField", "סיסמה:", ValidatePassword, "ריק מתוכן", "password"),
+    new InputField("registerPasswordConfirmField", "אשר סיסמה:", ValidateConfirmPassword, "שגיאה", "password"),
+  ]);
 
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-
-  const [usernameValidState, setUsernameValidState] = useState(true);
-  const [emailValidState, setEmailValidState] = useState(true);
-  const [passwordValidState, setPasswordValidState] = useState(true);
-  const [confirmPasswordValidState, setConfirmPasswordValidState] = useState(true);
 
   function OnSubmit(e) {
     e.preventDefault();
 
-    //  Check every input
-    usernameValid = ValidateUsername(username);
-    emailValid = ValidateEmail(email);
-    passwordValid = ValidatePassword(password);
-    confirmPasswordValid = ValidateConfirmPassword(confirmPassword, password);
+    ValidateInputFields();
 
-    setUsernameValidState(usernameValid)
-    setEmailValidState(emailValid)
-    setPasswordValidState(passwordValid)
-    setConfirmPasswordValidState(confirmPasswordValid)
-
-    HandleRegister(e, usernameValid && emailValid && passwordValid && confirmPasswordValid)
+    HandleRegister(e, IsFormValid())
   }
 
-  const onChangeHandler = (fieldName, value) => {
-    if (fieldName === "username") {
-      setUsername(value);
-    }
-    else if (fieldName === "email") {
-      setEmail(value);
-    }
-    else if (fieldName === "password") {
-      setPassword(value);
-    }
-    else if (fieldName === "confirmPassword") {
-      setConfirmPassword(value);
-    }
+
+  function ValidateInputFields() {
+    let newInputFields = [...inputFields];
+
+    //  Validate every field
+    newInputFields.forEach(inputField => {
+      inputField.Validate();
+    })
+
+    SetConfirmPasswordFieldIsValid(IsValidConfirmPasswordField());
+
+    setInputFields(newInputFields);
   }
+
+
+
+  function SetConfirmPasswordFieldIsValid(isValid) {
+    let newInputFields = [...inputFields];
+
+    newInputFields.forEach(inputField => {
+      if (inputField.name === "registerPasswordConfirmField") {
+        inputField.isValid = isValid;
+      }
+    })
+
+    setInputFields(newInputFields);
+  }
+
+
+
+  function IsValidConfirmPasswordField() {
+    let password = GetPassword();
+    let passwordToCompare = GetPasswordToCompare();
+    return ValidateConfirmPassword(password, passwordToCompare);
+  }
+
+  function GetPasswordToCompare() {
+    let passwordToCompare = "";
+
+    inputFields.forEach(field => {
+      if (field.name === "registerPasswordConfirmField") {
+        passwordToCompare = field.value;
+      }
+    })
+
+    return passwordToCompare;
+  }
+
+
+
+  function GetPassword() {
+    let password = "";
+
+    inputFields.forEach(field => {
+      if (field.name === "registerPasswordField") {
+        password = field.value;
+      }
+    })
+
+    return password;
+  }
+
+
+
+  function IsFormValid() {
+    let isFormValid = true;
+
+    inputFields.forEach(inputField => {
+      if (inputField.isValid === false) {
+        isFormValid = false;
+      }
+    })
+
+    return isFormValid;
+  }
+
+
+
+  function UpdateFieldValue(fieldName, newValue) {
+    let newInputFields = [...inputFields];
+
+    newInputFields.forEach(inputField => {
+      if (inputField.name === fieldName) {
+        inputField.value = newValue;
+      }
+    })
+
+    setInputFields(newInputFields);
+  }
+
+  function RenderInputField(field, index) {
+    return (
+      <div key={index}>
+        <FormInputFieldSection
+          Label={field.labelText}
+          Valid={field.isValid}
+          Name={field.name}
+          OnChange={(e) => { UpdateFieldValue(field.name, e.target.value) }}
+          UserErrorMessageText={field.textErrorMessage}
+          Type={field.type}
+        />
+      </div>
+    )
+  }
+
+
+
+
+
 
 
   return (
@@ -64,17 +146,12 @@ export default function ParentRegister({ HandleRegister }) {
         <form onSubmit={OnSubmit}>
           <div className="InputContainer">
 
-            <label>שם משתמש:</label>
-            <FormInputField Valid={usernameValidState} Name={"registerUsernameField"} OnChange={(e) => { onChangeHandler("username", e.target.value) }} />
+            {
+              inputFields.map((field, index) => {
+                return RenderInputField(field, index);
+              })
+            }
 
-            <label>אי-מייל:</label>
-            <FormInputField Valid={emailValidState} Name={"registerEmailField"} OnChange={(e) => { onChangeHandler("email", e.target.value) }} />
-
-            <label>סיסמה:</label>
-            <FormInputField Valid={passwordValidState} Name={"registerPasswordField"} OnChange={(e) => { onChangeHandler("password", e.target.value) }} />
-
-            <label>אשר סיסמה:</label>
-            <FormInputField Valid={confirmPasswordValidState} Name={"registerPasswordConfirmField"} OnChange={(e) => { onChangeHandler("confirmPassword", e.target.value) }} />
 
             <input type="submit" value="הירשם" />
           </div>

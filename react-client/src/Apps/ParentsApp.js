@@ -31,7 +31,7 @@ import PageDoesntExist from '../PageDoesntExist';
 import { ParentsApiRequest } from '../RequestHeadersToWebApi';
 import ProtectedRoute from '../Components/GeneralComponents/ProtectedRoute';
 
-
+import utf8 from 'utf8';
 
 //	#endregion
 
@@ -160,7 +160,7 @@ export default function ParentsApp() {
     if (formValid) {
 
       let userData = {
-        username: e.target.registerUsernameField.value,
+        username: utf8.encode(e.target.registerUsernameField.value),
         email: e.target.registerEmailField.value,
         password: e.target.registerPasswordField.value,
         confirmPassword: e.target.registerPasswordConfirmField.value,
@@ -169,16 +169,16 @@ export default function ParentsApp() {
 
       let response = await ParentsApiRequest('POST', 'ParentRegister', userData).catch(err => console.log(err));
       if (response) {
-
+        console.log(response);
         if (response.data.Registered === true) {
 
           let loginResponse = await ParentsApiRequest('POST', 'ParentLogin', userData);
           console.log(loginResponse)
 
-          HandleLoginResponse(response);
+          HandleLoginResponse(loginResponse);
 
         }
-        else if (response.data.FromParent.UserExists) {
+        else if (response.data.UserExists) {
           alert("User already exists");
         }
         else {

@@ -4,37 +4,74 @@ import { Link } from 'react-router-dom';
 import FormInputField from '../../Components/GeneralComponents/FormInputField';
 import { useState } from 'react';
 import { ValidateEmail, ValidatePassword } from '../../Project-Modules/UserInputValidation';
+import { InputField } from '../../Project-Modules/UserInputValidation';
+import FormInputFieldSection from '../../Components/GeneralComponents/FormInputFieldSection';
+
 
 export default function ParentLogin({ HandleLogin }) {
-	let emailValid = true;
-	let passwordValid = true;
 
-	const [email, setEmail] = useState("");
-	const [password, setPassword] = useState("");
-
-	const [emailValidState, setEmailValidState] = useState(true);
-	const [passwordValidState, setPasswordValidState] = useState(true);
+	const [inputFields, setInputFields] = useState([
+		new InputField("loginEmailField", "כתובת מייל:", ValidateEmail, "שגיאה", "text"),
+		new InputField("loginPasswordField", "סיסמה:", ValidatePassword, "ריק מתוכן", "password"),
+	])
 
 	const OnSubmit = (e) => {
 		e.preventDefault();
 
-		emailValid = ValidateEmail(email);
-		passwordValid = ValidatePassword(password);
+		ValidateInputFields();
 
-		setEmailValidState(emailValid)
-		setPasswordValidState(passwordValid)
-
-		HandleLogin(e, emailValid && passwordValid);
+		HandleLogin(e, IsFormValid());
 	}
 
-	const onChangeHandler = (fieldName, value) => {
-		console.log("test")
-		if (fieldName === "email") {
-			setEmail(value);
-		}
-		else if (fieldName === "password") {
-			setPassword(value);
-		}
+	function IsFormValid() {
+		let isFormValid = true;
+
+		inputFields.forEach(inputField => {
+			if (inputField.isValid === false) {
+				isFormValid = false;
+			}
+		})
+
+		return isFormValid;
+	}
+
+	function ValidateInputFields() {
+		let newInputFields = [...inputFields];
+
+		//  Validate every field
+		newInputFields.forEach(inputField => {
+			inputField.Validate();
+		})
+
+
+		setInputFields(newInputFields);
+	}
+
+	function UpdateFieldValue(fieldName, newValue) {
+		let newInputFields = [...inputFields];
+
+		newInputFields.forEach(inputField => {
+			if (inputField.name === fieldName) {
+				inputField.value = newValue;
+			}
+		})
+
+		setInputFields(newInputFields);
+	}
+
+	function RenderInputField(field, index) {
+		return (
+			<div key={index}>
+				<FormInputFieldSection
+					Label={field.labelText}
+					Valid={field.isValid}
+					Name={field.name}
+					OnChange={(e) => { UpdateFieldValue(field.name, e.target.value) }}
+					UserErrorMessageText={field.textErrorMessage}
+					Type={field.type}
+				/>
+			</div>
+		)
 	}
 
 	return (
@@ -46,11 +83,11 @@ export default function ParentLogin({ HandleLogin }) {
 			<form onSubmit={OnSubmit}>
 
 				<div className="InputContainer">
-					<label>אי-מייל:</label>
-					<FormInputField Valid={emailValidState} Name={"loginEmailField"} OnChange={(e) => { onChangeHandler("email", e.target.value) }} />
-
-					<label>סיסמה:</label>
-					<FormInputField Valid={passwordValidState} Name={"loginPasswordField"} OnChange={(e) => { onChangeHandler("password", e.target.value) }} />
+					{
+						inputFields.map((field, index) => {
+							return RenderInputField(field, index);
+						})
+					}
 
 					<input type="submit" value="התחברות" />
 				</div>
