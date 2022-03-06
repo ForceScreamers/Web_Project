@@ -7,7 +7,6 @@ General:
   [ ] Check for all api request functions
   [ ] Add errors in login and register as text to screen
   [ ] Fix collapse or navbar width when resizing the window
-  [ ] Check login and registeration for both systems
   [ ] Fix memory game images when playing in firefox
 
 
@@ -15,7 +14,6 @@ Admins App:
 
 
 Parents App:
-  [ ] Can register with an existing email 
 
   [ ] Login and register response have unnessesary headers i.e.:
     Data: {
@@ -29,7 +27,6 @@ Parents App:
 
   Games - 
     [ ] Finish games page
-    [ ] Maybe change game card ?
 
 
 

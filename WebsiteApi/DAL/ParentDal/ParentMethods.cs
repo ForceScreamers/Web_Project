@@ -65,14 +65,13 @@ namespace ParentDal
             };
             return ParentOdbcHelper.Execute(com, queryParameters);
         }
-        public static bool IsExists(string parentEmail, string parentPassword)
+        public static bool IsExists(string parentEmail)
         {
-            string com = "SELECT parent_email, parent_password FROM parent WHERE parent_email=? AND parent_password=?";
+            string com = "SELECT parent_email FROM parent WHERE parent_email=?";
             bool exists = false;
 
             OdbcParameter[] queryParameters = {
                 new OdbcParameter("@parent_email", parentEmail),
-                new OdbcParameter("@parent_password", parentPassword)
             };
 
             //Add if check for existing users
@@ -84,6 +83,27 @@ namespace ParentDal
             }
 
             return exists;
+        }
+
+        public static bool IsRegistered(string parentEmail, string parentPassword)
+        {
+            string com = "SELECT parent_email, parent_password FROM parent WHERE parent_email=? AND parent_password=?";
+            bool registered = false;
+
+            OdbcParameter[] queryParameters = {
+                new OdbcParameter("@parent_email", parentEmail),
+                new OdbcParameter("@parent_password", parentPassword),
+            };
+
+            //Add if check for existing users
+            DataTable dt = ParentOdbcHelper.GetTable(com, queryParameters);
+
+            if (dt.Rows.Count > 0)
+            {
+                registered = true;
+            }
+
+            return registered;
         }
     }
 }

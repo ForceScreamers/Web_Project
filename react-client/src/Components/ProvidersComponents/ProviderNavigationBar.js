@@ -1,6 +1,5 @@
-import { Navbar, Container, Nav, NavDropdown, NavItem, Button } from 'react-bootstrap'
+import { Navbar, Container, Nav } from 'react-bootstrap'
 import { Link } from "react-router-dom"
-import { useHistory } from 'react-router-dom'
 import LogoutButton from '../GeneralComponents/LogoutButton';
 
 export default function ProviderNavigationBar() {

@@ -1,5 +1,6 @@
 import { useHistory } from "react-router-dom";
 import { useEffect } from "react";
+import { useState } from "react"
 
 //  Import components
 import utf8 from 'utf8';
@@ -14,10 +15,8 @@ import ProtectedRoute from "../Components/GeneralComponents/ProtectedRoute";
 
 export default function ProvidersApp() {
   const history = useHistory();
-  useEffect(() => {
-    console.log(history.location)
-  })
 
+  const [userExistsError, setUserExistsError] = useState(null);
 
   function RedirectToWelcome() {
     history.push("/Provider/Games");
@@ -58,11 +57,13 @@ export default function ProvidersApp() {
           SetSessionStorageAndRedirect(loginResponse.data);
         }
         else {
-          alert("בעל מקצוע לא מורשה להתחבר")
+          //alert("בעל מקצוע לא מורשה להתחבר")
           console.log("Provider isn't permitted to login")
+          setUserExistsError(true);
         }
       }
       catch (err) {
+        // Do nothing
         console.log(err);
       }
 
@@ -85,7 +86,8 @@ export default function ProvidersApp() {
 
         if (response.data.UserExists === true) {
           //  User already exists
-          alert('משתמש כבר קיים')
+          // alert('משתמש כבר קיים')
+          setUserExistsError(true);
         }
         else if (response.data.Registered === true) {
           alert('חכה לאישור כניסה');
@@ -95,14 +97,26 @@ export default function ProvidersApp() {
         }
       }
       catch (err) {
+        //  Do nothing
         console.log(err);
       }
     }
   }
 
   return <div>
-    <PublicRoute exact path="/Provider/Login" component={() => <ProviderLogin HandleProviderLogin={HandleProviderLogin} />} />
-    <PublicRoute exact path="/Provider/Register" component={() => <ProviderRegister HandleProviderRegister={HandleProviderRegister} />} />
+    <PublicRoute exact path="/Provider/Login" component={() =>
+      <ProviderLogin
+        HandleProviderLogin={HandleProviderLogin}
+        UserExistsError={userExistsError}
+      />}
+    />
+
+    <PublicRoute exact path="/Provider/Register" component={() =>
+      <ProviderRegister
+        HandleProviderRegister={HandleProviderRegister}
+        UserExistsError={userExistsError}
+      />}
+    />
 
     <ProtectedRoute exact path="/Provider/Games" Component={ProviderGames} />
 

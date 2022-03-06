@@ -147,7 +147,9 @@ namespace ParentsApi
 
 
 			//  Check if the email and password exist
-			bool userExists = ParentMethods.IsExists(email, password);
+			bool userExists = ParentMethods.IsRegistered(email, password);
+
+
 			Console.WriteLine("User exists: {0}", userExists);
 
 			if (userExists)
@@ -173,7 +175,7 @@ namespace ParentsApi
 			bool userRegistered = false;//  If the parent is registered in the system
 			bool userExists = false;//  If the user already exists in the system
 
-			if (ParentMethods.IsExists(email, password) == false)
+			if (ParentMethods.IsExists(email) == false)
 			{
 				int result = 0;
 

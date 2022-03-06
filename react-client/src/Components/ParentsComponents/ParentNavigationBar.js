@@ -1,32 +1,31 @@
-import { Navbar, Container, Nav, NavDropdown, NavItem, Button } from 'react-bootstrap'
+import { Navbar, Container, Nav } from 'react-bootstrap'
 import { Link } from "react-router-dom"
 import { useContext } from 'react'
 import { NavBarContext } from '../../Contexts/NavBarContext'
-import LogoutButton from '../GeneralComponents/LogoutButton';
-
+import LogoutButton from '../GeneralComponents/LogoutButton'
 
 //  היומן שלי, שינוי אווטר, עריכת פרופיל, משחקייה, מאמרים, אודותר
 //  The main pages are: Games, info, about, edit profile, avatar, journal
 
 export default function ParentNavigationBar() {
 
-  console.log(useContext(NavBarContext))
-
   const usernameFromContext = useContext(NavBarContext).username;
   const currentChildFromContext = useContext(NavBarContext).child;
+  const isVisible = useContext(NavBarContext).isVisible;
 
 
   const S_CURRENT_CHILD = "ילד נוכחי";
   const S_NO_CHILD_SELECTED = "לא נבחר ילד";
 
   return (
-    <div dir="rtl" >
+    <div dir="rtl">
       <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
         <Container fluid className="h-25">
-          <Navbar.Brand href="/Parent/Welcome">כפתור בית</Navbar.Brand>
+          <Navbar.Brand href="/Parent/Home">כפתור בית</Navbar.Brand>
           <Navbar.Brand> מחובר בתור: {usernameFromContext}</Navbar.Brand>
           <Navbar.Brand>
-            {currentChildFromContext === null ? S_NO_CHILD_SELECTED : `${S_CURRENT_CHILD}: ${currentChildFromContext.Name}`}
+            {/* {currentChildNameFromContext.length === 0 ? S_NO_CHILD_SELECTED : `${S_CURRENT_CHILD}:${currentChildNameFromContext}`} */}
+            {currentChildFromContext === null ? S_NO_CHILD_SELECTED : `${S_CURRENT_CHILD}:${currentChildFromContext.Name}`}
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
@@ -45,6 +44,7 @@ export default function ParentNavigationBar() {
                 <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
               </NavDropdown> */}
 
+              {/* <Button onClick={LogoutUser} variant='danger'>יציאה</Button> */}
               <LogoutButton />
 
             </Nav>

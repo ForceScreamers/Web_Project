@@ -47,7 +47,26 @@ namespace ProviderDal
             };
             return OdbcHelper.Execute(com, queryParameters);
         }
-        public static bool IsExists(string providerEmail, string providerPassword)
+        public static bool IsExists(string providerEmail)
+        {
+            string com = "SELECT provider_email FROM provider WHERE provider_email=? ";
+            bool exists = false;
+
+            OdbcParameter[] queryParameters = {
+                new OdbcParameter("@provider_email", providerEmail),
+            };
+
+            DataTable dt = OdbcHelper.GetTable(com, queryParameters);
+
+            if (dt.Rows.Count > 0)
+            {
+                exists = true;
+            }
+
+            return exists;
+        }
+
+        public static bool IsRegistered(string providerEmail, string providerPassword)
         {
             string com = "SELECT provider_email, provider_password FROM provider WHERE provider_email=? AND provider_password=?";
             bool exists = false;
@@ -57,7 +76,6 @@ namespace ProviderDal
                 new OdbcParameter("@provider_password", providerPassword),
             };
 
-            //Add if check for existing users
             DataTable dt = OdbcHelper.GetTable(com, queryParameters);
 
             if (dt.Rows.Count > 0)

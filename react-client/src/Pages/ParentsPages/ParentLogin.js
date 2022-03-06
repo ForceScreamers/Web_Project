@@ -11,7 +11,6 @@ import FormInputFieldSection from '../../Components/GeneralComponents/FormInputF
 
 export default function ParentLogin({ HandleLogin, UserExists }) {
 
-
 	const [inputFields, setInputFields] = useState([
 		new InputField("loginEmailField", "כתובת מייל:", ValidateEmail, "שגיאה", "text"),
 		new InputField("loginPasswordField", "סיסמה:", ValidatePassword, "ריק מתוכן", "password"),

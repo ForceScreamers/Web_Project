@@ -5,7 +5,7 @@ import { useState } from 'react'
 import { InputField } from '../../Project-Modules/UserInputValidation'
 import FormInputFieldSection from '../../Components/GeneralComponents/FormInputFieldSection'
 
-export default function ProviderRegister({ HandleProviderRegister }) {
+export default function ProviderRegister({ HandleProviderRegister, UserExistsError }) {
 
   const [inputFields, setInputFields] = useState([
     new InputField("fullNameField", "שם מלא:", IsHebrewInputValid, "לא מתאים", "text"),
@@ -146,6 +146,8 @@ export default function ProviderRegister({ HandleProviderRegister }) {
                 return RenderInputField(field, index);
               })
             }
+
+            <label className="user-exists-label" >{UserExistsError ? "מייל כבר נמצא בשימוש" : ""}</label>
 
             <input type="submit" value="Register" />
           </div>

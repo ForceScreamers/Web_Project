@@ -148,14 +148,13 @@ export default function ParentRegister({ HandleRegister, UserExists }) {
               })
             }
 
-            <label className="user-exists-label" >{UserExists ? "" : ""}</label>
-
+            <label className="user-exists-label" >{UserExists ? "" : "ש"}</label>
 
             <input type="submit" value="הירשם" />
           </div>
         </form>
 
       </div>
-    </div >
+    </div>
   )
 }

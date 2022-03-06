@@ -6,7 +6,7 @@ import { ValidateEmail, ValidatePassword } from '../../Project-Modules/UserInput
 import { InputField } from '../../Project-Modules/UserInputValidation';
 import FormInputFieldSection from '../../Components/GeneralComponents/FormInputFieldSection';
 
-export default function ProviderLogin({ HandleProviderLogin }) {
+export default function ProviderLogin({ HandleProviderLogin, UserExistsError }) {
 
   const [inputFields, setInputFields] = useState([
     new InputField("loginEmailField", "כתובת מייל:", ValidateEmail, "שגיאה", "text"),
@@ -86,6 +86,10 @@ export default function ProviderLogin({ HandleProviderLogin }) {
               return RenderInputField(field, index);
             })
           }
+
+
+          <label className="user-doesnt-exist-label" >{UserExistsError ? "" : "לא מורשה להתחבר"}</label>
+
           <input type="submit" value="התחברות" />
         </div>
       </form>

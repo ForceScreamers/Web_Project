@@ -183,6 +183,7 @@ export default function ParentsApp() {
         }
         else if (response.data.UserExists) {
           alert("User already exists");
+          // setUserExists(true);
         }
         else {
           console.error("ERROR IN REGISTER USER");
@@ -229,9 +230,6 @@ export default function ParentsApp() {
 
         <ProtectedRoute exact path="/Parent/EditProfile" Component={() =>
           <EditProfilePage
-            // HandleSelectChild={HandleSelectChild}
-            // HandleDeleteChild={HandleDeleteChild}
-            // HandleAddChild={(e, isValid) => HandleAddChild(e, isValid)}
             LoadChildrenFromServer={LoadChildrenFromServer}
           />}
         />
