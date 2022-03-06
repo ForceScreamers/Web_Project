@@ -1,3 +1,8 @@
+Games:
+- פאזל
+- מגדל האנוי
+- מתמטיקה
+
 General:
   [ ] Check for all api request functions
   [ ] Add errors in login and register as text to screen
@@ -10,6 +15,7 @@ Admins App:
 
 
 Parents App:
+  [ ] Can register with an existing email 
 
   [ ] Login and register response have unnessesary headers i.e.:
     Data: {
@@ -23,15 +29,13 @@ Parents App:
 
   Games - 
     [ ] Finish games page
+    [ ] Maybe change game card ?
 
 
 
 Providers App:
+  [ ] Check if can register with an existing email 
 
 
 Small additions:
-
   [ ] Check that every input field is validated correctly
-
-
-  

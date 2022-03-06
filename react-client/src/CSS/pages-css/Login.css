@@ -11,3 +11,7 @@
     justify-content: space-between;
     flex-direction: column; 
 }
+
+.user-doesnt-exist-label{
+    color:red;
+}

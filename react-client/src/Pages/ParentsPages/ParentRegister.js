@@ -7,7 +7,7 @@ import FormInputFieldSection from '../../Components/GeneralComponents/FormInputF
 import { IsHebrewInputValid } from '../../Project-Modules/UserInputValidation'
 
 
-export default function ParentRegister({ HandleRegister }) {
+export default function ParentRegister({ HandleRegister, UserExists }) {
 
   const [inputFields, setInputFields] = useState([
     new InputField("registerUsernameField", "שם מלא:", IsHebrewInputValid, "לא מתאים", "text"),
@@ -132,10 +132,6 @@ export default function ParentRegister({ HandleRegister }) {
 
 
 
-
-
-
-
   return (
     <div>
 
@@ -151,6 +147,8 @@ export default function ParentRegister({ HandleRegister }) {
                 return RenderInputField(field, index);
               })
             }
+
+            <label className="user-exists-label" >{UserExists ? "" : ""}</label>
 
 
             <input type="submit" value="הירשם" />

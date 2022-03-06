@@ -54,6 +54,8 @@ export default function ParentsApp() {
   const [currentChild, setCurrentChild] = useState({});
   const [username, setUsername] = useState('no username');
 
+  const [userExists, setUserExists] = useState(null);
+
   let history = useHistory();
 
   /**Gets the children belonging to the logged parent
@@ -144,7 +146,8 @@ export default function ParentsApp() {
           HandleLoginResponse(loginResponse);
         }
         else {
-          alert("user not found");
+          setUserExists(true);
+          //alert("user not found");
         }
       }
       catch (err) {
@@ -205,11 +208,13 @@ export default function ParentsApp() {
       <PublicRoute exact path="/" component={() =>
         <ParentLogin
           HandleLogin={(e, isValid) => HandleParentLogin(e, isValid)}
+          UserExists={userExists}
         />} />
 
       <PublicRoute exact path="/Parent/Register" component={() =>
         <ParentRegister
           HandleRegister={(e, isValid) => HandleParentRegister(e, isValid)}
+          UserExists={userExists}
         />} />
 
       {/* //TODO: NEED TO CALL THE ROUTES ONLY WHEN THE WELCOME PAGE LOADS*/}
@@ -235,8 +240,6 @@ export default function ParentsApp() {
         <ProtectedRoute exact path="/Parent/Avatar" Component={AvatarPage} />
         <ProtectedRoute exact path="/Parent/Journal" Component={JournalPage} />
         <ProtectedRoute exact path="/Parent/Home" Component={HomePage} />
-
-
       </NavBarContext.Provider>
 
 

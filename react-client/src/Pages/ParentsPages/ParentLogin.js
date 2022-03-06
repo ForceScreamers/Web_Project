@@ -1,14 +1,16 @@
 import '../../CSS/pages-css/Login.css';
 
+// import '../../CSS/pages-css/ParentLogin.css'
+
 import { Link } from 'react-router-dom';
-import FormInputField from '../../Components/GeneralComponents/FormInputField';
 import { useState } from 'react';
 import { ValidateEmail, ValidatePassword } from '../../Project-Modules/UserInputValidation';
 import { InputField } from '../../Project-Modules/UserInputValidation';
 import FormInputFieldSection from '../../Components/GeneralComponents/FormInputFieldSection';
 
 
-export default function ParentLogin({ HandleLogin }) {
+export default function ParentLogin({ HandleLogin, UserExists }) {
+
 
 	const [inputFields, setInputFields] = useState([
 		new InputField("loginEmailField", "כתובת מייל:", ValidateEmail, "שגיאה", "text"),
@@ -88,6 +90,8 @@ export default function ParentLogin({ HandleLogin }) {
 							return RenderInputField(field, index);
 						})
 					}
+
+					<label className="user-doesnt-exist-label" >{UserExists ? "שם משתמש או סיסמה שגויים" : ""}</label>
 
 					<input type="submit" value="התחברות" />
 				</div>

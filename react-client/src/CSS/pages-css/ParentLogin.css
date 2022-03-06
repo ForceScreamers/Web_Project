@@ -1,17 +1,18 @@
-.RegisterContainer{
+.LoginContainer{
   display: flex;
   margin-top: 20vh;
+
   justify-content: center;
   flex-direction: column;
   align-items: center; 
+
+  border: black 5px solid;
+  /* width: 200px; */
 }
 
 .InputContainer{
   display: flex;
   justify-content: space-between;
   flex-direction: column; 
-}
-
-.user-exists-label{
-  color:red;
+  
 }
