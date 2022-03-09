@@ -7,6 +7,7 @@ import { useState } from "react";
 import axios from "axios";
 import GameTemplate from "../../Games/GameTemplate";
 import { ParentsApiRequest } from "../../RequestHeadersToWebApi";
+import MatchCardsGame from "../../Games/MatchCardsGame/MatchCardsGame";
 
 const GAMES_MENU_ID = -1;
 
@@ -42,13 +43,14 @@ export default function GamesPage({ LoadChildrenFromServer: UpdateChildrenProfil
       name: "משחק הזיכרון",
       description: "תיאור משחק זיכרון",
       id: 1,
-      gameComponent:
-        <GameTemplate ExitGame={ExitGame} EndGame={EndGame} GameId={4} GameComponent={MemoryGame} />
+      gameComponent: <GameTemplate ExitGame={ExitGame} EndGame={EndGame} GameId={4} GameComponent={MemoryGame} />
     },
     {
-      name: "צורות",
-      description: "תיאור צורות",
+      name: "התאמת קלפים",
+      description: "תיאור התאמת קלפים",
       id: 2,
+      gameComponent: <GameTemplate ExitGame={ExitGame} EndGame={EndGame} GameId={8} GameComponent={MatchCardsGame} />
+
     },
     {
       name: "פאזל",
