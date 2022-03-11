@@ -7,9 +7,10 @@ import { useEffect } from 'react';
 
 //  TODO Change class name
 class MatchCardData {
-  constructor(text, index) {
+  constructor(text, index, type) {
     this.text = text;
     this.index = index;
+    this.type = type;
   }
 }
 
@@ -17,7 +18,7 @@ let items = [];
 
 // Mock data - Initialize items (for testing)
 for (let i = 0; i < 8; i++) {
-  // names[i] = `name ${i + 1}`;
+
   items[i] = {
     name: `name ${i}`,
     img: `img ${i}`,
@@ -37,26 +38,32 @@ function GenerateCards() {
     let itemName = items[itemIndex].name;
     let itemImg = items[itemIndex].img;
 
-    tempCards.push(new MatchCardData(itemName, i));
-    tempCards.push(new MatchCardData(itemImg, i + 1));
+
+    tempCards.push(new MatchCardData(itemName, i, i));
+    tempCards.push(new MatchCardData(itemImg, i + 1, i));
 
     itemIndex++;
   }
+  console.log(tempCards);
 
   return tempCards;
 }
 
 function ShuffleCards(array) {
   const length = array.length;
+
   for (let i = length; i > 0; i--) {
     const randomIndex = Math.floor(Math.random() * i);
     const currentIndex = i - 1;
     const temp = array[currentIndex];
+
     array[currentIndex] = array[randomIndex];
     array[randomIndex] = temp;
   }
   return array;
 }
+
+
 
 //  Finish this
 export default function MatchCardsGame() {
@@ -69,9 +76,10 @@ export default function MatchCardsGame() {
   useEffect(() => {
     let generatedCards = GenerateCards();
     let shuffledCards = ShuffleCards(generatedCards);
+    console.log(shuffledCards);
+    // setCards(shuffledCards);
     setCards(shuffledCards);
 
-    console.log(cards);
 
   }, [])
 
@@ -137,7 +145,9 @@ export default function MatchCardsGame() {
           })
         }
 
+
       </Container>
+      <label>מהלכים: {moves}</label>
 
 
     </div>
