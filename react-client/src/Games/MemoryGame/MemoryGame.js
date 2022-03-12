@@ -136,7 +136,7 @@ export default function MemoryGame({ SetHasEnded }) {
           הוראות יהיו פה
         </div>
       </header>
-      <div className="container">
+      <div className="memory-game-container">
         {cards.map((card, index) => {
           return (
             <Card

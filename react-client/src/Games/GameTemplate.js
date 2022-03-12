@@ -14,7 +14,7 @@ export default function GameTemplate({ EndGame, GameId, GameComponent, ExitGame 
     if (!secondsLeft) return;
 
     const intervalId = setTimeout(() => {
-      console.log(secondsLeft)
+      //console.log(secondsLeft)
       setSecondsLeft(secondsLeft - 1);
     }, 1000);
 

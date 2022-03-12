@@ -1,155 +1,190 @@
-import React from 'react'
-import { Container } from 'react-bootstrap'
+import { useEffect, useState, useRef } from "react";
+import { Container } from "react-bootstrap";
 import MatchCard from '../MatchCardsGame/MatchCard'
-import { useState } from 'react';
-import { useEffect } from 'react';
+import cardsDataJson from './CardMatchList.json'
 
-
-//  TODO Change class name
-class MatchCardData {
-  constructor(text, index, type) {
-    this.text = text;
-    this.index = index;
-    this.type = type;
-  }
+let cardsDataList = [];
+for (let card in cardsDataJson) {
+	cardsDataList.push(cardsDataJson[card]);
 }
 
-let items = [];
+const CARD_COUNT = 16;
+let gameCards = new Array(CARD_COUNT);
+let isDone = false;
+//  TODO: change the typeCounter method to something nicer
+let typeCounter = 0;
 
-// Mock data - Initialize items (for testing)
-for (let i = 0; i < 8; i++) {
+console.log(cardsDataList);
 
-  items[i] = {
-    name: `name ${i}`,
-    img: `img ${i}`,
-  }
-}
-
-
-function GenerateCards() {
-  //  Initialize cards
-  let tempCards = [];
-
-  //  assign each card a name or img
-  let itemIndex = 0;
-
-  for (let i = 0; i < 16; i = i + 2) {
-    //let tempCard;
-    let itemName = items[itemIndex].name;
-    let itemImg = items[itemIndex].img;
-
-
-    tempCards.push(new MatchCardData(itemName, i, i));
-    tempCards.push(new MatchCardData(itemImg, i + 1, i));
-
-    itemIndex++;
-  }
-  console.log(tempCards);
-
-  return tempCards;
-}
-
-function ShuffleCards(array) {
-  const length = array.length;
-
-  for (let i = length; i > 0; i--) {
-    const randomIndex = Math.floor(Math.random() * i);
-    const currentIndex = i - 1;
-    const temp = array[currentIndex];
-
-    array[currentIndex] = array[randomIndex];
-    array[randomIndex] = temp;
-  }
-  return array;
+//	Split each object's properties into array
+let cardTexts = [];
+for (let card of cardsDataList) {
+	for (let prop in card) {
+		cardTexts.push(card[prop]);
+	}
 }
 
 
+const GenerateGameCards = () => {
+	console.log(cardsDataList);
+	for (let i = 0; i < gameCards.length; i++) {
+		gameCards[i] = {
+			type: typeCounter,
+			value: cardTexts[i]
+		}
 
-//  Finish this
-export default function MatchCardsGame() {
-  const [moves, setMoves] = useState(0);
+		if (i % 2 !== 0) {
+			typeCounter++;
+		}
 
-  const [cards, setCards] = useState([]);
-  const [activeCards, setActiveCards] = useState([]);
+	}
 
+	console.log(gameCards)
+}
 
-  useEffect(() => {
-    let generatedCards = GenerateCards();
-    let shuffledCards = ShuffleCards(generatedCards);
-    console.log(shuffledCards);
-    // setCards(shuffledCards);
-    setCards(shuffledCards);
+const CARD_CLOSING_DELAY = 100;
+const EVALUATION_DELAY = 300;
 
+function shuffleCards(array) {
+	const length = array.length;
+	for (let i = length; i > 0; i--) {
+		const randomIndex = Math.floor(Math.random() * i);
+		const currentIndex = i - 1;
+		const temp = array[currentIndex];
+		array[currentIndex] = array[randomIndex];
+		array[randomIndex] = temp;
+	}
+	return array;
+}
 
-  }, [])
+GenerateGameCards();
 
-  function HandleClick(index) {
+export default function MemoryGame({ SetHasEnded }) {
 
-    if (activeCards.length === 1) {
+	const [cards, setCards] = useState(
+		shuffleCards.bind(null, gameCards)
+		//gameCards
 
-      setActiveCards((prev) => [...prev, index]);
-
-      //  Update move count
-      setMoves((moves) => moves + 1);
-
-      //disable();
-    } else {
-      //clearTimeout(timeout.current);
-
-      //  Open the clicked card
-      setActiveCards([index]);
-    }
-  }
-
-  function Evaluate() {
-    console.log("Eval");
-    const [first, second] = activeCards;
-
-
-    console.log(cards[first], cards[second]);
-  }
-
-  //  Every time the open cards update
-  useEffect(() => {
-    let timeout = null;
-    if (activeCards.length === 2) {
-      timeout = setTimeout(Evaluate, 100);// Change number to const
-    }
-    return () => {
-      clearTimeout(timeout);
-    };
-  }, [activeCards]);
+	);
 
 
-  function IsCardActive(index) {
-    return activeCards.includes(index);
-  }
+
+	const [openCards, setOpenCards] = useState([]);
+	const [clearedCards, setClearedCards] = useState({});
+	const [shouldDisableAllCards, setShouldDisableAllCards] = useState(false);
+	const [moves, setMoves] = useState(0);
+	const timeout = useRef(null);
+
+	//  Disable or enable (the user can't click) all cards while evaluating
+	const disable = () => { setShouldDisableAllCards(true) };
+	const enable = () => { setShouldDisableAllCards(false) };
 
 
-  return (
-    <div>
-      <h1>התאמת קלפים</h1>
-
-      <Container>
-        {
-          cards.map((card, keyIndex) => {
-            return (
-              <MatchCard
-                key={keyIndex}
-                Index={card.index}
-                IsSelected={IsCardActive(card.index)}
-                Text={card.text}
-                OnClick={HandleClick}
-              />
-            )
-          })
-        }
+	function CheckCompletion() {
+		if (Object.keys(clearedCards).length === gameCards.length / 2) {
+			console.log("Done!");
+			SetHasEnded(true);
+		}
+		isDone = true;
+	};
 
 
-      </Container>
-      <label>מהלכים: {moves}</label>
+	function Evaluate() {
+		const [first, second] = openCards;
+		enable();
 
+		if (cards[first].type === cards[second].type) {// If the types match
 
-    </div>
-  )
+			//  Update cleared cards with the newly opened card type
+			//  Meaning there will be half the card count
+			setClearedCards((prev) => ({ ...prev, [cards[first].type]: true }));
+			console.log("Ok!");
+
+			//  Reset open cards
+			setOpenCards([]);
+
+			//return;
+		}
+		else {//  Picked a wrong couple
+			console.log("not good")
+		}
+
+		timeout.current = setTimeout(() => {
+			setOpenCards([]);
+		}, CARD_CLOSING_DELAY);
+	};
+
+	//  Handle click
+	function HandleCardClick(index) {
+		if (openCards.length === 1) {
+
+			setOpenCards((prev) => [...prev, index]);
+
+			//  Update move count
+			setMoves((moves) => moves + 1);
+
+			disable();
+		} else {
+			clearTimeout(timeout.current);
+
+			//  Open the clicked card
+			setOpenCards([index]);
+		}
+	};
+
+	//  Every time the open cards update
+	useEffect(() => {
+		let timeout = null;
+		if (openCards.length === 2) {
+			timeout = setTimeout(Evaluate, EVALUATION_DELAY);
+		}
+		return () => {
+			clearTimeout(timeout);
+		};
+	}, [openCards]);
+
+	//  Every time the cleared cards update
+	useEffect(() => {
+		CheckCompletion();
+	}, [clearedCards]);
+
+	const checkIsSelected = (index) => { return openCards.includes(index) };
+	const checkIsInactive = (card) => { return Boolean(clearedCards[card.type]) };
+
+	return (
+		<div className="d-flex flex-column">
+			<header>
+				<h3>שלום</h3>
+				<div>
+					הוראות יהיו פה
+				</div>
+			</header>
+
+			<Container className="match-cards-container">
+				{cards.map((card, index) => {
+					return (
+						<MatchCard
+							key={index}
+							card={card}
+							Type={card.value.type}
+							Index={index}
+							IsDisabled={shouldDisableAllCards}
+							IsInactive={checkIsInactive(card)}
+							IsSelected={checkIsSelected(index)}
+							OnClick={HandleCardClick}
+							cardType={cards[index].type}
+							Caption={cards[index].value}
+						/>
+					);
+				})}
+			</Container>
+			<footer>
+				<div className="score">
+					<div className="moves">
+						<span className="bold">מהלכים:</span> {moves}
+					</div>
+				</div>
+			</footer>
+		</div>
+	);
 }

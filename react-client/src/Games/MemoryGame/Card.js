@@ -10,7 +10,7 @@ const Card = ({ onClick, card, index, isInactive, isFlipped, isDisabled, cardTyp
 
   return (
     <div
-      className={classnames("border-0 card row align-items-center justify-content-center", {
+      className={classnames("card-resize-animation border-0 card row align-items-center justify-content-center ", {
         "is-flipped": isFlipped,
         "is-inactive": isInactive
       })}
@@ -18,12 +18,15 @@ const Card = ({ onClick, card, index, isInactive, isFlipped, isDisabled, cardTyp
     >
       <div className="card-face card-font-face row align-items-center justify-content-center">
         {/*Disable pointer when the card is inactive*/}
-        <img src={image} alt="front" style={{ cursor: isInactive ? "default" : "pointer" }} />
+
+        <img className="card-image" src={image} alt="front" style={{ cursor: isInactive ? "default" : "pointer" }} />
+
 
       </div>
+
       <div className="card-face card-back-face">
         {/* <img src={card.image} alt="back" /> */}
-        <div>{cardType}</div>
+        <label className="card-back-face-label">{cardType}</label>
       </div>
     </div>
   );

@@ -1,18 +1,82 @@
 {
-  "card-1": {
-    "value": 0,
-    "img": "img1"
+  "set-1": {
+    "half-1": {
+      "value": "/match-cards-images/cat.jpg",
+      "type": "image"
+    },
+    "half-2": {
+      "value": "חתול",
+      "type": "text"
+    }
   },
-  "card-2": {
-    "value": 1,
-    "img": "img2"
+  "set-2": {
+    "half-1": {
+      "value": "dog",
+      "type": "text"
+    },
+    "half-2": {
+      "value": "/match-cards-images/dog.jpg",
+      "type": "image"
+    }
   },
-  "card-3": {
-    "value": 2,
-    "img": "img3"
+  "set-3": {
+    "half-1": {
+      "value": "ציפור",
+      "type": "text"
+    },
+    "half-2": {
+      "value": "/match-cards-images/bird.jpg",
+      "type": "image"
+    }
   },
-  "card-4": {
-    "value": 3,
-    "img": "img4"
+  "set-4": {
+    "half-1": {
+      "value": "פיל",
+      "type": "text"
+    },
+    "half-2": {
+      "value": "/match-cards-images/elephant.jpg",
+      "type": "image"
+    }
+  },
+  "set-5": {
+    "half-1": {
+      "value": "צפרדע",
+      "type": "text"
+    },
+    "half-2": {
+      "value": "/match-cards-images/frog.jpg",
+      "type": "image"
+    }
+  },
+  "set-6": {
+    "half-1": {
+      "value": "אריה",
+      "type": "text"
+    },
+    "half-2": {
+      "value": "/match-cards-images/lion.jpg",
+      "type": "image"
+    }
+  },
+  "set-7": {
+    "half-1": {
+      "value": "פנגווין",
+      "type": "text"
+    },
+    "half-2": {
+      "value": "/match-cards-images/peng.jpg",
+      "type": "image"
+    }
+  },
+  "set-8": {
+    "half-1": {
+      "value": "נחש",
+      "type": "text"
+    },
+    "half-2": {
+      "value": "/match-cards-images/snake.jpg",
+      "type": "image"
+    }
   }
 }
