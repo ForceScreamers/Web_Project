@@ -10,8 +10,8 @@ export default function ChildEvaluationsDisplay({ Evaluations }) {
       case "Memory game":
         hebGameName = "משחק הזיכרון";
         break;
-      case "Game 1":
-        hebGameName = "משחק 1";
+      case "Match cards game":
+        hebGameName = "התאמת קלפים";
         break;
       case "Game 2":
         hebGameName = "משחק 2";
@@ -31,13 +31,21 @@ export default function ChildEvaluationsDisplay({ Evaluations }) {
   return (
     <div>
       {
-        Evaluations.map((evaluation, index) => {
-          return (
-            <div key={index}>
-              {GameNameToHeb(evaluation.GameName)} : {evaluation.Score}
-            </div>
-          )
-        })
+        // If child has evaluations
+        Evaluations.length > 0 ?
+
+          // Map each one to its corresponding name
+          Evaluations.map((evaluation, index) => {
+            return (
+              <div key={index}>
+                {GameNameToHeb(evaluation.GameName)} : {evaluation.Score}
+              </div>
+
+            )
+          })
+
+          : // Else
+          <label>אין נתונים</label>
       }
 
     </div>

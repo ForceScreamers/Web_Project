@@ -8,6 +8,7 @@ import axios from "axios";
 import GameTemplate from "../../Games/GameTemplate";
 import { ParentsApiRequest } from "../../RequestHeadersToWebApi";
 import MatchCardsGame from "../../Games/MatchCardsGame/MatchCardsGame";
+import NoChildrenMessage from "../../Components/ParentsComponents/GamesPageComponents/NoChildrenMessage";
 
 const GAMES_MENU_ID = -1;
 
@@ -81,6 +82,18 @@ export default function GamesPage({ LoadChildrenFromServer: UpdateChildrenProfil
     return gameToRender;
   }
 
+  function DoesUserHaveChildren() {
+    let children = JSON.parse(sessionStorage.getItem('children'));
+    let hasChildren = false;
+
+    console.log(children);
+    if (children && children.length > 0) {
+      hasChildren = true;
+    }
+
+    return hasChildren;
+  }
+
   return (
     <div>
       <ParentMainPage>
@@ -88,10 +101,14 @@ export default function GamesPage({ LoadChildrenFromServer: UpdateChildrenProfil
         <h1>משחקים</h1>
 
         {
-          currentGameId === GAMES_MENU_ID ?
-            <GamePreviewCardsGrid HandlePlay={HandlePlay} Games={GAMES} />
+          DoesUserHaveChildren() ?
+            currentGameId === GAMES_MENU_ID ?
+              <GamePreviewCardsGrid HandlePlay={HandlePlay} Games={GAMES} />
+              :
+              RenderCurrentGame()
             :
-            RenderCurrentGame()
+
+            <NoChildrenMessage />
         }
 
       </ParentMainPage>

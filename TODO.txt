@@ -4,11 +4,9 @@ Games:
 - מתמטיקה
 
 General:
-  [ ] Add "Cannot play if there are no children added" and disable games page
   [ ] Check for all api request functions
   [ ] Add errors in login and register as text to screen
   [ ] Fix collapse or navbar width when resizing the window
-  [ ] Fix memory game images when playing in firefox
 
 
 Admins App:
@@ -25,9 +23,6 @@ Parents App:
           more data
         }
     }
-
-  Games - 
-    [ ] Finish games page
 
     Match Cards - 
       [ ] Pre setup files

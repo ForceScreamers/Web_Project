@@ -32,7 +32,7 @@ function ChildCard({ SelectChild, DeleteChild, ChildProfile }) {
 
         <Card.Body>
           <Card.Title>
-            <CloseButton aria-label='מחיקה' onClick={() => HandleDeleteChild()} /> {ChildProfile.Name}
+            <CloseButton aria-label='מחיקה' onClick={() => HandleDeleteChild()} /> {ChildProfile.Name + " "}
 
             <Button
               className='test-class'
