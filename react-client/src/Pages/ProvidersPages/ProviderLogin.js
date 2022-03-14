@@ -88,7 +88,7 @@ export default function ProviderLogin({ HandleProviderLogin, UserExistsError }) 
           }
 
 
-          <label className="user-doesnt-exist-label" >{UserExistsError ? "" : "לא מורשה להתחבר"}</label>
+          <label className="user-doesnt-exist-label" >{UserExistsError ? "לא מורשה להתחבר" : ""}</label>
 
           <input type="submit" value="התחברות" />
         </div>

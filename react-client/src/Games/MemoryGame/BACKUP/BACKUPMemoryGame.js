@@ -1,7 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import Card from "../MemoryGame/Card";
 import "./app.scss";
-import cardsDataJson from './MemoryCardsList.json'
 
 const CARD_COUNT = 16;
 let gameCards = new Array(CARD_COUNT);
@@ -9,26 +8,11 @@ let isDone = false;
 //  TODO: change the typeCounter method to something nicer
 let typeCounter = 0;
 
-
-//  Convert to array
-let cardsDataList = [];
-for (let card in cardsDataJson) {
-  cardsDataList.push(cardsDataJson[card]);
-}
-
-//	Split each object's properties into array
-let cardTexts = [];
-for (let card of cardsDataList) {
-  for (let prop in card) {
-    cardTexts.push(card[prop]);
-  }
-}
-
 const GenerateGameCards = () => {
   for (let i = 0; i < gameCards.length; i++) {
     gameCards[i] = {
       type: typeCounter,
-      value: cardTexts[i]
+      //image: 
     }
 
     if (i % 2 !== 0) {
@@ -38,7 +22,7 @@ const GenerateGameCards = () => {
 }
 
 const CARD_CLOSING_DELAY = 500;
-const EVALUATION_DELAY = 800;
+const EVALUATION_DELAY = 300;
 
 function shuffleCards(array) {
   const length = array.length;
@@ -75,7 +59,7 @@ export default function MemoryGame({ SetHasEnded }) {
   const checkCompletion = () => {
     if (Object.keys(clearedCards).length === gameCards.length / 2) {
       console.log("Done!");
-      //SetHasEnded(true);
+      SetHasEnded(true);
     }
     isDone = true;
   };
@@ -146,39 +130,35 @@ export default function MemoryGame({ SetHasEnded }) {
 
   return (
     <div>
-
-      <div>
-        <header>
-          <h3>שלום</h3>
-          <div>
-            הוראות יהיו פה
-          </div>
-        </header>
-        <div className="memory-game-container">
-          {cards.map((card, index) => {
-            return (
-              <Card
-                key={index}
-                Type={card.value.type}
-                Index={index}
-                IsDisabled={shouldDisableAllCards}
-                IsInactive={checkIsInactive(card)}
-                IsFlipped={checkIsFlipped(index)}
-                OnClick={handleCardClick}
-                Caption={cards[index].value}
-              />
-            );
-          })}
+      <header>
+        <h3>שלום</h3>
+        <div>
+          הוראות יהיו פה
         </div>
-        <footer>
-          <div className="score">
-            <div className="moves">
-              <span className="bold">מהלכים:</span> {moves}
-            </div>
-          </div>
-        </footer>
+      </header>
+      <div className="memory-game-container">
+        {cards.map((card, index) => {
+          return (
+            <Card
+              key={index}
+              card={card}
+              index={index}
+              isDisabled={shouldDisableAllCards}
+              isInactive={checkIsInactive(card)}
+              isFlipped={checkIsFlipped(index)}
+              onClick={handleCardClick}
+              cardType={cards[index].type}
+            />
+          );
+        })}
       </div>
-
+      <footer>
+        <div className="score">
+          <div className="moves">
+            <span className="bold">מהלכים:</span> {moves}
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

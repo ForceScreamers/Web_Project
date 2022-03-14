@@ -4,7 +4,6 @@ import GamePreviewCard from "../../Components/GeneralComponents/GamesComponents/
 import Img from '../../images/download.jpg'
 import GamePreviewCardsGrid from "../../Components/GeneralComponents/GamesComponents/GamePreviewCardsGrid";
 import { useState } from "react";
-import axios from "axios";
 import GameTemplate from "../../Games/GameTemplate";
 import { ParentsApiRequest } from "../../RequestHeadersToWebApi";
 import MatchCardsGame from "../../Games/MatchCardsGame/MatchCardsGame";
@@ -16,11 +15,13 @@ export default function GamesPage({ LoadChildrenFromServer: UpdateChildrenProfil
 
   const [currentGameId, setCurrentGameId] = useState(GAMES_MENU_ID);
 
+
   function ExitGame() {
     setCurrentGameId(GAMES_MENU_ID);
   }
 
   function EndGame(score, gameId) {
+
     alert("Game score: " + score);
 
     let evaluationScoreData = {
@@ -47,16 +48,23 @@ export default function GamesPage({ LoadChildrenFromServer: UpdateChildrenProfil
       gameComponent: <GameTemplate ExitGame={ExitGame} EndGame={EndGame} GameId={4} GameComponent={MemoryGame} />
     },
     {
-      name: "התאמת קלפים",
+      name: "הפכים",
       description: "תיאור התאמת קלפים",
       id: 2,
       gameComponent: <GameTemplate ExitGame={ExitGame} EndGame={EndGame} GameId={8} GameComponent={MatchCardsGame} />
 
     },
     {
-      name: "פאזל",
-      description: "תיאור פאזל",
+      name: "מספר וכמות",
+      description: "תיאור מספר וכמות",
       id: 3,
+      gameComponent: <GameTemplate ExitGame={ExitGame} EndGame={EndGame} GameId={8} GameComponent={MatchCardsGame} />
+    },
+    {
+      name: "להוסיף",
+      description: "",
+      id: 4,
+      // gameComponent: <GameTemplate ExitGame={ExitGame} EndGame={EndGame} GameId={8} GameComponent={null} />
     },
   ];
 
@@ -82,6 +90,7 @@ export default function GamesPage({ LoadChildrenFromServer: UpdateChildrenProfil
     return gameToRender;
   }
 
+
   function DoesUserHaveChildren() {
     let children = JSON.parse(sessionStorage.getItem('children'));
     let hasChildren = false;
@@ -94,13 +103,33 @@ export default function GamesPage({ LoadChildrenFromServer: UpdateChildrenProfil
     return hasChildren;
   }
 
+
+  function RenderGamesPage() {
+
+    if (DoesUserHaveChildren() === true) {
+
+      if (currentGameId === GAMES_MENU_ID) {
+
+        //  Show grid
+        return <GamePreviewCardsGrid HandlePlay={HandlePlay} Games={GAMES} />
+      }
+      else {
+
+        return RenderCurrentGame()
+      }
+    }
+
+    return <NoChildrenMessage />
+  }
+
+
   return (
     <div>
       <ParentMainPage>
 
         <h1>משחקים</h1>
 
-        {
+        {/* {
           DoesUserHaveChildren() ?
             currentGameId === GAMES_MENU_ID ?
               <GamePreviewCardsGrid HandlePlay={HandlePlay} Games={GAMES} />
@@ -109,7 +138,10 @@ export default function GamesPage({ LoadChildrenFromServer: UpdateChildrenProfil
             :
 
             <NoChildrenMessage />
-        }
+        } */}
+
+        {RenderGamesPage()}
+
 
       </ParentMainPage>
     </div>

@@ -148,7 +148,7 @@ export default function ParentRegister({ HandleRegister, UserExists }) {
               })
             }
 
-            <label className="user-exists-label" >{UserExists ? "" : "ש"}</label>
+            <label className="user-exists-label" >{UserExists ? "משתמש זה קיים" : ""}</label>
 
             <input type="submit" value="הירשם" />
           </div>

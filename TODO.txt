@@ -4,7 +4,8 @@ Games:
 - מתמטיקה
 
 General:
-  [ ] Check for all api request functions
+  [ ] Games page - Add show score and return to games menu button after ending a game
+  [ ] Split user exists state into loginUserExists and registerUserExists
   [ ] Add errors in login and register as text to screen
   [ ] Fix collapse or navbar width when resizing the window
 

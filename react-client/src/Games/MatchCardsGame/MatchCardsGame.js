@@ -36,7 +36,6 @@ const GenerateGameCards = () => {
 		if (i % 2 !== 0) {
 			typeCounter++;
 		}
-
 	}
 
 	console.log(gameCards)
@@ -165,14 +164,12 @@ export default function MemoryGame({ SetHasEnded }) {
 					return (
 						<MatchCard
 							key={index}
-							card={card}
 							Type={card.value.type}
 							Index={index}
 							IsDisabled={shouldDisableAllCards}
 							IsInactive={checkIsInactive(card)}
 							IsSelected={checkIsSelected(index)}
 							OnClick={HandleCardClick}
-							cardType={cards[index].type}
 							Caption={cards[index].value}
 						/>
 					);

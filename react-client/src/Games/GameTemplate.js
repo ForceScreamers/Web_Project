@@ -54,11 +54,14 @@ export default function GameTemplate({ EndGame, GameId, GameComponent, ExitGame 
 
 
   return (
-    <div>
-      <Button onClick={() => EndGame(CalculateGameScore(), GameId)}>debug exit</Button>
-      <Button onClick={() => ExitGame()}>יציאה</Button>
-      <Button onClick={() => ResetTimer()}>ריסטרט</Button>
-      <GameComponent SetHasEnded={setHasEnded} />
-    </div>
+    !hasEnded ?
+      <div>
+        <Button onClick={() => EndGame(CalculateGameScore(), GameId)}>debug exit</Button>
+        <Button onClick={() => ExitGame()}>יציאה</Button>
+        <Button onClick={() => ResetTimer()}>ריסטרט</Button>
+        <GameComponent SetHasEnded={setHasEnded} />
+      </div>
+      :
+      <h1>lel</h1>
   )
 }
