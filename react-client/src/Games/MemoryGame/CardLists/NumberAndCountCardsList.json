@@ -1,0 +1,98 @@
+{
+  "set-1": {
+    "half-1": {
+      "frontImage": "/match-cards-images/NumberAndCountCards/count-1.png",
+      "backImage": "/match-cards-images/NumberAndCountCards/back-2.png",
+      "value": ""
+    },
+    "half-2": {
+      "frontImage": "/match-cards-images/NumberAndCountCards/front-2.png",
+      "backImage": "/match-cards-images/NumberAndCountCards/back-1.png",
+      "value": "1"
+    }
+  },
+  "set-2": {
+    "half-1": {
+      "frontImage": "/match-cards-images/NumberAndCountCards/count-2.png",
+      "backImage": "/match-cards-images/NumberAndCountCards/back-2.png",
+      "value": ""
+    },
+    "half-2": {
+      "frontImage": "/match-cards-images/NumberAndCountCards/front-2.png",
+      "backImage": "/match-cards-images/NumberAndCountCards/back-1.png",
+      "value": "2"
+    }
+  },
+  "set-3": {
+    "half-1": {
+      "frontImage": "/match-cards-images/NumberAndCountCards/count-3.png",
+      "backImage": "/match-cards-images/NumberAndCountCards/back-2.png",
+      "value": ""
+    },
+    "half-2": {
+      "frontImage": "/match-cards-images/NumberAndCountCards/front-2.png",
+      "backImage": "/match-cards-images/NumberAndCountCards/back-1.png",
+      "value": "3"
+    }
+  },
+  "set-4": {
+    "half-1": {
+      "frontImage": "/match-cards-images/NumberAndCountCards/count-4.png",
+      "backImage": "/match-cards-images/NumberAndCountCards/back-2.png",
+      "value": ""
+    },
+    "half-2": {
+      "frontImage": "/match-cards-images/NumberAndCountCards/front-2.png",
+      "backImage": "/match-cards-images/NumberAndCountCards/back-1.png",
+      "value": "4"
+    }
+  },
+  "set-5": {
+    "half-1": {
+      "frontImage": "/match-cards-images/NumberAndCountCards/count-5.png",
+      "backImage": "/match-cards-images/NumberAndCountCards/back-2.png",
+      "value": ""
+    },
+    "half-2": {
+      "frontImage": "/match-cards-images/NumberAndCountCards/front-2.png",
+      "backImage": "/match-cards-images/NumberAndCountCards/back-1.png",
+      "value": "5"
+    }
+  },
+  "set-6": {
+    "half-1": {
+      "frontImage": "/match-cards-images/NumberAndCountCards/count-6.png",
+      "backImage": "/match-cards-images/NumberAndCountCards/back-2.png",
+      "value": ""
+    },
+    "half-2": {
+      "frontImage": "/match-cards-images/NumberAndCountCards/front-2.png",
+      "backImage": "/match-cards-images/NumberAndCountCards/back-1.png",
+      "value": "6"
+    }
+  },
+  "set-7": {
+    "half-1": {
+      "frontImage": "/match-cards-images/NumberAndCountCards/count-7.png",
+      "backImage": "/match-cards-images/NumberAndCountCards/back-2.png",
+      "value": ""
+    },
+    "half-2": {
+      "frontImage": "/match-cards-images/NumberAndCountCards/front-2.png",
+      "backImage": "/match-cards-images/NumberAndCountCards/back-1.png",
+      "value": "7"
+    }
+  },
+  "set-8": {
+    "half-1": {
+      "frontImage": "/match-cards-images/NumberAndCountCards/count-8.png",
+      "backImage": "/match-cards-images/NumberAndCountCards/back-2.png",
+      "value": ""
+    },
+    "half-2": {
+      "frontImage": "/match-cards-images/NumberAndCountCards/front-2.png",
+      "backImage": "/match-cards-images/NumberAndCountCards/back-1.png",
+      "value": "8"
+    }
+  }
+}

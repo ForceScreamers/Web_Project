@@ -1,0 +1,98 @@
+{
+  "set-1": {
+    "half-1": {
+      "frontImage": "/match-cards-images/OppositesCards/front-1.png",
+      "backImage": "/match-cards-images/OppositesCards/back-1.png",
+      "value": "קדימה"
+    },
+    "half-2": {
+      "frontImage": "/match-cards-images/OppositesCards/front-2.png",
+      "backImage": "/match-cards-images/OppositesCards/back-2.png",
+      "value": "אחורה"
+    }
+  },
+  "set-2": {
+    "half-1": {
+      "frontImage": "/match-cards-images/OppositesCards/front-1.png",
+      "backImage": "/match-cards-images/OppositesCards/back-1.png",
+      "value": "חדש"
+    },
+    "half-2": {
+      "frontImage": "/match-cards-images/OppositesCards/front-2.png",
+      "backImage": "/match-cards-images/OppositesCards/back-2.png",
+      "value": "ישן"
+    }
+  },
+  "set-3": {
+    "half-1": {
+      "frontImage": "/match-cards-images/OppositesCards/front-1.png",
+      "backImage": "/match-cards-images/OppositesCards/back-1.png",
+      "value": "אהבה"
+    },
+    "half-2": {
+      "frontImage": "/match-cards-images/OppositesCards/front-2.png",
+      "backImage": "/match-cards-images/OppositesCards/back-2.png",
+      "value": "שנאה"
+    }
+  },
+  "set-4": {
+    "half-1": {
+      "frontImage": "/match-cards-images/OppositesCards/front-1.png",
+      "backImage": "/match-cards-images/OppositesCards/back-1.png",
+      "value": "גבוה"
+    },
+    "half-2": {
+      "frontImage": "/match-cards-images/OppositesCards/front-2.png",
+      "backImage": "/match-cards-images/OppositesCards/back-2.png",
+      "value": "נמוך"
+    }
+  },
+  "set-5": {
+    "half-1": {
+      "frontImage": "/match-cards-images/OppositesCards/front-1.png",
+      "backImage": "/match-cards-images/OppositesCards/back-1.png",
+      "value": "זול"
+    },
+    "half-2": {
+      "frontImage": "/match-cards-images/OppositesCards/front-2.png",
+      "backImage": "/match-cards-images/OppositesCards/back-2.png",
+      "value": "יקר"
+    }
+  },
+  "set-6": {
+    "half-1": {
+      "frontImage": "/match-cards-images/OppositesCards/front-1.png",
+      "backImage": "/match-cards-images/OppositesCards/back-1.png",
+      "value": "חם"
+    },
+    "half-2": {
+      "frontImage": "/match-cards-images/OppositesCards/front-2.png",
+      "backImage": "/match-cards-images/OppositesCards/back-2.png",
+      "value": "קר"
+    }
+  },
+  "set-7": {
+    "half-1": {
+      "frontImage": "/match-cards-images/OppositesCards/front-1.png",
+      "backImage": "/match-cards-images/OppositesCards/back-1.png",
+      "value": "כן"
+    },
+    "half-2": {
+      "frontImage": "/match-cards-images/OppositesCards/front-2.png",
+      "backImage": "/match-cards-images/OppositesCards/back-2.png",
+      "value": "לא"
+    }
+  },
+  "set-8": {
+    "half-1": {
+      "frontImage": "/match-cards-images/OppositesCards/front-1.png",
+      "backImage": "/match-cards-images/OppositesCards/back-1.png",
+      "value": "עמוק"
+    },
+    "half-2": {
+      "frontImage": "/match-cards-images/OppositesCards/front-2.png",
+      "backImage": "/match-cards-images/OppositesCards/back-2.png",
+      "value": "רדוד"
+    }
+  }
+}

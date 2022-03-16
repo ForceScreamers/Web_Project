@@ -1,5 +1,7 @@
 //	#region Imports
 
+
+
 //	Hooks
 import React from 'react';
 import { useEffect, useState } from 'react';
@@ -22,6 +24,9 @@ import { PublicRoute } from '../Components/GeneralComponents/PublicRoute'
 
 //	Bootstrap css import
 import 'bootstrap/dist/css/bootstrap.min.css';
+
+
+
 
 //	Contexts
 import { NavBarContext } from '../Contexts/NavBarContext';
@@ -86,6 +91,11 @@ export default function ParentsApp() {
 
     }
   }
+
+
+  useEffect(() => {
+    console.log(history.location.pathname);
+  })
 
 
   function GetSelectedChild(childrenArray) {
@@ -233,7 +243,7 @@ export default function ParentsApp() {
             LoadChildrenFromServer={LoadChildrenFromServer}
           />}
         />
-        <ProtectedRoute exact path="/Parent/Games" Component={() => <GamesPage LoadChildrenFromServer={LoadChildrenFromServer} />} />
+        <ProtectedRoute exact path="/Parent/Games" Component={() => <GamesPage UpdateChildrenProfiles={LoadChildrenFromServer} />} />
         <ProtectedRoute exact path="/Parent/Info" Component={InfoPage} />
         <ProtectedRoute exact path="/Parent/Avatar" Component={AvatarPage} />
         <ProtectedRoute exact path="/Parent/Journal" Component={JournalPage} />

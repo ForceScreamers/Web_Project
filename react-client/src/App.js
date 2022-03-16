@@ -1,6 +1,8 @@
 //	Bootstrap css import
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+import './AppStyles.css'
+
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import ParentsApp from './Apps/ParentsApp';
 import ProvidersApp from './Apps/ProvidersApp';
@@ -12,7 +14,7 @@ import ProtectedRoute from './Components/GeneralComponents/ProtectedRoute';
 const App = () => {
 	return (
 
-		<div className="App" >
+		<div className="App background-image" >
 
 			<Router>
 

@@ -1,10 +1,12 @@
 import { Button } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import { Redirect } from "react-router-dom";
+import ShowScoreModal from "./ShowScoreModal";
 
 const SECONDS_TO_COMPLETE = 60;
 
-export default function GameTemplate({ EndGame, GameId, GameComponent, ExitGame }) {
+export default function GameTemplate({ EndGame, GameId, GameComponent, ExitGame, CardsJSON, GameName }) {
+
 
   const [secondsLeft, setSecondsLeft] = useState(SECONDS_TO_COMPLETE);
 
@@ -14,7 +16,6 @@ export default function GameTemplate({ EndGame, GameId, GameComponent, ExitGame 
     if (!secondsLeft) return;
 
     const intervalId = setTimeout(() => {
-      //console.log(secondsLeft)
       setSecondsLeft(secondsLeft - 1);
     }, 1000);
 
@@ -34,6 +35,7 @@ export default function GameTemplate({ EndGame, GameId, GameComponent, ExitGame 
   }, [hasEnded])
 
 
+
   function CalculateGameScore() {
     let completionTime = SECONDS_TO_COMPLETE - secondsLeft;
     let score = 0;
@@ -51,17 +53,22 @@ export default function GameTemplate({ EndGame, GameId, GameComponent, ExitGame 
     return score;
   }
 
+  function ForceEndGame() {
+    EndGame(CalculateGameScore(), GameId)
+  }
 
 
   return (
-    !hasEnded ?
-      <div>
-        <Button onClick={() => EndGame(CalculateGameScore(), GameId)}>debug exit</Button>
-        <Button onClick={() => ExitGame()}>יציאה</Button>
-        <Button onClick={() => ResetTimer()}>ריסטרט</Button>
-        <GameComponent SetHasEnded={setHasEnded} />
+    <div>
+      <Button onClick={() => ForceEndGame()}>debug exit</Button>
+      <Button onClick={() => ResetTimer()}>ריסטרט</Button>
+      <GameComponent SetHasEnded={setHasEnded} CardsJSON={CardsJSON} Time={secondsLeft} GameName={GameName} />
+
+      <br />
+
+      <div className="d-flex justify-content-center align-items-center">
+        <Button variant="danger" size="lg" onClick={() => ExitGame()}>יציאה</Button>
       </div>
-      :
-      <h1>lel</h1>
+    </div>
   )
 }

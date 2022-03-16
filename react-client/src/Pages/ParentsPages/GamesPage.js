@@ -9,20 +9,30 @@ import { ParentsApiRequest } from "../../RequestHeadersToWebApi";
 import MatchCardsGame from "../../Games/MatchCardsGame/MatchCardsGame";
 import NoChildrenMessage from "../../Components/ParentsComponents/GamesPageComponents/NoChildrenMessage";
 
-const GAMES_MENU_ID = -1;
+import ShowScoreModal from "../../Games/ShowScoreModal";
 
-export default function GamesPage({ LoadChildrenFromServer: UpdateChildrenProfiles }) {
+
+
+//  JSON Cards list
+import jsonMatchCards from '../../Games/MemoryGame/CardLists/MatchCardsList.json'
+import jsonOppositesCards from '../../Games/MemoryGame/CardLists/OppositesCardsList.json'
+import jsonNumberAndCountCards from '../../Games/MemoryGame/CardLists/NumberAndCountCardsList.json'
+
+const GAMES_MENU_ID = 0;
+
+export default function GamesPage({ UpdateChildrenProfiles }) {
 
   const [currentGameId, setCurrentGameId] = useState(GAMES_MENU_ID);
+
+  const [showScoreModal, setShowScoreModal] = useState(false);
+  const [score, setScore] = useState(0);
 
 
   function ExitGame() {
     setCurrentGameId(GAMES_MENU_ID);
   }
 
-  function EndGame(score, gameId) {
-
-    alert("Game score: " + score);
+  async function EndGame(score, gameId) {
 
     let evaluationScoreData = {
       childId: JSON.parse(sessionStorage.getItem('currentChild')).Id,
@@ -34,34 +44,40 @@ export default function GamesPage({ LoadChildrenFromServer: UpdateChildrenProfil
       .catch(err => console.log(err))
       .then(() => {
         setCurrentGameId(GAMES_MENU_ID);
-        UpdateChildrenProfiles();
+
+        setScore(score);
+        setShowScoreModal(true);
+
       })
   }
+
+
+
 
 
   //Mock data
   const GAMES = [
     {
-      name: "משחק הזיכרון",
+      name: "שיוך",
       description: "תיאור משחק זיכרון",
       id: 1,
-      gameComponent: <GameTemplate ExitGame={ExitGame} EndGame={EndGame} GameId={4} GameComponent={MemoryGame} />
+      gameComponent: <GameTemplate ExitGame={ExitGame} CardsJSON={jsonMatchCards} EndGame={EndGame} GameId={9} GameComponent={MemoryGame} GameName="שיוך" />
     },
     {
       name: "הפכים",
       description: "תיאור התאמת קלפים",
       id: 2,
-      gameComponent: <GameTemplate ExitGame={ExitGame} EndGame={EndGame} GameId={8} GameComponent={MatchCardsGame} />
+      gameComponent: <GameTemplate ExitGame={ExitGame} CardsJSON={jsonOppositesCards} EndGame={EndGame} GameId={10} GameComponent={MemoryGame} GameName="הפכים" />
 
     },
     {
       name: "מספר וכמות",
       description: "תיאור מספר וכמות",
       id: 3,
-      gameComponent: <GameTemplate ExitGame={ExitGame} EndGame={EndGame} GameId={8} GameComponent={MatchCardsGame} />
+      gameComponent: <GameTemplate ExitGame={ExitGame} CardsJSON={jsonNumberAndCountCards} EndGame={EndGame} GameId={11} GameComponent={MemoryGame} GameName="מספר וכמות" />
     },
     {
-      name: "להוסיף",
+      name: "המשך תבנית",
       description: "",
       id: 4,
       // gameComponent: <GameTemplate ExitGame={ExitGame} EndGame={EndGame} GameId={8} GameComponent={null} />
@@ -70,13 +86,8 @@ export default function GamesPage({ LoadChildrenFromServer: UpdateChildrenProfil
 
 
   function HandlePlay(gameId) {
-    //  Play the game by the given id
-    //  the ids come from the db
-
     setCurrentGameId(gameId);
-    console.log(gameId);
   }
-
 
 
   function RenderCurrentGame() {
@@ -123,24 +134,22 @@ export default function GamesPage({ LoadChildrenFromServer: UpdateChildrenProfil
   }
 
 
+  function CloseScoreModal() {
+    setShowScoreModal(false);
+    UpdateChildrenProfiles();
+  }
+
+
   return (
     <div>
       <ParentMainPage>
 
         <h1>משחקים</h1>
 
-        {/* {
-          DoesUserHaveChildren() ?
-            currentGameId === GAMES_MENU_ID ?
-              <GamePreviewCardsGrid HandlePlay={HandlePlay} Games={GAMES} />
-              :
-              RenderCurrentGame()
-            :
-
-            <NoChildrenMessage />
-        } */}
-
-        {RenderGamesPage()}
+        {
+          RenderGamesPage()
+        }
+        <ShowScoreModal ShowScoreModal={showScoreModal} CloseScoreModal={CloseScoreModal} Score={score} />
 
 
       </ParentMainPage>

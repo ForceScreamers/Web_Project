@@ -1,31 +1,44 @@
 import { useEffect, useState, useRef } from "react";
 import Card from "../MemoryGame/Card";
 import "./app.scss";
-import cardsDataJson from './MemoryCardsList.json'
 
 const CARD_COUNT = 16;
-let gameCards = new Array(CARD_COUNT);
+//let gameCards = new Array(CARD_COUNT);
 let isDone = false;
 //  TODO: change the typeCounter method to something nicer
 let typeCounter = 0;
 
 
-//  Convert to array
-let cardsDataList = [];
-for (let card in cardsDataJson) {
-  cardsDataList.push(cardsDataJson[card]);
-}
+function CardsJSONToCardsArray(jsonCards) {
+  //  Convert to array
+  let cardsDataList = [];
 
-//	Split each object's properties into array
-let cardTexts = [];
-for (let card of cardsDataList) {
-  for (let prop in card) {
-    cardTexts.push(card[prop]);
+  for (let card in jsonCards) {
+    cardsDataList.push(jsonCards[card]);
   }
+  return cardsDataList;
 }
 
-const GenerateGameCards = () => {
-  for (let i = 0; i < gameCards.length; i++) {
+function SplitCardProperties(cardsArray) {
+  //	Split each object's properties into array
+  let cardTexts = [];
+
+  for (let card of cardsArray) {
+    for (let prop in card) {
+      cardTexts.push(card[prop]);
+    }
+  }
+
+  return cardTexts;
+}
+
+
+
+const GenerateGameCards = (jsonCards) => {
+  let gameCards = CardsJSONToCardsArray(jsonCards);
+  let cardTexts = SplitCardProperties(gameCards);
+
+  for (let i = 0; i < CARD_COUNT; i++) {
     gameCards[i] = {
       type: typeCounter,
       value: cardTexts[i]
@@ -35,6 +48,8 @@ const GenerateGameCards = () => {
       typeCounter++;
     }
   }
+
+  return gameCards;
 }
 
 const CARD_CLOSING_DELAY = 500;
@@ -52,9 +67,12 @@ function shuffleCards(array) {
   return array;
 }
 
-GenerateGameCards();
 
-export default function MemoryGame({ SetHasEnded }) {
+
+export default function MemoryGame({ CardsJSON, SetHasEnded, Time, GameName }) {
+
+  let gameCards = GenerateGameCards(CardsJSON);
+  // console.log(gameCards);
 
   const [cards, setCards] = useState(
     shuffleCards.bind(null, gameCards)
@@ -65,6 +83,10 @@ export default function MemoryGame({ SetHasEnded }) {
   const [clearedCards, setClearedCards] = useState({});
   const [shouldDisableAllCards, setShouldDisableAllCards] = useState(false);
   const [moves, setMoves] = useState(0);
+  const [correctMoves, setCorrectMoves] = useState(0);
+
+
+
   const [showModal, setShowModal] = useState(false);
   const timeout = useRef(null);
 
@@ -75,9 +97,11 @@ export default function MemoryGame({ SetHasEnded }) {
   const checkCompletion = () => {
     if (Object.keys(clearedCards).length === gameCards.length / 2) {
       console.log("Done!");
-      //SetHasEnded(true);
+      SetHasEnded(true);
     }
-    isDone = true;
+    else {
+      SetHasEnded(false);
+    }
   };
 
   const evaluate = () => {
@@ -90,6 +114,7 @@ export default function MemoryGame({ SetHasEnded }) {
       //  Meaning there will be half the card count
       setClearedCards((prev) => ({ ...prev, [cards[first].type]: true }));
       console.log("Ok!")
+      setCorrectMoves((correctMoves) => correctMoves + 1)
 
       //  Reset open cards
       setOpenCards([]);
@@ -149,18 +174,25 @@ export default function MemoryGame({ SetHasEnded }) {
 
       <div>
         <header>
-          <h3>שלום</h3>
-          <div>
-            הוראות יהיו פה
+          <h3>{GameName}</h3>
+
+
+          <div className="score d-flex flex-row justify-content-around" >
+            <div>מהלכים: {moves}</div>
+            <div></div>
+            <div>זמן: {Time}</div>
+            <div></div>
+            <div>הצלחות: {correctMoves}</div>
           </div>
+
         </header>
         <div className="memory-game-container">
           {cards.map((card, index) => {
             return (
               <Card
                 key={index}
-                Type={card.value.type}
                 Index={index}
+                Card={card}
                 IsDisabled={shouldDisableAllCards}
                 IsInactive={checkIsInactive(card)}
                 IsFlipped={checkIsFlipped(index)}
@@ -170,13 +202,6 @@ export default function MemoryGame({ SetHasEnded }) {
             );
           })}
         </div>
-        <footer>
-          <div className="score">
-            <div className="moves">
-              <span className="bold">מהלכים:</span> {moves}
-            </div>
-          </div>
-        </footer>
       </div>
 
     </div>

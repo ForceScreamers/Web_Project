@@ -9,6 +9,8 @@ General:
   [ ] Add errors in login and register as text to screen
   [ ] Fix collapse or navbar width when resizing the window
 
+  [ ] Display the game names from the same source, currently there are 2 different data sources
+
 
 Admins App:
 
