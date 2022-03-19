@@ -9,6 +9,7 @@ export default function GameTemplate({ EndGame, GameId, GameComponent, ExitGame,
 
 
   const [secondsLeft, setSecondsLeft] = useState(SECONDS_TO_COMPLETE);
+  const [moves, setMoves] = useState(0);
 
   const [hasEnded, setHasEnded] = useState(false);
 
@@ -62,7 +63,17 @@ export default function GameTemplate({ EndGame, GameId, GameComponent, ExitGame,
     <div>
       <Button onClick={() => ForceEndGame()}>debug exit</Button>
       <Button onClick={() => ResetTimer()}>ריסטרט</Button>
-      <GameComponent SetHasEnded={setHasEnded} CardsJSON={CardsJSON} Time={secondsLeft} GameName={GameName} />
+      <div className="score d-flex flex-row justify-content-around" >
+        <h3>e</h3>
+        <h3>{GameName}</h3>
+
+        <div>מהלכים: {moves}</div>
+        <div></div>
+        <div>זמן: {secondsLeft}</div>
+        {/* <div></div> */}
+        {/* <div>הצלחות: {correctMoves}</div> */}
+      </div>
+      <GameComponent SetHasEnded={setHasEnded} setMoves={setMoves} CardsJSON={CardsJSON} Time={secondsLeft} GameName={GameName} />
 
       <br />
 

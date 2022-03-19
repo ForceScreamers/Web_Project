@@ -27,31 +27,6 @@ export default function GamePreviewCardsGrid({ Games, HandlePlay }) {
           }
         </Row>
       </Container>
-      {/* <Container fluid>
-        <Row>
-          <Col>hello</Col>
-          <Col>hello</Col>
-          <Col>hello</Col>
-          <Col>hello</Col>
-          <Col>hello</Col>
-        </Row>
-        <Row>
-          <Col>hello</Col>
-          <Col>hello</Col>
-          <Col>hello</Col>
-          <Col>hello</Col>
-          <Col>hello</Col>
-        </Row> */}
-      {/* <Row>
-          {PreviewCards.map(card => (
-            <div key={card.id} id="cardItem" className="col-xs-1">
-              {/* <MovieCard film={card} /> */}
-      {/* <GamePreviewCard Name="משחק הזיכרון" Description="תיאור" PreviewImage={Img} /> */}
-
-      {/* </div>
-          ))}
-        </Row> */}
-      {/* </Container> */}
     </div>
   )
 }

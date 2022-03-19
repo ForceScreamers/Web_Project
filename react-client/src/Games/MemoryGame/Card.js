@@ -35,7 +35,7 @@ const Card = ({ OnClick, Index, IsInactive, IsFlipped, IsDisabled, Caption, Card
 
         <div>
           <img src={Caption.frontImage} alt="card-face" className="card-back-face-label image-border" />
-          <p style={{ zIndex: 100, position: 'absolute', top: '30%', left: '30%', fontSize: '2.5vh' }}>{Caption.value}</p>
+          <div className="card-face-text">{Caption.value}</div>
         </div>
 
 

@@ -20,16 +20,21 @@ import jsonNumberAndCountCards from '../../Games/MemoryGame/CardLists/NumberAndC
 
 const GAMES_MENU_ID = 0;
 
+const MENU_COMPONENT = "Hello";
+
 export default function GamesPage({ UpdateChildrenProfiles }) {
 
-  const [currentGameId, setCurrentGameId] = useState(GAMES_MENU_ID);
+  const [currentGame, setCurrentGame] = useState(MENU_COMPONENT)
+
+  // const [currentGameId, setCurrentGameId] = useState(GAMES_MENU_ID);
 
   const [showScoreModal, setShowScoreModal] = useState(false);
   const [score, setScore] = useState(0);
 
 
-  function ExitGame() {
-    setCurrentGameId(GAMES_MENU_ID);
+  function ExitToMenu() {
+    // setCurrentGameId(GAMES_MENU_ID);
+    setCurrentGame(MENU_COMPONENT);
   }
 
   async function EndGame(score, gameId) {
@@ -43,7 +48,8 @@ export default function GamesPage({ UpdateChildrenProfiles }) {
     ParentsApiRequest('POST', 'UpdateEvaluationScore', evaluationScoreData)
       .catch(err => console.log(err))
       .then(() => {
-        setCurrentGameId(GAMES_MENU_ID);
+        // setCurrentGameId(GAMES_MENU_ID);
+        ExitToMenu();
 
         setScore(score);
         setShowScoreModal(true);
@@ -55,32 +61,49 @@ export default function GamesPage({ UpdateChildrenProfiles }) {
 
 
 
-  //Mock data
+  //TODO: Reconfigure with links instead of react components
+
+
+
+  /**
+   * GameComponent = {
+   *  game jsx element
+   *  id
+   * }
+   */
+
+  /**
+   * GameCard = {
+   *  name
+   *  desc
+   *  id
+   * }
+   */
+
+
   const GAMES = [
     {
       name: "שיוך",
       description: "תיאור משחק זיכרון",
-      id: 1,
-      gameComponent: <GameTemplate ExitGame={ExitGame} CardsJSON={jsonMatchCards} EndGame={EndGame} GameId={9} GameComponent={MemoryGame} GameName="שיוך" />
+      gameComponent: <GameTemplate ExitGame={ExitToMenu} CardsJSON={jsonMatchCards} EndGame={EndGame} GameId={9} GameComponent={MemoryGame} />
     },
     {
       name: "הפכים",
       description: "תיאור התאמת קלפים",
-      id: 2,
-      gameComponent: <GameTemplate ExitGame={ExitGame} CardsJSON={jsonOppositesCards} EndGame={EndGame} GameId={10} GameComponent={MemoryGame} GameName="הפכים" />
-
+      gameComponent: <GameTemplate ExitGame={ExitToMenu} CardsJSON={jsonOppositesCards} EndGame={EndGame} GameId={10} GameComponent={MemoryGame} />
     },
     {
       name: "מספר וכמות",
       description: "תיאור מספר וכמות",
-      id: 3,
-      gameComponent: <GameTemplate ExitGame={ExitGame} CardsJSON={jsonNumberAndCountCards} EndGame={EndGame} GameId={11} GameComponent={MemoryGame} GameName="מספר וכמות" />
+      gameComponent: <GameTemplate ExitGame={ExitToMenu} CardsJSON={jsonNumberAndCountCards} EndGame={EndGame} GameId={11} GameComponent={MemoryGame} />
     },
     {
       name: "המשך תבנית",
       description: "",
-      id: 4,
-      // gameComponent: <GameTemplate ExitGame={ExitGame} EndGame={EndGame} GameId={8} GameComponent={null} />
+      gameComponent: <GameTemplate ExitGame={ExitToMenu} EndGame={EndGame} GameId={8} GameComponent={MatchCardsGame} />
+      // gameComponent: <MatchCardsGame />
+      //      <GameComponent SetHasEnded={setHasEnded} CardsJSON={CardsJSON} Time={secondsLeft} GameName={GameName} />
+
     },
   ];
 
@@ -91,9 +114,13 @@ export default function GamesPage({ UpdateChildrenProfiles }) {
 
 
   function RenderCurrentGame() {
+    //TODO: Show as error
     let gameToRender = <div>Hello!</div>
+
+
     GAMES.forEach(game => {
       if (game.id === currentGameId) {
+        // <GameTemplate ExitGame={ExitGame} EndGame={EndGame} GameId={ } GameComponent={ } />
         gameToRender = game.gameComponent;
       }
     })
@@ -121,8 +148,9 @@ export default function GamesPage({ UpdateChildrenProfiles }) {
 
       if (currentGameId === GAMES_MENU_ID) {
 
+        return <GameTemplate GameName={currentGame.name} />
         //  Show grid
-        return <GamePreviewCardsGrid HandlePlay={HandlePlay} Games={GAMES} />
+        // return <GamePreviewCardsGrid HandlePlay={HandlePlay} Games={GAMES} />
       }
       else {
 
@@ -145,10 +173,12 @@ export default function GamesPage({ UpdateChildrenProfiles }) {
       <ParentMainPage>
 
         <h1>משחקים</h1>
-
         {
-          RenderGamesPage()
+          DoesUserHaveChildren()
+            ? RenderCurrentGame()
+            : <NoChildrenMessage />
         }
+
         <ShowScoreModal ShowScoreModal={showScoreModal} CloseScoreModal={CloseScoreModal} Score={score} />
 
 

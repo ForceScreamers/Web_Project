@@ -1,7 +1,7 @@
 {
   "set-1": {
     "half-1": {
-      "value": "/match-cards-images/cat.jpg",
+      "value": "/animals/cat.jpg",
       "type": "image"
     },
     "half-2": {
@@ -15,7 +15,7 @@
       "type": "text"
     },
     "half-2": {
-      "value": "/match-cards-images/dog.jpg",
+      "value": "/animals/dog.jpg",
       "type": "image"
     }
   },
@@ -25,7 +25,7 @@
       "type": "text"
     },
     "half-2": {
-      "value": "/match-cards-images/bird.jpg",
+      "value": "/animals/bird.jpg",
       "type": "image"
     }
   },
@@ -35,7 +35,7 @@
       "type": "text"
     },
     "half-2": {
-      "value": "/match-cards-images/elephant.jpg",
+      "value": "/animals/elephant.jpg",
       "type": "image"
     }
   },
@@ -45,7 +45,7 @@
       "type": "text"
     },
     "half-2": {
-      "value": "/match-cards-images/frog.jpg",
+      "value": "/animals/frog.jpg",
       "type": "image"
     }
   },
@@ -55,7 +55,7 @@
       "type": "text"
     },
     "half-2": {
-      "value": "/match-cards-images/lion.jpg",
+      "value": "/animals/lion.jpg",
       "type": "image"
     }
   },
@@ -65,7 +65,7 @@
       "type": "text"
     },
     "half-2": {
-      "value": "/match-cards-images/peng.jpg",
+      "value": "/animals/peng.jpg",
       "type": "image"
     }
   },
@@ -75,7 +75,7 @@
       "type": "text"
     },
     "half-2": {
-      "value": "/match-cards-images/snake.jpg",
+      "value": "/animals/snake.jpg",
       "type": "image"
     }
   }
