@@ -3,7 +3,9 @@ import Card from "../MemoryGame/Card";
 import "./app.scss";
 
 const CARD_COUNT = 16;
+//let gameCards = new Array(CARD_COUNT);
 let isDone = false;
+//  TODO: change the typeCounter method to something nicer
 let typeCounter = 0;
 
 
@@ -67,7 +69,7 @@ function shuffleCards(array) {
 
 
 
-export default function MemoryGame({ CardsJSON, SetHasEnded, SetMoves }) {
+export default function MemoryGame({ CardsJSON, SetHasEnded, Time, GameName }) {
 
   let gameCards = GenerateGameCards(CardsJSON);
   // console.log(gameCards);
@@ -138,7 +140,6 @@ export default function MemoryGame({ CardsJSON, SetHasEnded, SetMoves }) {
 
       //  Update move count
       setMoves((moves) => moves + 1);
-      SetMoves(moves)
 
       disable();
     } else {
@@ -173,9 +174,16 @@ export default function MemoryGame({ CardsJSON, SetHasEnded, SetMoves }) {
 
       <div>
         <header>
+          <h3>{GameName}</h3>
 
 
-
+          <div className="score d-flex flex-row justify-content-around" >
+            <div>מהלכים: {moves}</div>
+            <div></div>
+            <div>זמן: {Time}</div>
+            <div></div>
+            <div>הצלחות: {correctMoves}</div>
+          </div>
 
         </header>
         <div className="memory-game-container">

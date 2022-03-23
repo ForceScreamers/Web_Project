@@ -1,81 +1,81 @@
 {
   "set-1": {
     "half-1": {
-      "value": "/animals/cat.jpg",
+      "value": "/match-cards-images/Match/m1.png",
       "type": "image"
     },
     "half-2": {
-      "value": "חתול",
-      "type": "text"
+      "value": "/match-cards-images/Match/m1a.png",
+      "type": "image"
     }
   },
   "set-2": {
     "half-1": {
-      "value": "dog",
-      "type": "text"
+      "value": "/match-cards-images/Match/m2.png",
+      "type": "image"
     },
     "half-2": {
-      "value": "/animals/dog.jpg",
+      "value": "/match-cards-images/Match/m2a.png",
       "type": "image"
     }
   },
   "set-3": {
     "half-1": {
-      "value": "ציפור",
-      "type": "text"
+      "value": "/match-cards-images/Match/m3.png",
+      "type": "image"
     },
     "half-2": {
-      "value": "/animals/bird.jpg",
+      "value": "/match-cards-images/Match/m3a.png",
       "type": "image"
     }
   },
   "set-4": {
     "half-1": {
-      "value": "פיל",
-      "type": "text"
+      "value": "/match-cards-images/Match/m4.png",
+      "type": "image"
     },
     "half-2": {
-      "value": "/animals/elephant.jpg",
+      "value": "/match-cards-images/Match/m4a.png",
       "type": "image"
     }
   },
   "set-5": {
     "half-1": {
-      "value": "צפרדע",
-      "type": "text"
+      "value": "/match-cards-images/Match/m5.png",
+      "type": "image"
     },
     "half-2": {
-      "value": "/animals/frog.jpg",
+      "value": "/match-cards-images/Match/m5a.png",
       "type": "image"
     }
   },
   "set-6": {
     "half-1": {
-      "value": "אריה",
-      "type": "text"
+      "value": "/match-cards-images/Match/m6.png",
+      "type": "image"
     },
     "half-2": {
-      "value": "/animals/lion.jpg",
+      "value": "/match-cards-images/Match/m6a.png",
       "type": "image"
     }
   },
   "set-7": {
     "half-1": {
-      "value": "פנגווין",
-      "type": "text"
+      "value": "/match-cards-images/Match/m7.png",
+      "type": "image"
     },
     "half-2": {
-      "value": "/animals/peng.jpg",
+      "value": "/match-cards-images/Match/m7a.png",
       "type": "image"
     }
   },
   "set-8": {
     "half-1": {
-      "value": "נחש",
-      "type": "text"
+      "value": "/match-cards-images/Match/m8.png",
+      "type": "image"
     },
     "half-2": {
-      "value": "/animals/snake.jpg",
+      "value": "/match-cards-images/Match/m8a.png",
       "type": "image"
     }
   }

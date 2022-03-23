@@ -1,18 +1,58 @@
-.LoginContainer{
+.parent-login-main-container{
+  background-color: transparent;
   display: flex;
   margin-top: 20vh;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center; 
+}
+
+.parent-login-title{
+  font-size: 35px;
+  font-weight: 600;
+}
+
+
+
+.login-container{
+  display: flex;
+  margin-top: 50px;
+
+  width:auto;
+  height: 400px;
 
   justify-content: center;
   flex-direction: column;
   align-items: center; 
-
-  border: black 5px solid;
+  /* background-color: red; */
+    /* border: 5px solid white; */
+  background-image: linear-gradient(rgb(111, 217, 252), rgb(255, 145, 164));
+  /* background-image: url('download.jpg'); */
+  /* background-repeat: no-repeat; */
+  /* background-size: cover; */
+  border-radius: 55px;
+  /* margin-top: -200px; */
+  padding: 0px 20px 0px 20px;
+  /* padding: 10vh 2% 10% 2%; */
   /* width: 200px; */
 }
 
 .InputContainer{
   display: flex;
-  justify-content: space-between;
+  /* justify-content: space-around; */
+  align-items: center;
   flex-direction: column; 
-  
+}
+
+.input-field{
+  border-radius: 17px;
+  margin: 18px;
+  border: none; 
+  padding: 10px;
+  font-size: 15px;
+  width: 200px;
+}
+
+.user-doesnt-exist-label{
+  color:red;
 }

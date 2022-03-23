@@ -17,24 +17,20 @@ import ShowScoreModal from "../../Games/ShowScoreModal";
 import jsonMatchCards from '../../Games/MemoryGame/CardLists/MatchCardsList.json'
 import jsonOppositesCards from '../../Games/MemoryGame/CardLists/OppositesCardsList.json'
 import jsonNumberAndCountCards from '../../Games/MemoryGame/CardLists/NumberAndCountCardsList.json'
+import SpotTheDifference from "../../Games/SpotTheDifference/SpotTheDifference";
 
 const GAMES_MENU_ID = 0;
 
-const MENU_COMPONENT = "Hello";
-
 export default function GamesPage({ UpdateChildrenProfiles }) {
 
-  const [currentGame, setCurrentGame] = useState(MENU_COMPONENT)
-
-  // const [currentGameId, setCurrentGameId] = useState(GAMES_MENU_ID);
+  const [currentGameId, setCurrentGameId] = useState(GAMES_MENU_ID);
 
   const [showScoreModal, setShowScoreModal] = useState(false);
   const [score, setScore] = useState(0);
 
 
-  function ExitToMenu() {
-    // setCurrentGameId(GAMES_MENU_ID);
-    setCurrentGame(MENU_COMPONENT);
+  function ExitGame() {
+    setCurrentGameId(GAMES_MENU_ID);
   }
 
   async function EndGame(score, gameId) {
@@ -48,8 +44,7 @@ export default function GamesPage({ UpdateChildrenProfiles }) {
     ParentsApiRequest('POST', 'UpdateEvaluationScore', evaluationScoreData)
       .catch(err => console.log(err))
       .then(() => {
-        // setCurrentGameId(GAMES_MENU_ID);
-        ExitToMenu();
+        setCurrentGameId(GAMES_MENU_ID);
 
         setScore(score);
         setShowScoreModal(true);
@@ -61,49 +56,38 @@ export default function GamesPage({ UpdateChildrenProfiles }) {
 
 
 
-  //TODO: Reconfigure with links instead of react components
-
-
-
-  /**
-   * GameComponent = {
-   *  game jsx element
-   *  id
-   * }
-   */
-
-  /**
-   * GameCard = {
-   *  name
-   *  desc
-   *  id
-   * }
-   */
-
-
+  //Mock data
   const GAMES = [
     {
       name: "שיוך",
       description: "תיאור משחק זיכרון",
-      gameComponent: <GameTemplate ExitGame={ExitToMenu} CardsJSON={jsonMatchCards} EndGame={EndGame} GameId={9} GameComponent={MemoryGame} />
+      id: 1,
+      gameComponent: <GameTemplate ExitGame={ExitGame} CardsJSON={jsonMatchCards} EndGame={EndGame} GameId={9} GameComponent={MemoryGame} GameName="שיוך" />
     },
     {
       name: "הפכים",
-      description: "תיאור התאמת קלפים",
-      gameComponent: <GameTemplate ExitGame={ExitToMenu} CardsJSON={jsonOppositesCards} EndGame={EndGame} GameId={10} GameComponent={MemoryGame} />
+      description: "תיאור הפכים",
+      id: 2,
+      gameComponent: <GameTemplate ExitGame={ExitGame} CardsJSON={jsonOppositesCards} EndGame={EndGame} GameId={10} GameComponent={MemoryGame} GameName="הפכים" />
+
     },
     {
       name: "מספר וכמות",
       description: "תיאור מספר וכמות",
-      gameComponent: <GameTemplate ExitGame={ExitToMenu} CardsJSON={jsonNumberAndCountCards} EndGame={EndGame} GameId={11} GameComponent={MemoryGame} />
+      id: 3,
+      gameComponent: <GameTemplate ExitGame={ExitGame} CardsJSON={jsonNumberAndCountCards} EndGame={EndGame} GameId={11} GameComponent={MemoryGame} GameName="מספר וכמות" />
     },
     {
       name: "המשך תבנית",
       description: "",
-      gameComponent: <GameTemplate ExitGame={ExitToMenu} EndGame={EndGame} GameId={8} GameComponent={MatchCardsGame} />
-      // gameComponent: <MatchCardsGame />
-      //      <GameComponent SetHasEnded={setHasEnded} CardsJSON={CardsJSON} Time={secondsLeft} GameName={GameName} />
-
+      id: 4,
+      gameComponent: <GameTemplate ExitGame={ExitGame} EndGame={EndGame} GameId={8} GameComponent={MatchCardsGame} GameName="התאמה" />
+    },
+    {
+      name: "מצא את ההבדלים",
+      description: "תיאור מצא את ההבדלים",
+      id: 5,
+      gameComponent: <GameTemplate ExitGame={ExitGame} EndGame={EndGame} GameId={0} GameComponent={SpotTheDifference} GameName="מצא את ההבדלים" />
     },
   ];
 
@@ -114,13 +98,9 @@ export default function GamesPage({ UpdateChildrenProfiles }) {
 
 
   function RenderCurrentGame() {
-    //TODO: Show as error
     let gameToRender = <div>Hello!</div>
-
-
     GAMES.forEach(game => {
       if (game.id === currentGameId) {
-        // <GameTemplate ExitGame={ExitGame} EndGame={EndGame} GameId={ } GameComponent={ } />
         gameToRender = game.gameComponent;
       }
     })
@@ -148,9 +128,8 @@ export default function GamesPage({ UpdateChildrenProfiles }) {
 
       if (currentGameId === GAMES_MENU_ID) {
 
-        return <GameTemplate GameName={currentGame.name} />
         //  Show grid
-        // return <GamePreviewCardsGrid HandlePlay={HandlePlay} Games={GAMES} />
+        return <GamePreviewCardsGrid HandlePlay={HandlePlay} Games={GAMES} />
       }
       else {
 
@@ -173,12 +152,10 @@ export default function GamesPage({ UpdateChildrenProfiles }) {
       <ParentMainPage>
 
         <h1>משחקים</h1>
-        {
-          DoesUserHaveChildren()
-            ? RenderCurrentGame()
-            : <NoChildrenMessage />
-        }
 
+        {
+          RenderGamesPage()
+        }
         <ShowScoreModal ShowScoreModal={showScoreModal} CloseScoreModal={CloseScoreModal} Score={score} />
 
 

@@ -22,7 +22,7 @@ function ChildCard({ SelectChild, DeleteChild, ChildProfile }) {
   return (
     <div>
       <Card
-        bg={"white"}
+        bg={"none"}
         key={1}
         border={"dark"}
         text={"dark" /*Can be light or dark*/}

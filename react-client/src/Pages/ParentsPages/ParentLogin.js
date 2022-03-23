@@ -1,12 +1,11 @@
-import '../../CSS/pages-css/Login.css';
-
-// import '../../CSS/pages-css/ParentLogin.css'
+import '../../CSS/pages-css/ParentLogin.css'
 
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { ValidateEmail, ValidatePassword } from '../../Project-Modules/UserInputValidation';
 import { InputField } from '../../Project-Modules/UserInputValidation';
 import FormInputFieldSection from '../../Components/GeneralComponents/FormInputFieldSection';
+import { Button } from 'react-bootstrap';
 
 
 export default function ParentLogin({ HandleLogin, UserExists }) {
@@ -71,33 +70,36 @@ export default function ParentLogin({ HandleLogin, UserExists }) {
 					UserErrorMessageText={field.textErrorMessage}
 					Type={field.type}
 				/>
+				{/* <br /> */}
 			</div>
 		)
 	}
 
 	return (
-		<div className="LoginContainer">
+		<div className="parent-login-main-container">
 
-			<h1>התחברות הורים</h1>
+			<div className="login-container">
+				<div className="parent-login-title">התחברות הורים</div>
+
+				<form onSubmit={OnSubmit}>
+
+					<div className="InputContainer">
+						{
+							inputFields.map((field, index) => {
+								return RenderInputField(field, index);
+							})
+						}
+
+						<label className="user-doesnt-exist-label" >{UserExists ? "שם משתמש או סיסמה שגויים" : ""}</label>
+
+						<input type="submit" value="התחברות" />
+					</div>
+				</form>
+
+			</div>
+
 			<Link to="/Parent/Register" >הרשמת הורים</Link>
-
-			<form onSubmit={OnSubmit}>
-
-				<div className="InputContainer">
-					{
-						inputFields.map((field, index) => {
-							return RenderInputField(field, index);
-						})
-					}
-
-					<label className="user-doesnt-exist-label" >{UserExists ? "שם משתמש או סיסמה שגויים" : ""}</label>
-
-					<input type="submit" value="התחברות" />
-				</div>
-			</form>
-
 			<Link to="/Provider/Login" >התחברות בתור בעל מקצוע</Link>
-
 		</div>
 	)
 }

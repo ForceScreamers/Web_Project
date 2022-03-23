@@ -1,0 +1,33 @@
+{
+  "set-1": {
+    "img1": "/match-cards-images/SpotTheDifference/squid_1.png",
+    "img2": "/match-cards-images/SpotTheDifference/squid_2.png",
+    "correctPositions": [
+      {
+        "x": 410,
+        "y": 227,
+        "isActive": false
+      },
+      {
+        "x": 101,
+        "y": 241,
+        "isActive": false
+      },
+      {
+        "x": 273,
+        "y": 316,
+        "isActive": false
+      },
+      {
+        "x": 426,
+        "y": 721,
+        "isActive": false
+      },
+      {
+        "x": 222,
+        "y": 701,
+        "isActive": false
+      }
+    ]
+  }
+}
