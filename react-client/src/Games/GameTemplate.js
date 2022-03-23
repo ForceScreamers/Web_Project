@@ -1,16 +1,22 @@
 import { Button } from "react-bootstrap";
 import { useState, useEffect } from "react";
-import { Redirect } from "react-router-dom";
+import { Redirect, useHistory } from "react-router-dom";
 import ShowScoreModal from "./ShowScoreModal";
-
+import { ParentsApiRequest } from "../RequestHeadersToWebApi";
 const SECONDS_TO_COMPLETE = 60;
 
-export default function GameTemplate({ EndGame, GameId, GameComponent, ExitGame, CardsJSON, GameName }) {
-
+export default function GameTemplate({ GameId, GameComponent, CardsJSON, GameName }) {
 
   const [secondsLeft, setSecondsLeft] = useState(SECONDS_TO_COMPLETE);
 
   const [hasEnded, setHasEnded] = useState(false);
+
+  const history = useHistory();
+
+  const [showScoreModal, setShowScoreModal] = useState(false);
+  const [score, setScore] = useState(0);
+
+  const [moves, setMoves] = useState(0);
 
   useEffect(() => {
     if (!secondsLeft) return;
@@ -30,7 +36,7 @@ export default function GameTemplate({ EndGame, GameId, GameComponent, ExitGame,
 
   useEffect(() => {
     if (hasEnded === true) {
-      EndGame(CalculateGameScore(), GameId);
+      OpenScoreModal();
     }
   }, [hasEnded])
 
@@ -53,22 +59,66 @@ export default function GameTemplate({ EndGame, GameId, GameComponent, ExitGame,
     return score;
   }
 
-  function ForceEndGame() {
+
+
+  async function EndGame(score, gameId) {
+
+    history.push('/Parent/Games')
+
+    let evaluationScoreData = {
+      childId: JSON.parse(sessionStorage.getItem('currentChild')).Id,
+      gameId: gameId,
+      gameScore: score,
+    }
+
+    ParentsApiRequest('POST', 'UpdateEvaluationScore', evaluationScoreData)
+      .catch(err => console.log(err))
+      .then(() => {
+        setScore(score);
+      })
+  }
+
+  function ExitGameAndUpdateScore() {
+    history.push('/Parent/Games')
     EndGame(CalculateGameScore(), GameId)
+  }
+
+  function ExitGame() {
+    history.push('/Parent/Games')
+  }
+
+  function CloseScoreModal() {
+    setShowScoreModal(false);
+    ExitGameAndUpdateScore();
+    //UpdateChildrenProfiles();
+  }
+
+  function OpenScoreModal() {
+    setShowScoreModal(true);
   }
 
 
   return (
     <div>
-      <Button onClick={() => ForceEndGame()}>debug exit</Button>
       <Button onClick={() => ResetTimer()}>ריסטרט</Button>
-      <GameComponent SetHasEnded={setHasEnded} CardsJSON={CardsJSON} Time={secondsLeft} GameName={GameName} />
+      <h3>{GameName}</h3>
+      <div className="score d-flex flex-row justify-content-around" >
+        <div>מהלכים: {moves}</div>
+        <div></div>
+        <div>זמן: {secondsLeft}</div>
+        {/* <div></div> */}
+        {/* <div>הצלחות: {correctMoves}</div> */}
+      </div>
+
+      <GameComponent SetHasEnded={setHasEnded} CardsJSON={CardsJSON} GameName={GameName} />
 
       <br />
 
       <div className="d-flex justify-content-center align-items-center">
         <Button variant="danger" size="lg" onClick={() => ExitGame()}>יציאה</Button>
       </div>
+
+      <ShowScoreModal ShowScoreModal={showScoreModal} CloseScoreModal={CloseScoreModal} Score={score} />
     </div>
   )
 }

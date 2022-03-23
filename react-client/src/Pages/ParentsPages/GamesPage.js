@@ -11,105 +11,97 @@ import NoChildrenMessage from "../../Components/ParentsComponents/GamesPageCompo
 
 import ShowScoreModal from "../../Games/ShowScoreModal";
 
+import { GAMES_PATH_PREFIX } from "../../Constants";
+import ProtectedRoute from "../../Components/GeneralComponents/ProtectedRoute";
 
+// import jsonNumberAndCount from '../../Games/MemoryGame/CardLists/NumberAndCountCardsList.json'
 
 //  JSON Cards list
 import jsonMatchCards from '../../Games/MemoryGame/CardLists/MatchCardsList.json'
 import jsonOppositesCards from '../../Games/MemoryGame/CardLists/OppositesCardsList.json'
 import jsonNumberAndCountCards from '../../Games/MemoryGame/CardLists/NumberAndCountCardsList.json'
+import jsonSpotTheDifferences from "../../Games/SpotTheDifference/SpotTheDifference";
 import SpotTheDifference from "../../Games/SpotTheDifference/SpotTheDifference";
+import { useHistory } from "react-router-dom";
+import { useEffect } from "react";
 
 const GAMES_MENU_ID = 0;
+//TODO: Match id to database id
+const GAMES = [
+  {
+    name: "שיוך",
+    description: "תיאור משחק זיכרון",
+    id: 1,
+    path: "/Match",
+    component: MemoryGame,
+    jsonData: jsonMatchCards,
+  },
+  {
+    name: "הפכים",
+    description: "תיאור הפכים",
+    path: "/Opposites",
+    id: 2,
+    component: MemoryGame,
+    jsonData: jsonOppositesCards,
+  },
+  {
+    name: "מספר וכמות",
+    description: "תיאור מספר וכמות",
+    path: "/NumberAndCount",
+    id: 18,
+    component: MemoryGame,
+    jsonData: jsonNumberAndCountCards,
+  },
+  {
+    name: "חשבון?",
+    description: "",
+    path: "/yee",
+    id: 4,
+    component: MatchCardsGame,
+    jsonData: jsonMatchCards,
+  },
+  {
+    name: "מצא את ההבדלים",
+    description: "תיאור מצא את ההבדלים",
+    id: 5,
+    path: "/SpotTheDifferences",
+    component: SpotTheDifference,
+    jsonData: jsonSpotTheDifferences,
+  },
+];
+
 
 export default function GamesPage({ UpdateChildrenProfiles }) {
+  useEffect(() => {
+    //return UpdateChildrenProfiles();
+  }, [])
+  // const [showScoreModal, setShowScoreModal] = useState(false);
+  // const [score, setScore] = useState(0);
+  // const history = useHistory();
 
-  const [currentGameId, setCurrentGameId] = useState(GAMES_MENU_ID);
+  // async function EndGame(score, gameId) {
 
-  const [showScoreModal, setShowScoreModal] = useState(false);
-  const [score, setScore] = useState(0);
+  //   history.push('/Parent/Games')
 
+  //   let evaluationScoreData = {
+  //     childId: JSON.parse(sessionStorage.getItem('currentChild')).Id,
+  //     gameId: gameId,
+  //     gameScore: score,
+  //   }
 
-  function ExitGame() {
-    setCurrentGameId(GAMES_MENU_ID);
-  }
+  //   ParentsApiRequest('POST', 'UpdateEvaluationScore', evaluationScoreData)
+  //     .catch(err => console.log(err))
+  //     .then(() => {
 
-  async function EndGame(score, gameId) {
+  //       // setScore(score);
+  //       // setShowScoreModal(true);
 
-    let evaluationScoreData = {
-      childId: JSON.parse(sessionStorage.getItem('currentChild')).Id,
-      gameId: gameId,
-      gameScore: score,
-    }
-
-    ParentsApiRequest('POST', 'UpdateEvaluationScore', evaluationScoreData)
-      .catch(err => console.log(err))
-      .then(() => {
-        setCurrentGameId(GAMES_MENU_ID);
-
-        setScore(score);
-        setShowScoreModal(true);
-
-      })
-  }
+  //     })
+  // }
 
 
 
-
-
-  //Mock data
-  const GAMES = [
-    {
-      name: "שיוך",
-      description: "תיאור משחק זיכרון",
-      id: 1,
-      gameComponent: <GameTemplate ExitGame={ExitGame} CardsJSON={jsonMatchCards} EndGame={EndGame} GameId={9} GameComponent={MemoryGame} GameName="שיוך" />
-    },
-    {
-      name: "הפכים",
-      description: "תיאור הפכים",
-      id: 2,
-      gameComponent: <GameTemplate ExitGame={ExitGame} CardsJSON={jsonOppositesCards} EndGame={EndGame} GameId={10} GameComponent={MemoryGame} GameName="הפכים" />
-
-    },
-    {
-      name: "מספר וכמות",
-      description: "תיאור מספר וכמות",
-      id: 3,
-      gameComponent: <GameTemplate ExitGame={ExitGame} CardsJSON={jsonNumberAndCountCards} EndGame={EndGame} GameId={11} GameComponent={MemoryGame} GameName="מספר וכמות" />
-    },
-    {
-      name: "המשך תבנית",
-      description: "",
-      id: 4,
-      gameComponent: <GameTemplate ExitGame={ExitGame} EndGame={EndGame} GameId={8} GameComponent={MatchCardsGame} GameName="התאמה" />
-    },
-    {
-      name: "מצא את ההבדלים",
-      description: "תיאור מצא את ההבדלים",
-      id: 5,
-      gameComponent: <GameTemplate ExitGame={ExitGame} EndGame={EndGame} GameId={0} GameComponent={SpotTheDifference} GameName="מצא את ההבדלים" />
-    },
-  ];
-
-
-  function HandlePlay(gameId) {
-    setCurrentGameId(gameId);
-  }
-
-
-  function RenderCurrentGame() {
-    let gameToRender = <div>Hello!</div>
-    GAMES.forEach(game => {
-      if (game.id === currentGameId) {
-        gameToRender = game.gameComponent;
-      }
-    })
-
-    return gameToRender;
-  }
-
-
-  function DoesUserHaveChildren() {
+  function UserHasChildren() {
     let children = JSON.parse(sessionStorage.getItem('children'));
     let hasChildren = false;
 
@@ -121,30 +113,10 @@ export default function GamesPage({ UpdateChildrenProfiles }) {
     return hasChildren;
   }
 
-
-  function RenderGamesPage() {
-
-    if (DoesUserHaveChildren() === true) {
-
-      if (currentGameId === GAMES_MENU_ID) {
-
-        //  Show grid
-        return <GamePreviewCardsGrid HandlePlay={HandlePlay} Games={GAMES} />
-      }
-      else {
-
-        return RenderCurrentGame()
-      }
-    }
-
-    return <NoChildrenMessage />
-  }
-
-
-  function CloseScoreModal() {
-    setShowScoreModal(false);
-    UpdateChildrenProfiles();
-  }
+  // function CloseScoreModal() {
+  //   setShowScoreModal(false);
+  //   UpdateChildrenProfiles();
+  // }
 
 
   return (
@@ -154,12 +126,32 @@ export default function GamesPage({ UpdateChildrenProfiles }) {
         <h1>משחקים</h1>
 
         {
-          RenderGamesPage()
+          UserHasChildren() === true
+            ?
+            <GamePreviewCardsGrid Games={GAMES} />
+            :
+            <NoChildrenMessage />
         }
-        <ShowScoreModal ShowScoreModal={showScoreModal} CloseScoreModal={CloseScoreModal} Score={score} />
 
 
       </ParentMainPage>
     </div>
+  )
+}
+
+
+export function GameRoutes() {
+  return (
+    <>
+      {
+        GAMES.map((game, index) => {
+          return (
+            <ProtectedRoute key={index} exact path={GAMES_PATH_PREFIX + game.path} Component={
+              () => <GameTemplate CardsJSON={game.jsonData} GameId={game.id} GameComponent={game.component} GameName={game.name} />
+            } />
+          )
+        })
+      }
+    </>
   )
 }

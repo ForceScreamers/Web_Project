@@ -64,7 +64,7 @@ function GetRandomCorrectPositions() {
 }
 
 
-export default function SpotTheDifference(Moves, SetMoves, EndGame) {
+export default function SpotTheDifference(Moves, SetMoves, SetHasEnded, ImagesJson,) {
   useEffect(() => {
     ExtractAndSetSetsData()
 
@@ -143,6 +143,8 @@ export default function SpotTheDifference(Moves, SetMoves, EndGame) {
     if (IsDone()) {
       console.log("DONE!")
       //TODO: Add end game
+      console.log(SetHasEnded)
+      SetHasEnded(true);
     }
   }
 

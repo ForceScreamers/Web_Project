@@ -3,7 +3,7 @@ import GamePreviewCard from "./GamePreviewCard";
 import Img from '../../../images/download.jpg'
 import './GamePreviewCardsGrid.scss'
 
-export default function GamePreviewCardsGrid({ Games, HandlePlay }) {
+export default function GamePreviewCardsGrid({ Games }) {
 
 
 
@@ -16,10 +16,9 @@ export default function GamePreviewCardsGrid({ Games, HandlePlay }) {
               return (
                 <Col md='4' key={index}>
                   <GamePreviewCard
-                    HandlePlay={HandlePlay}
+                    GamePath={game.path}
                     Name={game.name}
                     Description={game.description}
-                    GameId={game.id}
                     PreviewImage={Img} />
                 </Col>
               )

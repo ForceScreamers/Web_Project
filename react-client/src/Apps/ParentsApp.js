@@ -37,6 +37,8 @@ import { ParentsApiRequest } from '../RequestHeadersToWebApi';
 import ProtectedRoute from '../Components/GeneralComponents/ProtectedRoute';
 
 import utf8 from 'utf8';
+// import GameRoutes from '../Games/GameRoutes';
+import { GameRoutes } from '../Pages/ParentsPages/GamesPage';
 
 //	#endregion
 
@@ -248,6 +250,9 @@ export default function ParentsApp() {
         <ProtectedRoute exact path="/Parent/Avatar" Component={AvatarPage} />
         <ProtectedRoute exact path="/Parent/Journal" Component={JournalPage} />
         <ProtectedRoute exact path="/Parent/Home" Component={HomePage} />
+
+        <GameRoutes />
+
       </NavBarContext.Provider>
 
 

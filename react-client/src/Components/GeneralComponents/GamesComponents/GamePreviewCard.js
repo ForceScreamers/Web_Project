@@ -1,7 +1,11 @@
 import { Card, Button, Accordion } from "react-bootstrap";
 import CustomAccordionToggle from "./CustomAccordionToggle"
+import { useHistory } from "react-router-dom";
 
-export default function GamePreviewCard({ HandlePlay, Name, PreviewImage, Description, GameId }) {
+import { GAMES_PATH_PREFIX } from "../../../Constants";
+
+export default function GamePreviewCard({ GamePath, Name, PreviewImage, Description }) {
+  const history = useHistory();
 
 
   return (
@@ -15,7 +19,7 @@ export default function GamePreviewCard({ HandlePlay, Name, PreviewImage, Descri
             <Card.Title>{Name + " "}</Card.Title>
 
             <div className="d-grid text-center p-1">
-              <Button onClick={() => HandlePlay(GameId)} variant="success" size="sm" >שחק!</Button>
+              <Button onClick={() => history.push(GAMES_PATH_PREFIX + GamePath)} variant="success" size="sm" >שחק!</Button>
             </div>
 
             <div className='d-flex flex-column align-items-start justify-content-start'>

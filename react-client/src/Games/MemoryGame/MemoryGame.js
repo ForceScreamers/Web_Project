@@ -5,9 +5,11 @@ import "./app.scss";
 const CARD_COUNT = 16;
 //let gameCards = new Array(CARD_COUNT);
 let isDone = false;
-//  TODO: change the typeCounter method to something nicer
 let typeCounter = 0;
 
+//TODO: Fix memory leak (Error shown console)
+//TODO: Spot the differences can't call setHasEnded, need to fix!
+//TODO: Check that all of the games use the game template instead of displaying each of his own score and time
 
 function CardsJSONToCardsArray(jsonCards) {
   //  Convert to array
@@ -69,7 +71,7 @@ function shuffleCards(array) {
 
 
 
-export default function MemoryGame({ CardsJSON, SetHasEnded, Time, GameName }) {
+export default function MemoryGame({ CardsJSON, SetHasEnded }) {
 
   let gameCards = GenerateGameCards(CardsJSON);
   // console.log(gameCards);
@@ -174,16 +176,16 @@ export default function MemoryGame({ CardsJSON, SetHasEnded, Time, GameName }) {
 
       <div>
         <header>
-          <h3>{GameName}</h3>
+          {/* <h3>{GameName}</h3> */}
 
 
-          <div className="score d-flex flex-row justify-content-around" >
+          {/* <div className="score d-flex flex-row justify-content-around" >
             <div>מהלכים: {moves}</div>
             <div></div>
             <div>זמן: {Time}</div>
             <div></div>
             <div>הצלחות: {correctMoves}</div>
-          </div>
+          </div> */}
 
         </header>
         <div className="memory-game-container">
