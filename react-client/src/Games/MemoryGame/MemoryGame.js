@@ -7,7 +7,6 @@ const CARD_COUNT = 16;
 let isDone = false;
 let typeCounter = 0;
 
-//TODO: Fix memory leak (Error shown console)
 //TODO: Spot the differences can't call setHasEnded, need to fix!
 //TODO: Check that all of the games use the game template instead of displaying each of his own score and time
 
@@ -74,11 +73,14 @@ function shuffleCards(array) {
 export default function MemoryGame({ CardsJSON, SetHasEnded }) {
 
   let gameCards = GenerateGameCards(CardsJSON);
-  // console.log(gameCards);
+
+  useEffect(() => {
+    console.log(SetHasEnded)
+  }, [])
+
 
   const [cards, setCards] = useState(
     shuffleCards.bind(null, gameCards)
-    //gameCards
   );
 
   const [openCards, setOpenCards] = useState([]);

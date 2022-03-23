@@ -21,7 +21,10 @@ import jsonMatchCards from '../../Games/MemoryGame/CardLists/MatchCardsList.json
 import jsonOppositesCards from '../../Games/MemoryGame/CardLists/OppositesCardsList.json'
 import jsonNumberAndCountCards from '../../Games/MemoryGame/CardLists/NumberAndCountCardsList.json'
 import jsonSpotTheDifferences from "../../Games/SpotTheDifference/SpotTheDifference";
+// import SpotTheDifference from "../../Games/SpotTheDifference/SpotTheDifference";
 import SpotTheDifference from "../../Games/SpotTheDifference/SpotTheDifference";
+
+
 import { useHistory } from "react-router-dom";
 import { useEffect } from "react";
 
@@ -72,9 +75,6 @@ const GAMES = [
 
 
 export default function GamesPage({ UpdateChildrenProfiles }) {
-  useEffect(() => {
-    //return UpdateChildrenProfiles();
-  }, [])
   // const [showScoreModal, setShowScoreModal] = useState(false);
   // const [score, setScore] = useState(0);
   // const history = useHistory();

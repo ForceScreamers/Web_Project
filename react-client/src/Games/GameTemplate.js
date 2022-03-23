@@ -7,6 +7,13 @@ const SECONDS_TO_COMPLETE = 60;
 
 export default function GameTemplate({ GameId, GameComponent, CardsJSON, GameName }) {
 
+
+  useEffect(() => {
+    console.log(GameComponent)
+    console.log(CardsJSON)
+    console.log(GameName)
+  }, [])
+
   const [secondsLeft, setSecondsLeft] = useState(SECONDS_TO_COMPLETE);
 
   const [hasEnded, setHasEnded] = useState(false);
@@ -110,7 +117,7 @@ export default function GameTemplate({ GameId, GameComponent, CardsJSON, GameNam
         {/* <div>הצלחות: {correctMoves}</div> */}
       </div>
 
-      <GameComponent SetHasEnded={setHasEnded} CardsJSON={CardsJSON} GameName={GameName} />
+      <GameComponent SetMoves={setMoves} SetHasEnded={setHasEnded} CardsJSON={CardsJSON} />
 
       <br />
 

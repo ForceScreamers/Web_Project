@@ -64,10 +64,10 @@ function GetRandomCorrectPositions() {
 }
 
 
-export default function SpotTheDifference(Moves, SetMoves, SetHasEnded, ImagesJson,) {
+export default function SpotTheDifference(Moves, SetMoves, SetHasEnded, CardsJSON) {
   useEffect(() => {
     ExtractAndSetSetsData()
-
+    console.log(CardsJSON)
   }, [])
 
   const [images, setImages] = useState(GetRandomImageSet());
@@ -76,7 +76,7 @@ export default function SpotTheDifference(Moves, SetMoves, SetHasEnded, ImagesJs
 
   //TODO: Change to template moves
   const [correctMoves, setCorrectMoves] = useState(0);
-  const [moves, setMoves] = useState(0);
+  //const [moves, setMoves] = useState(0);
 
   const [canvasContexts, setCanvasContexts] = useState([]);
 
@@ -129,7 +129,7 @@ export default function SpotTheDifference(Moves, SetMoves, SetHasEnded, ImagesJs
   }
 
   function HandleClick(e) {
-    setMoves((moves) => moves + 1);
+    SetMoves((moves) => moves + 1);
 
     let mousePosition = { x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY }
 
@@ -159,9 +159,9 @@ export default function SpotTheDifference(Moves, SetMoves, SetHasEnded, ImagesJs
 
       <div>
         <div className="d-flex flex-row justify-content-around">
-          <h2> מהלכים: {moves}</h2>
+          {/* <h2> מהלכים: {moves}</h2>
           <h2> מהלכים נכונים: {correctMoves}</h2>
-          <h2> מהלכים שגויים: {moves - correctMoves}</h2>
+          <h2> מהלכים שגויים: {moves - correctMoves}</h2> */}
         </div>
 
 
