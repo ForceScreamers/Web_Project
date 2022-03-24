@@ -1,15 +1,15 @@
 import React from 'react'
 import { useState } from 'react'
 
-import { useEffect, useRef } from 'react'
+import { useEffect } from 'react'
 // import img1 from './images/squid_1.png'
 // import img2 from './images/squid_2.png'
 import selectionImg from './images/selection.png'
+import Canvas from './Canvas'
 
 import spotTheDifferenceSets from './SpotTheDifferenceSetsList.json'
 import Randoms from '../../Randoms'
 
-console.log(spotTheDifferenceSets);
 
 //  The area padding the user is able to click around the correct coordinates for the game to be registered as correct
 const CORRECT_POSITION_PADDING = 30;
@@ -35,8 +35,6 @@ let correctPositions = [];
 
 
 function ExtractAndSetSetsData() {
-  console.log('e')
-
   for (let dataSet in setsData) {
 
     //  Extracting the correct positions
@@ -64,19 +62,15 @@ function GetRandomCorrectPositions() {
 }
 
 
-export default function SpotTheDifference(Moves, SetMoves, SetHasEnded, CardsJSON) {
+export default function SpotTheDifference({ SetMoves, SetCorrectMoves, SetHasEnded, CardsJSON }) {
+
   useEffect(() => {
     ExtractAndSetSetsData()
-    console.log(CardsJSON)
+
   }, [])
 
   const [images, setImages] = useState(GetRandomImageSet());
   const [correctPositions, setCorrectPositions] = useState(GetRandomCorrectPositions());
-
-
-  //TODO: Change to template moves
-  const [correctMoves, setCorrectMoves] = useState(0);
-  //const [moves, setMoves] = useState(0);
 
   const [canvasContexts, setCanvasContexts] = useState([]);
 
@@ -91,7 +85,6 @@ export default function SpotTheDifference(Moves, SetMoves, SetHasEnded, CardsJSO
       mouseLocation.y <= correctPosition.y + CORRECT_POSITION_PADDING
       &&
       correctPosition.isActive === false
-
   }
 
   function CheckIsLocationCorrectAndActivate(mouseLocation, correctPosition) {
@@ -99,7 +92,7 @@ export default function SpotTheDifference(Moves, SetMoves, SetHasEnded, CardsJSO
       correctPosition.isActive = true;
 
       //  Increment correct moves by 1
-      setCorrectMoves((correctMoves) => correctMoves + 1)
+      SetCorrectMoves((prevCorrectMoves) => prevCorrectMoves + 1)
     }
   }
 
@@ -141,9 +134,6 @@ export default function SpotTheDifference(Moves, SetMoves, SetHasEnded, CardsJSO
     UpdateCanvasContexts();
 
     if (IsDone()) {
-      console.log("DONE!")
-      //TODO: Add end game
-      console.log(SetHasEnded)
       SetHasEnded(true);
     }
   }
@@ -158,13 +148,6 @@ export default function SpotTheDifference(Moves, SetMoves, SetHasEnded, CardsJSO
     <div className="d-flex flex-row justify-content-center align-items-center">
 
       <div>
-        <div className="d-flex flex-row justify-content-around">
-          {/* <h2> מהלכים: {moves}</h2>
-          <h2> מהלכים נכונים: {correctMoves}</h2>
-          <h2> מהלכים שגויים: {moves - correctMoves}</h2> */}
-        </div>
-
-
         {
           images.map((randomImage, index) => {
             return (
@@ -178,31 +161,3 @@ export default function SpotTheDifference(Moves, SetMoves, SetHasEnded, CardsJSO
 }
 
 
-function Canvas({ height, width, HandleClick, StartingImageSource, SetCanvasContext }) {
-  const canvas = useRef();
-
-  useEffect(() => {
-    const context = canvas.current.getContext('2d');
-
-    SetCanvasContext((prev) => [...prev, context]);
-
-    SetStartingImageForContext(context);
-  }, []);
-
-  function SetStartingImageForContext(context) {
-
-    let image = new Image();
-
-    image.src = StartingImageSource;
-
-    //  Draw image
-    image.onload = () => {
-      context.drawImage(image, 0, 0)
-    }
-  }
-
-
-  return (
-    <canvas style={{ border: 'solid black' }} ref={canvas} height={height} width={width} onClick={(e) => HandleClick(e)} />
-  );
-};

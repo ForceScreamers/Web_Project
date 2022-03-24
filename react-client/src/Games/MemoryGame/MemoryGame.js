@@ -7,7 +7,7 @@ const CARD_COUNT = 16;
 let isDone = false;
 let typeCounter = 0;
 
-//TODO: Spot the differences can't call setHasEnded, need to fix!
+//TODO: Spot The Difference needs to use CardsJSON prop
 //TODO: Check that all of the games use the game template instead of displaying each of his own score and time
 
 function CardsJSONToCardsArray(jsonCards) {
@@ -70,12 +70,12 @@ function shuffleCards(array) {
 
 
 
-export default function MemoryGame({ CardsJSON, SetHasEnded }) {
+export default function MemoryGame({ SetMoves, SetCorrectMoves, CardsJSON, SetHasEnded }) {
 
   let gameCards = GenerateGameCards(CardsJSON);
 
   useEffect(() => {
-    console.log(SetHasEnded)
+    console.log(SetMoves)
   }, [])
 
 
@@ -86,12 +86,7 @@ export default function MemoryGame({ CardsJSON, SetHasEnded }) {
   const [openCards, setOpenCards] = useState([]);
   const [clearedCards, setClearedCards] = useState({});
   const [shouldDisableAllCards, setShouldDisableAllCards] = useState(false);
-  const [moves, setMoves] = useState(0);
-  const [correctMoves, setCorrectMoves] = useState(0);
 
-
-
-  const [showModal, setShowModal] = useState(false);
   const timeout = useRef(null);
 
   //  Disable or enable (the user can't click) all cards while evaluating
@@ -118,7 +113,8 @@ export default function MemoryGame({ CardsJSON, SetHasEnded }) {
       //  Meaning there will be half the card count
       setClearedCards((prev) => ({ ...prev, [cards[first].type]: true }));
       console.log("Ok!")
-      setCorrectMoves((correctMoves) => correctMoves + 1)
+
+      SetCorrectMoves((prevCorrectMoves) => prevCorrectMoves + 1)
 
       //  Reset open cards
       setOpenCards([]);
@@ -143,7 +139,7 @@ export default function MemoryGame({ CardsJSON, SetHasEnded }) {
       setOpenCards((prev) => [...prev, index]);
 
       //  Update move count
-      setMoves((moves) => moves + 1);
+      SetMoves((moves) => moves + 1);
 
       disable();
     } else {

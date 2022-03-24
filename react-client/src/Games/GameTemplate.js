@@ -24,6 +24,7 @@ export default function GameTemplate({ GameId, GameComponent, CardsJSON, GameNam
   const [score, setScore] = useState(0);
 
   const [moves, setMoves] = useState(0);
+  const [correctMoves, setCorrectMoves] = useState(0);
 
   useEffect(() => {
     if (!secondsLeft) return;
@@ -111,13 +112,11 @@ export default function GameTemplate({ GameId, GameComponent, CardsJSON, GameNam
       <h3>{GameName}</h3>
       <div className="score d-flex flex-row justify-content-around" >
         <div>מהלכים: {moves}</div>
-        <div></div>
         <div>זמן: {secondsLeft}</div>
-        {/* <div></div> */}
-        {/* <div>הצלחות: {correctMoves}</div> */}
+        <div>הצלחות: {correctMoves}</div>
       </div>
 
-      <GameComponent SetMoves={setMoves} SetHasEnded={setHasEnded} CardsJSON={CardsJSON} />
+      <GameComponent SetMoves={setMoves} SetCorrectMoves={setCorrectMoves} SetHasEnded={setHasEnded} CardsJSON={CardsJSON} />
 
       <br />
 

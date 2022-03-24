@@ -1,4 +1,3 @@
-import MemoryGame from "../../Games/MemoryGame/MemoryGame";
 import ParentMainPage from "../../Components/ParentsComponents/ParentMainPage"
 import GamePreviewCard from "../../Components/GeneralComponents/GamesComponents/GamePreviewCard";
 import Img from '../../images/download.jpg'
@@ -20,16 +19,18 @@ import ProtectedRoute from "../../Components/GeneralComponents/ProtectedRoute";
 import jsonMatchCards from '../../Games/MemoryGame/CardLists/MatchCardsList.json'
 import jsonOppositesCards from '../../Games/MemoryGame/CardLists/OppositesCardsList.json'
 import jsonNumberAndCountCards from '../../Games/MemoryGame/CardLists/NumberAndCountCardsList.json'
-import jsonSpotTheDifferences from "../../Games/SpotTheDifference/SpotTheDifference";
-// import SpotTheDifference from "../../Games/SpotTheDifference/SpotTheDifference";
-import SpotTheDifference from "../../Games/SpotTheDifference/SpotTheDifference";
+import jsonSpotTheDifferences from '../../Games/SpotTheDifference/SpotTheDifferenceSetsList.json'
+
+//  Import Games
+import SpotTheDifference from '../../Games/SpotTheDifference/SpotTheDifference'
+import MemoryGame from "../../Games/MemoryGame/MemoryGame";
 
 
 import { useHistory } from "react-router-dom";
 import { useEffect } from "react";
 
-const GAMES_MENU_ID = 0;
 //TODO: Match id to database id
+//TODO: Load children profiles when game ends
 const GAMES = [
   {
     name: "שיוך",
