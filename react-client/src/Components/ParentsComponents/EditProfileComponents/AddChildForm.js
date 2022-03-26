@@ -22,7 +22,7 @@ function AddChildForm({ HandleAddChild }) {
     <div>
       <form onSubmit={OnSubmit} >
 
-        <div className="InputContainer">
+        <div className="InputContainer d-flex flex-column justify-content-center align-items-start" >
           <label>שם:</label>
 
           <FormInputField Valid={childNameValidState} Name={"childNameField"} OnChange={(e) => setChildName(e.target.value)} />

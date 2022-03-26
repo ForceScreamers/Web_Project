@@ -73,7 +73,7 @@ export default function EditProfilePage({ LoadChildrenFromServer }) {
     <div >
       <ParentMainPage title='עריכת פרופיל'>
         <h1>רשימת ילדים</h1>
-        <Container fluid className="d-flex justify-content-around align-center">
+        <Container className="d-flex justify-content-start align-center">
           <Row>
             <Col>
               {

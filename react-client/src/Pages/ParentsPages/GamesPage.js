@@ -29,13 +29,13 @@ import MemoryGame from "../../Games/MemoryGame/MemoryGame";
 import { useHistory } from "react-router-dom";
 import { useEffect } from "react";
 
-//TODO: Match id to database id
+//TODO: Get game names from db
 //TODO: Load children profiles when game ends
 const GAMES = [
   {
     name: "שיוך",
     description: "תיאור משחק זיכרון",
-    id: 1,
+    id: 12,
     path: "/Match",
     component: MemoryGame,
     jsonData: jsonMatchCards,
@@ -44,7 +44,7 @@ const GAMES = [
     name: "הפכים",
     description: "תיאור הפכים",
     path: "/Opposites",
-    id: 2,
+    id: 13,
     component: MemoryGame,
     jsonData: jsonOppositesCards,
   },
@@ -52,22 +52,22 @@ const GAMES = [
     name: "מספר וכמות",
     description: "תיאור מספר וכמות",
     path: "/NumberAndCount",
-    id: 18,
+    id: 14,
     component: MemoryGame,
     jsonData: jsonNumberAndCountCards,
   },
   {
-    name: "חשבון?",
+    name: "תרגילי כפל",
     description: "",
     path: "/yee",
-    id: 4,
+    id: 15,
     component: MatchCardsGame,
     jsonData: jsonMatchCards,
   },
   {
     name: "מצא את ההבדלים",
     description: "תיאור מצא את ההבדלים",
-    id: 5,
+    id: 16,
     path: "/SpotTheDifferences",
     component: SpotTheDifference,
     jsonData: jsonSpotTheDifferences,

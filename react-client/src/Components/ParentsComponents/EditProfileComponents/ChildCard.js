@@ -22,7 +22,7 @@ function ChildCard({ SelectChild, DeleteChild, ChildProfile }) {
   return (
     <div>
       <Card
-        bg={"none"}
+        bg={"light"}
         key={1}
         border={"dark"}
         text={"dark" /*Can be light or dark*/}
@@ -30,7 +30,7 @@ function ChildCard({ SelectChild, DeleteChild, ChildProfile }) {
         className="mb-3"
       >
 
-        <Card.Body>
+        <Card.Body >
           <Card.Title>
             <CloseButton aria-label='מחיקה' onClick={() => HandleDeleteChild()} /> {ChildProfile.Name + " "}
 

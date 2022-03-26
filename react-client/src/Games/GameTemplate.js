@@ -4,6 +4,9 @@ import { Redirect, useHistory } from "react-router-dom";
 import ShowScoreModal from "./ShowScoreModal";
 import { ParentsApiRequest } from "../RequestHeadersToWebApi";
 const SECONDS_TO_COMPLETE = 60;
+const IDEAL_TIME_TO_FINISH = 60;
+const IDEAL_MISTAKE_COUNT = 2;
+
 
 export default function GameTemplate({ GameId, GameComponent, CardsJSON, GameName }) {
 
@@ -18,6 +21,8 @@ export default function GameTemplate({ GameId, GameComponent, CardsJSON, GameNam
 
   const [moves, setMoves] = useState(0);
   const [correctMoves, setCorrectMoves] = useState(0);
+
+  const [childEvaluation, setChildEvaluation] = useState(0);
 
   useEffect(() => {
     if (!secondsLeft) return;
@@ -37,60 +42,74 @@ export default function GameTemplate({ GameId, GameComponent, CardsJSON, GameNam
 
   useEffect(() => {
     if (hasEnded === true) {
+      UpdateEvaluation();
       OpenScoreModal();
     }
   }, [hasEnded])
 
 
 
-  function CalculateGameScore() {
+  function CalculateGameEvaluation() {
     let completionTime = SECONDS_TO_COMPLETE - secondsLeft;
+    let mistakes = moves - correctMoves;
     let score = 0;
+    let mistakesPrecentage = 100;
+    let completionTimePrecentage = 100;
 
-    if (completionTime >= 0 && completionTime < 15)
-      score = 5;
-    else if (completionTime >= 15 && completionTime < 30)
-      score = 4;
-    else if (completionTime >= 30 && completionTime < 45)
-      score = 3;
-    else if (completionTime >= 45 && completionTime < 60)
-      score = 2;
-    else
-      score = 1;
-    return score;
+    if (mistakes !== 0) { //  Won't work if there are no mistakes
+      mistakesPrecentage = (mistakes / IDEAL_MISTAKE_COUNT) * 100;
+
+    }
+
+    completionTimePrecentage = (completionTime / IDEAL_TIME_TO_FINISH) * 100;
+    console.log(mistakesPrecentage, completionTimePrecentage);
+
+
+    // if (completionTime >= 0 && completionTime < 15)
+    //   score = 5;
+    // else if (completionTime >= 15 && completionTime < 30)
+    //   score = 4;
+    // else if (completionTime >= 30 && completionTime < 45)
+    //   score = 3;
+    // else if (completionTime >= 45 && completionTime < 60)
+    //   score = 2;
+    // else
+    //   score = 1;
+    return 100;
   }
 
 
 
-  async function EndGame(score, gameId) {
+  async function EndGame(gameId) {
 
     history.push('/Parent/Games')
 
     let evaluationScoreData = {
       childId: JSON.parse(sessionStorage.getItem('currentChild')).Id,
       gameId: gameId,
-      gameScore: score,
+      gameScore: childEvaluation,
     }
 
     ParentsApiRequest('POST', 'UpdateEvaluationScore', evaluationScoreData)
       .catch(err => console.log(err))
       .then(() => {
-        setScore(score);
+        //setScore(childEvaluation);
       })
   }
 
-  function ExitGameAndUpdateScore() {
+
+
+  function NavigateToGamesMenu() {
     history.push('/Parent/Games')
-    EndGame(CalculateGameScore(), GameId)
   }
 
-  function ExitGame() {
-    history.push('/Parent/Games')
+  function UpdateEvaluation() {
+    setChildEvaluation(CalculateGameEvaluation());
   }
 
   function CloseScoreModal() {
     setShowScoreModal(false);
-    ExitGameAndUpdateScore();
+    EndGame(GameId);
     //UpdateChildrenProfiles();
   }
 
@@ -113,10 +132,10 @@ export default function GameTemplate({ GameId, GameComponent, CardsJSON, GameNam
       <br />
 
       <div className="d-flex justify-content-center align-items-center">
-        <Button variant="danger" size="lg" onClick={() => ExitGame()}>יציאה</Button>
+        <Button variant="danger" size="lg" onClick={() => NavigateToGamesMenu()}>יציאה</Button>
       </div>
 
-      <ShowScoreModal ShowScoreModal={showScoreModal} CloseScoreModal={CloseScoreModal} Score={score} />
+      <ShowScoreModal ShowScoreModal={showScoreModal} CloseScoreModal={CloseScoreModal} Score={childEvaluation} />
     </div>
   )
 }

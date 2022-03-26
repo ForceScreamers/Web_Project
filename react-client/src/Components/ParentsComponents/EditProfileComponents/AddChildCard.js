@@ -5,11 +5,11 @@ function AddChildCard({ HandleAddChild }) {
   return (
     <div>
       <Card
-        bg={"none"}
+        bg={"light"}
         key={1}
         border={"dark"}
         text={"dark" /*Can be light or dark*/}
-        style={{ width: '30rem' }}
+        style={{ width: '15rem' }}
         className="mb-3 d-flex justify-content-start"
       >
         <Card.Header>הוספת ילד/ה</Card.Header>

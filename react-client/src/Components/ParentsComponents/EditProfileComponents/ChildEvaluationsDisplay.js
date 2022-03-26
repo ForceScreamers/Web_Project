@@ -1,3 +1,5 @@
+import ChildProgressBar from './ChildProgressBar.js'
+
 export default function ChildEvaluationsDisplay({ Evaluations }) {
 
   //  Evaluations consists of Topic and score
@@ -12,15 +14,17 @@ export default function ChildEvaluationsDisplay({ Evaluations }) {
           Evaluations.map((evaluation, index) => {
             return (
               <div key={index}>
-                {evaluation.GameName} : {evaluation.Score}
+                {evaluation.GameName}: {/*evaluation.Score*/}
+                <ChildProgressBar Now={evaluation.Score} />
+                <br />
               </div>
-
             )
           })
 
           : // Else
           <label>אין נתונים</label>
       }
+
 
     </div>
   );
