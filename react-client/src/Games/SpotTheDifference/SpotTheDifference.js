@@ -7,7 +7,7 @@ import { useEffect } from 'react'
 import selectionImg from './images/selection.png'
 import Canvas from './Canvas'
 
-import spotTheDifferenceSets from './SpotTheDifferenceSetsList.json'
+// import spotTheDifferenceSets from './SpotTheDifferenceSetsList.json'
 import Randoms from '../../Randoms'
 
 
@@ -21,61 +21,51 @@ const CORRECT_SELECTION_OFFSET = {
 }
 
 
-//  turn to data array 
-let setsData = [];
-for (let imageSet in spotTheDifferenceSets) {
-  setsData.push(spotTheDifferenceSets[imageSet]);
-}
+function jsonDataToArray(jsonData) {
+  //  Convert to array
+  let imageSetData = [];
 
-//  Generate random index
-let randomIndex = Randoms.GetRandomInt(0, setsData.length - 1);
-let imageSets = [];
-let correctPositions = [];
-
-
-
-function ExtractAndSetSetsData() {
-  for (let dataSet in setsData) {
-
-    //  Extracting the correct positions
-    correctPositions.push(setsData[dataSet].correctPositions);
-
-    //  Extracting the image sets
-    imageSets.push(
-      {
-        img1: setsData[dataSet].img1,
-        img2: setsData[dataSet].img2,
-      }
-    )
+  for (let card in jsonData) {
+    imageSetData.push(jsonData[card]);
   }
+  return imageSetData;
 }
 
-function GetRandomImageSet() {
+function GetRandomDataSet(jsonData) {
+
+  //  Convert to js array
+  let dataSets = jsonDataToArray(jsonData);
+  let randomIndex = Randoms.GetRandomInt(0, dataSets.length - 1);
+
+  return dataSets[randomIndex];
+}
+
+function GetImagesFromDataSet(dataSet) {
   return [
-    setsData[randomIndex].img1,
-    setsData[randomIndex].img2,
+    dataSet.img1,
+    dataSet.img2,
   ]
 }
 
-function GetRandomCorrectPositions() {
-  return setsData[randomIndex].correctPositions;
+function GetCorrectPositionsFromDataSet(dataSet) {
+  return [...dataSet.correctPositions];
 }
 
 
 export default function SpotTheDifference({ SetMoves, SetCorrectMoves, SetHasEnded, CardsJSON }) {
 
-  useEffect(() => {
-    ExtractAndSetSetsData()
 
-  }, [])
+  const randomDataSet = GetRandomDataSet(CardsJSON);
+  const [images, setImages] = useState(() => GetImagesFromDataSet(randomDataSet));
+  const [correctPositions, setCorrectPositions] = useState(() => GetCorrectPositionsFromDataSet(randomDataSet));
 
-  const [images, setImages] = useState(GetRandomImageSet());
-  const [correctPositions, setCorrectPositions] = useState(GetRandomCorrectPositions());
 
   const [canvasContexts, setCanvasContexts] = useState([]);
 
 
-  function IsClickContainedInPosition(mouseLocation, correctPosition) {
+  function IsPositionCorrect(mouseLocation, correctPosition) {
+
+    //  Checks if the click is contained inside the correct position
     return mouseLocation.x >= correctPosition.x - CORRECT_POSITION_PADDING
       &&
       mouseLocation.x <= correctPosition.x + CORRECT_POSITION_PADDING
@@ -87,14 +77,6 @@ export default function SpotTheDifference({ SetMoves, SetCorrectMoves, SetHasEnd
       correctPosition.isActive === false
   }
 
-  function CheckIsLocationCorrectAndActivate(mouseLocation, correctPosition) {
-    if (IsClickContainedInPosition(mouseLocation, correctPosition)) {
-      correctPosition.isActive = true;
-
-      //  Increment correct moves by 1
-      SetCorrectMoves((prevCorrectMoves) => prevCorrectMoves + 1)
-    }
-  }
 
   function DrawActivePositions(context) {
     for (let position of correctPositions) {
@@ -110,6 +92,16 @@ export default function SpotTheDifference({ SetMoves, SetCorrectMoves, SetHasEnd
     }
   }
 
+  function SetCorrectPositionsToFalse() {
+    let newCorrectPositions = [...correctPositions];
+
+    for (let newCorrectPosition of newCorrectPositions) {
+      newCorrectPosition.isActive = false;
+    }
+
+    setCorrectPositions(newCorrectPositions);
+  }
+
   function IsDone() {
     let isDone = true;
     for (let correctPosition of correctPositions) {
@@ -122,18 +114,29 @@ export default function SpotTheDifference({ SetMoves, SetCorrectMoves, SetHasEnd
   }
 
   function HandleClick(e) {
+
     SetMoves((moves) => moves + 1);
 
     let mousePosition = { x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY }
 
+    let newCorrectPositions = [...correctPositions];
 
-    for (let position of correctPositions) {
-      CheckIsLocationCorrectAndActivate(mousePosition, position);
+    for (let newPosition of newCorrectPositions) {
+      if (IsPositionCorrect(mousePosition, newPosition)) {
+
+        //  Activate position
+        newPosition.isActive = true;
+
+        //  Increment correct moves
+        SetCorrectMoves((prevCorrectMoves) => prevCorrectMoves + 1)
+      }
     }
+    setCorrectPositions(newCorrectPositions);
 
     UpdateCanvasContexts();
 
     if (IsDone()) {
+      SetCorrectPositionsToFalse();
       SetHasEnded(true);
     }
   }

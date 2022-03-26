@@ -7,13 +7,6 @@ const SECONDS_TO_COMPLETE = 60;
 
 export default function GameTemplate({ GameId, GameComponent, CardsJSON, GameName }) {
 
-
-  useEffect(() => {
-    console.log(GameComponent)
-    console.log(CardsJSON)
-    console.log(GameName)
-  }, [])
-
   const [secondsLeft, setSecondsLeft] = useState(SECONDS_TO_COMPLETE);
 
   const [hasEnded, setHasEnded] = useState(false);
@@ -29,12 +22,12 @@ export default function GameTemplate({ GameId, GameComponent, CardsJSON, GameNam
   useEffect(() => {
     if (!secondsLeft) return;
 
-    const intervalId = setTimeout(() => {
+    const intervalId = setInterval(() => {
       setSecondsLeft(secondsLeft - 1);
     }, 1000);
 
     // clear interval on re-render to avoid memory leaks
-    return () => clearTimeout(intervalId);
+    return () => clearInterval(intervalId);
 
   }, [secondsLeft]);
 
@@ -117,7 +110,6 @@ export default function GameTemplate({ GameId, GameComponent, CardsJSON, GameNam
       </div>
 
       <GameComponent SetMoves={setMoves} SetCorrectMoves={setCorrectMoves} SetHasEnded={setHasEnded} CardsJSON={CardsJSON} />
-
       <br />
 
       <div className="d-flex justify-content-center align-items-center">

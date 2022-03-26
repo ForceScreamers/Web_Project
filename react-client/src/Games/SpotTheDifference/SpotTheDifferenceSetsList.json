@@ -29,5 +29,16 @@
         "isActive": false
       }
     ]
+  },
+  "set-2": {
+    "img1": "/match-cards-images/SpotTheDifference/snake.jpg",
+    "img2": "/match-cards-images/SpotTheDifference/bird.jpg",
+    "correctPositions": [
+      {
+        "x": 0,
+        "y": 0,
+        "isActive": false
+      }
+    ]
   }
 }

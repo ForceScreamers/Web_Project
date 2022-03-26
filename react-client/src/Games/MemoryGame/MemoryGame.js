@@ -35,7 +35,7 @@ function SplitCardProperties(cardsArray) {
 
 
 
-const GenerateGameCards = (jsonCards) => {
+function GenerateGameCards(jsonCards) {
   let gameCards = CardsJSONToCardsArray(jsonCards);
   let cardTexts = SplitCardProperties(gameCards);
 
@@ -70,17 +70,12 @@ function shuffleCards(array) {
 
 
 
+
 export default function MemoryGame({ SetMoves, SetCorrectMoves, CardsJSON, SetHasEnded }) {
-
-  let gameCards = GenerateGameCards(CardsJSON);
-
-  useEffect(() => {
-    console.log(SetMoves)
-  }, [])
 
 
   const [cards, setCards] = useState(
-    shuffleCards.bind(null, gameCards)
+    () => shuffleCards(GenerateGameCards(CardsJSON))
   );
 
   const [openCards, setOpenCards] = useState([]);
@@ -94,7 +89,7 @@ export default function MemoryGame({ SetMoves, SetCorrectMoves, CardsJSON, SetHa
   const enable = () => { setShouldDisableAllCards(false) };
 
   const checkCompletion = () => {
-    if (Object.keys(clearedCards).length === gameCards.length / 2) {
+    if (Object.keys(clearedCards).length === cards.length / 2) {
       console.log("Done!");
       SetHasEnded(true);
     }
@@ -104,6 +99,7 @@ export default function MemoryGame({ SetMoves, SetCorrectMoves, CardsJSON, SetHa
   };
 
   const evaluate = () => {
+    // setTest("eval value")
     const [first, second] = openCards;
     enable();
 
@@ -120,7 +116,7 @@ export default function MemoryGame({ SetMoves, SetCorrectMoves, CardsJSON, SetHa
       setOpenCards([]);
 
       //TODO: Figure out this return
-      //return;
+      return;
     }
     else {//  Picked a wrong couple
       console.log("not good")
@@ -184,7 +180,6 @@ export default function MemoryGame({ SetMoves, SetCorrectMoves, CardsJSON, SetHa
             <div></div>
             <div>הצלחות: {correctMoves}</div>
           </div> */}
-
         </header>
         <div className="memory-game-container">
           {cards.map((card, index) => {
