@@ -248,7 +248,10 @@ export default function ParentsApp() {
         <ProtectedRoute exact path="/Parent/Games" Component={() => <GamesPage UpdateChildrenProfiles={LoadChildrenFromServer} />} />
         <ProtectedRoute exact path="/Parent/Info" Component={InfoPage} />
         <ProtectedRoute exact path="/Parent/Avatar" Component={AvatarPage} />
-        <ProtectedRoute exact path="/Parent/Journal" Component={JournalPage} />
+        <ProtectedRoute exact path="/Parent/Journal" Component={() =>
+          <JournalPage
+            LoadChildrenFromServer={LoadChildrenFromServer}
+          />} />
         <ProtectedRoute exact path="/Parent/Home" Component={HomePage} />
 
         <GameRoutes />

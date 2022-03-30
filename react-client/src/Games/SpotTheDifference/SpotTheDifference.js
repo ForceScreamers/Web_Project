@@ -51,14 +51,14 @@ function GetCorrectPositionsFromDataSet(dataSet) {
   return [...dataSet.correctPositions];
 }
 
+// let correctPositions = GetCorrectPositionsFromDataSet(randomDataSet)
 
-export default function SpotTheDifference({ SetMoves, SetCorrectMoves, SetHasEnded, CardsJSON }) {
+export default function SpotTheDifference({ SetMoves, SetCorrectMoves, SetHasEnded, CardsJSON, HasUserEndedGame }) {
 
 
   const randomDataSet = GetRandomDataSet(CardsJSON);
   const [images, setImages] = useState(() => GetImagesFromDataSet(randomDataSet));
   const [correctPositions, setCorrectPositions] = useState(() => GetCorrectPositionsFromDataSet(randomDataSet));
-
 
   const [canvasContexts, setCanvasContexts] = useState([]);
 
@@ -77,7 +77,6 @@ export default function SpotTheDifference({ SetMoves, SetCorrectMoves, SetHasEnd
       correctPosition.isActive === false
   }
 
-
   function DrawActivePositions(context) {
     for (let position of correctPositions) {
       if (position.isActive) {
@@ -93,6 +92,7 @@ export default function SpotTheDifference({ SetMoves, SetCorrectMoves, SetHasEnd
   }
 
   function SetCorrectPositionsToFalse() {
+    console.log("Setting...")
     let newCorrectPositions = [...correctPositions];
 
     for (let newCorrectPosition of newCorrectPositions) {
@@ -100,6 +100,7 @@ export default function SpotTheDifference({ SetMoves, SetCorrectMoves, SetHasEnd
     }
 
     setCorrectPositions(newCorrectPositions);
+    // correctPositions = newCorrectPositions;
   }
 
   function IsDone() {
@@ -132,6 +133,7 @@ export default function SpotTheDifference({ SetMoves, SetCorrectMoves, SetHasEnd
       }
     }
     setCorrectPositions(newCorrectPositions);
+    // correctPositions = newCorrectPositions;
 
     UpdateCanvasContexts();
 
@@ -140,6 +142,17 @@ export default function SpotTheDifference({ SetMoves, SetCorrectMoves, SetHasEnd
       SetHasEnded(true);
     }
   }
+
+  useEffect(() => {
+    console.log("HasUserEndedGame " + HasUserEndedGame)
+    console.log(correctPositions)
+
+    if (HasUserEndedGame === true) {
+      console.log("BYE")
+
+      SetCorrectPositionsToFalse();
+    }
+  }, [HasUserEndedGame])
 
   function UpdateCanvasContexts() {
     for (let canvasContext of canvasContexts) {

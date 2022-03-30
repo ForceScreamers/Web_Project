@@ -117,9 +117,13 @@ namespace ParentsApi.Controllers
 		{
 			int childId = int.Parse(Request.Headers["childId"].ToString());
 			int gameId = int.Parse(Request.Headers["gameId"].ToString());
-			int finishedGameScore = int.Parse(Request.Headers["gameScore"].ToString());
 
-			ParentHelperFunctions.UpdateChildEvaluation(childId, gameId, finishedGameScore);
+			int score = int.Parse(Request.Headers["gameScore"].ToString());
+			int moveCount = int.Parse(Request.Headers["moves"].ToString());
+			int time = int.Parse(Request.Headers["time"].ToString());
+			string difficulty = Request.Headers["difficulty"].ToString();
+
+			ParentHelperFunctions.UpdateChildEvaluation(childId, gameId, moveCount, time, score, difficulty);
 			
 			//	TODO: return confirmed update
 			return base.Content(JsonConvert.SerializeObject(new { UpdatedScore = true}));

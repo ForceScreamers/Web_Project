@@ -16,17 +16,17 @@ namespace ParentsApi
 {
     public class ParentHelperFunctions
     {
-		public static void UpdateChildEvaluation(int childId, int gameId, int scoreToAdd)
+		public static void UpdateChildEvaluation(int childId, int gameId, int moveCount, int timeInSeconds, int score, string difficulty)
         {
             try
             {
 				if (EvaluationMethods.IsExists(childId, gameId))
 				{
-					EvaluationMethods.AddScoreToEvaluation(childId, scoreToAdd);
+					EvaluationMethods.UpdateEvaluation(childId, moveCount, timeInSeconds, score);
 				}
 				else
 				{
-					EvaluationMethods.AddEvaluation(childId, gameId, scoreToAdd);
+					EvaluationMethods.AddEvaluation(childId, gameId, moveCount, timeInSeconds, score, difficulty);
 				}
 			}
 			catch(Exception err)
@@ -272,9 +272,16 @@ namespace ParentsApi
 			{
 				//  Convering properties
 				string gameName = row.ItemArray[0].ToString();
-				int score = int.Parse(row.ItemArray[1].ToString());
+				float averageScore = float.Parse(row.ItemArray[2].ToString());
+				float averageTime = float.Parse(row.ItemArray[3].ToString());
+				float averageMoveCount = float.Parse(row.ItemArray[4].ToString());
+				string difficulty = row.ItemArray[5].ToString();
+				int lowestTime = int.Parse(row.ItemArray[6].ToString());
+				int lowestMoves = int.Parse(row.ItemArray[7].ToString());
 
-				evaluations.Add(new Evaluation(score, gameName));
+
+
+				evaluations.Add(new Evaluation(averageScore, averageTime, averageMoveCount, difficulty, lowestTime, lowestMoves, gameName));
 			}
 
 			return evaluations;

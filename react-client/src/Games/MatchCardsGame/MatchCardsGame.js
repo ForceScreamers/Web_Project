@@ -57,8 +57,7 @@ function shuffleCards(array) {
 }
 
 GenerateGameCards();
-
-export default function MemoryGame({ SetHasEnded }) {
+export default function MemoryGame({ SetHasEnded, SetMoves, SetCorrectMoves, CardsJSON }) {
 
 	const [cards, setCards] = useState(
 		shuffleCards.bind(null, gameCards)
@@ -71,7 +70,7 @@ export default function MemoryGame({ SetHasEnded }) {
 	const [openCards, setOpenCards] = useState([]);
 	const [clearedCards, setClearedCards] = useState({});
 	const [shouldDisableAllCards, setShouldDisableAllCards] = useState(false);
-	const [moves, setMoves] = useState(0);
+	//const [moves, setMoves] = useState(0);
 	const timeout = useRef(null);
 
 	//  Disable or enable (the user can't click) all cards while evaluating
@@ -97,8 +96,8 @@ export default function MemoryGame({ SetHasEnded }) {
 			//  Update cleared cards with the newly opened card type
 			//  Meaning there will be half the card count
 			setClearedCards((prev) => ({ ...prev, [cards[first].type]: true }));
-			console.log("Ok!");
 
+			SetCorrectMoves((prevCorrectMoves) => prevCorrectMoves + 1);
 			//  Reset open cards
 			setOpenCards([]);
 
@@ -120,7 +119,7 @@ export default function MemoryGame({ SetHasEnded }) {
 			setOpenCards((prev) => [...prev, index]);
 
 			//  Update move count
-			setMoves((moves) => moves + 1);
+			SetMoves((prevMoves) => prevMoves + 1);
 
 			disable();
 		} else {
@@ -154,9 +153,6 @@ export default function MemoryGame({ SetHasEnded }) {
 		<div className="d-flex flex-column">
 			<header>
 				<h3>שלום</h3>
-				<div>
-					הוראות יהיו פה
-				</div>
 			</header>
 
 			<Container className="match-cards-container">
@@ -175,13 +171,6 @@ export default function MemoryGame({ SetHasEnded }) {
 					);
 				})}
 			</Container>
-			<footer>
-				<div className="score">
-					<div className="moves">
-						<span className="bold">מהלכים:</span> {moves}
-					</div>
-				</div>
-			</footer>
 		</div>
 	);
 }

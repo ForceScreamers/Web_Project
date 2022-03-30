@@ -20,7 +20,13 @@ namespace ParentDal
             };
 
 
-            string command = @"SELECT game.game_name, evaluation.evaluation_score, child.child_id
+            string command = @"SELECT game.game_name, child.child_id,
+                            evaluation.evaluation_average_score, 
+                            evaluation.evaluation_average_time, 
+                            evaluation.evaluation_average_moves, 
+                            evaluation.evaluation_difficulty, 
+                            evaluation.evaluation_lowest_time, 
+                            evaluation.evaluation_lowest_moves
                             FROM game INNER JOIN (child INNER JOIN evaluation ON child.child_id = evaluation.evaluation_child_id) ON game.game_id = evaluation.evaluation_game_id
                             WHERE (((child.child_id)=[?]));";
             return ParentOdbcHelper.GetTable(command, queryParameters);
@@ -28,14 +34,25 @@ namespace ParentDal
 
 
 
-        public static int AddEvaluation(int evaluationChildId, int evaluationGameId, int evaluationScore)
+        public static int AddEvaluation(int evaluationChildId, int evaluationGameId, int moveCount, int timeInSeconds, int score, string difficulty)
         {
-            string com = "INSERT INTO evaluation (evaluation_child_id, evaluation_game_id, evaluation_score) VALUES (?, ?, ?)";
+            string com = "INSERT INTO evaluation (evaluation_child_id, evaluation_game_id, " +
+                "evaluation_average_moves, evaluation_average_time, " +
+                "evaluation_average_score, evaluation_lowest_time, " +
+                "evaluation_lowest_moves, evaluation_difficulty) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
             OdbcParameter[] queryParameters = {
                 new OdbcParameter("@evaluation_child_id", evaluationChildId),
                 new OdbcParameter("@evaluation_game_id", evaluationGameId),
-                new OdbcParameter("@evaluation_score", evaluationScore),
+
+                new OdbcParameter("@evaluation_average_moves", moveCount),
+                new OdbcParameter("@evaluation_average_time", timeInSeconds),
+                new OdbcParameter("@evaluation_average_score", score),
+
+                new OdbcParameter("@evaluation_lowest_time", timeInSeconds),
+                new OdbcParameter("@evaluation_lowest_moves", moveCount),
+
+                new OdbcParameter("@evaluation_difficulty", difficulty),
             };
 
             return ParentOdbcHelper.Execute(com, queryParameters);
@@ -43,9 +60,15 @@ namespace ParentDal
 
 
 
-        public static int AddScoreToEvaluation(int evaluationChildId, int scoreToAdd)
+        public static int UpdateEvaluation(int evaluationChildId, int moveCount, int timeInSeconds, int score)
         {
-            string command = string.Format("UPDATE evaluation SET evaluation_score = evaluation_score + {0} WHERE evaluation_child_id = ?", scoreToAdd);
+            
+
+
+            string command = "UPDATE evaluation SET " +
+                $"evaluation_average_score = (evaluation_average_score + {score}) / 2 " +
+
+                "WHERE evaluation_child_id = ?";
 
             OdbcParameter[] queryParameters =
             {

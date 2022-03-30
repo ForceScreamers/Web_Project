@@ -2,121 +2,134 @@ import { Button } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import { Redirect, useHistory } from "react-router-dom";
 import ShowScoreModal from "./ShowScoreModal";
+import ShowExitGameModal from "./ShowExitGameModal";
 import { ParentsApiRequest } from "../RequestHeadersToWebApi";
-const SECONDS_TO_COMPLETE = 60;
-const IDEAL_TIME_TO_FINISH = 60;
-const IDEAL_MISTAKE_COUNT = 2;
+
+const MAXIMUN_SECONDS = 3600;
+
+const STARTING_SCORE = 100;
+const WRONG_MOVE_PENALTY = -10;
+const CORRECT_MOVE_REWARD = 20;
 
 
+
+//TODO: Fix - timer has a delya of 1 second when stopping
 export default function GameTemplate({ GameId, GameComponent, CardsJSON, GameName }) {
-
-  const [secondsLeft, setSecondsLeft] = useState(SECONDS_TO_COMPLETE);
-
-  const [hasEnded, setHasEnded] = useState(false);
 
   const history = useHistory();
 
-  const [showScoreModal, setShowScoreModal] = useState(false);
-  const [score, setScore] = useState(0);
+  const [secondsPassed, setSecondsPassed] = useState(0);
+  const [stopTimer, setStopTimer] = useState(false);
 
+  const [hasEnded, setHasEnded] = useState(false);
+  const [hasUserEndedGame, setHasUserEndedGame] = useState(false);
+
+  //  Modals
+  const [showScoreModal, setShowScoreModal] = useState(false);
+  const [showExitGameModal, setShowExitGameModal] = useState(false);
+
+  // Evaluation Parameters
   const [moves, setMoves] = useState(0);
   const [correctMoves, setCorrectMoves] = useState(0);
 
   const [childEvaluation, setChildEvaluation] = useState(0);
 
-  useEffect(() => {
-    if (!secondsLeft) return;
 
-    const intervalId = setInterval(() => {
-      setSecondsLeft(secondsLeft - 1);
-    }, 1000);
+  useEffect(() => {
+    let intervalId;
+
+    if (stopTimer === false) {
+      intervalId = setInterval(() => {
+        setSecondsPassed((prevSecondsPassed) => prevSecondsPassed + 1);
+      }, 1000);
+    }
+
+    if (secondsPassed >= MAXIMUN_SECONDS) {
+      EndGameWithoutScoreUpdate();
+      return () => clearInterval(intervalId);
+    }
+
 
     // clear interval on re-render to avoid memory leaks
     return () => clearInterval(intervalId);
 
-  }, [secondsLeft]);
+  }, [secondsPassed]);
+
 
   function ResetTimer() {
-    setSecondsLeft(SECONDS_TO_COMPLETE);
+    setSecondsPassed(0);
   }
 
   useEffect(() => {
     if (hasEnded === true) {
-      UpdateEvaluation();
-      OpenScoreModal();
+      EndGameWithScoreUpdate();
+      setStopTimer(true);
     }
   }, [hasEnded])
 
 
 
-  function CalculateGameEvaluation() {
-    let completionTime = SECONDS_TO_COMPLETE - secondsLeft;
-    let mistakes = moves - correctMoves;
-    let score = 0;
-    let mistakesPrecentage = 100;
-    let completionTimePrecentage = 100;
+  function CalculateGameScore() {
+    let wrongMoves = moves - correctMoves;
+    let score = STARTING_SCORE;
+    console.log(secondsPassed)
 
-    if (mistakes !== 0) { //  Won't work if there are no mistakes
-      mistakesPrecentage = (mistakes / IDEAL_MISTAKE_COUNT) * 100;
+    score = STARTING_SCORE + (wrongMoves * WRONG_MOVE_PENALTY + correctMoves * CORRECT_MOVE_REWARD);
 
+    if (score < 0) {
+      score = 0;
     }
 
-    completionTimePrecentage = (completionTime / IDEAL_TIME_TO_FINISH) * 100;
-    console.log(mistakesPrecentage, completionTimePrecentage);
-
-
-    // if (completionTime >= 0 && completionTime < 15)
-    //   score = 5;
-    // else if (completionTime >= 15 && completionTime < 30)
-    //   score = 4;
-    // else if (completionTime >= 30 && completionTime < 45)
-    //   score = 3;
-    // else if (completionTime >= 45 && completionTime < 60)
-    //   score = 2;
-    // else
-    //   score = 1;
-    return 100;
+    return score;
   }
 
 
 
-  async function EndGame(gameId) {
-
-    history.push('/Parent/Games')
-
+  async function RequestUpdateGameEvaluation(gameId) {
     let evaluationScoreData = {
       childId: JSON.parse(sessionStorage.getItem('currentChild')).Id,
       gameId: gameId,
       gameScore: childEvaluation,
+      time: secondsPassed,
+      moves: moves,
+      difficulty: "Easy", // TODO: Add difficulty to game template
     }
 
     ParentsApiRequest('POST', 'UpdateEvaluationScore', evaluationScoreData)
       .catch(err => console.log(err))
-      .then(() => {
-        //setScore(childEvaluation);
-      })
   }
 
 
-
-  function NavigateToGamesMenu() {
-    history.push('/Parent/Games')
+  function EndGameWithoutScoreUpdate() {
+    setHasUserEndedGame(true);
+    OpenExitGameModal();
   }
 
-  function UpdateEvaluation() {
-    setChildEvaluation(CalculateGameEvaluation());
+
+  function EndGameWithScoreUpdate() {
+    setChildEvaluation(CalculateGameScore()); //Update score
+    OpenScoreModal();
   }
 
-  function CloseScoreModal() {
+
+  function OnCloseScoreModal() {
     setShowScoreModal(false);
-    EndGame(GameId);
+    RequestUpdateGameEvaluation(GameId);
     //UpdateChildrenProfiles();
+    //history.push('/Parent/Games');
   }
 
-  function OpenScoreModal() {
-    setShowScoreModal(true);
+
+  function OnCloseExitGameModal() {
+    CloseExitGameModal();
+    history.push('/Parent/Games');
   }
 
+
+  function OpenScoreModal() { setShowScoreModal(true); }
+
+  function CloseExitGameModal() { setShowExitGameModal(false); }
+  function OpenExitGameModal() { setShowExitGameModal(true); }
 
   return (
     <div>
@@ -124,18 +137,19 @@ export default function GameTemplate({ GameId, GameComponent, CardsJSON, GameNam
       <h3>{GameName}</h3>
       <div className="score d-flex flex-row justify-content-around" >
         <div>מהלכים: {moves}</div>
-        <div>זמן: {secondsLeft}</div>
+        <div>זמן: {secondsPassed}</div>
         <div>הצלחות: {correctMoves}</div>
       </div>
 
-      <GameComponent SetMoves={setMoves} SetCorrectMoves={setCorrectMoves} SetHasEnded={setHasEnded} CardsJSON={CardsJSON} />
+      <GameComponent SetMoves={setMoves} SetCorrectMoves={setCorrectMoves} SetHasEnded={setHasEnded} HasUserEndedGame={hasUserEndedGame} CardsJSON={CardsJSON} />
       <br />
 
       <div className="d-flex justify-content-center align-items-center">
-        <Button variant="danger" size="lg" onClick={() => NavigateToGamesMenu()}>יציאה</Button>
+        <Button variant="danger" size="lg" onClick={() => EndGameWithoutScoreUpdate()}>יציאה</Button>
       </div>
 
-      <ShowScoreModal ShowScoreModal={showScoreModal} CloseScoreModal={CloseScoreModal} Score={childEvaluation} />
+      <ShowScoreModal ShowScoreModal={showScoreModal} CloseScoreModal={OnCloseScoreModal} Score={childEvaluation} Time={secondsPassed} />
+      <ShowExitGameModal ShowExitGameModal={showExitGameModal} CloseExitGameModal={OnCloseExitGameModal} />
     </div>
   )
 }

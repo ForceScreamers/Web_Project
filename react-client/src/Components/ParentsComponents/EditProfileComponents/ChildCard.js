@@ -1,5 +1,4 @@
 import { Card, CloseButton, Button } from 'react-bootstrap'
-import ChildEvaluationsDisplay from './ChildEvaluationsDisplay'
 import { useState } from 'react';
 import ChildDeleteConfirmationModal from './ChildDeleteConfirmationModal';
 
@@ -50,7 +49,6 @@ function ChildCard({ SelectChild, DeleteChild, ChildProfile }) {
             {"גיל: " + ChildProfile.Age}
           </Card.Text>
 
-          <ChildEvaluationsDisplay Evaluations={ChildProfile.Evaluations} />
         </Card.Body>
 
         <ChildDeleteConfirmationModal
