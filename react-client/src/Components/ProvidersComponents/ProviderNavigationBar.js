@@ -20,6 +20,7 @@ export default function ProviderNavigationBar() {
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto">
               <Link to="/Provider/Games" className="nav-link">משחקים</Link>
+              <Link to="/Provider/PublishArticle" className="nav-link">פרסום מאמר</Link>
               {/* <NavDropdown title="Dropdown" id="collasible-nav-dropdown">
                 <NavDropdown.Item href="#action/3.1">דברים</NavDropdown.Item>
                 <NavDropdown.Item href="#action/3.2">עוד דברים</NavDropdown.Item>

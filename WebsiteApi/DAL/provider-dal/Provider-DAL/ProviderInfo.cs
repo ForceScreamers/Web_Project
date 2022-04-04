@@ -17,18 +17,18 @@ namespace Provider_DAL
         public string PhoneNumber { get; set; }
         public string Experience { get; set; }
 
-        public List<Post> Posts { get; private set; }
-        public void AddPosts(List<Post> postsToAdd)
+        public List<Article> Posts { get; private set; }
+        public void AddPosts(List<Article> postsToAdd)
         {
             //  Concatenate the given list to this prop's list
-            foreach (Post post in postsToAdd) { Posts.Add(post); }
+            foreach (Article post in postsToAdd) { Posts.Add(post); }
         }
 
         public ProviderInfo()
         {
             FullName = "DEFAULT FULL NAME";
             Id = -1;
-            Posts = new List<Post>();
+            Posts = new List<Article>();
         }
 
         public ProviderInfo(string fullName, int id, string occupation, string email)
@@ -40,18 +40,18 @@ namespace Provider_DAL
         }
     }
 
-    public class Post
+    public class Article
     {
-        public string Name { get; set; }
-        public int Age { get; set; }
-        public bool IsSelected { get; set; }
         public int Id { get; set; }
-        public Post()
+        public string TopicName { get; set; }
+        public string Content { get; set; }
+
+
+        public Article()
         {
-            Name = "DEFAULT NAME";
-            Age = -1;
-            IsSelected = false;
             Id = -1;
+            TopicName = "DEFAULT NAME";
+            Content = "DEFAULT CONTENT";
         }
     }
 

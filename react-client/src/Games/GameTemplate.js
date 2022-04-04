@@ -14,7 +14,7 @@ const CORRECT_MOVE_REWARD = 20;
 
 
 //TODO: Fix - timer has a delya of 1 second when stopping
-export default function GameTemplate({ GameId, GameComponent, CardsJSON, GameName }) {
+export default function GameTemplate({ GameId, GameComponent, CardsJSON, GameName, Difficulty }) {
 
   const history = useHistory();
 
@@ -141,7 +141,14 @@ export default function GameTemplate({ GameId, GameComponent, CardsJSON, GameNam
         <div>הצלחות: {correctMoves}</div>
       </div>
 
-      <GameComponent SetMoves={setMoves} SetCorrectMoves={setCorrectMoves} SetHasEnded={setHasEnded} HasUserEndedGame={hasUserEndedGame} CardsJSON={CardsJSON} />
+      <GameComponent
+        SetMoves={setMoves}
+        SetCorrectMoves={setCorrectMoves}
+        SetHasEnded={setHasEnded}
+        HasUserEndedGame={hasUserEndedGame}
+        CardsJSON={CardsJSON}
+        Difficulty={Difficulty}
+      />
       <br />
 
       <div className="d-flex justify-content-center align-items-center">

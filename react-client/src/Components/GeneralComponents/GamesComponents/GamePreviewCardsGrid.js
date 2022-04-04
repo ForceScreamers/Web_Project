@@ -3,7 +3,7 @@ import GamePreviewCard from "./GamePreviewCard";
 import Img from '../../../images/download.jpg'
 import './GamePreviewCardsGrid.scss'
 
-export default function GamePreviewCardsGrid({ Games }) {
+export default function GamePreviewCardsGrid({ Games, SetDifficultyLevel }) {
 
 
 
@@ -19,7 +19,9 @@ export default function GamePreviewCardsGrid({ Games }) {
                     GamePath={game.path}
                     Name={game.name}
                     Description={game.description}
-                    PreviewImage={Img} />
+                    PreviewImage={Img}
+                    SetDifficultyLevel={SetDifficultyLevel}
+                  />
                 </Col>
               )
             })

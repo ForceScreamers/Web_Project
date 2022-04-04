@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import ChildEvaluationDisplay from "./ChildEvaluationDisplay"
 import ChildEvaluationsDisplay from "./ChildEvaluationsDisplay";
 import { Button } from "react-bootstrap";
+import PageFlipTest from "./PageFlip/PageFlipTest";
 
 
 
@@ -74,6 +75,10 @@ export default function JournalPage({ LoadChildrenFromServer, ChildProfile }) {
           <Button onClick={() => SetPreviousEvaluationIndex()}>Previous</Button>
 
         </div>
+
+
+
+        <PageFlipTest />
       </ParentMainPage>
     </div>
   )

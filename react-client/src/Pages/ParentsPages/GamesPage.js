@@ -74,7 +74,7 @@ const GAMES = [
   },
 ];
 
-
+//TODO: Add difficulty levels
 export default function GamesPage({ UpdateChildrenProfiles }) {
   // const [showScoreModal, setShowScoreModal] = useState(false);
   // const [score, setScore] = useState(0);
@@ -100,6 +100,7 @@ export default function GamesPage({ UpdateChildrenProfiles }) {
   //     })
   // }
 
+  const [difficultyLevel, setDifficultyLevel] = useState(1);
 
 
   function UserHasChildren() {
@@ -129,7 +130,7 @@ export default function GamesPage({ UpdateChildrenProfiles }) {
         {
           UserHasChildren() === true
             ?
-            <GamePreviewCardsGrid Games={GAMES} />
+            <GamePreviewCardsGrid Games={GAMES} SetDifficultyLevel={setDifficultyLevel} />
             :
             <NoChildrenMessage />
         }
@@ -148,7 +149,7 @@ export function GameRoutes() {
         GAMES.map((game, index) => {
           return (
             <ProtectedRoute key={index} exact path={GAMES_PATH_PREFIX + game.path} Component={
-              () => <GameTemplate CardsJSON={game.jsonData} GameId={game.id} GameComponent={game.component} GameName={game.name} />
+              () => <GameTemplate CardsJSON={game.jsonData} GameId={game.id} GameComponent={game.component} GameName={game.name} Difficulty={1} />
             } />
           )
         })

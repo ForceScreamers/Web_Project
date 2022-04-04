@@ -1,12 +1,11 @@
 import { Card, Button, Accordion } from "react-bootstrap";
 import CustomAccordionToggle from "./CustomAccordionToggle"
 import { useHistory } from "react-router-dom";
-
+import { useState } from "react";
 import { GAMES_PATH_PREFIX } from "../../../Constants";
 
-export default function GamePreviewCard({ GamePath, Name, PreviewImage, Description }) {
+export default function GamePreviewCard({ GamePath, Name, PreviewImage, Description, SetDifficultyLevel }) {
   const history = useHistory();
-
 
   return (
     <div>
@@ -16,10 +15,20 @@ export default function GamePreviewCard({ GamePath, Name, PreviewImage, Descript
             <Card.Img src={PreviewImage} />
           </Card.Header>
           <Card.Body  >
-            <Card.Title>{Name + " "}</Card.Title>
+            <Card.Title>
+
+              <div className="d-flex justify-content-around">
+                {Name + " "}
+                <div>
+                  <Button style={{ marginLeft: "20px" }} size="sm" variant="success">קל</Button>
+                  <Button style={{ marginLeft: "20px", color: "white" }} size="sm" variant="warning">בינוני</Button>
+                  <Button style={{ marginLeft: "20px" }} size="sm" variant="danger">קשה</Button>
+                </div>
+              </div>
+            </Card.Title>
 
             <div className="d-grid text-center p-1">
-              <Button onClick={() => history.push(GAMES_PATH_PREFIX + GamePath)} variant="success" size="sm" >שחק!</Button>
+              <Button onClick={() => history.push(GAMES_PATH_PREFIX + GamePath)} variant="primary" size="sm" >שחק!</Button>
             </div>
 
             <div className='d-flex flex-column align-items-start justify-content-start'>

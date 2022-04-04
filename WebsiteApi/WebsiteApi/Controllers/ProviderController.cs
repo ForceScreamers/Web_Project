@@ -74,6 +74,39 @@ namespace ParentsApi.Controllers
 
 			return base.Content(null);
 		}
+
+		[Microsoft.AspNetCore.Mvc.HttpGet]
+		[Microsoft.AspNetCore.Mvc.ActionName("GetArticles")]
+		public ContentResult GetArticles()
+		{
+			string tableName = Request.Headers["tableName"].ToString();
+			string filterValue = Request.Headers["filterValue"].ToString();
+
+			return base.Content(JsonConvert.SerializeObject(ProviderHelperFunctions.GetArticlesBy(tableName, filterValue)));
+		}
+
+		[Microsoft.AspNetCore.Mvc.HttpPost]
+		[Microsoft.AspNetCore.Mvc.ActionName("PostArticle")]
+		public ContentResult PostArticle()
+		{
+			int providerId= int.Parse(Request.Headers["providerId"].ToString());
+			string topicName = Request.Headers["topic"].ToString();
+			string content = Request.Headers["content"].ToString();
+			string title = Request.Headers["title"].ToString();
+
+			return base.Content(ProviderHelperFunctions.PostArticle(providerId, topicName, content, title));
+		}
+
+		[Microsoft.AspNetCore.Mvc.HttpGet]
+		[Microsoft.AspNetCore.Mvc.ActionName("GetAllTopics")]
+		public ContentResult GetAllTopics()
+		{
+			return base.Content(ProviderHelperFunctions.GetAllTopics());
+		}
+
+
+
+
 		#endregion
 
 		/// <summary>

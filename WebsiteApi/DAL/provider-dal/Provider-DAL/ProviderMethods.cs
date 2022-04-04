@@ -129,6 +129,81 @@ namespace ProviderDal
             return OdbcHelper.GetTable(com, new OdbcParameter[0]);
         }
 
-         
+
+        //Filter search requests
+        public static DataTable GetAllArticlesBy(string tableToFilter, string filterValue)
+        {
+            string com = $"SELECT article.article_content, article.topic_name, provider.provider_full_name, article.article_title FROM provider INNER JOIN article ON provider.provider_id = article.provider_id WHERE((({tableToFilter}) ALIKE ?));";
+
+            OdbcParameter[] queryParameters =
+            {
+                new OdbcParameter($"@{tableToFilter}", $"%{filterValue}%"),
+            };
+
+            return OdbcHelper.GetTable(com, queryParameters);
+        }
+
+        public static DataTable GetAllArticlesByTopicName(string filterValue)
+        {
+            string com = "SELECT article.article_content, article.topic_name, provider.provider_full_name, article.article_title FROM provider INNER JOIN article ON provider.provider_id = article.provider_id WHERE(((article.topic_name) ALIKE ?));";
+
+            OdbcParameter[] queryParameters =
+            {
+                new OdbcParameter("@article.topic_name", $"%{filterValue}%"),
+            };
+
+            return OdbcHelper.GetTable(com, queryParameters);
+        }
+        public static DataTable GetAllArticles()
+        {
+            string com = "SELECT article.article_content, article.topic_name, provider.provider_full_name, article.article_title FROM provider INNER JOIN article ON provider.provider_id = article.provider_id";
+            return OdbcHelper.GetTable(com, new OdbcParameter[0]);
+        }
+
+
+        public static void PostArticle(int providerId, string topicName, string content, string title)
+        {
+            string com = "INSERT INTO article (provider_id, topic_name, article_content, article_title) VALUES (?,?,?,?)";
+            
+            OdbcParameter[] queryParameters = {
+                new OdbcParameter("@provider_id", providerId),
+                new OdbcParameter("@topic_name", topicName),
+                new OdbcParameter("@article_content", content),
+                new OdbcParameter("@article_title", title),
+            };
+
+            OdbcHelper.Execute(com, queryParameters);
+        }
+
+        public static void CreateTopic(string topicName)
+        {
+            string com = "INSERT INTO topic (?)";
+
+            OdbcParameter[] queryParameters = {
+                new OdbcParameter("@topic_name", topicName),
+            };
+
+            OdbcHelper.Execute(com, queryParameters);
+        }
+
+        public static DataTable GetAllTopics()
+        {
+            //string com = "SELECT topic_name, topic_id FROM topic";
+            string com = "SELECT DISTINCT topic_name FROM article";
+            return OdbcHelper.GetTable(com, new OdbcParameter[0]);
+        }
+
+        public static bool IsTopicExists(string topicName)
+        {
+            string com = "SELECT topic_name FROM topic WHERE topic_name = ?";
+
+            OdbcParameter[] queryParameters = {
+                new OdbcParameter("@topic_name", topicName),
+            };
+
+            DataTable topicDt = OdbcHelper.GetTable(com, queryParameters);
+
+            return topicDt.Rows.Count > 0;
+        }
     }
 }

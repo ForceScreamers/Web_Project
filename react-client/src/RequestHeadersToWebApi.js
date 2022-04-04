@@ -37,7 +37,6 @@ export async function ParentsApiRequest(httpMethod, request, headers) {
 
 
 
-
 export async function ProvidersApiRequest(httpMethod, request, headers) {
   return ApiRequest(httpMethod, request, headers, 'Provider');
 }

@@ -1,0 +1,160 @@
+import React, { useEffect, useState } from 'react'
+import { Button, FormControl, FormSelect, FormText } from 'react-bootstrap';
+import ProviderNavigationBar from '../../Components/ProvidersComponents/ProviderNavigationBar'
+import { ProvidersApiRequest } from '../../RequestHeadersToWebApi';
+import utf8 from 'utf8'
+
+export default function ProviderPublishArticle() {
+  //TODO: Save written content to localstorage and display after closing
+  //TODO: Edit written article
+  //TODO: Add article posted prompt and clear fields
+  //TODO: Add search inside choose topic ? 
+
+  const [showCreateTopicField, setShowCreateTopicField] = useState(false);
+
+  const [articleTopic, setArticleTopics] = useState([""]);
+  const [topicToUse, setTopicToUse] = useState("");
+
+  const [content, setContent] = useState("");
+  const [title, setTitle] = useState("");
+
+  const [articleEmptyError, setArticleEmptyError] = useState("");
+  const [noTopicSelectedError, setNoTopicSelectedError] = useState("");
+  const [titleEmptyError, setTitleEmptyError] = useState("");
+
+  useEffect(() => {
+    LoadTopics();
+    LoadSavedContent();
+  }, [])
+
+  async function PublishArticle(e) {
+    e.preventDefault();
+
+    let isArticleValid = ValidatePostArticleAndChangeErrorMessage();
+
+    if (isArticleValid === true) {
+
+      console.log("publishing...")
+
+      let articleData = {
+        providerId: JSON.parse(sessionStorage.getItem("Info")).Id,
+        topic: utf8.encode(topicToUse),
+        content: utf8.encode(content),
+        title: utf8.encode(title),
+      }
+      ProvidersApiRequest("POST", "PostArticle", articleData)
+    }
+  }
+
+  async function LoadTopics() {
+    let response = await ProvidersApiRequest("GET", "GetAllTopics", null);
+    console.log(response);
+    setArticleTopics(response.data.Topics);
+  }
+
+  function ValidatePostArticleAndChangeErrorMessage() {
+    let isValid = true;//TODO: Shorten this function
+    if (title === "") {
+      setTitleEmptyError("חסרה כותרת")
+      isValid = false;
+    }
+    else {
+      setTitleEmptyError("")
+    }
+    if (content === "") {
+      setArticleEmptyError("המאמר ריק מתוכן")
+      isValid = false;
+    }
+    else {
+      setArticleEmptyError("")
+    }
+    if (topicToUse === "") {
+      setNoTopicSelectedError("לא נבחר נושא")
+      isValid = false;
+    }
+    else {
+      setNoTopicSelectedError("")
+    }
+
+    return isValid;
+  }
+
+  function ChangeSelectedTopic(event) {
+    setTopicToUse(event.target.value)
+    console.log(event.target.value)
+  }
+
+  function SaveContentToLocalStorage(event) {
+    // localStorage.setItem("content", JSON.stringify(event.target.value));
+    setContent(event.target.value)
+  }
+
+  function LoadSavedContent() {
+    // setContent(JSON.parse(localStorage.getItem("content")));
+  }
+
+  function HandleNewTopicChange(event) {
+    setTopicToUse(event.target.value);
+  }
+
+  return (
+
+    <div>
+      <ProviderNavigationBar />
+      <h1>כתיבת מאמר</h1>
+
+      <form onSubmit={PublishArticle}>
+
+        <div className="d-flex flex-column justify-content-start align-items-center" style={{ marginTop: "2%" }} >
+
+          <div>
+            <FormControl type="text" placeholder="כותרת" onChange={(event) => setTitle(event.target.value)} />
+            <label>{titleEmptyError}</label>
+            <br />
+            <textarea placeholder="תוכן" rows={10} cols={100} onChange={SaveContentToLocalStorage} />
+            <br />
+            <label>{articleEmptyError}</label>
+          </div>
+
+          <div>
+
+            <br />
+            <FormSelect onChange={ChangeSelectedTopic} style={{ width: "200px", opacity: showCreateTopicField ? "60%" : "100%" }} disabled={showCreateTopicField}>
+              <option hidden={true}>בחירת נושא</option>
+              {
+                articleTopic.map((topic, index) => {
+                  return (
+                    <option key={index}>{topic.topic_name}</option>
+                  )
+                })
+              }
+            </FormSelect>
+            <br />
+
+
+            {
+              showCreateTopicField === true
+                ?
+                <div>
+                  <FormControl type="text" placeholder="נושא" name="topicFormField" onChange={HandleNewTopicChange} />
+                  <br />
+                  <Button onClick={() => setShowCreateTopicField(false)}>בחירת נושא</Button>
+                </div>
+                :
+                <div>
+                  <Button onClick={() => setShowCreateTopicField(true)}>יצירת נושא</Button>
+                </div>
+            }
+          </div>
+
+
+          <br />
+
+          <label>{noTopicSelectedError}</label>
+          <input type="submit" value="פרסום מאמר" />
+        </div>
+      </form>
+
+    </div>
+  )
+}

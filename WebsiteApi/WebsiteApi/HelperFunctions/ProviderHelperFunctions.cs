@@ -33,7 +33,20 @@ namespace ProvidersApi
 			//return JsonConvert.SerializeObject(new { DeletedChildId = postId });
 			return null;
 		}
-		public static string GetPosts(int providerId)
+
+		public static string GetArticlesBy(string tableName, string filterValue)
+		{
+			if(tableName != "all")
+			{
+				return JsonConvert.SerializeObject(ProviderMethods.GetAllArticlesBy(tableName, filterValue));
+			}
+			else
+			{
+				return JsonConvert.SerializeObject(ProviderMethods.GetAllArticles());
+			}
+		}
+
+		public static string GetArticles(int providerId)
 		{
 
 			//List<Post> children = GetChildrenForParent(providerId);
@@ -49,8 +62,11 @@ namespace ProvidersApi
 			//return JsonConvert.SerializeObject(children);
 			return null;
 		}
-		public static string AddPost(int providerId, Post post)
+		public static string PostArticle(int providerId, string topic, string content, string title)
 		{
+			//TODO: Add posted successfully
+			ProviderMethods.PostArticle(providerId, topic, content, title);
+
 			//bool childAddConfirm = false;
 			//try
 			//{
@@ -69,6 +85,23 @@ namespace ProvidersApi
 			////	TODO: Check if you really need to return info
 			//return JsonConvert.SerializeObject(new { confirmed = childAddConfirm, name = ConvertToUnicode(child.Name), age = child.Age, id = child.Id });
 			return null;
+		}
+
+		public static string CreateTopic(string topicName)
+		{
+			bool isTopicExists = ProviderMethods.IsTopicExists(topicName);
+
+			if (isTopicExists == false)
+			{
+				ProviderMethods.CreateTopic(topicName);
+			}
+
+			return JsonConvert.SerializeObject(new { IsTopicExists = isTopicExists });
+		}
+
+		public static string GetAllTopics()
+		{
+			return JsonConvert.SerializeObject(new { Topics = ProviderMethods.GetAllTopics() });
 		}
 
 		public static string ProviderLogin(string email, string password)
@@ -196,7 +229,7 @@ namespace ProvidersApi
 			return false;
 		}
 
-		private static List<Post> GetPostsForProvider(int providerId)
+		private static List<Article> GetPostsForProvider(int providerId)
 		{
 			DataTable childrenDt = PostMethods.GetPostsForProvider(providerId);
 			//List<Post> childrenList = ChildrenDataTableToObject(childrenDt);

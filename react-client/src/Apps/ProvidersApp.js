@@ -12,6 +12,7 @@ import ProviderGames from "../Pages/ProvidersPages/ProviderGames";
 import { PublicRoute } from "../Components/GeneralComponents/PublicRoute";
 import { ProvidersApiRequest } from "../RequestHeadersToWebApi";
 import ProtectedRoute from "../Components/GeneralComponents/ProtectedRoute";
+import ProviderPublishArticle from "../Pages/ProvidersPages/ProviderPublishArticle";
 
 export default function ProvidersApp() {
   const history = useHistory();
@@ -119,6 +120,7 @@ export default function ProvidersApp() {
     />
 
     <ProtectedRoute exact path="/Provider/Games" Component={ProviderGames} />
+    <ProtectedRoute exact path="/Provider/PublishArticle" Component={ProviderPublishArticle} />
 
   </div>;
 }

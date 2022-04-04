@@ -8,14 +8,26 @@ let isDone = false;
 let typeCounter = 0;
 
 //TODO: Spot The Difference needs to use CardsJSON prop
-//TODO: Check that all of the games use the game template instead of displaying each of his own score and time
 
-function CardsJSONToCardsArray(jsonCards) {
+
+function GetCardsDataByDifficulty(jsonCards, difficulty) {
+  if (difficulty === 1) {
+    return jsonCards.difficulty1;
+  }
+  if (difficulty === 2) {
+    return jsonCards.difficulty2;
+  }
+}
+
+function CardsJSONToCardsArray(jsonCards, difficulty) {
+
+  let jsonData = GetCardsDataByDifficulty(jsonCards, difficulty)
+
   //  Convert to array
   let cardsDataList = [];
 
-  for (let card in jsonCards) {
-    cardsDataList.push(jsonCards[card]);
+  for (let card in jsonData) {
+    cardsDataList.push(jsonData[card]);
   }
   return cardsDataList;
 }
@@ -35,8 +47,8 @@ function SplitCardProperties(cardsArray) {
 
 
 
-function GenerateGameCards(jsonCards) {
-  let gameCards = CardsJSONToCardsArray(jsonCards);
+function GenerateGameCards(jsonCards, difficulty) {
+  let gameCards = CardsJSONToCardsArray(jsonCards, difficulty);
   let cardTexts = SplitCardProperties(gameCards);
 
   for (let i = 0; i < CARD_COUNT; i++) {
@@ -71,11 +83,11 @@ function shuffleCards(array) {
 
 
 
-export default function MemoryGame({ SetMoves, SetCorrectMoves, CardsJSON, SetHasEnded }) {
+export default function MemoryGame({ SetMoves, SetCorrectMoves, CardsJSON, SetHasEnded, Difficulty }) {
 
 
   const [cards, setCards] = useState(
-    () => shuffleCards(GenerateGameCards(CardsJSON))
+    () => shuffleCards(GenerateGameCards(CardsJSON, Difficulty))
   );
 
   const [openCards, setOpenCards] = useState([]);
