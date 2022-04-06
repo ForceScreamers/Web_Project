@@ -25,3 +25,4 @@ C:\Users\Kfir\Desktop\Web_Project 06.02\WebsiteApi\DAL\provider-dal\Provider-DAL
 C:\Users\Kfir\Desktop\Web_Project 06.02\WebsiteApi\DAL\provider-dal\Provider-DAL\obj\Debug\ProviderDal.csproj.CopyComplete
 C:\Users\Kfir\Desktop\Web_Project 06.02\WebsiteApi\DAL\provider-dal\Provider-DAL\obj\Debug\Provider-DAL.exe
 C:\Users\Kfir\Desktop\Web_Project 06.02\WebsiteApi\DAL\provider-dal\Provider-DAL\obj\Debug\Provider-DAL.pdb
+C:\Users\Administrator\Desktop\Web_Project\WebsiteApi\DAL\provider-dal\Provider-DAL\obj\Debug\ProviderDal.csproj.AssemblyReference.cache

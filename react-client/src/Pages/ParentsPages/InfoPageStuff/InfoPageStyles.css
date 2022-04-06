@@ -13,7 +13,9 @@
 
 .info-card:hover {
   border: solid lightblue 3px;
-  transform: translateY(-10px)
+  transform: translateY(-10px);
+  /* transform: rotate(30); */
+
 }
 
 .info-container {
