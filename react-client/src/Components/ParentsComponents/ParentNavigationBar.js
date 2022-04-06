@@ -11,7 +11,7 @@ export default function ParentNavigationBar() {
 
   const usernameFromContext = useContext(NavBarContext).username;
   const currentChildFromContext = useContext(NavBarContext).child;
-  const isVisible = useContext(NavBarContext).isVisible;
+  const isVisible = useContext(NavBarContext).isVisible;//TODO: Check what is that
 
 
   const S_CURRENT_CHILD = "ילד נוכחי";
@@ -24,8 +24,8 @@ export default function ParentNavigationBar() {
           <Navbar.Brand href="/Parent/Home">כפתור בית</Navbar.Brand>
           <Navbar.Brand> מחובר בתור: {usernameFromContext}</Navbar.Brand>
           <Navbar.Brand>
-            {/* {currentChildNameFromContext.length === 0 ? S_NO_CHILD_SELECTED : `${S_CURRENT_CHILD}:${currentChildNameFromContext}`} */}
-            {currentChildFromContext === null ? S_NO_CHILD_SELECTED : `${S_CURRENT_CHILD}:${currentChildFromContext.Name}`}
+
+            {currentChildFromContext === null ? S_NO_CHILD_SELECTED : `${S_CURRENT_CHILD}: ${currentChildFromContext.Name}`}
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
@@ -35,7 +35,7 @@ export default function ParentNavigationBar() {
               <Link to="/Parent/About" className="nav-link">אודות</Link>
               <Link to="/Parent/EditProfile" className="nav-link">עריכת פרופיל</Link>
               <Link to="/Parent/Avatar" className="nav-link">שינוי אווטר</Link>
-              <Link to="/Parent/Journal" className="nav-link">היומן שלי</Link>
+              <Link to="/Parent/Journal" className="nav-link">{currentChildFromContext === null ? S_NO_CHILD_SELECTED : `היומן של ${currentChildFromContext.Name}`}</Link>
               {/* <NavDropdown title="Dropdown" id="collasible-nav-dropdown">
                 <NavDropdown.Item href="#action/3.1">דברים</NavDropdown.Item>
                 <NavDropdown.Item href="#action/3.2">עוד דברים</NavDropdown.Item>
@@ -44,7 +44,6 @@ export default function ParentNavigationBar() {
                 <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
               </NavDropdown> */}
 
-              {/* <Button onClick={LogoutUser} variant='danger'>יציאה</Button> */}
               <LogoutButton />
 
             </Nav>

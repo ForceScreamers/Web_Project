@@ -5,12 +5,15 @@ import './ArticleModalStyles.css'
 
 export default function ArticleModal({ ShowArticleModal, CloseArticleModal, Topic, Title, ProviderName, Content, ProviderData /*later*/ }) {
   return (
-    <div className="article-modal-container">
-      <Modal show={ShowArticleModal} >
+    <div >
+      <Modal show={ShowArticleModal} style={{ top: "5%" }} className="article-modal-container">
         <Modal.Header>
-          <Modal.Title>{Topic} - {Title}</Modal.Title>
+          <div>
+            <Modal.Title>{Topic} - {Title}</Modal.Title>
+          </div>
+          <Button variant="link" size="lg">{ProviderName}</Button>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body style={{ height: "70vh" }}>
           {Content}
         </Modal.Body>
         <Modal.Footer>

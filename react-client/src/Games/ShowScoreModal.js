@@ -35,9 +35,9 @@ export default function ShowScoreModal({ ShowScoreModal, CloseScoreModal, Score,
         <Button style={{ backgroundColor: 'purple' }} onClick={() => CloseAndNavigateToGamesPage()}>
           חזרה למשחקייה
         </Button>
-        <Button variant="primary" onClick={() => CloseAndNavigateToJournalPage()}>
+        {/* <Button variant="primary" onClick={() => CloseAndNavigateToJournalPage()}>
           ליומן שלי
-        </Button>
+        </Button> */}
       </Modal.Footer>
     </Modal>
   )

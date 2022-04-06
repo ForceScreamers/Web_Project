@@ -55,7 +55,7 @@
 בעלי מקצוע - הרשמה:
 הודעת הירשמות - חכה לאישור
 
-
+גישה לפרופיל של בעל מקצוע שפרסם את המאמר
 
 
 
@@ -65,7 +65,7 @@ Games:
 - מתמטיקה
 
 General:
-  [ ] Change games page to work with links
+  [ ] Limit maxlength for all input text types
   [ ] Math game - make 32 cards, each time with a random set of cards (finish cropping the pictures)
   [ ] Games page - Add show score and return to games menu button after ending a game
   [ ] Split user exists state into loginUserExists and registerUserExists

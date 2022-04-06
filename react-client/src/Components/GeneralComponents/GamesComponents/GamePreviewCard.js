@@ -47,15 +47,7 @@ export default function GamePreviewCard({ GamePath, Name, PreviewImage, Descript
 
         </Card>
       </Accordion>
-      {/* <Card>
-        <Card.Img variant="top" src="holder.js/100px160" />
-        <Card.Body>
-          <Card.Title>Card title</Card.Title>
-          <Card.Text>
-            This is a
-          </Card.Text>
-        </Card.Body>
-      </Card> */}
+
     </div>
   )
 }

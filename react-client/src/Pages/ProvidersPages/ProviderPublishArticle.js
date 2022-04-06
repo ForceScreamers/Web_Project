@@ -4,11 +4,15 @@ import ProviderNavigationBar from '../../Components/ProvidersComponents/Provider
 import { ProvidersApiRequest } from '../../RequestHeadersToWebApi';
 import utf8 from 'utf8'
 
+
+const ARTICLE_CONTENT_MAX_LENGTH = 1800;
+const ARTICLE_MAX_LENGTH_SMALL = 30;
+
 export default function ProviderPublishArticle() {
   //TODO: Save written content to localstorage and display after closing
   //TODO: Edit written article
   //TODO: Add article posted prompt and clear fields
-  //TODO: Add search inside choose topic ? 
+  //TODO: Add dropdown when choosing topic (?)
 
   const [showCreateTopicField, setShowCreateTopicField] = useState(false);
 
@@ -108,10 +112,10 @@ export default function ProviderPublishArticle() {
         <div className="d-flex flex-column justify-content-start align-items-center" style={{ marginTop: "2%" }} >
 
           <div>
-            <FormControl type="text" placeholder="כותרת" onChange={(event) => setTitle(event.target.value)} />
+            <FormControl maxLength={ARTICLE_MAX_LENGTH_SMALL} type="text" placeholder="כותרת" onChange={(event) => setTitle(event.target.value)} />
             <label>{titleEmptyError}</label>
             <br />
-            <textarea placeholder="תוכן" rows={10} cols={100} onChange={SaveContentToLocalStorage} />
+            <textarea maxLength={ARTICLE_CONTENT_MAX_LENGTH} placeholder="תוכן" rows={10} cols={100} onChange={SaveContentToLocalStorage} />
             <br />
             <label>{articleEmptyError}</label>
           </div>
@@ -136,7 +140,7 @@ export default function ProviderPublishArticle() {
               showCreateTopicField === true
                 ?
                 <div>
-                  <FormControl type="text" placeholder="נושא" name="topicFormField" onChange={HandleNewTopicChange} />
+                  <FormControl maxLength={ARTICLE_MAX_LENGTH_SMALL} type="text" placeholder="נושא" name="topicFormField" onChange={HandleNewTopicChange} />
                   <br />
                   <Button onClick={() => setShowCreateTopicField(false)}>בחירת נושא</Button>
                 </div>

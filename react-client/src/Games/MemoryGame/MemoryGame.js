@@ -82,7 +82,6 @@ function shuffleCards(array) {
 
 
 
-
 export default function MemoryGame({ SetMoves, SetCorrectMoves, CardsJSON, SetHasEnded, Difficulty }) {
 
 
@@ -109,6 +108,7 @@ export default function MemoryGame({ SetMoves, SetCorrectMoves, CardsJSON, SetHa
       SetHasEnded(false);
     }
   };
+
 
   const evaluate = () => {
     // setTest("eval value")

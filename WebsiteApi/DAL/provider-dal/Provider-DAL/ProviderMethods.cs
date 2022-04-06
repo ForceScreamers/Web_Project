@@ -168,9 +168,12 @@ namespace ProviderDal
             OdbcParameter[] queryParameters = {
                 new OdbcParameter("@provider_id", providerId),
                 new OdbcParameter("@topic_name", topicName),
-                new OdbcParameter("@article_content", content),
+                new OdbcParameter("@article_content", OdbcType.NText, 8000),
                 new OdbcParameter("@article_title", title),
             };
+
+            //  Set special size for long strings 
+            queryParameters[2].Value = content;
 
             OdbcHelper.Execute(com, queryParameters);
         }

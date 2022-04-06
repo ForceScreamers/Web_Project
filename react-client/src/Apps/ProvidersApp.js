@@ -82,12 +82,9 @@ export default function ProvidersApp() {
 
       try {
         let response = await ProvidersApiRequest('POST', 'ProviderRegister', registerData)
-        // RequestRegisterAsProvider(fullName, email, password, occupation)
-        console.log(response);
 
         if (response.data.UserExists === true) {
           //  User already exists
-          // alert('משתמש כבר קיים')
           setUserExistsError(true);
         }
         else if (response.data.Registered === true) {

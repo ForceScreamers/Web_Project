@@ -11,7 +11,6 @@ import InfoPageSearchField from "./InfoPageStuff/InfoPageSearchField"
 
 import Randoms from '../../Randoms'
 import ArticleModal from "./InfoPageStuff/ArticleModal"
-//TODO: Add clear search button
 //TODO: Shuffle articles
 
 const breakpointColumnsObj = {
@@ -23,6 +22,9 @@ const breakpointColumnsObj = {
 
 const MIN_CARD_HEIGHT_PX = 200;
 
+const DEFUALT_FILTER_VALUE = "";
+const DEFUALT_TABLE_NAME = "all";
+
 export default function InfoPage() {
 
   const [articles, setArticles] = useState([]);
@@ -33,7 +35,7 @@ export default function InfoPage() {
 
   const [showArticleModal, setShowArticleModal] = useState(false);
 
-  async function GetArticlesFromServer() {
+  async function LoadArticlesFromServerByFilter() {
     let filterValues = {
       tableName: tableName,
       filterValue: utf8.encode(filterValue),
@@ -49,8 +51,8 @@ export default function InfoPage() {
   }
 
   useEffect(() => {
-    GetArticlesFromServer();
-  }, [])
+    LoadArticlesFromServerByFilter();
+  }, [filterValue, tableName])
 
   function UpdateFilterValue(event) {
     setFilterValue(event.target.value);
@@ -82,6 +84,11 @@ export default function InfoPage() {
     setShowArticleModal(false);
   }
 
+  function ClearSearch() {
+    setFilterValue(DEFUALT_FILTER_VALUE);
+    setTableName(DEFUALT_TABLE_NAME);
+  }
+
   return (
     <div>
       <ParentMainPage title='מידע ומאמרים'>
@@ -89,9 +96,10 @@ export default function InfoPage() {
         <InfoPageSearchField
           UpdateFilterType={UpdateFilterType}
           UpdateFilterValue={UpdateFilterValue}
-          GetArticlesFromServer={GetArticlesFromServer}
+          GetArticlesFromServer={LoadArticlesFromServerByFilter}
           FilterValue={filterValue}
           FilterType={tableName}
+          ClearSearch={ClearSearch}
         />
 
         <Masonry className="info-container" breakpointCols={breakpointColumnsObj}>

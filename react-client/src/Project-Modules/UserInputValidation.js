@@ -34,22 +34,34 @@ export function ValidateUserInput(input, lang) {
   return result;
 }
 
-//  Returns true if the input contains only english characters and spaces
-function ValidateUserInput_Eng(input) {
-  return (/[a-zA-Z\s]/).test(input)
-}
 
-//  Returns true if the input contains only hebrew characters and the space char "\u0020"
-export function IsInputValid_OnlyHebrew(input) {
-  return (/^[\u0590-\u05FF\u0020]+$/).test(input);
-}
+
+
+
+
 
 //  Returns true if the input contains only numbers
 function ValidateUserInput_Num(input) {
   return (/[0-9]/).test(input);
 }
 
-//  ? Don't know
+
+
+
+
+
+
+//  Returns true if the input contains only hebrew characters and the space char "\u0020"
+export function IsInputValid_OnlyHebrew(input) {
+  return (/^[\u0590-\u05FF\u0020]+$/).test(input);
+}
+
+//  Returns true if the input contains only english characters and spaces
+function ValidateUserInput_Eng(input) {
+  return (/[a-zA-Z\s]/).test(input)
+}
+
+
 function ValidateUserInput_All(input) {
   return (/[0-9\u0590-\u05FF\s]/).test(input);
 }
@@ -64,7 +76,6 @@ function EmailRegexCheck(email) {
 }
 
 
-//TODO: Change name to ValidateRegisterForm
 /**
  * Returns error
  */
@@ -84,6 +95,11 @@ export const ValidateRegisterInput = (userData) => {
       resultErrors.push(err);
     }
   })
+
+  //    /\____/\
+  //  / o   o  \
+  // \    ~   /  
+  // \ ____ /
 
   return {
     errors: resultErrors,

@@ -4,6 +4,7 @@ import ChildEvaluationDisplay from "./ChildEvaluationDisplay"
 import ChildEvaluationsDisplay from "./ChildEvaluationsDisplay";
 import { Button } from "react-bootstrap";
 import PageFlipTest from "./PageFlip/PageFlipTest";
+import NoChildrenMessage from "../../Components/ParentsComponents/GamesPageComponents/NoChildrenMessage";
 
 
 
@@ -49,31 +50,27 @@ export default function JournalPage({ LoadChildrenFromServer, ChildProfile }) {
     }
   }
 
-  //TODO: Handle no children
-  //TODO: Handle no data for child
   //! Pay attention to each difficulty for each game!
   return (
     <div>
-      <ParentMainPage title='היומן שלי'>
+      <ParentMainPage title={selectedChild === undefined ? `` : `היומן של ${selectedChild.Name}`}>
         <div>
           {
-            // childrenProfiles !== null//  If there are no children
-
-            //  i - index inside the state array, using it because react wants to use it...
-            // ? childrenProfiles.map((childProfile, index) => (
-            <div>
-              {/* <label >{index}</label> */}
-              <h1>{selectedChild.Name}</h1>
-              <ChildEvaluationsDisplay />
-              <ChildEvaluationDisplay Evaluation={selectedChild.Evaluations[currentEvaluationIndex]} />
-            </div>
-            // ))
-            // : <></>
+            //  If there is no child selected
+            selectedChild === undefined
+              ? <NoChildrenMessage />
+              :
+              <div>
+                {
+                  //  If the selected child has no evaluations
+                  selectedChild.Evaluations.length > 0
+                    ? <ChildEvaluationDisplay Evaluation={selectedChild.Evaluations[currentEvaluationIndex]} />
+                    : <label>אין מידע לשחק</label>
+                }
+                <Button onClick={() => SetNextEvaluationIndex()}>Next</Button>
+                <Button onClick={() => SetPreviousEvaluationIndex()}>Previous</Button>
+              </div>
           }
-
-          <Button onClick={() => SetNextEvaluationIndex()}>Next</Button>
-          <Button onClick={() => SetPreviousEvaluationIndex()}>Previous</Button>
-
         </div>
 
 
