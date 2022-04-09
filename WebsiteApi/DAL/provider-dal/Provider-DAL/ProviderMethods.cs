@@ -173,6 +173,7 @@ namespace ProviderDal
             };
 
             //  Set special size for long strings 
+
             queryParameters[2].Value = content;
 
             OdbcHelper.Execute(com, queryParameters);

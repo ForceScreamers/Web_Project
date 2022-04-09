@@ -1,0 +1,20 @@
+.evaluation-book-page {
+  border: 2px solid lightgray;
+  background-color: white;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.evaluation-book-cover {
+  border: 2px solid rgb(141, 196, 219);
+  background-color: rgb(122, 168, 210);
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.evaluation-book-cover-front {
+  text-align: center;
+  padding-top: 150px;
+  font-size: 75px;
+  font-weight: 500;
+}
