@@ -4,8 +4,9 @@ import { ValidateEmail, ValidatePassword, ValidateConfirmPassword, IsHebrewInput
 import { useState } from 'react'
 import { InputField } from '../../Project-Modules/UserInputValidation'
 import FormInputFieldSection from '../../Components/GeneralComponents/FormInputFieldSection'
+import WaitForConfirmationModal from './ProviderRegisterFiles/WaitForConfirmationModal'
 
-export default function ProviderRegister({ HandleProviderRegister, UserExistsError }) {
+export default function ProviderRegister({ HandleProviderRegister, UserExistsError, ShowWaitForConfirmationModal, CloseWaitForConfirmationModal }) {
 
   const [inputFields, setInputFields] = useState([
     new InputField("fullNameField", "שם מלא:", IsHebrewInputValid, "לא מתאים", "text"),
@@ -155,6 +156,8 @@ export default function ProviderRegister({ HandleProviderRegister, UserExistsErr
         <Link to="/" >התחברות בתור הורה</Link>
 
       </div>
+
+      <WaitForConfirmationModal ShowModal={ShowWaitForConfirmationModal} CloseModal={CloseWaitForConfirmationModal} />
     </div >
   )
 }

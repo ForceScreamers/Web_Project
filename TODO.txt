@@ -1,44 +1,6 @@
-מערכת ניקוד לכל משחק:
-מתחילים מ100 נקודות 
-על כל מהלך שגוי 10- נקודות
-על כל מהלך נכון 20+ נקודות
+Update journal when game ends
 
-הניקוד והזמן שלקח מוצגים בסוף של המשחק
-
-
-
-הורים - מאמרים:
-הצגת המאמרים כמו 929 (מפוזר)
-
-הורים - יומן אישי:
-
-התקדמות הילד נמדדת לפי: מהלכים, הצלחות וזמן
-
-דף אחד - 
-בחירה של משחק (איך עושים)
-שם המשחק, רמת הקושי
-
-ממוצע מס' מהלכים
-ממוצע נקודות
-ממוצע זמן לסיום
-שיא מס' המהלכים הכי נמוך
-שיא הזמן הכי נמוך לסיום 
-
-דף שני -
-המשחק האחרון (עדכני ביותר)
-זמן שלקח
-מס' מהלכים
-ניקוד
-מעל / מתחת לממוצע לכל פרמטר
-
-
-
-הודעה בסוף משחק:
-ניקוד
-זמן שלקח
-ניווט ליומן שלי
-חזרה לתפריט המשחקים
-
+Time to finish game needs to be in 00:00 format
 
 
 משחק אסוסיאציות:
@@ -52,9 +14,6 @@
 עריכת פרופיל - מספר טלפון, מקצוע, שם, כתובת, כתובת מייל, תמונה ?
 פרסום מאמר - קטגוריה, שם המאמר, תוכן
 
-בעלי מקצוע - הרשמה:
-הודעת הירשמות - חכה לאישור
-
 גישה לפרופיל של בעל מקצוע שפרסם את המאמר
 
 
@@ -67,12 +26,12 @@ Games:
 General:
   [ ] Limit maxlength for all input text types
   [ ] Math game - make 32 cards, each time with a random set of cards (finish cropping the pictures)
-  [ ] Games page - Add show score and return to games menu button after ending a game
   [ ] Split user exists state into loginUserExists and registerUserExists
   [ ] Add errors in login and register as text to screen
   [ ] Fix collapse or navbar width when resizing the window
 
   [ ] Display the game names from the same source, currently there are 2 different data sources
+  [ ] Fix user already exists message
 
 
 Admins App:

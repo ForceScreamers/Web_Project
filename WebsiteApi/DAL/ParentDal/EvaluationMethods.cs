@@ -34,7 +34,7 @@ namespace ParentDal
 
 
 
-        public static int AddEvaluation(int evaluationChildId, int evaluationGameId, int moveCount, int timeInSeconds, int score, string difficulty)
+        public static int AddEvaluation(int evaluationChildId, int evaluationGameId, int moveCount, int timeInSeconds, int score, int difficulty)
         {
             string com = "INSERT INTO evaluation (evaluation_child_id, evaluation_game_id, " +
                 "evaluation_average_moves, evaluation_average_time, " +
@@ -94,14 +94,15 @@ namespace ParentDal
 
 
 
-        public static bool IsExists(int evaluationChildId, int evaluationGameId)
+        public static bool IsExists(int evaluationChildId, int evaluationGameId, int difficulty)
         {
-            string com = "SELECT evaluation_child_id, evaluation_game_id FROM evaluation WHERE evaluation_child_id=? AND evaluation_game_id=?";
+            string com = "SELECT evaluation_child_id, evaluation_game_id FROM evaluation WHERE evaluation_child_id=? AND evaluation_game_id=? AND evaluation_difficulty=?";
             bool exists = false;
 
             OdbcParameter[] queryParameters = {
                 new OdbcParameter("@evaluation_child_id", evaluationChildId),
-                new OdbcParameter("@evaluation_game_id", evaluationGameId)
+                new OdbcParameter("@evaluation_game_id", evaluationGameId),
+                new OdbcParameter("@evaluation_difficulty", difficulty),
             };
 
             //Add if check for existing users

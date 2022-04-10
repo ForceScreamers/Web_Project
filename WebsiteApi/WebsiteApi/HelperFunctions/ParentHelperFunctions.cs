@@ -16,11 +16,12 @@ namespace ParentsApi
 {
     public class ParentHelperFunctions
     {
-		public static void UpdateChildEvaluation(int childId, int gameId, int moveCount, int timeInSeconds, int score, string difficulty)
+		public static void UpdateChildEvaluation(int childId, int gameId, int moveCount, int timeInSeconds, int score, int difficulty)
         {
             try
             {
-				if (EvaluationMethods.IsExists(childId, gameId))
+				//If the evaluation exists
+				if (EvaluationMethods.IsExists(childId, gameId, difficulty))
 				{
 					EvaluationMethods.UpdateEvaluation(childId, moveCount, timeInSeconds, score);
 				}

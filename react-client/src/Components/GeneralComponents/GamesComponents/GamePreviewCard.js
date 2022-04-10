@@ -4,25 +4,29 @@ import { useHistory } from "react-router-dom";
 import { useState } from "react";
 import { GAMES_PATH_PREFIX } from "../../../Constants";
 
-export default function GamePreviewCard({ GamePath, Name, PreviewImage, Description, SetDifficultyLevel }) {
+import { GAME_DIFFICULTY } from "../../../Constants";
+
+export default function GamePreviewCard({ GamePath, Name, GameId, PreviewImage, Description, ChangeDifficulty, SelectedDifficulty }) {
   const history = useHistory();
+
+
+
 
   return (
     <div>
       <Accordion>
-        <Card bg='light'>
-          <Card.Header className='d-flex align-items-center justify-content-center '>
-            <Card.Img src={PreviewImage} />
-          </Card.Header>
+        <Card bg='light' style={{ borderRadius: "0px" }}>
+
           <Card.Body  >
             <Card.Title>
+              <Card.Img src={PreviewImage} />
+              <br />
+              <br />
 
               <div className="d-flex justify-content-around">
                 {Name + " "}
                 <div>
-                  <Button style={{ marginLeft: "20px" }} size="sm" variant="success">קל</Button>
-                  <Button style={{ marginLeft: "20px", color: "white" }} size="sm" variant="warning">בינוני</Button>
-                  <Button style={{ marginLeft: "20px" }} size="sm" variant="danger">קשה</Button>
+                  <SelectDifficultyButtons GameId={GameId} ChangeDifficulty={ChangeDifficulty} SelectedDifficulty={SelectedDifficulty} />
                 </div>
               </div>
             </Card.Title>
@@ -48,6 +52,32 @@ export default function GamePreviewCard({ GamePath, Name, PreviewImage, Descript
         </Card>
       </Accordion>
 
+    </div>
+  )
+}
+
+function DifficultyButton({ Text, Variant, SelectedDifficulty, ChangeDifficulty, Difficulty, GameId }) {
+  console.log(SelectedDifficulty)
+
+  return (
+    <Button
+      onClick={() => ChangeDifficulty(GameId, Difficulty)}
+      style={{ outline: "none", boxShadow: "none", marginLeft: "20px", border: Difficulty === SelectedDifficulty ? "solid black 2px" : "", color: Difficulty === SelectedDifficulty ? "black" : "white" }}
+      variant={Variant}
+      size="sm"
+    >
+      {Text}
+    </Button>
+  )
+}
+
+function SelectDifficultyButtons({ SelectedDifficulty, ChangeDifficulty, GameId }) {
+
+  return (
+    <div>
+      <DifficultyButton GameId={GameId} SelectedDifficulty={SelectedDifficulty} ChangeDifficulty={ChangeDifficulty} Variant="success" Text="קל" Difficulty={GAME_DIFFICULTY.EASY} />
+      <DifficultyButton GameId={GameId} SelectedDifficulty={SelectedDifficulty} ChangeDifficulty={ChangeDifficulty} Variant="warning" Text="בינוני" Difficulty={GAME_DIFFICULTY.MEDIUM} />
+      <DifficultyButton GameId={GameId} SelectedDifficulty={SelectedDifficulty} ChangeDifficulty={ChangeDifficulty} Variant="danger" Text="קשה" Difficulty={GAME_DIFFICULTY.HARD} />
     </div>
   )
 }

@@ -92,7 +92,7 @@ export default function GameTemplate({ GameId, GameComponent, CardsJSON, GameNam
       gameScore: childEvaluation,
       time: secondsPassed,
       moves: moves,
-      difficulty: "Easy", // TODO: Add difficulty to game template
+      difficulty: Difficulty,
     }
 
     ParentsApiRequest('POST', 'UpdateEvaluationScore', evaluationScoreData)

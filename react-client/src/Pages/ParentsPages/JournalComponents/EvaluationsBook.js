@@ -51,7 +51,7 @@ export const EvaluationsBook = React.forwardRef((props, ref) => {
           :
           <>
 
-            <HTMLFlipBook onInit={() => FlipBookToRightSide()} showCover={false} flippingTime={600} maxShadowOpacity={0.2} style={{ backgroundColor: "transparent" }} ref={flip} width={500} height={600} useMouseEvents={false}>
+            <HTMLFlipBook onInit={() => FlipBookToRightSide()} showCover={true} flippingTime={600} maxShadowOpacity={0.2} style={{ backgroundColor: "transparent" }} ref={flip} width={500} height={600} useMouseEvents={false}>
 
               <BookCover />
 
@@ -98,7 +98,7 @@ const BookCover = React.forwardRef((props, ref) => {
 const EvaluationPage = React.forwardRef((props, ref) => {
 
   return (
-    <div className="evaluation-book-page" ref={ref} >
+    <div className="evaluation-book-page" ref={ref} data-density="hard">
       {
         <ChildEvaluationPrompt Evaluation={props.Evaluation} />
       }

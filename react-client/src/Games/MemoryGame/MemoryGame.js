@@ -1,9 +1,9 @@
 import { useEffect, useState, useRef } from "react";
 import Card from "../MemoryGame/Card";
 import "./app.scss";
+import { GAME_DIFFICULTY } from "../../Constants";
 
-const CARD_COUNT = 16;
-//let gameCards = new Array(CARD_COUNT);
+const CARD_COUNT = 8;
 let isDone = false;
 let typeCounter = 0;
 
@@ -11,11 +11,15 @@ let typeCounter = 0;
 
 
 function GetCardsDataByDifficulty(jsonCards, difficulty) {
-  if (difficulty === 1) {
+  console.log(difficulty)
+  if (difficulty === GAME_DIFFICULTY.EASY) {
     return jsonCards.difficulty1;
   }
-  if (difficulty === 2) {
+  if (difficulty === GAME_DIFFICULTY.MEDIUM) {
     return jsonCards.difficulty2;
+  }
+  if (difficulty === GAME_DIFFICULTY.HARD) {
+    return jsonCards.difficulty3;
   }
 }
 

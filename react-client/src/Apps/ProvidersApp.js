@@ -19,6 +19,8 @@ export default function ProvidersApp() {
 
   const [userExistsError, setUserExistsError] = useState(null);
 
+  const [showWaitForConfirmationModal, setShowWaitForConfirmationModal] = useState(false);
+
   function RedirectToWelcome() {
     history.push("/Provider/Games");
   }
@@ -88,7 +90,8 @@ export default function ProvidersApp() {
           setUserExistsError(true);
         }
         else if (response.data.Registered === true) {
-          alert('חכה לאישור כניסה');
+          OpenWaitForConfirmationModal();
+          // alert('חכה לאישור כניסה');
         }
         else {
           //  Something went wrong
@@ -100,6 +103,9 @@ export default function ProvidersApp() {
       }
     }
   }
+
+  function CloseWaitForConfirmationModal() { setShowWaitForConfirmationModal(false); }
+  function OpenWaitForConfirmationModal() { setShowWaitForConfirmationModal(true); }
 
   return <div>
     <PublicRoute exact path="/Provider/Login" component={() =>
@@ -113,6 +119,8 @@ export default function ProvidersApp() {
       <ProviderRegister
         HandleProviderRegister={HandleProviderRegister}
         UserExistsError={userExistsError}
+        ShowWaitForConfirmationModal={showWaitForConfirmationModal}
+        CloseWaitForConfirmationModal={CloseWaitForConfirmationModal}
       />}
     />
 

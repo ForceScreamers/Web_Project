@@ -13,7 +13,6 @@ import ShowScoreModal from "../../Games/ShowScoreModal";
 import { GAMES_PATH_PREFIX } from "../../Constants";
 import ProtectedRoute from "../../Components/GeneralComponents/ProtectedRoute";
 
-// import jsonNumberAndCount from '../../Games/MemoryGame/CardLists/NumberAndCountCardsList.json'
 
 //  JSON Cards list
 import jsonMatchCards from '../../Games/MemoryGame/CardLists/MatchCardsList.json'
@@ -29,9 +28,15 @@ import MemoryGame from "../../Games/MemoryGame/MemoryGame";
 import { useHistory } from "react-router-dom";
 import { useEffect } from "react";
 
+
+import { GAME_DIFFICULTY } from "../../Constants";
+
+const DEFAULT_DIFFICULTY = GAME_DIFFICULTY.EASY;
+
 //TODO: Get game names from db
 //TODO: Load children profiles when game ends
-const GAMES = [
+
+let presetGames = [
   {
     name: "שיוך",
     description: "תיאור משחק זיכרון",
@@ -39,6 +44,7 @@ const GAMES = [
     path: "/Match",
     component: MemoryGame,
     jsonData: jsonMatchCards,
+    selectedDifficulty: DEFAULT_DIFFICULTY,
   },
   {
     name: "הפכים",
@@ -47,6 +53,8 @@ const GAMES = [
     id: 13,
     component: MemoryGame,
     jsonData: jsonOppositesCards,
+    selectedDifficulty: DEFAULT_DIFFICULTY,
+
   },
   {
     name: "מספר וכמות",
@@ -55,6 +63,8 @@ const GAMES = [
     id: 14,
     component: MemoryGame,
     jsonData: jsonNumberAndCountCards,
+    selectedDifficulty: DEFAULT_DIFFICULTY,
+
   },
   {
     name: "תרגילי כפל",
@@ -63,6 +73,8 @@ const GAMES = [
     id: 15,
     component: MatchCardsGame,
     jsonData: jsonMatchCards,
+    selectedDifficulty: DEFAULT_DIFFICULTY,
+
   },
   {
     name: "מצא את ההבדלים",
@@ -71,8 +83,10 @@ const GAMES = [
     path: "/SpotTheDifferences",
     component: SpotTheDifference,
     jsonData: jsonSpotTheDifferences,
+    selectedDifficulty: DEFAULT_DIFFICULTY,
+
   },
-];
+]
 
 //TODO: Add difficulty levels
 export default function GamesPage({ UpdateChildrenProfiles }) {
@@ -100,7 +114,27 @@ export default function GamesPage({ UpdateChildrenProfiles }) {
   //     })
   // }
 
-  const [difficultyLevel, setDifficultyLevel] = useState(1);
+  const [difficultyLevel, setDifficultyLevel] = useState(DEFAULT_DIFFICULTY);
+
+  const [games, setGames] = useState(presetGames);
+
+
+  function ChangeDifficulty(gameId, selectedDifficulty) {
+
+    let cloneGames = [...games];
+
+    for (let cloneGame of cloneGames) {
+      console.log(cloneGame.id, gameId)
+      // console.log(cloneGame.id)
+      if (cloneGame.id === gameId) {
+
+        cloneGame.selectedDifficulty = selectedDifficulty;
+      }
+    }
+
+    setGames(cloneGames)
+  }
+
 
 
   function UserHasChildren() {
@@ -130,7 +164,7 @@ export default function GamesPage({ UpdateChildrenProfiles }) {
         {
           UserHasChildren() === true
             ?
-            <GamePreviewCardsGrid Games={GAMES} SetDifficultyLevel={setDifficultyLevel} />
+            <GamePreviewCardsGrid Games={games} SelectedDifficulty={difficultyLevel} ChangeDifficulty={ChangeDifficulty} />
             :
             <NoChildrenMessage />
         }
@@ -146,10 +180,10 @@ export function GameRoutes() {
   return (
     <>
       {
-        GAMES.map((game, index) => {
+        presetGames.map((game, index) => {
           return (
             <ProtectedRoute key={index} exact path={GAMES_PATH_PREFIX + game.path} Component={
-              () => <GameTemplate CardsJSON={game.jsonData} GameId={game.id} GameComponent={game.component} GameName={game.name} Difficulty={1} />
+              () => <GameTemplate CardsJSON={game.jsonData} GameId={game.id} GameComponent={game.component} GameName={game.name} Difficulty={game.selectedDifficulty} />
             } />
           )
         })

@@ -121,7 +121,7 @@ namespace ParentsApi.Controllers
 			int score = int.Parse(Request.Headers["gameScore"].ToString());
 			int moveCount = int.Parse(Request.Headers["moves"].ToString());
 			int time = int.Parse(Request.Headers["time"].ToString());
-			string difficulty = Request.Headers["difficulty"].ToString();
+			int difficulty = int.Parse(Request.Headers["difficulty"].ToString());
 
 			ParentHelperFunctions.UpdateChildEvaluation(childId, gameId, moveCount, time, score, difficulty);
 			
