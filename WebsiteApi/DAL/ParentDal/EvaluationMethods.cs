@@ -62,11 +62,17 @@ namespace ParentDal
 
         public static int UpdateEvaluation(int evaluationChildId, int moveCount, int timeInSeconds, int score)
         {
-            
-
 
             string command = "UPDATE evaluation SET " +
-                $"evaluation_average_score = (evaluation_average_score + {score}) / 2 " +
+                $"evaluation_average_score = (evaluation_average_score + {score}) / 2, " +
+                $"evaluation_average_moves = (evaluation_average_moves + {moveCount}) / 2, " +
+                $"evaluation_average_time = (evaluation_average_time + {timeInSeconds}) / 2, " +
+
+                $"evaluation_lowest_time = IIF(evaluation_lowest_time > {timeInSeconds}, {timeInSeconds}, evaluation_lowest_time ), " +
+                $"evaluation_lowest_moves = IIF(evaluation_lowest_moves > {moveCount}, {moveCount}, evaluation_lowest_moves ) " +
+
+                //$"evaluation_lowest_time = CASE WHEN evaluation_lowest_time > {timeInSeconds} THEN {timeInSeconds} ELSE evaluation_lowest_time END, " +
+                //$"evaluation_lowest_moves = CASE WHEN evaluation_lowest_moves > {moveCount} THEN {moveCount} ELSE evaluation_lowest_moves END " +
 
                 "WHERE evaluation_child_id = ?";
 

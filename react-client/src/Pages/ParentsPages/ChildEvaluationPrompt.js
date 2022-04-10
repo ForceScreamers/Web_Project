@@ -1,6 +1,8 @@
 // import ChildProgressBar from '../../Components/ParentsComponents/EditProfileComponents/ChildProgressBar.js'
 import { GAME_DIFFICULTY } from "../../Constants";
 
+import ConvertSecondsToTime from "../../TimeConvert";
+
 export default function ChildEvaluationPrompt({ Evaluation }) {
 
 
@@ -36,9 +38,9 @@ export default function ChildEvaluationPrompt({ Evaluation }) {
 
         <label>ממוצע מהלכים: {Evaluation.AverageMoveCount}</label>
         <label>ניקוד ממוצע: {Evaluation.AverageScore}</label>
-        <label>זמן ממוצע: {Evaluation.AverageTimeInSeconds}</label>
+        <label>זמן ממוצע: {ConvertSecondsToTime(Evaluation.AverageTimeInSeconds)}</label>
         <label>שיא מהלכים: {Evaluation.LowestMoveCount}</label>
-        <label>שיא זמן: {Evaluation.LowestTime}</label>
+        <label>שיא זמן: {ConvertSecondsToTime(Evaluation.LowestTime)}</label>
         <br />
       </div>
 
