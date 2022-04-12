@@ -19,6 +19,8 @@ import jsonMatchCards from '../../Games/MemoryGame/CardLists/MatchCardsList.json
 import jsonOppositesCards from '../../Games/MemoryGame/CardLists/OppositesCardsList.json'
 import jsonNumberAndCountCards from '../../Games/MemoryGame/CardLists/NumberAndCountCardsList.json'
 import jsonSpotTheDifferences from '../../Games/SpotTheDifference/SpotTheDifferenceSetsList.json'
+import jsonAssociationsGame from '../../Games/AssociationsGame/AssociationsGameCards.json'
+
 
 //  Import Games
 import SpotTheDifference from '../../Games/SpotTheDifference/SpotTheDifference'
@@ -30,6 +32,7 @@ import { useEffect } from "react";
 
 
 import { GAME_DIFFICULTY } from "../../Constants";
+import AssociationsGame from "../../Games/AssociationsGame/AssociationsGame";
 
 const DEFAULT_DIFFICULTY = GAME_DIFFICULTY.EASY;
 
@@ -85,6 +88,15 @@ let presetGames = [
     jsonData: jsonSpotTheDifferences,
     selectedDifficulty: DEFAULT_DIFFICULTY,
 
+  },
+  {
+    name: "אסוסיאציות",
+    description: "תיאור אסוסיאציות",
+    id: 16,
+    path: "/AssociationsGame",
+    component: AssociationsGame,
+    jsonData: jsonAssociationsGame,
+    selectedDifficulty: DEFAULT_DIFFICULTY,
   },
 ]
 

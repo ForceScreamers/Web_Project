@@ -1,0 +1,32 @@
+{
+  "difficulty1": [
+    {
+      "source": "/match-cards-images/AssociationsGameCards/dog.jpg",
+      "value": 1
+    },
+    {
+      "source": "/match-cards-images/AssociationsGameCards/cat.jpg",
+      "value": 1
+    },
+    {
+      "source": "/match-cards-images/AssociationsGameCards/bird.jpg",
+      "value": 0
+    },
+    {
+      "source": "/match-cards-images/AssociationsGameCards/frog.jpg",
+      "value": 0
+    },
+    {
+      "source": "/match-cards-images/AssociationsGameCards/elephant.jpg",
+      "value": 0
+    },
+    {
+      "source": "/match-cards-images/AssociationsGameCards/transparentPlaceholder.png",
+      "value": 0
+    },
+    {
+      "source": "/match-cards-images/AssociationsGameCards/transparentPlaceholder.png",
+      "value": 0
+    }
+  ]
+}

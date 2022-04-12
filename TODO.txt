@@ -1,8 +1,5 @@
 Update journal when game ends
 
-Time to finish game needs to be in 00:00 format
-
-
 משחק אסוסיאציות:
 מוצגת תמונה ומסביב 5 תמונות רנדומליות (רק אחת מתאימה)
 בוחרים את התמונה בעלת הקשר הלוגי לתמונה באמצע
@@ -16,7 +13,8 @@ Time to finish game needs to be in 00:00 format
 
 גישה לפרופיל של בעל מקצוע שפרסם את המאמר
 
-
+Theme -
+Gruvbox material dark
 
 Games:
 - פאזל
