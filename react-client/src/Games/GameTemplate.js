@@ -4,6 +4,7 @@ import { Redirect, useHistory } from "react-router-dom";
 import ShowScoreModal from "./ShowScoreModal";
 import ShowExitGameModal from "./ShowExitGameModal";
 import { ParentsApiRequest } from "../RequestHeadersToWebApi";
+import ConvertSecondsToTime from "../TimeConvert";
 
 const MAXIMUN_SECONDS = 3600;
 
@@ -137,7 +138,7 @@ export default function GameTemplate({ GameId, GameComponent, CardsJSON, GameNam
       <h3>{GameName}</h3>
       <div className="score d-flex flex-row justify-content-around" >
         <div>מהלכים: {moves}</div>
-        <div>זמן: {secondsPassed}</div>
+        <div>זמן: {ConvertSecondsToTime(secondsPassed)}</div>
         <div>הצלחות: {correctMoves}</div>
       </div>
 

@@ -4,36 +4,41 @@
 }
 
 
-.associations-image {
+.associations-image-container {
   position: absolute;
   left: 44%;
   top: 38%;
+}
+
+.associations-image {
+  width: 8.5vw;
+  height: 8.5vw;
 }
 
 /* .associations-center-image {
   transform: translate(-45%, 30vh);
 } */
 
-.associations-image:nth-child(1) {
-  transform: rotate(0deg) translate(400px);
+.associations-image-container:nth-child(1) {
+  transform: rotate(0deg) translate(22vh);
 }
 
-.associations-image:nth-child(2) {
-  transform: rotate(60deg) translate(400px) rotate(-60deg);
+.associations-image-container:nth-child(2) {
+  transform: rotate(60deg) translate(22vh) rotate(-60deg);
 }
 
-.associations-image:nth-child(3) {
-  transform: rotate(120deg) translate(400px) rotate(-120deg);
+.associations-image-container:nth-child(3) {
+  transform: rotate(120deg) translate(22vh) rotate(-120deg);
 }
 
-.associations-image:nth-child(4) {
-  transform: rotate(180deg) translate(400px) rotate(-180deg);
+.associations-image-container:nth-child(4) {
+  transform: rotate(180deg) translate(22vh) rotate(-180deg);
 }
 
-.associations-image:nth-child(5) {
-  transform: rotate(240deg) translate(400px) rotate(-240deg);
+.associations-image-container:nth-child(5) {
+  transform: rotate(240deg) translate(22vh) rotate(-240deg);
 }
 
-.associations-image:nth-child(6) {
-  transform: rotate(300deg) translate(400px) rotate(-300deg);
+.associations-image-container:nth-child(6) {
+  transform: rotate(300deg) translate(22vh) rotate(-300deg);
 }

@@ -5,39 +5,37 @@ import Randoms from '../../Randoms';
 import './AssociationsGameStyles.css'
 
 
-const IMAGE_COUPLE_VALUE = 1;
+const IMAGE_COUPLE_VALUE_INSIDE_JSON = 1;
 
 function GetCardsDataByDifficulty(jsonCards, difficulty) {
+  console.log(jsonCards.associationsDifficulty1[1])
+
+  //TODO: Fix below or create class for extracting json data
   if (difficulty === GAME_DIFFICULTY.EASY) {
-    return jsonCards.difficulty1;
+    let arr = [];
+    for (let card in jsonCards.associationsDifficulty1) {
+      arr.push(jsonCards.associationsDifficulty1[card]);
+    }
+    return arr;
+    // return jsonCards.associationsDifficulty1;
   }
   if (difficulty === GAME_DIFFICULTY.MEDIUM) {
-    return jsonCards.difficulty2;
+    return jsonCards.associationsDifficulty2;
   }
   if (difficulty === GAME_DIFFICULTY.HARD) {
-    return jsonCards.difficulty3;
+    return jsonCards.associationsDifficulty3;
   }
 }
 
 function GenerateGameCards(jsonCards, difficulty) {
 
   let jsonData = GetCardsDataByDifficulty(jsonCards, difficulty)
-  console.log(jsonData);
-  let e = [];
 
-  console.log(e);
-
-  for (let card in jsonData) {
-    console.log(jsonData[card])
-    e.push(jsonData[card]);
-  }
-
-  console.log(e)
-  console.log(jsonData)
-  return jsonData
+  return jsonData;
 }
 
 
+//TODO: Finish associaitons game
 
 function shuffleCards(array) {
   const length = array.length;
@@ -51,36 +49,26 @@ function shuffleCards(array) {
   return array;
 }
 
-//TODO: WTF
 function SetImageOfCoupleAsFirst(cardsArray) {
-  let copyCardsArray;
 
   let couple = GetCoupleCards(cardsArray);
   let randomCardOfCouple = couple[Randoms.GetRandomInt(0, couple.length - 1)]
 
+  //  Return the first card of a couple as the center card
+  let copyCardsArray = [...cardsArray];
+  let tempCard = copyCardsArray.splice(copyCardsArray.indexOf(randomCardOfCouple), 1)[0];
 
-  //  Set the first card of a couple as the center card
-  let tempCard = cardsArray.splice(cardsArray.indexOf(randomCardOfCouple), 1);
-  console.log(cardsArray);
-  console.log(randomCardOfCouple)
-
-  copyCardsArray = [...cardsArray];
-  copyCardsArray.push(tempCard);
-
-
-  console.log(copyCardsArray);
-  return copyCardsArray;
+  return [tempCard, ...copyCardsArray];
 }
 
 function GetCoupleCards(cardsArray) {
   let couple = [];
   for (let card of cardsArray) {
-    if (card.value === IMAGE_COUPLE_VALUE) {
+    if (card.value === IMAGE_COUPLE_VALUE_INSIDE_JSON) {
       couple.push(card);
     }
   }
 
-  console.log(couple);
   return couple;
 }
 
@@ -92,31 +80,21 @@ export default function AssociationsGame({ SetMoves, SetCorrectMoves, SetHasEnde
     )
   );
 
-  console.log(images[0].value);
-
-  // SetMoves
-  // SetCorrectMoves
-  // SetHasEnded
-  // HasUserEndedGame
-  // CardsJSON
-  // Difficulty
 
 
   return (
     <div className="associations-container">
       {/* Arrange images in a circle with one image always in the middle */}
 
-      <div className="associations-image">
-        <img alt="center" src={images[0].source} width={300} height={300} />
-      </div>
+
 
       {
         images.map((image, index) => {
           if (index > 0) {
 
             return (
-              <div className="associations-image">
-                <img key={index} alt="doggo" src={image.source} width={300} height={300} />
+              <div className="associations-image-container">
+                <img key={index} alt="doggo" src={image.source} className="associations-image" /*width={300} height={300}*/ />
               </div>
             )
           }
@@ -125,6 +103,9 @@ export default function AssociationsGame({ SetMoves, SetCorrectMoves, SetHasEnde
           }
         })
       }
+      <div className="associations-image-container">
+        <img alt="center" src={images[0].source} className="associations-image" />
+      </div>
 
     </div>
   )
