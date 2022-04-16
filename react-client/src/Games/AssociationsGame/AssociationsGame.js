@@ -1,11 +1,13 @@
-import { useState } from 'react'
-import { Col, Container, Row } from 'react-bootstrap';
+import { useEffect, useState } from 'react'
+import { Button, Col, Container, Row } from 'react-bootstrap';
 import { GAME_DIFFICULTY } from '../../Constants';
 import Randoms from '../../Randoms';
 import './AssociationsGameStyles.css'
 
 
 const IMAGE_COUPLE_VALUE_INSIDE_JSON = 1;
+
+const MAX_ROUNDS = 3;
 
 function GetCardsDataByDifficulty(jsonCards, difficulty) {
   console.log(jsonCards.associationsDifficulty1[1])
@@ -81,20 +83,78 @@ export default function AssociationsGame({ SetMoves, SetCorrectMoves, SetHasEnde
   );
 
 
+  const [isCardCorrect, setIsCardCorrect] = useState(null);
+  const [selectedCard, setSelectedCard] = useState(null)
+  const [roundNumber, setRoundNumber] = useState(0);
+
+  const [showContinueButton, setShowContinueButton] = useState(false);
+
+  function HandleCardClick(card) {
+
+
+    //  Evaluate
+    if (IsCardPlaceholder(card) === false) {
+      console.log("Click")
+      setSelectedCard(card);
+
+      if (card.value === IMAGE_COUPLE_VALUE_INSIDE_JSON) {
+        console.log("OK!");
+        setIsCardCorrect(true);
+      }
+      else {
+        console.log("NOT GOOD!");
+        setIsCardCorrect(false);
+
+      }
+
+      //  Increment round number
+      setRoundNumber((prevRoundNumber) => prevRoundNumber + 1);
+
+      setShowContinueButton(true);
+    }
+
+
+  }
+
+  useEffect(() => {
+    if (roundNumber === MAX_ROUNDS) {
+      SetHasEnded(true);
+    }
+    else {
+
+    }
+  }, [roundNumber])
+
+  function IsSelected(card) {
+    return selectedCard === card && IsCardPlaceholder(card) === false;
+  }
+
+  function IsCardPlaceholder(card) {
+    return card.value === -1;
+  }
+
+
 
   return (
     <div className="associations-container">
       {/* Arrange images in a circle with one image always in the middle */}
 
+      <h1>{roundNumber}/{MAX_ROUNDS}</h1>
 
 
       {
-        images.map((image, index) => {
+        images.map((card, index) => {
           if (index > 0) {
 
             return (
-              <div className="associations-image-container">
-                <img key={index} alt="doggo" src={image.source} className="associations-image" /*width={300} height={300}*/ />
+              <div className="associations-image-container" style={{ border: IsSelected(card) ? "solid lightgreen 5px" : "none" }}>
+                <img
+                  key={index} alt="doggo"
+                  src={card.source}
+                  className="associations-image" /*width={300} height={300}*/
+                  onClick={() => HandleCardClick(card)}
+
+                />
               </div>
             )
           }
@@ -106,6 +166,9 @@ export default function AssociationsGame({ SetMoves, SetCorrectMoves, SetHasEnde
       <div className="associations-image-container">
         <img alt="center" src={images[0].source} className="associations-image" />
       </div>
+
+      <h1 hidden={isCardCorrect === null}>{isCardCorrect ? "נכון" : "לא נכון"}</h1>
+      <Button hidden={showContinueButton === false}>המשך</Button>
 
     </div>
   )

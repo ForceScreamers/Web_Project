@@ -3,7 +3,7 @@ import Card from "../MemoryGame/Card";
 import "./app.scss";
 import { GAME_DIFFICULTY } from "../../Constants";
 
-const CARD_COUNT = 8;
+const CARD_COUNT = 16;
 let isDone = false;
 let typeCounter = 0;
 
