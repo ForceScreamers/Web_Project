@@ -6,8 +6,8 @@ import './AssociationsGameStyles.css'
 
 
 const IMAGE_COUPLE_VALUE_INSIDE_JSON = 1;
+const MAX_ROUNDS = jsonCards.maxRounds;
 
-const MAX_ROUNDS = 3;
 
 function GetCardsDataByDifficulty(jsonCards, difficulty) {
   console.log(jsonCards.associationsDifficulty1[1])
@@ -16,10 +16,9 @@ function GetCardsDataByDifficulty(jsonCards, difficulty) {
   if (difficulty === GAME_DIFFICULTY.EASY) {
     let arr = [];
     for (let card in jsonCards.associationsDifficulty1) {
-      arr.push(jsonCards.associationsDifficulty1[card]);
+      arr.push(jsonCards.associationsDifficulty1.cards[card]);
     }
     return arr;
-    // return jsonCards.associationsDifficulty1;
   }
   if (difficulty === GAME_DIFFICULTY.MEDIUM) {
     return jsonCards.associationsDifficulty2;
@@ -27,13 +26,6 @@ function GetCardsDataByDifficulty(jsonCards, difficulty) {
   if (difficulty === GAME_DIFFICULTY.HARD) {
     return jsonCards.associationsDifficulty3;
   }
-}
-
-function GenerateGameCards(jsonCards, difficulty) {
-
-  let jsonData = GetCardsDataByDifficulty(jsonCards, difficulty)
-
-  return jsonData;
 }
 
 
@@ -76,9 +68,9 @@ function GetCoupleCards(cardsArray) {
 
 export default function AssociationsGame({ SetMoves, SetCorrectMoves, SetHasEnded, CardsJSON, Difficulty }) {
 
-  const [images, setCards] = useState(
+  const [cards, setCards] = useState(
     () => SetImageOfCoupleAsFirst(
-      shuffleCards(GenerateGameCards(CardsJSON, Difficulty))
+      shuffleCards(GetCardsDataByDifficulty(jsonCards, difficulty)(CardsJSON, Difficulty))
     )
   );
 
@@ -88,40 +80,45 @@ export default function AssociationsGame({ SetMoves, SetCorrectMoves, SetHasEnde
   const [roundNumber, setRoundNumber] = useState(0);
 
   const [showContinueButton, setShowContinueButton] = useState(false);
+  const [cardsDisabled, setCardsDisabled] = useState(false);
 
   function HandleCardClick(card) {
 
-
-    //  Evaluate
-    if (IsCardPlaceholder(card) === false) {
+    if (IsCardPlaceholder(card) === false && cardsDisabled === false) {
       console.log("Click")
-      setSelectedCard(card);
-
-      if (card.value === IMAGE_COUPLE_VALUE_INSIDE_JSON) {
-        console.log("OK!");
-        setIsCardCorrect(true);
-      }
-      else {
-        console.log("NOT GOOD!");
-        setIsCardCorrect(false);
-
-      }
-
-      //  Increment round number
-      setRoundNumber((prevRoundNumber) => prevRoundNumber + 1);
-
-      setShowContinueButton(true);
+      EvaluateSelectedCard(card);
     }
-
-
   }
 
-  useEffect(() => {
-    if (roundNumber === MAX_ROUNDS) {
-      SetHasEnded(true);
+  function EvaluateSelectedCard(card) {
+    setSelectedCard(card);
+    DisableCards();
+
+    if (card.value === IMAGE_COUPLE_VALUE_INSIDE_JSON) {
+      setIsCardCorrect(true);
+
+      //  Increment correct moves
+      SetCorrectMoves((prevCorrectMoves) => prevCorrectMoves + 1);
     }
     else {
+      setIsCardCorrect(false);
+    }
 
+    //  Increment round number
+    setRoundNumber((prevRoundNumber) => prevRoundNumber + 1);
+
+    setShowContinueButton(true);
+  }
+
+
+  useEffect(() => {
+
+    //  Increment move count
+    SetMoves((prevMoves) => prevMoves + 1);
+
+    //  If the game has ended
+    if (roundNumber === MAX_ROUNDS) {
+      SetHasEnded(true);
     }
   }, [roundNumber])
 
@@ -133,7 +130,15 @@ export default function AssociationsGame({ SetMoves, SetCorrectMoves, SetHasEnde
     return card.value === -1;
   }
 
+  function DisableCards() { setCardsDisabled(true); }
+  function EnableCards() { setCardsDisabled(false); }
 
+  function StartNewRound() {
+    EnableCards();
+    setCards(shuffleCards(cards));// TODO: Grab new cards from JSON 
+    setSelectedCard(null);
+    setIsCardCorrect(null);
+  }
 
   return (
     <div className="associations-container">
@@ -143,7 +148,7 @@ export default function AssociationsGame({ SetMoves, SetCorrectMoves, SetHasEnde
 
 
       {
-        images.map((card, index) => {
+        cards.map((card, index) => {
           if (index > 0) {
 
             return (
@@ -164,11 +169,11 @@ export default function AssociationsGame({ SetMoves, SetCorrectMoves, SetHasEnde
         })
       }
       <div className="associations-image-container">
-        <img alt="center" src={images[0].source} className="associations-image" />
+        <img alt="center" src={cards[0].source} className="associations-image" />
       </div>
 
       <h1 hidden={isCardCorrect === null}>{isCardCorrect ? "נכון" : "לא נכון"}</h1>
-      <Button hidden={showContinueButton === false}>המשך</Button>
+      <Button hidden={showContinueButton === false} onClick={StartNewRound}>המשך</Button>
 
     </div>
   )
