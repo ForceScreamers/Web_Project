@@ -3,8 +3,8 @@
   height: 80vh;
 }
 
-
 .associations-image-container {
+  margin-top: 20vh;
   position: absolute;
   left: 44%;
   top: 38%;
@@ -41,4 +41,8 @@
 
 .associations-image-container:nth-child(6) {
   transform: rotate(300deg) translate(22vh) rotate(-300deg);
+}
+
+.associations-image-container:nth-child(7) {
+  transform: rotate(360deg) translate(22vh) rotate(-360deg);
 }

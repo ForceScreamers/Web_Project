@@ -15,7 +15,7 @@ const CORRECT_MOVE_REWARD = 20;
 
 
 //TODO: Fix - timer has a delya of 1 second when stopping
-export default function GameTemplate({ GameId, GameComponent, CardsJSON, GameName, Difficulty }) {
+export default function GameTemplate({ GameId, GameComponent, CardsJSON, GameName, Difficulty, UpdateChildrenProfiles }) {
 
   const history = useHistory();
 
@@ -57,9 +57,6 @@ export default function GameTemplate({ GameId, GameComponent, CardsJSON, GameNam
   }, [secondsPassed]);
 
 
-  function ResetTimer() {
-    setSecondsPassed(0);
-  }
 
   useEffect(() => {
     if (hasEnded === true) {
@@ -116,7 +113,7 @@ export default function GameTemplate({ GameId, GameComponent, CardsJSON, GameNam
   function OnCloseScoreModal() {
     setShowScoreModal(false);
     RequestUpdateGameEvaluation(GameId);
-    //UpdateChildrenProfiles();
+    UpdateChildrenProfiles();
     //history.push('/Parent/Games');
   }
 
@@ -133,8 +130,7 @@ export default function GameTemplate({ GameId, GameComponent, CardsJSON, GameNam
   function OpenExitGameModal() { setShowExitGameModal(true); }
 
   return (
-    <div>
-      <Button onClick={() => ResetTimer()}>ריסטרט</Button>
+    <div >
       <h3>{GameName}</h3>
       <div className="score d-flex flex-row justify-content-around" >
         <div>מהלכים: {moves}</div>
@@ -152,7 +148,7 @@ export default function GameTemplate({ GameId, GameComponent, CardsJSON, GameNam
       />
       <br />
 
-      <div className="d-flex justify-content-center align-items-center">
+      <div className="d-flex justify-content-center align-items-center" >
         <Button variant="danger" size="lg" onClick={() => EndGameWithoutScoreUpdate()}>יציאה</Button>
       </div>
 

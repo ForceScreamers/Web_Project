@@ -11,8 +11,6 @@ export default function ParentNavigationBar() {
 
   const usernameFromContext = useContext(NavBarContext).username;
   const currentChildFromContext = useContext(NavBarContext).child;
-  const isVisible = useContext(NavBarContext).isVisible;//TODO: Check what is that
-
 
   const S_CURRENT_CHILD = "ילד נוכחי";
   const S_NO_CHILD_SELECTED = "לא נבחר ילד";

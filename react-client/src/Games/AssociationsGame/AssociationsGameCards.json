@@ -1,6 +1,6 @@
 {
-  "associationsDifficulty1": {
-    "maxRounds": 3,
+  "difficulty1": {
+    "maxRounds": 10,
     "cards": [
       {
         "source": "/match-cards-images/AssociationsGameCards/dog.jpg",
@@ -32,7 +32,7 @@
       }
     ]
   },
-  "associationsDifficulty2": [
+  "difficulty2": [
     {
       "source": "/match-cards-images/AssociationsGameCards/dog.jpg",
       "value": 1

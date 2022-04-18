@@ -24,7 +24,7 @@ function GetCardsDataByDifficulty(jsonCards, difficulty) {
 }
 
 function CardsJSONToCardsArray(jsonCards, difficulty) {
-
+  console.log(jsonCards)
   let jsonData = GetCardsDataByDifficulty(jsonCards, difficulty)
 
   //  Convert to array
@@ -52,6 +52,8 @@ function SplitCardProperties(cardsArray) {
 
 
 function GenerateGameCards(jsonCards, difficulty) {
+  console.log("Halloo")
+
   let gameCards = CardsJSONToCardsArray(jsonCards, difficulty);
   let cardTexts = SplitCardProperties(gameCards);
 
@@ -66,13 +68,15 @@ function GenerateGameCards(jsonCards, difficulty) {
     }
   }
 
+  console.log(gameCards)
   return gameCards;
 }
 
 const CARD_CLOSING_DELAY = 500;
 const EVALUATION_DELAY = 800;
 
-function shuffleCards(array) {
+function shuffleMemoryCards(array) {
+  console.log.apply("Hallo")
   const length = array.length;
   for (let i = length; i > 0; i--) {
     const randomIndex = Math.floor(Math.random() * i);
@@ -90,7 +94,7 @@ export default function MemoryGame({ SetMoves, SetCorrectMoves, CardsJSON, SetHa
 
 
   const [cards, setCards] = useState(
-    () => shuffleCards(GenerateGameCards(CardsJSON, Difficulty))
+    () => shuffleMemoryCards(GenerateGameCards(CardsJSON, Difficulty))
   );
 
   const [openCards, setOpenCards] = useState([]);
@@ -98,6 +102,7 @@ export default function MemoryGame({ SetMoves, SetCorrectMoves, CardsJSON, SetHa
   const [shouldDisableAllCards, setShouldDisableAllCards] = useState(false);
 
   const timeout = useRef(null);
+  console.log(cards);
 
   //  Disable or enable (the user can't click) all cards while evaluating
   const disable = () => { setShouldDisableAllCards(true) };
@@ -114,8 +119,7 @@ export default function MemoryGame({ SetMoves, SetCorrectMoves, CardsJSON, SetHa
   };
 
 
-  const evaluate = () => {
-    // setTest("eval value")
+  function Evaluate() {
     const [first, second] = openCards;
     enable();
 
@@ -166,7 +170,7 @@ export default function MemoryGame({ SetMoves, SetCorrectMoves, CardsJSON, SetHa
   useEffect(() => {
     let timeout = null;
     if (openCards.length === 2) {
-      timeout = setTimeout(evaluate, EVALUATION_DELAY);
+      timeout = setTimeout(Evaluate, EVALUATION_DELAY);
     }
     return () => {
       clearTimeout(timeout);
@@ -185,18 +189,6 @@ export default function MemoryGame({ SetMoves, SetCorrectMoves, CardsJSON, SetHa
     <div>
 
       <div>
-        <header>
-          {/* <h3>{GameName}</h3> */}
-
-
-          {/* <div className="score d-flex flex-row justify-content-around" >
-            <div>מהלכים: {moves}</div>
-            <div></div>
-            <div>זמן: {Time}</div>
-            <div></div>
-            <div>הצלחות: {correctMoves}</div>
-          </div> */}
-        </header>
         <div className="memory-game-container">
           {cards.map((card, index) => {
             return (
@@ -214,6 +206,7 @@ export default function MemoryGame({ SetMoves, SetCorrectMoves, CardsJSON, SetHa
           })}
         </div>
       </div>
+
 
     </div>
   );

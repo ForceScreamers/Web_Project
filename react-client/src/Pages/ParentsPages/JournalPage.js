@@ -32,7 +32,6 @@ export default function JournalPage({ LoadChildrenFromServer, ChildProfile }) {
 
 
 
-  //! Pay attention to each difficulty for each game!
   return (
     <div>
 

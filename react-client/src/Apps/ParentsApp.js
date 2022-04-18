@@ -1,6 +1,7 @@
 //	#region Imports
 
-
+//  CSS
+import '../BackgroundImages/ParentsStyles.css'
 
 //	Hooks
 import React from 'react';
@@ -216,21 +217,23 @@ export default function ParentsApp() {
 
   return (
 
-    <div>
+    <div className="parent-background-image">
 
+      {/* LOGIN */}
       <PublicRoute exact path="/" component={() =>
         <ParentLogin
           HandleLogin={(e, isValid) => HandleParentLogin(e, isValid)}
           UserExists={userExists}
         />} />
 
+
+      {/* REGISTER */}
       <PublicRoute exact path="/Parent/Register" component={() =>
         <ParentRegister
           HandleRegister={(e, isValid) => HandleParentRegister(e, isValid)}
           UserExists={userExists}
         />} />
 
-      {/* //TODO: NEED TO CALL THE ROUTES ONLY WHEN THE WELCOME PAGE LOADS*/}
       <NavBarContext.Provider value={{
         child: currentChild,
         username: username,
@@ -238,27 +241,39 @@ export default function ParentsApp() {
 
         <ProtectedRoute exact path="/Parent/Welcome" Component={WelcomePage} />
 
+        {/* ABOUT */}
         <ProtectedRoute exact path="/Parent/About" Component={About} />
 
+        {/* EDIT PROFILE */}
         <ProtectedRoute exact path="/Parent/EditProfile" Component={() =>
           <EditProfilePage
             LoadChildrenFromServer={LoadChildrenFromServer}
           />}
         />
-        <ProtectedRoute exact path="/Parent/Games" Component={() => <GamesPage UpdateChildrenProfiles={LoadChildrenFromServer} />} />
+
+        {/* GAMES */}
+        <ProtectedRoute exact path="/Parent/Games" Component={() =>
+          <GamesPage
+          />}
+        />
+
+
         <ProtectedRoute exact path="/Parent/Info" Component={InfoPage} />
+
         <ProtectedRoute exact path="/Parent/Avatar" Component={AvatarPage} />
+
+        {/* JOURNAL */}
         <ProtectedRoute exact path="/Parent/Journal" Component={() =>
           <JournalPage
             LoadChildrenFromServer={LoadChildrenFromServer}
           />} />
+
         <ProtectedRoute exact path="/Parent/Home" Component={HomePage} />
 
-        <GameRoutes />
+
+        <GameRoutes UpdateChildrenProfiles={LoadChildrenFromServer} />
 
       </NavBarContext.Provider>
-
-
     </div>
   );
 }

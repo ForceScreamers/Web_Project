@@ -42,7 +42,6 @@ const Card = ({ OnClick, Index, IsInactive, IsFlipped, IsDisabled, Caption, Card
 
 
 
-
       </div>
     </div>
   );

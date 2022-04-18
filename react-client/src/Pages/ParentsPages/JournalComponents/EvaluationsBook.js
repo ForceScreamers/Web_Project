@@ -12,8 +12,7 @@ export const EvaluationsBook = React.forwardRef((props, ref) => {
   console.log(props.Evaluations)
   const flip = useRef(null);
 
-  const [totalPages, setTotalPages] = useState(0);
-  const [currentPageIndex, setCurrentPageIndex] = useState(0);
+  const [pageIndexDisplay, setPageIndexDisplay] = useState("עמוד 1");
 
   function TurnToNextPage() {
     // console.log(flip.current.pageFlip().flipNext())
@@ -25,22 +24,24 @@ export const EvaluationsBook = React.forwardRef((props, ref) => {
     flip.current.pageFlip().flipPrev();
   }
 
-  //  Need to flip to the start of the book to accommodate rtl 
+  //  Flip to the start of the book to accommodate rtl 
   function FlipBookToRightSide() {
-    flip.current.pageFlip().turnToPage(flip.current.pageFlip().getPageCount() - 1)
+    flip?.current?.pageFlip()?.turnToPage(flip.current.pageFlip().getPageCount() - 1)
   }
 
-  useEffect(() => {
-    if (flip?.current?.pageFlip() !== undefined) {
-      let pageCount = flip.current.pageFlip().getPageCount()
-      setTotalPages(pageCount)
-      flip.current.pageFlip().turnToPage(pageCount)
-      setCurrentPageIndex(flip.current.pageFlip().getCurrentPageIndex())
 
+  function UpdatePageIndexDisplay() {
+
+    let totalPages = flip?.current?.pageFlip()?.getPageCount();
+    let currentIndex = flip?.current?.pageFlip()?.getCurrentPageIndex();
+    let pageIndexDisplayFormat = "עמוד 1";
+
+    if (currentIndex !== totalPages) {
+      pageIndexDisplayFormat = `עמודים ${totalPages - currentIndex - 1} - ${totalPages - currentIndex} מתוך ${totalPages}`
     }
-  }, [flip])
 
-
+    setPageIndexDisplay(pageIndexDisplayFormat);
+  }
 
 
   return (
@@ -50,8 +51,7 @@ export const EvaluationsBook = React.forwardRef((props, ref) => {
           ? <div>אין מידע לשחק</div>
           :
           <>
-
-            <HTMLFlipBook onInit={() => FlipBookToRightSide()} showCover={true} flippingTime={600} maxShadowOpacity={0.2} style={{ backgroundColor: "transparent" }} ref={flip} width={500} height={600} useMouseEvents={false}>
+            <HTMLFlipBook onFlip={UpdatePageIndexDisplay} onInit={() => FlipBookToRightSide()} showCover={true} flippingTime={600} maxShadowOpacity={0.2} style={{ backgroundColor: "transparent" }} ref={flip} width={500} height={500} useMouseEvents={false}>
 
               <BookCover />
 
@@ -71,17 +71,13 @@ export const EvaluationsBook = React.forwardRef((props, ref) => {
 
 
             </HTMLFlipBook>
-
-            <label>{totalPages}</label>
-            <br />
-            <label>{currentPageIndex}</label>
+            <label>{pageIndexDisplay}</label>
             <br />
 
             <Button onClick={() => TurnToNextPage()}>עמוד קודם</Button>
             <Button onClick={() => TurnToPrevPage()}>עמוד הבא</Button>
           </>
       }
-
     </div>
 
   )
@@ -92,7 +88,6 @@ const BookCover = React.forwardRef((props, ref) => {
     <div className="evaluation-book-cover evaluation-book-cover-front" ref={ref} >כריכה</div>
   );
 });
-
 
 
 const EvaluationPage = React.forwardRef((props, ref) => {

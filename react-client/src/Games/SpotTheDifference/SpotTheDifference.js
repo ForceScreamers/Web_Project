@@ -143,6 +143,8 @@ export default function SpotTheDifference({ SetMoves, SetCorrectMoves, SetHasEnd
     }
   }
 
+
+
   useEffect(() => {
     console.log("HasUserEndedGame " + HasUserEndedGame)
     console.log(correctPositions)
@@ -167,7 +169,7 @@ export default function SpotTheDifference({ SetMoves, SetCorrectMoves, SetHasEnd
         {
           images.map((randomImage, index) => {
             return (
-              <Canvas key={index} height={800} width={500} SetCanvasContext={setCanvasContexts} HandleClick={HandleClick} StartingImageSource={randomImage} />
+              <Canvas key={index} height={550} width={350} SetCanvasContext={setCanvasContexts} HandleClick={HandleClick} StartingImageSource={randomImage} />
             )
           })
         }

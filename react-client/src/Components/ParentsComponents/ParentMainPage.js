@@ -3,7 +3,7 @@ import NavigationBar from "./ParentNavigationBar"
 
 export default function ParentMainPage({ children, title }) {
   return (
-    <div className="background">
+    <div className="parent-background-image">
       <NavigationBar />
       <h1>{title}</h1>
 

@@ -14,12 +14,12 @@ export default function Canvas({ height, width, HandleClick, StartingImageSource
   function SetStartingImageForContext(context) {
 
     let image = new Image();
-
+    let sizeRation = height / width;
     image.src = StartingImageSource;
 
     //  Draw image
     image.onload = () => {
-      context.drawImage(image, 0, 0)
+      context.drawImage(image, 0, 0, image.width / sizeRation, image.height / sizeRation)
     }
   }
 

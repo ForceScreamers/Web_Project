@@ -1,32 +1,36 @@
 import { useEffect, useState, useRef } from "react";
 import { Container } from "react-bootstrap";
 import MatchCard from '../MatchCardsGame/MatchCard'
-import cardsDataJson from './CardMatchList.json'
+// import cardsDataJson from './CardMatchList.json'
+import ShuffleCards from "../CardDataManipulations/ShuffleCards";
 
-let cardsDataList = [];
-for (let card in cardsDataJson) {
-	cardsDataList.push(cardsDataJson[card]);
-}
+//	Constants
+const CARD_CLOSING_DELAY = 100;
+const EVALUATION_DELAY = 300;
 
-const CARD_COUNT = 16;
-let gameCards = new Array(CARD_COUNT);
-let isDone = false;
-//  TODO: change the typeCounter method to something nicer
-let typeCounter = 0;
 
-console.log(cardsDataList);
+function GenerateGameCards(jsonCards) {
+	let typeCounter = 0;
 
-//	Split each object's properties into array
-let cardTexts = [];
-for (let card of cardsDataList) {
-	for (let prop in card) {
-		cardTexts.push(card[prop]);
+	let cardsDataList = [];
+	for (let card in jsonCards) {
+		cardsDataList.push(jsonCards[card]);
 	}
-}
+
+	const CARD_COUNT = 16;
+	let gameCards = new Array(CARD_COUNT);
 
 
-const GenerateGameCards = () => {
-	console.log(cardsDataList);
+	//	Split each object's properties into array
+	let cardTexts = [];
+	for (let card of cardsDataList) {
+		for (let prop in card) {
+			cardTexts.push(card[prop]);
+		}
+	}
+
+
+	console.log(jsonCards);
 	for (let i = 0; i < gameCards.length; i++) {
 		gameCards[i] = {
 			type: typeCounter,
@@ -38,39 +42,18 @@ const GenerateGameCards = () => {
 		}
 	}
 
-	console.log(gameCards)
+	return gameCards;
 }
 
-const CARD_CLOSING_DELAY = 100;
-const EVALUATION_DELAY = 300;
-
-function shuffleCards(array) {
-	const length = array.length;
-	for (let i = length; i > 0; i--) {
-		const randomIndex = Math.floor(Math.random() * i);
-		const currentIndex = i - 1;
-		const temp = array[currentIndex];
-		array[currentIndex] = array[randomIndex];
-		array[randomIndex] = temp;
-	}
-	return array;
-}
-
-GenerateGameCards();
-export default function MemoryGame({ SetHasEnded, SetMoves, SetCorrectMoves, CardsJSON }) {
+export default function MatchCardsGame({ SetHasEnded, SetMoves, SetCorrectMoves, CardsJSON }) {
 
 	const [cards, setCards] = useState(
-		shuffleCards.bind(null, gameCards)
-		//gameCards
-
+		() => ShuffleCards(GenerateGameCards(CardsJSON))
 	);
-
-
 
 	const [openCards, setOpenCards] = useState([]);
 	const [clearedCards, setClearedCards] = useState({});
 	const [shouldDisableAllCards, setShouldDisableAllCards] = useState(false);
-	//const [moves, setMoves] = useState(0);
 	const timeout = useRef(null);
 
 	//  Disable or enable (the user can't click) all cards while evaluating
@@ -79,11 +62,9 @@ export default function MemoryGame({ SetHasEnded, SetMoves, SetCorrectMoves, Car
 
 
 	function CheckCompletion() {
-		if (Object.keys(clearedCards).length === gameCards.length / 2) {
-			console.log("Done!");
+		if (Object.keys(clearedCards).length === cards.length / 2) {
 			SetHasEnded(true);
 		}
-		isDone = true;
 	};
 
 

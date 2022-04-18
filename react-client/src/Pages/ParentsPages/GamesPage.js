@@ -37,7 +37,6 @@ import AssociationsGame from "../../Games/AssociationsGame/AssociationsGame";
 const DEFAULT_DIFFICULTY = GAME_DIFFICULTY.EASY;
 
 //TODO: Get game names from db
-//TODO: Load children profiles when game ends
 
 let presetGames = [
   {
@@ -100,36 +99,8 @@ let presetGames = [
   },
 ]
 
-//TODO: Add difficulty levels
-export default function GamesPage({ UpdateChildrenProfiles }) {
-  // const [showScoreModal, setShowScoreModal] = useState(false);
-  // const [score, setScore] = useState(0);
-  // const history = useHistory();
-
-  // async function EndGame(score, gameId) {
-
-  //   history.push('/Parent/Games')
-
-  //   let evaluationScoreData = {
-  //     childId: JSON.parse(sessionStorage.getItem('currentChild')).Id,
-  //     gameId: gameId,
-  //     gameScore: score,
-  //   }
-
-  //   ParentsApiRequest('POST', 'UpdateEvaluationScore', evaluationScoreData)
-  //     .catch(err => console.log(err))
-  //     .then(() => {
-
-  //       // setScore(score);
-  //       // setShowScoreModal(true);
-
-  //     })
-  // }
-
-  const [difficultyLevel, setDifficultyLevel] = useState(DEFAULT_DIFFICULTY);
-
+export default function GamesPage() {
   const [games, setGames] = useState(presetGames);
-
 
   function ChangeDifficulty(gameId, selectedDifficulty) {
 
@@ -137,16 +108,14 @@ export default function GamesPage({ UpdateChildrenProfiles }) {
 
     for (let cloneGame of cloneGames) {
       console.log(cloneGame.id, gameId)
-      // console.log(cloneGame.id)
-      if (cloneGame.id === gameId) {
 
+      if (cloneGame.id === gameId) {
         cloneGame.selectedDifficulty = selectedDifficulty;
       }
     }
 
     setGames(cloneGames)
   }
-
 
 
   function UserHasChildren() {
@@ -161,11 +130,6 @@ export default function GamesPage({ UpdateChildrenProfiles }) {
     return hasChildren;
   }
 
-  // function CloseScoreModal() {
-  //   setShowScoreModal(false);
-  //   UpdateChildrenProfiles();
-  // }
-
 
   return (
     <div>
@@ -176,7 +140,10 @@ export default function GamesPage({ UpdateChildrenProfiles }) {
         {
           UserHasChildren() === true
             ?
-            <GamePreviewCardsGrid Games={games} SelectedDifficulty={difficultyLevel} ChangeDifficulty={ChangeDifficulty} />
+            <GamePreviewCardsGrid
+              Games={games}
+              ChangeDifficulty={ChangeDifficulty}
+            />
             :
             <NoChildrenMessage />
         }
@@ -188,14 +155,21 @@ export default function GamesPage({ UpdateChildrenProfiles }) {
 }
 
 
-export function GameRoutes() {
+export function GameRoutes({ UpdateChildrenProfiles }) {
   return (
     <>
       {
         presetGames.map((game, index) => {
           return (
             <ProtectedRoute key={index} exact path={GAMES_PATH_PREFIX + game.path} Component={
-              () => <GameTemplate CardsJSON={game.jsonData} GameId={game.id} GameComponent={game.component} GameName={game.name} Difficulty={game.selectedDifficulty} />
+              () => <GameTemplate
+                CardsJSON={game.jsonData}
+                GameId={game.id}
+                GameComponent={game.component}
+                GameName={game.name}
+                Difficulty={game.selectedDifficulty}
+                UpdateChildrenProfiles={UpdateChildrenProfiles}
+              />
             } />
           )
         })
