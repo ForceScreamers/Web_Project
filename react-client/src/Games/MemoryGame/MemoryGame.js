@@ -2,30 +2,17 @@ import { useEffect, useState, useRef } from "react";
 import Card from "../MemoryGame/Card";
 import "./app.scss";
 import { GAME_DIFFICULTY } from "../../Constants";
+import GetCardsDataFromJsonByDifficulty from "../CardDataManipulations/ExtractFromJsonClass";
+
 
 const CARD_COUNT = 16;
 let isDone = false;
 let typeCounter = 0;
 
-//TODO: Spot The Difference needs to use CardsJSON prop
-
-
-function GetCardsDataByDifficulty(jsonCards, difficulty) {
-  console.log(difficulty)
-  if (difficulty === GAME_DIFFICULTY.EASY) {
-    return jsonCards.difficulty1;
-  }
-  if (difficulty === GAME_DIFFICULTY.MEDIUM) {
-    return jsonCards.difficulty2;
-  }
-  if (difficulty === GAME_DIFFICULTY.HARD) {
-    return jsonCards.difficulty3;
-  }
-}
 
 function CardsJSONToCardsArray(jsonCards, difficulty) {
   console.log(jsonCards)
-  let jsonData = GetCardsDataByDifficulty(jsonCards, difficulty)
+  let jsonData = GetCardsDataFromJsonByDifficulty(jsonCards, difficulty)
 
   //  Convert to array
   let cardsDataList = [];
@@ -135,7 +122,6 @@ export default function MemoryGame({ SetMoves, SetCorrectMoves, CardsJSON, SetHa
       //  Reset open cards
       setOpenCards([]);
 
-      //TODO: Figure out this return
       return;
     }
     else {//  Picked a wrong couple
