@@ -1,5 +1,5 @@
 {
-  "FilePath": "c:\\Users\\Administrator\\Desktop\\Web_Project\\WebsiteApi\\WebsiteApi\\ParentsApi.csproj",
+  "FilePath": "c:\\Users\\Kfir\\Desktop\\Web_Project\\WebsiteApi\\WebsiteApi\\ParentsApi.csproj",
   "Configuration": {
     "ConfigurationName": "MVC-3.0",
     "LanguageVersion": "3.0",
@@ -14397,7 +14397,7 @@
         }
       }
     ],
-    "CSharpLanguageVersion": 800
+    "CSharpLanguageVersion": 1000
   },
   "RootNamespace": "ParentsApi",
   "Documents": [],

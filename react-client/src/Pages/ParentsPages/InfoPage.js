@@ -20,7 +20,7 @@ const breakpointColumnsObj = {
   800: 1
 };
 
-const MIN_CARD_HEIGHT_PX = 200;
+const MIN_CARD_HEIGHT_PX = 250;
 
 const DEFUALT_FILTER_VALUE = "";
 const DEFUALT_TABLE_NAME = "all";
@@ -67,7 +67,7 @@ export default function InfoPage() {
 
     //  For each article, generate a new property with a centain height
     for (let article of articles) {
-      articlesWithCardHeights.push({ ...article, cardHeight: MIN_CARD_HEIGHT_PX + Randoms.GetRandomInt(0, 100) });
+      articlesWithCardHeights.push({ ...article, cardHeight: MIN_CARD_HEIGHT_PX + Randoms.GetRandomInt(0, 150) });
     }
 
     return articlesWithCardHeights
@@ -109,7 +109,7 @@ export default function InfoPage() {
               return (
                 <Card key={index} onClick={() => OnArticleClick(article)} className="info-card" style={{ height: article.cardHeight, cursor: "pointer" }}>
                   <Card.Title>
-                    <div style={{ marginTop: "25px" }} className="d-flex flex-column align-items-center">
+                    <div style={{ marginTop: "20" }} className="d-flex flex-column align-items-center">
                       <label>{article.topic_name}</label>
                       <br />
                       <label>{article.article_title}</label>

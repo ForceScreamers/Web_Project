@@ -3,6 +3,7 @@ import { Button, FormControl, FormSelect, FormText } from 'react-bootstrap';
 import ProviderNavigationBar from '../../Components/ProvidersComponents/ProviderNavigationBar'
 import { ProvidersApiRequest } from '../../RequestHeadersToWebApi';
 import utf8 from 'utf8'
+import ProviderMainPage from '../../ProviderMainPage';
 
 
 const ARTICLE_CONTENT_MAX_LENGTH = 1800;
@@ -103,62 +104,64 @@ export default function ProviderPublishArticle() {
 
   return (
 
-    <div>
-      <ProviderNavigationBar />
-      <h1>כתיבת מאמר</h1>
+    <ProviderMainPage>
+      <div>
+        {/* <ProviderNavigationBar /> */}
+        <h1>כתיבת מאמר</h1>
 
-      <form onSubmit={PublishArticle}>
+        <form onSubmit={PublishArticle}>
 
-        <div className="d-flex flex-column justify-content-start align-items-center" style={{ marginTop: "2%" }} >
+          <div className="d-flex flex-column justify-content-start align-items-center" style={{ marginTop: "2%" }} >
 
-          <div>
-            <FormControl maxLength={ARTICLE_MAX_LENGTH_SMALL} type="text" placeholder="כותרת" onChange={(event) => setTitle(event.target.value)} />
-            <label>{titleEmptyError}</label>
-            <br />
-            <textarea maxLength={ARTICLE_CONTENT_MAX_LENGTH} placeholder="תוכן" rows={10} cols={100} onChange={SaveContentToLocalStorage} />
-            <br />
-            <label>{articleEmptyError}</label>
-          </div>
+            <div>
+              <FormControl maxLength={ARTICLE_MAX_LENGTH_SMALL} type="text" placeholder="כותרת" onChange={(event) => setTitle(event.target.value)} />
+              <label>{titleEmptyError}</label>
+              <br />
+              <textarea maxLength={ARTICLE_CONTENT_MAX_LENGTH} placeholder="תוכן" rows={10} cols={100} onChange={SaveContentToLocalStorage} />
+              <br />
+              <label>{articleEmptyError}</label>
+            </div>
 
-          <div>
+            <div>
 
-            <br />
-            <FormSelect onChange={ChangeSelectedTopic} style={{ width: "200px", opacity: showCreateTopicField ? "60%" : "100%" }} disabled={showCreateTopicField}>
-              <option hidden={true}>בחירת נושא</option>
+              <br />
+              <FormSelect onChange={ChangeSelectedTopic} style={{ width: "200px", opacity: showCreateTopicField ? "60%" : "100%" }} disabled={showCreateTopicField}>
+                <option hidden={true}>בחירת נושא</option>
+                {
+                  articleTopic.map((topic, index) => {
+                    return (
+                      <option key={index}>{topic.topic_name}</option>
+                    )
+                  })
+                }
+              </FormSelect>
+              <br />
+
+
               {
-                articleTopic.map((topic, index) => {
-                  return (
-                    <option key={index}>{topic.topic_name}</option>
-                  )
-                })
+                showCreateTopicField === true
+                  ?
+                  <div>
+                    <FormControl maxLength={ARTICLE_MAX_LENGTH_SMALL} type="text" placeholder="נושא" name="topicFormField" onChange={HandleNewTopicChange} />
+                    <br />
+                    <Button onClick={() => setShowCreateTopicField(false)}>בחירת נושא</Button>
+                  </div>
+                  :
+                  <div>
+                    <Button onClick={() => setShowCreateTopicField(true)}>יצירת נושא</Button>
+                  </div>
               }
-            </FormSelect>
+            </div>
+
+
             <br />
 
-
-            {
-              showCreateTopicField === true
-                ?
-                <div>
-                  <FormControl maxLength={ARTICLE_MAX_LENGTH_SMALL} type="text" placeholder="נושא" name="topicFormField" onChange={HandleNewTopicChange} />
-                  <br />
-                  <Button onClick={() => setShowCreateTopicField(false)}>בחירת נושא</Button>
-                </div>
-                :
-                <div>
-                  <Button onClick={() => setShowCreateTopicField(true)}>יצירת נושא</Button>
-                </div>
-            }
+            <label>{noTopicSelectedError}</label>
+            <input type="submit" value="פרסום מאמר" />
           </div>
+        </form>
 
-
-          <br />
-
-          <label>{noTopicSelectedError}</label>
-          <input type="submit" value="פרסום מאמר" />
-        </div>
-      </form>
-
-    </div>
+      </div>
+    </ProviderMainPage >
   )
 }

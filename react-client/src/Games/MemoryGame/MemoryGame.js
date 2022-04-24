@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import Card from "../MemoryGame/Card";
-import "./app.scss";
+import "./memoryGameStyles.scss";
 import { GAME_DIFFICULTY } from "../../Constants";
 import GetCardsDataFromJsonByDifficulty from "../CardDataManipulations/ExtractFromJsonClass";
 

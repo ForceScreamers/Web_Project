@@ -1,10 +1,3 @@
-Update journal when game ends
-
-משחק אסוסיאציות:
-מוצגת תמונה ומסביב 5 תמונות רנדומליות (רק אחת מתאימה)
-בוחרים את התמונה בעלת הקשר הלוגי לתמונה באמצע
-
-
 בעלי מקצוע - כללי:
 להוסיף עמודים לבעלי המקצוע: משחקייה (בלי לשמור את הציונים, רק להציג אותם), אודות, פרסם מאמר, מאמרים, עריכת פרופיל
 
@@ -13,8 +6,7 @@ Update journal when game ends
 
 גישה לפרופיל של בעל מקצוע שפרסם את המאמר
 
-Theme -
-Gruvbox material dark
+
 
 Games:
 - פאזל
@@ -26,10 +18,10 @@ General:
   [ ] Math game - make 32 cards, each time with a random set of cards (finish cropping the pictures)
   [ ] Split user exists state into loginUserExists and registerUserExists
   [ ] Add errors in login and register as text to screen
-  [ ] Fix collapse or navbar width when resizing the window
 
   [ ] Display the game names from the same source, currently there are 2 different data sources
   [ ] Fix user already exists message
+  [ ] Delete unnessesary files
 
 
 Admins App:

@@ -20,7 +20,7 @@ import jsonOppositesCards from '../../Games/MemoryGame/CardLists/OppositesCardsL
 import jsonNumberAndCountCards from '../../Games/MemoryGame/CardLists/NumberAndCountCardsList.json'
 import jsonSpotTheDifferences from '../../Games/SpotTheDifference/SpotTheDifferenceSetsList.json'
 import jsonAssociationsGame from '../../Games/AssociationsGame/AssociationsGameCards.json'
-
+import CardMatchList from '../../Games/MatchCardsGame/CardMatchList.json'
 
 //  Import Games
 import SpotTheDifference from '../../Games/SpotTheDifference/SpotTheDifference'
@@ -38,83 +38,69 @@ const DEFAULT_DIFFICULTY = GAME_DIFFICULTY.EASY;
 
 //TODO: Get game names from db
 
-let presetGames = [
-  {
-    name: "שיוך",
-    description: "תיאור משחק זיכרון",
-    id: 12,
-    path: "/Match",
-    component: MemoryGame,
-    jsonData: jsonMatchCards,
-    selectedDifficulty: DEFAULT_DIFFICULTY,
-  },
-  {
-    name: "הפכים",
-    description: "תיאור הפכים",
-    path: "/Opposites",
-    id: 13,
-    component: MemoryGame,
-    jsonData: jsonOppositesCards,
-    selectedDifficulty: DEFAULT_DIFFICULTY,
+class Game {
+  constructor(name, description, dbId, path, component, jsonData) {
+    this.name = name;
+    this.description = description;
+    this.dbId = dbId;
+    this.path = path;
+    this.component = component;
+    this.jsonData = jsonData;
+    this.selectedDifficulty = DEFAULT_DIFFICULTY;
+  }
 
-  },
-  {
-    name: "מספר וכמות",
-    description: "תיאור מספר וכמות",
-    path: "/NumberAndCount",
-    id: 14,
-    component: MemoryGame,
-    jsonData: jsonNumberAndCountCards,
-    selectedDifficulty: DEFAULT_DIFFICULTY,
+  SelectDifficulty(difficulty) {
+    this.selectedDifficulty = difficulty;
+  }
+}
 
-  },
-  {
-    name: "תרגילי כפל",
-    description: "",
-    path: "/yee",
-    id: 15,
-    component: MatchCardsGame,
-    jsonData: jsonMatchCards,
-    selectedDifficulty: DEFAULT_DIFFICULTY,
-
-  },
-  {
-    name: "מצא את ההבדלים",
-    description: "תיאור מצא את ההבדלים",
-    id: 16,
-    path: "/SpotTheDifferences",
-    component: SpotTheDifference,
-    jsonData: jsonSpotTheDifferences,
-    selectedDifficulty: DEFAULT_DIFFICULTY,
-
-  },
-  {
-    name: "אסוסיאציות",
-    description: "תיאור אסוסיאציות",
-    id: 16,
-    path: "/AssociationsGame",
-    component: AssociationsGame,
-    jsonData: jsonAssociationsGame,
-    selectedDifficulty: DEFAULT_DIFFICULTY,
-  },
+let games = [
+  new Game("שיוך", "תיאור משחק זיכרון", 12, "/Match", MemoryGame, jsonMatchCards),
+  new Game("הפכים", "תיאור הפכים", 13, "/Opposites", MemoryGame, jsonOppositesCards),
+  new Game("מספר וכמות", "תיאור מספר וכמות", 14, "/NumberAndCount", MemoryGame, jsonNumberAndCountCards),
+  new Game("תרגילי כפל", "", 15, "/yee", MatchCardsGame, CardMatchList),
+  new Game("מצא את ההבדלים", "", 16, "/SpotTheDifferences", SpotTheDifference, jsonSpotTheDifferences),
+  new Game("אסוסיאציות", "", 17, "/AssociationsGame", AssociationsGame, jsonAssociationsGame),
 ]
 
-export default function GamesPage() {
-  const [games, setGames] = useState(presetGames);
 
-  function ChangeDifficulty(gameId, selectedDifficulty) {
+// sessionStorage.setItem('games', JSON.stringify(presetGames));
+
+export default function GamesPage() {
+
+  const [displayGames, setDisplayGames] = useState(JSON.parse(sessionStorage.getItem('games')));
+
+
+  useEffect(() => {
+    //  Save games to session storage
+    sessionStorage.setItem('games', JSON.stringify(displayGames));
+
+    //setDisplayGames(JSON.parse(sessionStorage.getItem('games')));
+  }, [])
+
+  function ChangeDifficulty(gameId, newDifficulty) {
 
     let cloneGames = [...games];
+    console.log(newDifficulty);
 
     for (let cloneGame of cloneGames) {
-      console.log(cloneGame.id, gameId)
+      //console.log(cloneGame.dbId, gameId)
 
-      if (cloneGame.id === gameId) {
-        cloneGame.selectedDifficulty = selectedDifficulty;
+      if (cloneGame.dbId === gameId) {
+        //console.log("He")
+        //cloneGame.selectedDifficulty = selectedDifficulty;
+        cloneGame.SelectDifficulty(newDifficulty)
+        console.log(cloneGame.selectedDifficulty)
       }
     }
 
-    setGames(cloneGames)
+    games = cloneGames;
+
+    //  Save games with the new chosen difficulty
+    sessionStorage.setItem('games', JSON.stringify(cloneGames));
+
+    //  Update display
+    setDisplayGames(JSON.parse(sessionStorage.getItem('games')));
   }
 
 
@@ -141,7 +127,7 @@ export default function GamesPage() {
           UserHasChildren() === true
             ?
             <GamePreviewCardsGrid
-              Games={games}
+              Games={displayGames}
               ChangeDifficulty={ChangeDifficulty}
             />
             :
@@ -156,20 +142,30 @@ export default function GamesPage() {
 
 
 export function GameRoutes({ UpdateChildrenProfiles }) {
+  const [gamesData, setGamesData] = useState(games);
+  console.log(gamesData);
+
+  useEffect(() => {
+    setGamesData(JSON.parse(sessionStorage.getItem('games')));
+  }, [])
+
+
   return (
     <>
       {
-        presetGames.map((game, index) => {
+        games.map((game, index) => {
+          console.log(gamesData)
           return (
             <ProtectedRoute key={index} exact path={GAMES_PATH_PREFIX + game.path} Component={
-              () => <GameTemplate
-                CardsJSON={game.jsonData}
-                GameId={game.id}
-                GameComponent={game.component}
-                GameName={game.name}
-                Difficulty={game.selectedDifficulty}
-                UpdateChildrenProfiles={UpdateChildrenProfiles}
-              />
+              () =>
+                <GameTemplate
+                  CardsJSON={game.jsonData}
+                  GameId={game.dbId}
+                  GameComponent={game.component}
+                  GameName={game.name}
+                  Difficulty={game.selectedDifficulty}
+                  UpdateChildrenProfiles={UpdateChildrenProfiles}
+                />
             } />
           )
         })

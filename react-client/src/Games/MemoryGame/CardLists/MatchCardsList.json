@@ -2,196 +2,246 @@
   "difficulty1": {
     "set-1": {
       "half-1": {
-        "frontImage": "/match-cards-images/MatchCards/front-1.png",
-        "backImage": "/match-cards-images/MatchCards/back-1.png",
-        "value": "כפיר"
+        "frontImage": "/Images/MatchCards/match-easy/match-1a.png",
+        "backImage": "/Images/MatchCards/back/back-1.png"
       },
       "half-2": {
-        "frontImage": "/match-cards-images/MatchCards/front-2.png",
-        "backImage": "/match-cards-images/MatchCards/back-2.png",
-        "value": "אריה"
+        "frontImage": "/Images/MatchCards/match-easy/match-1b.png",
+        "backImage": "/Images/MatchCards/back/back-2.png"
       }
     },
     "set-2": {
       "half-1": {
-        "frontImage": "/match-cards-images/MatchCards/front-1.png",
-        "backImage": "/match-cards-images/MatchCards/back-1.png",
-        "value": "חמור"
+        "frontImage": "/Images/MatchCards/match-easy/match-2a.png",
+        "backImage": "/Images/MatchCards/back/back-1.png"
       },
       "half-2": {
-        "frontImage": "/match-cards-images/MatchCards/front-2.png",
-        "backImage": "/match-cards-images/MatchCards/back-2.png",
-        "value": "עייר"
+        "frontImage": "/Images/MatchCards/match-easy/match-2b.png",
+        "backImage": "/Images/MatchCards/back/back-2.png"
       }
     },
     "set-3": {
       "half-1": {
-        "frontImage": "/match-cards-images/MatchCards/front-1.png",
-        "backImage": "/match-cards-images/MatchCards/back-1.png",
-        "value": "חזיר"
+        "frontImage": "/Images/MatchCards/match-easy/match-3a.png",
+        "backImage": "/Images/MatchCards/back/back-1.png"
       },
       "half-2": {
-        "frontImage": "/match-cards-images/MatchCards/front-2.png",
-        "backImage": "/match-cards-images/MatchCards/back-2.png",
-        "value": "חזרזיר"
+        "frontImage": "/Images/MatchCards/match-easy/match-3b.png",
+        "backImage": "/Images/MatchCards/back/back-2.png"
       }
     },
     "set-4": {
       "half-1": {
-        "frontImage": "/match-cards-images/MatchCards/front-1.png",
-        "backImage": "/match-cards-images/MatchCards/back-1.png",
-        "value": "גמל"
+        "frontImage": "/Images/MatchCards/match-easy/match-4a.png",
+        "backImage": "/Images/MatchCards/back/back-1.png"
       },
       "half-2": {
-        "frontImage": "/match-cards-images/MatchCards/front-2.png",
-        "backImage": "/match-cards-images/MatchCards/back-2.png",
-        "value": "בכר"
+        "frontImage": "/Images/MatchCards/match-easy/match-4b.png",
+        "backImage": "/Images/MatchCards/back/back-2.png"
       }
     },
     "set-5": {
       "half-1": {
-        "frontImage": "/match-cards-images/MatchCards/front-1.png",
-        "backImage": "/match-cards-images/MatchCards/back-1.png",
-        "value": "כבש"
+        "frontImage": "/Images/MatchCards/match-easy/match-5a.png",
+        "backImage": "/Images/MatchCards/back/back-1.png"
       },
       "half-2": {
-        "frontImage": "/match-cards-images/MatchCards/front-2.png",
-        "backImage": "/match-cards-images/MatchCards/back-2.png",
-        "value": "טלה"
+        "frontImage": "/Images/MatchCards/match-easy/match-5b.png",
+        "backImage": "/Images/MatchCards/back/back-2.png"
       }
     },
     "set-6": {
       "half-1": {
-        "frontImage": "/match-cards-images/MatchCards/front-1.png",
-        "backImage": "/match-cards-images/MatchCards/back-1.png",
-        "value": "אווז"
+        "frontImage": "/Images/MatchCards/match-easy/match-6a.png",
+        "backImage": "/Images/MatchCards/back/back-1.png"
       },
       "half-2": {
-        "frontImage": "/match-cards-images/MatchCards/front-2.png",
-        "backImage": "/match-cards-images/MatchCards/back-2.png",
-        "value": "אפרוח"
+        "frontImage": "/Images/MatchCards/match-easy/match-6b.png",
+        "backImage": "/Images/MatchCards/back/back-2.png"
       }
     },
     "set-7": {
       "half-1": {
-        "frontImage": "/match-cards-images/MatchCards/front-1.png",
-        "backImage": "/match-cards-images/MatchCards/back-1.png",
-        "value": "יעל"
+        "frontImage": "/Images/MatchCards/match-easy/match-7a.png",
+        "backImage": "/Images/MatchCards/back/back-1.png"
       },
       "half-2": {
-        "frontImage": "/match-cards-images/MatchCards/front-2.png",
-        "backImage": "/match-cards-images/MatchCards/back-2.png",
-        "value": "גדי"
+        "frontImage": "/Images/MatchCards/match-easy/match-7b.png",
+        "backImage": "/Images/MatchCards/back/back-2.png"
       }
     },
     "set-8": {
       "half-1": {
-        "frontImage": "/match-cards-images/MatchCards/front-1.png",
-        "backImage": "/match-cards-images/MatchCards/back-1.png",
-        "value": "חתול"
+        "frontImage": "/Images/MatchCards/match-easy/match-8a.png",
+        "backImage": "/Images/MatchCards/back/back-1.png"
       },
       "half-2": {
-        "frontImage": "/match-cards-images/MatchCards/front-2.png",
-        "backImage": "/match-cards-images/MatchCards/back-2.png",
-        "value": "חתלתול"
+        "frontImage": "/Images/MatchCards/match-easy/match-8b.png",
+        "backImage": "/Images/MatchCards/back/back-2.png"
       }
     }
   },
   "difficulty2": {
     "set-1": {
       "half-1": {
-        "frontImage": "/match-cards-images/MatchCards/front-1.png",
-        "backImage": "/match-cards-images/MatchCards/back-1.png",
-        "value": "כפיר"
+        "frontImage": "/Images/MatchCards/match-medium/match-1a.png",
+        "backImage": "/Images/MatchCards/back/back-1.png"
       },
       "half-2": {
-        "frontImage": "/match-cards-images/MatchCards/front-1.png",
-        "backImage": "/match-cards-images/MatchCards/back-1.png",
-        "value": "אריה"
+        "frontImage": "/Images/MatchCards/match-medium/match-1b.png",
+        "backImage": "/Images/MatchCards/back/back-2.png"
       }
     },
     "set-2": {
       "half-1": {
-        "frontImage": "/match-cards-images/MatchCards/front-1.png",
-        "backImage": "/match-cards-images/MatchCards/back-1.png",
-        "value": "חמור"
+        "frontImage": "/Images/MatchCards/match-medium/match-2a.png",
+        "backImage": "/Images/MatchCards/back/back-1.png"
       },
       "half-2": {
-        "frontImage": "/match-cards-images/MatchCards/front-1.png",
-        "backImage": "/match-cards-images/MatchCards/back-1.png",
-        "value": "עייר"
+        "frontImage": "/Images/MatchCards/match-medium/match-2b.png",
+        "backImage": "/Images/MatchCards/back/back-2.png"
       }
     },
     "set-3": {
       "half-1": {
-        "frontImage": "/match-cards-images/MatchCards/front-1.png",
-        "backImage": "/match-cards-images/MatchCards/back-1.png",
-        "value": "חזיר"
+        "frontImage": "/Images/MatchCards/match-medium/match-3a.png",
+        "backImage": "/Images/MatchCards/back/back-1.png"
       },
       "half-2": {
-        "frontImage": "/match-cards-images/MatchCards/front-1.png",
-        "backImage": "/match-cards-images/MatchCards/back-1.png",
-        "value": "חזרזיר"
+        "frontImage": "/Images/MatchCards/match-medium/match-3b.png",
+        "backImage": "/Images/MatchCards/back/back-2.png"
       }
     },
     "set-4": {
       "half-1": {
-        "frontImage": "/match-cards-images/MatchCards/front-1.png",
-        "backImage": "/match-cards-images/MatchCards/back-1.png",
-        "value": "גמל"
+        "frontImage": "/Images/MatchCards/match-medium/match-4a.png",
+        "backImage": "/Images/MatchCards/back/back-1.png"
       },
       "half-2": {
-        "frontImage": "/match-cards-images/MatchCards/front-1.png",
-        "backImage": "/match-cards-images/MatchCards/back-1.png",
-        "value": "בכר"
+        "frontImage": "/Images/MatchCards/match-medium/match-4b.png",
+        "backImage": "/Images/MatchCards/back/back-2.png"
       }
     },
     "set-5": {
       "half-1": {
-        "frontImage": "/match-cards-images/MatchCards/front-1.png",
-        "backImage": "/match-cards-images/MatchCards/back-1.png",
-        "value": "כבש"
+        "frontImage": "/Images/MatchCards/match-medium/match-5a.png",
+        "backImage": "/Images/MatchCards/back/back-1.png"
       },
       "half-2": {
-        "frontImage": "/match-cards-images/MatchCards/front-1.png",
-        "backImage": "/match-cards-images/MatchCards/back-1.png",
-        "value": "טלה"
+        "frontImage": "/Images/MatchCards/match-medium/match-5b.png",
+        "backImage": "/Images/MatchCards/back/back-2.png"
       }
     },
     "set-6": {
       "half-1": {
-        "frontImage": "/match-cards-images/MatchCards/front-1.png",
-        "backImage": "/match-cards-images/MatchCards/back-1.png",
-        "value": "אווז"
+        "frontImage": "/Images/MatchCards/match-medium/match-6a.png",
+        "backImage": "/Images/MatchCards/back/back-1.png"
       },
       "half-2": {
-        "frontImage": "/match-cards-images/MatchCards/front-1.png",
-        "backImage": "/match-cards-images/MatchCards/back-1.png",
-        "value": "אפרוח"
+        "frontImage": "/Images/MatchCards/match-medium/match-6b.png",
+        "backImage": "/Images/MatchCards/back/back-2.png"
       }
     },
     "set-7": {
       "half-1": {
-        "frontImage": "/match-cards-images/MatchCards/front-1.png",
-        "backImage": "/match-cards-images/MatchCards/back-1.png",
-        "value": "יעל"
+        "frontImage": "/Images/MatchCards/match-medium/match-7a.png",
+        "backImage": "/Images/MatchCards/back/back-1.png"
       },
       "half-2": {
-        "frontImage": "/match-cards-images/MatchCards/front-1.png",
-        "backImage": "/match-cards-images/MatchCards/back-1.png",
-        "value": "גדי"
+        "frontImage": "/Images/MatchCards/match-medium/match-7b.png",
+        "backImage": "/Images/MatchCards/back/back-2.png"
       }
     },
     "set-8": {
       "half-1": {
-        "frontImage": "/match-cards-images/MatchCards/front-1.png",
-        "backImage": "/match-cards-images/MatchCards/back-1.png",
-        "value": "חתול"
+        "frontImage": "/Images/MatchCards/match-medium/match-8a.png",
+        "backImage": "/Images/MatchCards/back/back-1.png"
       },
       "half-2": {
-        "frontImage": "/match-cards-images/MatchCards/front-1.png",
-        "backImage": "/match-cards-images/MatchCards/back-1.png",
-        "value": "חתלתול"
+        "frontImage": "/Images/MatchCards/match-medium/match-8b.png",
+        "backImage": "/Images/MatchCards/back/back-2.png"
+      }
+    }
+  },
+  "difficulty3": {
+    "set-1": {
+      "half-1": {
+        "frontImage": "/Images/MatchCards/match-hard/match-1a.png",
+        "backImage": "/Images/MatchCards/back/back-2.png"
+      },
+      "half-2": {
+        "frontImage": "/Images/MatchCards/match-hard/match-1b.png",
+        "backImage": "/Images/MatchCards/back/back-2.png"
+      }
+    },
+    "set-2": {
+      "half-1": {
+        "frontImage": "/Images/MatchCards/match-hard/match-2a.png",
+        "backImage": "/Images/MatchCards/back/back-2.png"
+      },
+      "half-2": {
+        "frontImage": "/Images/MatchCards/match-hard/match-2b.png",
+        "backImage": "/Images/MatchCards/back/back-2.png"
+      }
+    },
+    "set-3": {
+      "half-1": {
+        "frontImage": "/Images/MatchCards/match-hard/match-3a.png",
+        "backImage": "/Images/MatchCards/back/back-2.png"
+      },
+      "half-2": {
+        "frontImage": "/Images/MatchCards/match-hard/match-3b.png",
+        "backImage": "/Images/MatchCards/back/back-2.png"
+      }
+    },
+    "set-4": {
+      "half-1": {
+        "frontImage": "/Images/MatchCards/match-hard/match-4a.png",
+        "backImage": "/Images/MatchCards/back/back-2.png"
+      },
+      "half-2": {
+        "frontImage": "/Images/MatchCards/match-hard/match-4b.png",
+        "backImage": "/Images/MatchCards/back/back-2.png"
+      }
+    },
+    "set-5": {
+      "half-1": {
+        "frontImage": "/Images/MatchCards/match-hard/match-5a.png",
+        "backImage": "/Images/MatchCards/back/back-2.png"
+      },
+      "half-2": {
+        "frontImage": "/Images/MatchCards/match-hard/match-5b.png",
+        "backImage": "/Images/MatchCards/back/back-2.png"
+      }
+    },
+    "set-6": {
+      "half-1": {
+        "frontImage": "/Images/MatchCards/match-hard/match-6a.png",
+        "backImage": "/Images/MatchCards/back/back-2.png"
+      },
+      "half-2": {
+        "frontImage": "/Images/MatchCards/match-hard/match-6b.png",
+        "backImage": "/Images/MatchCards/back/back-2.png"
+      }
+    },
+    "set-7": {
+      "half-1": {
+        "frontImage": "/Images/MatchCards/match-hard/match-7a.png",
+        "backImage": "/Images/MatchCards/back/back-2.png"
+      },
+      "half-2": {
+        "frontImage": "/Images/MatchCards/match-hard/match-7b.png",
+        "backImage": "/Images/MatchCards/back/back-2.png"
+      }
+    },
+    "set-8": {
+      "half-1": {
+        "frontImage": "/Images/MatchCards/match-hard/match-8a.png",
+        "backImage": "/Images/MatchCards/back/back-2.png"
+      },
+      "half-2": {
+        "frontImage": "/Images/MatchCards/match-hard/match-8b.png",
+        "backImage": "/Images/MatchCards/back/back-2.png"
       }
     }
   }

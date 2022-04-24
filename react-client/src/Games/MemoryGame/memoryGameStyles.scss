@@ -1,0 +1,28 @@
+.bold {
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.memory-game-container {
+  padding: 5px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  justify-items: center;
+  align-items: stretch;
+  gap: 10px;
+  margin: 0 auto;
+  perspective: 100%;
+
+  //  Main container sizes
+  width: 65vw;
+  height: 50vw;
+  // max-width: 950px;
+  // min-width: 500px;
+  // max-height: 550px;
+  // min-height: 200px;
+
+  max-width: 30vw;
+  max-height: 30vw;
+
+}

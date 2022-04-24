@@ -107,25 +107,30 @@ export default function ProvidersApp() {
   function CloseWaitForConfirmationModal() { setShowWaitForConfirmationModal(false); }
   function OpenWaitForConfirmationModal() { setShowWaitForConfirmationModal(true); }
 
-  return <div>
-    <PublicRoute exact path="/Provider/Login" component={() =>
-      <ProviderLogin
-        HandleProviderLogin={HandleProviderLogin}
-        UserExistsError={userExistsError}
-      />}
-    />
+  return (
 
-    <PublicRoute exact path="/Provider/Register" component={() =>
-      <ProviderRegister
-        HandleProviderRegister={HandleProviderRegister}
-        UserExistsError={userExistsError}
-        ShowWaitForConfirmationModal={showWaitForConfirmationModal}
-        CloseWaitForConfirmationModal={CloseWaitForConfirmationModal}
-      />}
-    />
+    // <div className="provider-background-image">
+    <div>
+      <PublicRoute exact path="/Provider/Login" component={() =>
+        <ProviderLogin
+          HandleProviderLogin={HandleProviderLogin}
+          UserExistsError={userExistsError}
+        />}
+      />
 
-    <ProtectedRoute exact path="/Provider/Games" Component={ProviderGames} />
-    <ProtectedRoute exact path="/Provider/PublishArticle" Component={ProviderPublishArticle} />
+      <PublicRoute exact path="/Provider/Register" component={() =>
+        <ProviderRegister
+          HandleProviderRegister={HandleProviderRegister}
+          UserExistsError={userExistsError}
+          ShowWaitForConfirmationModal={showWaitForConfirmationModal}
+          CloseWaitForConfirmationModal={CloseWaitForConfirmationModal}
+        />}
+      />
 
-  </div>;
+      <ProtectedRoute exact path="/Provider/Games" Component={ProviderGames} />
+      <ProtectedRoute exact path="/Provider/PublishArticle" Component={ProviderPublishArticle} />
+    </div>
+    // </div>
+  )
+
 }

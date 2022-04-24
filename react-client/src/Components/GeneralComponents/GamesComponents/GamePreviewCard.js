@@ -56,6 +56,17 @@ export default function GamePreviewCard({ GamePath, Name, GameId, PreviewImage, 
   )
 }
 
+function SelectDifficultyButtons({ SelectedDifficulty, ChangeDifficulty, GameId }) {
+
+  return (
+    <div>
+      <DifficultyButton GameId={GameId} SelectedDifficulty={SelectedDifficulty} ChangeDifficulty={ChangeDifficulty} Variant="success" Text="קל" Difficulty={GAME_DIFFICULTY.EASY} />
+      <DifficultyButton GameId={GameId} SelectedDifficulty={SelectedDifficulty} ChangeDifficulty={ChangeDifficulty} Variant="warning" Text="בינוני" Difficulty={GAME_DIFFICULTY.MEDIUM} />
+      <DifficultyButton GameId={GameId} SelectedDifficulty={SelectedDifficulty} ChangeDifficulty={ChangeDifficulty} Variant="danger" Text="קשה" Difficulty={GAME_DIFFICULTY.HARD} />
+    </div>
+  )
+}
+
 function DifficultyButton({ Text, Variant, SelectedDifficulty, ChangeDifficulty, Difficulty, GameId }) {
   console.log(SelectedDifficulty)
 
@@ -71,13 +82,3 @@ function DifficultyButton({ Text, Variant, SelectedDifficulty, ChangeDifficulty,
   )
 }
 
-function SelectDifficultyButtons({ SelectedDifficulty, ChangeDifficulty, GameId }) {
-
-  return (
-    <div>
-      <DifficultyButton GameId={GameId} SelectedDifficulty={SelectedDifficulty} ChangeDifficulty={ChangeDifficulty} Variant="success" Text="קל" Difficulty={GAME_DIFFICULTY.EASY} />
-      <DifficultyButton GameId={GameId} SelectedDifficulty={SelectedDifficulty} ChangeDifficulty={ChangeDifficulty} Variant="warning" Text="בינוני" Difficulty={GAME_DIFFICULTY.MEDIUM} />
-      <DifficultyButton GameId={GameId} SelectedDifficulty={SelectedDifficulty} ChangeDifficulty={ChangeDifficulty} Variant="danger" Text="קשה" Difficulty={GAME_DIFFICULTY.HARD} />
-    </div>
-  )
-}

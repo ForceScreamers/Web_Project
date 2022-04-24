@@ -1,8 +1,5 @@
 //	#region Imports
 
-//  CSS
-import '../BackgroundImages/ParentsStyles.css'
-
 //	Hooks
 import React from 'react';
 import { useEffect, useState } from 'react';
@@ -217,7 +214,7 @@ export default function ParentsApp() {
 
   return (
 
-    <div className="parent-background-image">
+    <div /*className="parent-background-image"*/>
 
       {/* LOGIN */}
       <PublicRoute exact path="/" component={() =>

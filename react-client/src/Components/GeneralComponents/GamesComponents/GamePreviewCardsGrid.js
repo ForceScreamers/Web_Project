@@ -17,7 +17,7 @@ export default function GamePreviewCardsGrid({ Games, ChangeDifficulty }) {
                 <Col md='4' key={index}>
                   <GamePreviewCard
                     GamePath={game.path}
-                    GameId={game.id}
+                    GameId={game.dbId}
                     Name={game.name}
                     Description={game.description}
                     PreviewImage={Img}
