@@ -64,43 +64,23 @@ let games = [
 ]
 
 
-// sessionStorage.setItem('games', JSON.stringify(presetGames));
-
 export default function GamesPage() {
+  const [gamesToDisplay, setGamesToDisplay] = useState(games);
 
-  const [displayGames, setDisplayGames] = useState(JSON.parse(sessionStorage.getItem('games')));
+  function ChangeDifficulty(gameId, selectedDifficulty) {
 
-
-  useEffect(() => {
-    //  Save games to session storage
-    sessionStorage.setItem('games', JSON.stringify(displayGames));
-
-    //setDisplayGames(JSON.parse(sessionStorage.getItem('games')));
-  }, [])
-
-  function ChangeDifficulty(gameId, newDifficulty) {
-
-    let cloneGames = [...games];
-    console.log(newDifficulty);
+    let cloneGames = [...gamesToDisplay];
 
     for (let cloneGame of cloneGames) {
-      //console.log(cloneGame.dbId, gameId)
+      console.log(cloneGame.dbId, gameId)
 
       if (cloneGame.dbId === gameId) {
-        //console.log("He")
-        //cloneGame.selectedDifficulty = selectedDifficulty;
-        cloneGame.SelectDifficulty(newDifficulty)
-        console.log(cloneGame.selectedDifficulty)
+        // cloneGame.selectedDifficulty = selectedDifficulty;
+        cloneGame.SelectDifficulty(selectedDifficulty);
       }
     }
 
-    games = cloneGames;
-
-    //  Save games with the new chosen difficulty
-    sessionStorage.setItem('games', JSON.stringify(cloneGames));
-
-    //  Update display
-    setDisplayGames(JSON.parse(sessionStorage.getItem('games')));
+    setGamesToDisplay(cloneGames)
   }
 
 
@@ -127,7 +107,7 @@ export default function GamesPage() {
           UserHasChildren() === true
             ?
             <GamePreviewCardsGrid
-              Games={displayGames}
+              Games={gamesToDisplay}
               ChangeDifficulty={ChangeDifficulty}
             />
             :
@@ -142,30 +122,20 @@ export default function GamesPage() {
 
 
 export function GameRoutes({ UpdateChildrenProfiles }) {
-  const [gamesData, setGamesData] = useState(games);
-  console.log(gamesData);
-
-  useEffect(() => {
-    setGamesData(JSON.parse(sessionStorage.getItem('games')));
-  }, [])
-
-
   return (
     <>
       {
         games.map((game, index) => {
-          console.log(gamesData)
           return (
             <ProtectedRoute key={index} exact path={GAMES_PATH_PREFIX + game.path} Component={
-              () =>
-                <GameTemplate
-                  CardsJSON={game.jsonData}
-                  GameId={game.dbId}
-                  GameComponent={game.component}
-                  GameName={game.name}
-                  Difficulty={game.selectedDifficulty}
-                  UpdateChildrenProfiles={UpdateChildrenProfiles}
-                />
+              () => <GameTemplate
+                CardsJSON={game.jsonData}
+                GameId={game.dbId}
+                GameComponent={game.component}
+                GameName={game.name}
+                Difficulty={game.selectedDifficulty}
+                UpdateChildrenProfiles={UpdateChildrenProfiles}
+              />
             } />
           )
         })

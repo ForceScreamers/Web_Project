@@ -6,8 +6,6 @@ import { Button } from 'react-bootstrap';
 import { useRef } from 'react';
 
 
-
-
 export const EvaluationsBook = React.forwardRef((props, ref) => {
   console.log(props.Evaluations)
   const flip = useRef(null);
@@ -15,12 +13,10 @@ export const EvaluationsBook = React.forwardRef((props, ref) => {
   const [pageIndexDisplay, setPageIndexDisplay] = useState("עמוד 1");
 
   function TurnToNextPage() {
-    // console.log(flip.current.pageFlip().flipNext())
     flip.current.pageFlip().flipNext();
   }
 
   function TurnToPrevPage() {
-    console.log(flip.current.pageFlip())
     flip.current.pageFlip().flipPrev();
   }
 
@@ -28,7 +24,6 @@ export const EvaluationsBook = React.forwardRef((props, ref) => {
   function FlipBookToRightSide() {
     flip?.current?.pageFlip()?.turnToPage(flip.current.pageFlip().getPageCount() - 1)
   }
-
 
   function UpdatePageIndexDisplay() {
 
@@ -69,7 +64,6 @@ export const EvaluationsBook = React.forwardRef((props, ref) => {
 
               <BookCover />
 
-
             </HTMLFlipBook>
             <label>{pageIndexDisplay}</label>
             <br />
@@ -79,7 +73,6 @@ export const EvaluationsBook = React.forwardRef((props, ref) => {
           </>
       }
     </div>
-
   )
 })
 

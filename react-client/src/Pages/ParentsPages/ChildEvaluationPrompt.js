@@ -1,11 +1,8 @@
-// import ChildProgressBar from '../../Components/ParentsComponents/EditProfileComponents/ChildProgressBar.js'
 import { GAME_DIFFICULTY } from "../../Constants";
 
 import ConvertSecondsToTime from "../../TimeConvert";
 
 export default function ChildEvaluationPrompt({ Evaluation }) {
-
-
   function DifficultyToHebrew(difficulty) {
     let parsedDifficulty = parseInt(difficulty)
 
@@ -24,17 +21,32 @@ export default function ChildEvaluationPrompt({ Evaluation }) {
     }
   }
 
-  //  Evaluations consists of Topic and score
+  function GetColorByDifficulty(difficulty) {
+    let parsedDifficulty = parseInt(difficulty)
+
+    const GREEN = "#198754";
+    const YELLOW = "#ffc107";
+    const RED = "#dc3545";
+
+    if (parsedDifficulty === GAME_DIFFICULTY.EASY) {
+      return GREEN;
+    }
+    else if (parsedDifficulty === GAME_DIFFICULTY.MEDIUM) {
+      return YELLOW;
+    }
+    else if (parsedDifficulty === GAME_DIFFICULTY.HARD) {
+      return RED;
+    }
+    else {
+      console.error("ERROR COLORING DIFFICULTY LABEL");
+      return "";
+    }
+  }
+
   return (
     <div>
-      {
-        // // If child has evaluations
-        // 
-
-        // Map each one to its corresponding name
-      }
       <div className="d-flex flex-column">
-        <h1>{Evaluation.GameName}: <label>{DifficultyToHebrew(Evaluation.Difficulty)}</label></h1>
+        <h1>{Evaluation.GameName}: <label style={{ color: GetColorByDifficulty(Evaluation.Difficulty) }}>{DifficultyToHebrew(Evaluation.Difficulty)}</label></h1>
 
         <label>ממוצע מהלכים: {Evaluation.AverageMoveCount}</label>
         <label>ניקוד ממוצע: {Evaluation.AverageScore}</label>
@@ -43,13 +55,6 @@ export default function ChildEvaluationPrompt({ Evaluation }) {
         <label>שיא זמן: {ConvertSecondsToTime(Evaluation.LowestTime)}</label>
         <br />
       </div>
-
-      {
-        // : // Else
-        // <label>אין נתונים</label>
-      }
-
-
     </div>
   );
 }
