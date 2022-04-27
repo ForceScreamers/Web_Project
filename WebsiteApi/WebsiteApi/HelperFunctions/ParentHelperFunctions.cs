@@ -36,109 +36,7 @@ namespace ParentsApi
             }
         }
 
-
-
-		//	TODO: Change return type to string and convert the result to string
-		public static string SelectChild(int childId, int parentId)
-		{
-			//  Selecting child 
-			bool result = ChildMethods.SelectChild(childId, parentId);
-			Console.WriteLine(string.Format("Selecting child id: {0}... {1}", childId, result ? "Success!" : "Failed"));
-
-			return JsonConvert.SerializeObject(new { IsSelected = result });
-		}
-
-
-
-		public static string DeleteChild(int childId, int parentId)
-		{
-			try
-			{
-				//	Delete child from database
-				ChildMethods.DeleteChild(childId);
-
-				//  If no child is selected, select the first one
-				if (GetChildrenForParent(parentId).Count > 0 && IsNoChildSelectedForParent(parentId))
-				{
-					ChildMethods.SelectChild(GetFirstChildId(parentId), parentId);
-					Console.WriteLine("Switching child...");
-				}
-			}
-			catch (Exception e) { Console.WriteLine(e); }
-			finally
-			{
-				Console.WriteLine("Deleted child: " + childId);
-			}
-
-			//  Return the deleted child id
-			return JsonConvert.SerializeObject(new { DeletedChildId = childId });
-
-		}
-
-
-
-		public static string GetChildren(int parentId)
-		{
-
-			List<Child> children = GetChildrenForParent(parentId);
-
-			//  If no child is selected, select the first one
-			if (children.Count > 0 && IsNoChildSelectedForParent(parentId))
-			{
-				ChildMethods.SelectChild(GetFirstChildId(parentId), parentId);
-				children = GetChildrenForParent(parentId);
-				Console.WriteLine("Switching child...");
-			}
-
-			AddEvaluationsToChildren(children);
-			
-			//  Return children as a json object
-			return JsonConvert.SerializeObject(children);
-		}
-
-		/// <summary>
-		/// Adds all of the children's evaluations, each to it's matching child
-		/// </summary>
-		private static void AddEvaluationsToChildren(List<Child> children)
-		{
-			foreach (Child child in children)
-			{
-				List<Evaluation> childEvaluations = GetEvaluationsForChild(child.Id);
-				child.AddEvaluations(childEvaluations);
-			}
-		}
-
-
-
-		public static string AddChild(int parentId, Child child)
-		{
-			bool childAddConfirm = false;
-			try
-			{
-				//  Add child to database
-				child.Id = ChildMethods.AddChild(parentId, child.Age, UnicodeHelper.ConvertToUnicode(child.Name));
-				Console.Write("Added child, id: {0}", child.Id);
-
-				childAddConfirm = true;
-
-				//  If no child is selected, select the first one
-				if (IsNoChildSelectedForParent(parentId))
-				{
-					ChildMethods.SelectChild(GetFirstChildId(parentId), parentId);
-					Console.WriteLine("Switching child...");
-				}
-			}
-			catch (Exception e)
-			{
-				Console.WriteLine(e);
-			}
-			
-			//	TODO: Check if you really need to return info
-			return JsonConvert.SerializeObject(new { confirmed = childAddConfirm, name = UnicodeHelper.ConvertToUnicode(child.Name), age = child.Age, id = child.Id});
-		}
-
-
-
+		//	User functions
 		public static object ParentLogin(string email, string password)
 		{
 			Parent loggedParent = new Parent();
@@ -166,11 +64,8 @@ namespace ParentsApi
 			JsonResult result = new JsonResult(new { ParentInfo = loggedParent, UserExists = userExists });
 			return result.Value;
 		}
-
-
-
-        public static string ParentRegister(string username, string email, string password)
-        {
+		public static string ParentRegister(string username, string email, string password)
+		{
 			Console.WriteLine("Registering parent: {0} {1} {2}", username, email, password);
 
 			bool userRegistered = false;//  If the parent is registered in the system
@@ -201,7 +96,7 @@ namespace ParentsApi
 			}
 
 			return JsonConvert.SerializeObject(
-				new 
+				new
 				{
 					Registered = userRegistered,
 					UserExists = userExists,
@@ -212,7 +107,98 @@ namespace ParentsApi
 		}
 
 
-		
+		//	TODO: Change return type to string and convert the result to string
+		public static string SelectChild(int childId, int parentId)
+		{
+			//  Selecting child 
+			bool result = ChildMethods.SelectChild(childId, parentId);
+			Console.WriteLine(string.Format("Selecting child id: {0}... {1}", childId, result ? "Success!" : "Failed"));
+
+			return JsonConvert.SerializeObject(new { IsSelected = result });
+		}
+
+
+		//	Child functions
+		public static string DeleteChild(int childId, int parentId)
+		{
+			try
+			{
+				//	Delete child from database
+				ChildMethods.DeleteChild(childId);
+
+				//  If no child is selected, select the first one
+				if (GetChildrenForParent(parentId).Count > 0 && IsNoChildSelectedForParent(parentId))
+				{
+					ChildMethods.SelectChild(GetFirstChildId(parentId), parentId);
+					Console.WriteLine("Switching child...");
+				}
+			}
+			catch (Exception e) { Console.WriteLine(e); }
+			finally
+			{
+				Console.WriteLine("Deleted child: " + childId);
+			}
+
+			//  Return the deleted child id
+			return JsonConvert.SerializeObject(new { DeletedChildId = childId });
+
+		}
+		public static string GetChildren(int parentId)
+		{
+
+			List<Child> children = GetChildrenForParent(parentId);
+
+			//  If no child is selected, select the first one
+			if (children.Count > 0 && IsNoChildSelectedForParent(parentId))
+			{
+				ChildMethods.SelectChild(GetFirstChildId(parentId), parentId);
+				children = GetChildrenForParent(parentId);
+				Console.WriteLine("Switching child...");
+			}
+
+			AddEvaluationsToChildren(children);
+			
+			//  Return children as a json object
+			return JsonConvert.SerializeObject(children);
+		}
+
+		/// <summary>
+		/// Adds all of the children's evaluations, each to it's matching child
+		/// </summary>
+		private static void AddEvaluationsToChildren(List<Child> children)
+		{
+			foreach (Child child in children)
+			{
+				List<Evaluation> childEvaluations = GetEvaluationsForChild(child.Id);
+				child.AddEvaluations(childEvaluations);
+			}
+		}
+		public static string AddChild(int parentId, Child child)
+		{
+			bool childAddConfirm = false;
+			try
+			{
+				//  Add child to database
+				child.Id = ChildMethods.AddChild(parentId, child.Age, UnicodeHelper.ConvertToUnicode(child.Name));
+				Console.Write("Added child, id: {0}", child.Id);
+
+				childAddConfirm = true;
+
+				//  If no child is selected, select the first one
+				if (IsNoChildSelectedForParent(parentId))
+				{
+					ChildMethods.SelectChild(GetFirstChildId(parentId), parentId);
+					Console.WriteLine("Switching child...");
+				}
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine(e);
+			}
+			
+			//	TODO: Check if you really need to return info
+			return JsonConvert.SerializeObject(new { confirmed = childAddConfirm, name = UnicodeHelper.ConvertToUnicode(child.Name), age = child.Age, id = child.Id});
+		}
 
 		/// <summary>
 		/// Returns true if no child is selected (for the given parent), false otherwise
@@ -305,5 +291,27 @@ namespace ParentsApi
 
 			return children;
 		}
+
+		//	Games functions
+		public static List<int> GetGameIdsByTopicId(int topicId)
+		{
+			DataTable gameIdsDataTable = GameMethods.GetGameIdsByTopicId(topicId);
+			List<int> gameIds = new List<int>();
+
+			foreach (DataRow row in gameIdsDataTable.Rows)
+			{
+				//  Convering properties
+				int gameId = int.Parse(row.ItemArray[0].ToString());
+				
+				gameIds.Add(gameId);
+			}
+
+			return gameIds;
+		}
+		public static string GetTopicIdsByGameId(int gameId)
+		{
+			return null;
+		}
+
 	}
 }

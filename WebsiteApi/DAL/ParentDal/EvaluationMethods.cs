@@ -29,7 +29,7 @@ namespace ParentDal
                             evaluation.evaluation_lowest_moves
                             FROM game INNER JOIN (child INNER JOIN evaluation ON child.child_id = evaluation.evaluation_child_id) ON game.game_id = evaluation.evaluation_game_id
                             WHERE (((child.child_id)=[?]));";
-            return ParentOdbcHelper.GetTable(command, queryParameters);
+            return UsersOdbcHelper.GetTable(command, queryParameters);
         }
 
 
@@ -55,7 +55,7 @@ namespace ParentDal
                 new OdbcParameter("@evaluation_difficulty", difficulty),
             };
 
-            return ParentOdbcHelper.Execute(com, queryParameters);
+            return UsersOdbcHelper.Execute(com, queryParameters);
         }
 
 
@@ -82,7 +82,7 @@ namespace ParentDal
             };
 
 
-            return ParentOdbcHelper.Execute(command, queryParameters);
+            return UsersOdbcHelper.Execute(command, queryParameters);
         }
 
 
@@ -96,7 +96,7 @@ namespace ParentDal
                 new OdbcParameter("@evaluation_game_id", evaluationGameId),
             };
 
-            return ParentOdbcHelper.Execute(com, queryParameters);
+            return UsersOdbcHelper.Execute(com, queryParameters);
         }
 
 
@@ -113,7 +113,7 @@ namespace ParentDal
             };
 
             //Add if check for existing users
-            DataTable dt = ParentOdbcHelper.GetTable(com, queryParameters);
+            DataTable dt = UsersOdbcHelper.GetTable(com, queryParameters);
 
             if (dt.Rows.Count > 0)
             {

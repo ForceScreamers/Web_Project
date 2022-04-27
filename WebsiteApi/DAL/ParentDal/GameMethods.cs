@@ -24,7 +24,7 @@ namespace ParentDal
                 new OdbcParameter("@game_link", gameLink), 
             };
 
-            return ParentOdbcHelper.Execute(com, queryParameters);
+            return UsersOdbcHelper.Execute(com, queryParameters);
         }
         public static int DeleteGame(int gameId)
         {
@@ -33,12 +33,26 @@ namespace ParentDal
             OdbcParameter[] queryParameters = {
                 new OdbcParameter("@game_id", gameId)
             };
-            return ParentOdbcHelper.Execute(com, queryParameters);
+            return UsersOdbcHelper.Execute(com, queryParameters);
         }
 
         public static DataTable GetGames()
         {
-            return ParentOdbcHelper.GetTable("SELECT * FROM game", new OdbcParameter[0]);
+            return UsersOdbcHelper.GetTable("SELECT * FROM game", new OdbcParameter[0]);
+        }
+        public static DataTable GetGameIdsByTopicId(int topicId)
+        {
+            string com = @"SELECT game.game_id, topic.topic_id 
+                                                FROM game 
+                                                INNER JOIN(topic INNER JOIN topic_to_game ON topic.topic_id = topic_to_game.topic_id) 
+                                                ON game.game_id = topic_to_game.game_id 
+                                                WHERE(((topic.topic_id) =[?]));";
+
+            OdbcParameter[] queryParameters = {
+                new OdbcParameter("@topic_id", topicId)
+            };
+
+            return UsersOdbcHelper.GetTable(com, queryParameters);
         }
     }
 }

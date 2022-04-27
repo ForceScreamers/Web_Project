@@ -9,7 +9,6 @@ using System.Data;
 using System.Text;
 using System.Web.Http;
 using Microsoft.AspNetCore.Mvc;
-using Provider_DAL;
 using ParentsApi;
 
 namespace ProvidersApi

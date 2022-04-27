@@ -22,7 +22,7 @@ namespace ParentDal
                 new OdbcParameter("@game_type_description", gameTypeDescription),
             };
 
-            return ParentOdbcHelper.Execute(com, queryParameters);
+            return UsersOdbcHelper.Execute(com, queryParameters);
         }
         public static int DeleteGameType(int gameTypeId)
         {
@@ -32,7 +32,7 @@ namespace ParentDal
                 new OdbcParameter("@game_type_id", gameTypeId),
             };
 
-            return ParentOdbcHelper.Execute(com, queryParameters);
+            return UsersOdbcHelper.Execute(com, queryParameters);
         }
     }
 }

@@ -33,6 +33,7 @@ import { useEffect } from "react";
 
 import { GAME_DIFFICULTY } from "../../Constants";
 import AssociationsGame from "../../Games/AssociationsGame/AssociationsGame";
+import { Button } from "react-bootstrap";
 
 const DEFAULT_DIFFICULTY = GAME_DIFFICULTY.EASY;
 
@@ -67,6 +68,11 @@ let games = [
 export default function GamesPage() {
   const [gamesToDisplay, setGamesToDisplay] = useState(games);
 
+  let requestData = {
+    topicId: 2,
+  }
+
+
   function ChangeDifficulty(gameId, selectedDifficulty) {
 
     let cloneGames = [...gamesToDisplay];
@@ -100,6 +106,9 @@ export default function GamesPage() {
   return (
     <div>
       <ParentMainPage>
+        <Button onClick={() => ParentsApiRequest("GET", "GetGameIdsByTopicId", requestData).then((res) => {
+          console.log(res.data)
+        })}>aaa</Button>
 
         <h1>משחקים</h1>
 

@@ -129,6 +129,20 @@ namespace ParentsApi.Controllers
 			return base.Content(JsonConvert.SerializeObject(new { UpdatedScore = true}));
 		}
 
+
+
+
+
+		// --- Games ---
+		[Microsoft.AspNetCore.Mvc.HttpGet]
+		[Microsoft.AspNetCore.Mvc.ActionName("GetGameIdsByTopicId")]
+		public ContentResult GetGameIdsByTopicId()
+		{
+			int topicId = int.Parse(Request.Headers["topicId"].ToString());
+			
+
+			return base.Content(JsonConvert.SerializeObject( ParentHelperFunctions.GetGameIdsByTopicId(topicId) ));
+		}
 		#endregion
 	}
 }

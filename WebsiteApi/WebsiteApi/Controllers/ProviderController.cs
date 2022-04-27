@@ -18,7 +18,6 @@ using WMS.Models.VM;
 //	--- To remove ---
 using Microsoft.AspNetCore.Cors;
 using ProvidersApi;
-using Provider_DAL;
 //using Microsoft.AspNet.WebApi.Core;
 
 namespace ParentsApi.Controllers
@@ -81,7 +80,7 @@ namespace ParentsApi.Controllers
 		{
 			string tableName = Request.Headers["tableName"].ToString();
 			string filterValue = Request.Headers["filterValue"].ToString();
-
+			object a = JsonConvert.DeserializeObject(ProviderHelperFunctions.GetArticlesBy(tableName, filterValue));
 			return base.Content(JsonConvert.SerializeObject(ProviderHelperFunctions.GetArticlesBy(tableName, filterValue)));
 		}
 

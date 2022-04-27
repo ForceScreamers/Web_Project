@@ -3,16 +3,18 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31410.357
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ParentsApi", "WebsiteApi\ParentsApi.csproj", "{1C69435B-4C41-4329-9251-A57EE1606938}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UsersApi", "WebsiteApi\UsersApi.csproj", "{1C69435B-4C41-4329-9251-A57EE1606938}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ParentDal", "DAL\ParentDal\ParentDal.csproj", "{22F201E3-3585-4C66-A807-5766768C540C}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProviderDal", "DAL\provider-dal\Provider-DAL\ProviderDal.csproj", "{3514F644-F671-4F05-85C4-5F9991DA34D9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BABFA248-31A6-428A-AA97-87B013407540}"
 	ProjectSection(SolutionItems) = preProject
 		JwtManager.cs = JwtManager.cs
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dals", "Dals", "{9E6A2B8F-5021-408B-98EF-37131832B2F0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProviderDal", "DAL\ProviderDal\ProviderDal.csproj", "{3514F644-F671-4F05-85C4-5F9991DA34D9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,6 +37,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{22F201E3-3585-4C66-A807-5766768C540C} = {9E6A2B8F-5021-408B-98EF-37131832B2F0}
+		{3514F644-F671-4F05-85C4-5F9991DA34D9} = {9E6A2B8F-5021-408B-98EF-37131832B2F0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6F5610B8-7CE9-4FE8-91DA-ACDD3E9EE42A}

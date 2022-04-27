@@ -35,7 +35,7 @@ export default function InfoPage() {
 
   const [showArticleModal, setShowArticleModal] = useState(false);
 
-  async function LoadArticlesFromServerByFilter() {
+  async function UpdateArticlesFromServerByFilter() {
     let filterValues = {
       tableName: tableName,
       filterValue: utf8.encode(filterValue),
@@ -43,15 +43,15 @@ export default function InfoPage() {
 
     ProvidersApiRequest("GET", "GetArticles", filterValues)
       .then((response) => {
-        // console.log(JSON.parse(response.data))
         let responseData = JSON.parse(response.data);
+        console.log(JSON.parse(response.data));
         let articlesWithHeight = GenerateArticlesWithCardHeights(responseData);
         setArticles(articlesWithHeight);
       })
   }
 
   useEffect(() => {
-    LoadArticlesFromServerByFilter();
+    UpdateArticlesFromServerByFilter();
   }, [filterValue, tableName])
 
   function UpdateFilterValue(event) {
@@ -96,7 +96,7 @@ export default function InfoPage() {
         <InfoPageSearchField
           UpdateFilterType={UpdateFilterType}
           UpdateFilterValue={UpdateFilterValue}
-          GetArticlesFromServer={LoadArticlesFromServerByFilter}
+          GetArticlesFromServer={UpdateArticlesFromServerByFilter}
           FilterValue={filterValue}
           FilterType={tableName}
           ClearSearch={ClearSearch}

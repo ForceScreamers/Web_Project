@@ -27,7 +27,7 @@ namespace ParentDal
             OdbcParameter[] queryParameters = {
                 new OdbcParameter("@parent_id", parentId)
             };
-            return ParentOdbcHelper.GetTable(com, queryParameters);
+            return UsersOdbcHelper.GetTable(com, queryParameters);
         }
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace ParentDal
         /// <returns></returns>
         public static object GetCurrentChildName()
         {
-            return ParentOdbcHelper.GetTable("SELECT child_name FROM child WHERE child_is_selected=-1", new OdbcParameter[0]);
+            return UsersOdbcHelper.GetTable("SELECT child_name FROM child WHERE child_is_selected=-1", new OdbcParameter[0]);
         }
 
         /// <summary>
@@ -57,10 +57,10 @@ namespace ParentDal
                 //  De-select the children of that parent 
                 //;
                 string updateChildQuery = "UPDATE parent INNER JOIN child ON parent.parent_id = child.parent_id SET child.child_is_selected = 0 WHERE(((parent.parent_id) =?));";
-                result = ParentOdbcHelper.Execute(updateChildQuery, new[] { new OdbcParameter("@parent_id", parentId) });
+                result = UsersOdbcHelper.Execute(updateChildQuery, new[] { new OdbcParameter("@parent_id", parentId) });
 
                 //  Select the child with the given id
-                result = ParentOdbcHelper.Execute("UPDATE child SET child_is_selected=-1 WHERE child_id=?", queryParameters);
+                result = UsersOdbcHelper.Execute("UPDATE child SET child_is_selected=-1 WHERE child_id=?", queryParameters);
             }
             catch (Exception e) { Console.WriteLine(e); }
 
@@ -116,12 +116,12 @@ namespace ParentDal
             try
             {
                 //  Try insert command
-                ParentOdbcHelper.Execute(com, queryParameters);
+                UsersOdbcHelper.Execute(com, queryParameters);
             }
             catch (Exception e) { Console.WriteLine(e); }
             finally
             {
-                result = GetIdFromDataTable(ParentOdbcHelper.GetTable("SELECT @@IDENTITY FROM child", new OdbcParameter[0]));
+                result = GetIdFromDataTable(UsersOdbcHelper.GetTable("SELECT @@IDENTITY FROM child", new OdbcParameter[0]));
             }
             return result;
         }

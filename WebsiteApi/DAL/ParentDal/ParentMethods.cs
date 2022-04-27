@@ -25,7 +25,7 @@ namespace ParentDal
                 new OdbcParameter("@parent_registration_date", parentRegistrationDate),
             };
 
-            return ParentOdbcHelper.Execute(com, queryParameters);
+            return UsersOdbcHelper.Execute(com, queryParameters);
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace ParentDal
             };
 
             //  Execute command
-            DataTable dt = ParentOdbcHelper.GetTable(com, queryParameters);
+            DataTable dt = UsersOdbcHelper.GetTable(com, queryParameters);
 
             //  Parse id
             int parentId = int.Parse(dt.Rows[0].ItemArray[0].ToString());
@@ -63,7 +63,7 @@ namespace ParentDal
             OdbcParameter[] queryParameters = {
                 new OdbcParameter("@parent_id", parentId)
             };
-            return ParentOdbcHelper.Execute(com, queryParameters);
+            return UsersOdbcHelper.Execute(com, queryParameters);
         }
         public static bool IsExists(string parentEmail)
         {
@@ -75,7 +75,7 @@ namespace ParentDal
             };
 
             //Add if check for existing users
-            DataTable dt = ParentOdbcHelper.GetTable(com, queryParameters);
+            DataTable dt = UsersOdbcHelper.GetTable(com, queryParameters);
 
             if (dt.Rows.Count > 0)
             {
@@ -96,7 +96,7 @@ namespace ParentDal
             };
 
             //Add if check for existing users
-            DataTable dt = ParentOdbcHelper.GetTable(com, queryParameters);
+            DataTable dt = UsersOdbcHelper.GetTable(com, queryParameters);
 
             if (dt.Rows.Count > 0)
             {
