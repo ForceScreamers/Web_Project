@@ -80,7 +80,7 @@ namespace ParentsApi.Controllers
 		{
 			string tableName = Request.Headers["tableName"].ToString();
 			string filterValue = Request.Headers["filterValue"].ToString();
-			object a = JsonConvert.DeserializeObject(ProviderHelperFunctions.GetArticlesBy(tableName, filterValue));
+			//object a = JsonConvert.DeserializeObject(ProviderHelperFunctions.GetArticlesBy(tableName, filterValue));
 			return base.Content(JsonConvert.SerializeObject(ProviderHelperFunctions.GetArticlesBy(tableName, filterValue)));
 		}
 

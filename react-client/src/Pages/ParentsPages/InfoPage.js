@@ -96,7 +96,6 @@ export default function InfoPage() {
         <InfoPageSearchField
           UpdateFilterType={UpdateFilterType}
           UpdateFilterValue={UpdateFilterValue}
-          GetArticlesFromServer={UpdateArticlesFromServerByFilter}
           FilterValue={filterValue}
           FilterType={tableName}
           ClearSearch={ClearSearch}
@@ -130,6 +129,7 @@ export default function InfoPage() {
           Content={selectedArticleInfo.article_content}
           ProviderName={selectedArticleInfo.provider_full_name}
           Topic={selectedArticleInfo.topic_name}
+          TopicId={selectedArticleInfo.topic_id}
 
         />
       </ParentMainPage>

@@ -35,7 +35,10 @@ import { GAME_DIFFICULTY } from "../../Constants";
 import AssociationsGame from "../../Games/AssociationsGame/AssociationsGame";
 import { Button } from "react-bootstrap";
 
+import { GAMES_PAGE_FILTER_TYPE } from "../../Constants";
+import GamesPageSearchField from "./GamesPage/GamesPageSearchField";
 const DEFAULT_DIFFICULTY = GAME_DIFFICULTY.EASY;
+
 
 //TODO: Get game names from db
 
@@ -67,6 +70,9 @@ let games = [
 
 export default function GamesPage() {
   const [gamesToDisplay, setGamesToDisplay] = useState(games);
+
+  const [filterType, setFilterType] = useState(GAMES_PAGE_FILTER_TYPE.ALL);
+  const [filterValue, setFilterValue] = useState("");
 
   let requestData = {
     topicId: 2,
@@ -103,22 +109,48 @@ export default function GamesPage() {
   }
 
 
+  function UpdateFilterValue(event) {
+    setFilterValue(event.target.value);
+  }
+
+  function UpdateFilterType(event) {
+    setFilterType(event.target.value);
+  }
+
+  function ClearSearch() {
+    setFilterValue("");
+    setFilterType(GAMES_PAGE_FILTER_TYPE.ALL);
+  }
+
+  function UpdateGamesToDisplayByFilter(type, value) {
+    //TODO: Finish
+  }
+
   return (
+    // TODO: Add filter games by name and type (topic)
     <div>
       <ParentMainPage>
-        <Button onClick={() => ParentsApiRequest("GET", "GetGameIdsByTopicId", requestData).then((res) => {
-          console.log(res.data)
-        })}>aaa</Button>
 
         <h1>משחקים</h1>
 
         {
           UserHasChildren() === true
             ?
-            <GamePreviewCardsGrid
-              Games={gamesToDisplay}
-              ChangeDifficulty={ChangeDifficulty}
-            />
+            <>
+              <GamesPageSearchField
+                UpdateFilterType={UpdateFilterType}
+                UpdateFilterValue={UpdateFilterValue}
+                FilterValue={filterValue}
+                FilterType={filterType}
+                ClearSearch={ClearSearch}
+              />
+
+
+              <GamePreviewCardsGrid
+                Games={gamesToDisplay}
+                ChangeDifficulty={ChangeDifficulty}
+              />
+            </>
             :
             <NoChildrenMessage />
         }

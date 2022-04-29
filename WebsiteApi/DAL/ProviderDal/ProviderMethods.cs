@@ -155,9 +155,14 @@ namespace ProviderDal
         }
         public static DataTable GetAllArticles()
         {
-            //string com = /*"SELECT article.article_content, provider.provider_full_name, article.article_title FROM provider INNER JOIN article ON provider.provider_id = article.provider_id";*/
-            string com = @"SELECT article.article_title, article.topic_id, provider.provider_full_name, article.article_content, topic.topic_title
-FROM provider INNER JOIN ((topic INNER JOIN article ON topic.topic_id = article.topic_id) INNER JOIN topic_to_game ON topic.topic_id = topic_to_game.topic_id) ON provider.provider_id = article.provider_id;";
+            //string com = "SELECT article.article_content, provider.provider_full_name, article.article_title FROM provider INNER JOIN article ON provider.provider_id = article.provider_id";
+            //            string com = @"SELECT article.article_title, article.topic_id, provider.provider_full_name, article.article_content, topic.topic_title
+            //FROM provider INNER JOIN ((topic INNER JOIN article ON topic.topic_id = article.topic_id) INNER JOIN topic_to_game ON topic.topic_id = topic_to_game.topic_id) ON provider.provider_id = article.provider_id;";
+
+            string com = @"SELECT article.article_content, provider.provider_full_name, article.article_title, article.topic_id, topic.topic_title, article.article_content
+                           FROM topic 
+                           INNER JOIN (provider INNER JOIN article ON provider.provider_id = article.provider_id) 
+                           ON topic.topic_id = article.topic_id;";
 
             return UsersOdbcHelper.GetTable(com, new OdbcParameter[0]);
         }
