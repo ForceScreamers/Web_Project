@@ -79,7 +79,7 @@ function shuffleMemoryCards(array) {
 
 export default function MemoryGame({ SetMoves, SetCorrectMoves, CardsJSON, SetHasEnded, Difficulty }) {
 
-
+  console.log(Difficulty)
   const [cards, setCards] = useState(
     () => shuffleMemoryCards(GenerateGameCards(CardsJSON, Difficulty))
   );
@@ -89,7 +89,6 @@ export default function MemoryGame({ SetMoves, SetCorrectMoves, CardsJSON, SetHa
   const [shouldDisableAllCards, setShouldDisableAllCards] = useState(false);
 
   const timeout = useRef(null);
-  console.log(cards);
 
   //  Disable or enable (the user can't click) all cards while evaluating
   const disable = () => { setShouldDisableAllCards(true) };

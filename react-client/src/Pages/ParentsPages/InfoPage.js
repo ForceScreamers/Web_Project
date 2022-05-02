@@ -31,35 +31,38 @@ export default function InfoPage() {
   const [selectedArticleInfo, setSelectedArticleInfo] = useState({});
 
   const [filterValue, setFilterValue] = useState("");
-  const [tableName, setTableName] = useState("all");
+  const [filterType, setFilterType] = useState("all");
 
   const [showArticleModal, setShowArticleModal] = useState(false);
 
   async function UpdateArticlesFromServerByFilter() {
-    let filterValues = {
-      tableName: tableName,
-      filterValue: utf8.encode(filterValue),
-    }
+    if (filterValue !== "") {
+      let filterValues = {
+        tableName: filterType,
+        filterValue: utf8.encode(filterValue),
+      }
 
-    ProvidersApiRequest("GET", "GetArticles", filterValues)
-      .then((response) => {
-        let responseData = JSON.parse(response.data);
-        console.log(JSON.parse(response.data));
-        let articlesWithHeight = GenerateArticlesWithCardHeights(responseData);
-        setArticles(articlesWithHeight);
-      })
+
+      ProvidersApiRequest("GET", "GetArticles", filterValues)
+        .then((response) => {
+          let responseData = JSON.parse(response.data);
+          console.log(JSON.parse(response.data));
+          let articlesWithHeight = GenerateArticlesWithCardHeights(responseData);
+          setArticles(articlesWithHeight);
+        })
+    }
   }
 
   useEffect(() => {
     UpdateArticlesFromServerByFilter();
-  }, [filterValue, tableName])
+  }, [filterValue, filterType])
 
   function UpdateFilterValue(event) {
     setFilterValue(event.target.value);
   }
 
   function UpdateFilterType(event) {
-    setTableName(event.target.value);
+    setFilterType(event.target.value);
   }
 
   function GenerateArticlesWithCardHeights(articles) {
@@ -86,7 +89,7 @@ export default function InfoPage() {
 
   function ClearSearch() {
     setFilterValue(DEFUALT_FILTER_VALUE);
-    setTableName(DEFUALT_TABLE_NAME);
+    setFilterType(DEFUALT_TABLE_NAME);
   }
 
   return (
@@ -97,7 +100,7 @@ export default function InfoPage() {
           UpdateFilterType={UpdateFilterType}
           UpdateFilterValue={UpdateFilterValue}
           FilterValue={filterValue}
-          FilterType={tableName}
+          FilterType={filterType}
           ClearSearch={ClearSearch}
         />
 

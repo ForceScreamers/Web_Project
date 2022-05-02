@@ -10,7 +10,7 @@ import NoChildrenMessage from "../../Components/ParentsComponents/GamesPageCompo
 
 import ShowScoreModal from "../../Games/ShowScoreModal";
 
-import { GAMES_PATH_PREFIX } from "../../Constants";
+import { GAMES_PAGE_SEARCH_VALUE_ALL, GAMES_PATH_PREFIX } from "../../Constants";
 import ProtectedRoute from "../../Components/GeneralComponents/ProtectedRoute";
 
 
@@ -35,146 +35,142 @@ import { GAME_DIFFICULTY } from "../../Constants";
 import AssociationsGame from "../../Games/AssociationsGame/AssociationsGame";
 import { Button } from "react-bootstrap";
 
-import { GAMES_PAGE_FILTER_TYPE } from "../../Constants";
 import GamesPageSearchField from "./GamesPage/GamesPageSearchField";
 const DEFAULT_DIFFICULTY = GAME_DIFFICULTY.EASY;
 
 
 //TODO: Get game names from db
 
-class Game {
-  constructor(name, description, dbId, path, component, jsonData) {
-    this.name = name;
-    this.description = description;
-    this.dbId = dbId;
-    this.path = path;
-    this.component = component;
-    this.jsonData = jsonData;
-    this.selectedDifficulty = DEFAULT_DIFFICULTY;
-  }
-
-  SelectDifficulty(difficulty) {
-    this.selectedDifficulty = difficulty;
-  }
-}
-
-let games = [
-  new Game("שיוך", "תיאור משחק זיכרון", 12, "/Match", MemoryGame, jsonMatchCards),
-  new Game("הפכים", "תיאור הפכים", 13, "/Opposites", MemoryGame, jsonOppositesCards),
-  new Game("מספר וכמות", "תיאור מספר וכמות", 14, "/NumberAndCount", MemoryGame, jsonNumberAndCountCards),
-  new Game("תרגילי כפל", "", 15, "/yee", MatchCardsGame, CardMatchList),
-  new Game("מצא את ההבדלים", "", 16, "/SpotTheDifferences", SpotTheDifference, jsonSpotTheDifferences),
-  new Game("אסוסיאציות", "", 17, "/AssociationsGame", AssociationsGame, jsonAssociationsGame),
-]
 
 
-export default function GamesPage() {
-  const [gamesToDisplay, setGamesToDisplay] = useState(games);
 
-  const [filterType, setFilterType] = useState(GAMES_PAGE_FILTER_TYPE.ALL);
-  const [filterValue, setFilterValue] = useState("");
 
-  let requestData = {
-    topicId: 2,
-  }
+export default function GamesPage({ GamesDifficulties, SetGamesDifficulties, LoadGamesFromApi }) {
+  const [gamesToDisplay, setGamesToDisplay] = useState(JSON.parse(sessionStorage.getItem('games')));
+
+  useEffect(() => {
+    LoadGamesFromApi();
+    setGamesToDisplay(JSON.parse(sessionStorage.getItem('games')));
+  }, [])
 
 
   function ChangeDifficulty(gameId, selectedDifficulty) {
+    let newDifficulties = [...GamesDifficulties];
 
-    let cloneGames = [...gamesToDisplay];
-
-    for (let cloneGame of cloneGames) {
-      console.log(cloneGame.dbId, gameId)
-
-      if (cloneGame.dbId === gameId) {
-        // cloneGame.selectedDifficulty = selectedDifficulty;
-        cloneGame.SelectDifficulty(selectedDifficulty);
+    for (let difficulty of newDifficulties) {
+      if (difficulty.gameId === gameId) {
+        difficulty.difficultyLevel = selectedDifficulty;
       }
     }
 
-    setGamesToDisplay(cloneGames)
+    SetGamesDifficulties(newDifficulties)
   }
 
 
   function UserHasChildren() {
-    let children = JSON.parse(sessionStorage.getItem('children'));
     let hasChildren = false;
+    try {
+      let children = JSON.parse(sessionStorage.getItem('children'));
 
-    console.log(children);
-    if (children && children.length > 0) {
-      hasChildren = true;
+      console.log(children);
+      if (children && children.length > 0) {
+        hasChildren = true;
+      }
+    }
+    catch (e) {
+      //  Do nothing
     }
 
     return hasChildren;
   }
 
 
-  function UpdateFilterValue(event) {
-    setFilterValue(event.target.value);
+  function UpdateSearchResult(event) {
+    UpdateGamesToDisplayBySearchValue(event.target.value)
   }
 
-  function UpdateFilterType(event) {
-    setFilterType(event.target.value);
+
+  function UpdateGamesToDisplayBySearchValue(value) {
+    let games = JSON.parse(sessionStorage.getItem('games'));
+
+    //  If the search is for all games, override the filter function
+    if (value === GAMES_PAGE_SEARCH_VALUE_ALL) {
+      setGamesToDisplay(games);
+    }
+    else {
+      let filteredGames = FilterGamesByTopic(games, value);
+      setGamesToDisplay(filteredGames)
+    }
   }
 
-  function ClearSearch() {
-    setFilterValue("");
-    setFilterType(GAMES_PAGE_FILTER_TYPE.ALL);
+
+  function FilterGamesByTopic(games, topic) {
+    let filteredGames = [];
+
+    //  If one of the game's topics is the searched value
+    for (let game of games) {
+      if (game.Topics.includes(topic)) {
+        filteredGames.push(game);
+      }
+    }
+
+    return filteredGames;
   }
 
-  function UpdateGamesToDisplayByFilter(type, value) {
-    //TODO: Finish
-  }
 
   return (
-    // TODO: Add filter games by name and type (topic)
     <div>
       <ParentMainPage>
 
         <h1>משחקים</h1>
-
         {
           UserHasChildren() === true
             ?
             <>
               <GamesPageSearchField
-                UpdateFilterType={UpdateFilterType}
-                UpdateFilterValue={UpdateFilterValue}
-                FilterValue={filterValue}
-                FilterType={filterType}
-                ClearSearch={ClearSearch}
+                UpdateSearchResult={UpdateSearchResult}
               />
 
 
               <GamePreviewCardsGrid
                 Games={gamesToDisplay}
                 ChangeDifficulty={ChangeDifficulty}
+                GamesDifficulties={GamesDifficulties}
               />
             </>
             :
             <NoChildrenMessage />
         }
-
-
       </ParentMainPage>
     </div>
   )
 }
 
 
-export function GameRoutes({ UpdateChildrenProfiles }) {
+export function GameRoutes({ Games, UpdateChildrenProfiles, GamesDifficulties }) {
+  function GetGameDifficultyById(gameId) {
+    for (let difficulty of GamesDifficulties) {
+      if (difficulty.gameId === gameId) {
+        return difficulty.difficultyLevel;
+      }
+    }
+
+    //  Default back to easy difficulty
+    return GAME_DIFFICULTY.EASY;
+  }
+
   return (
     <>
       {
-        games.map((game, index) => {
+        Games.map((game, index) => {
           return (
             <ProtectedRoute key={index} exact path={GAMES_PATH_PREFIX + game.path} Component={
               () => <GameTemplate
                 CardsJSON={game.jsonData}
-                GameId={game.dbId}
+                GameId={game.Id}
                 GameComponent={game.component}
                 GameName={game.name}
-                Difficulty={game.selectedDifficulty}
+                Difficulty={GetGameDifficultyById(game.Id)}
                 UpdateChildrenProfiles={UpdateChildrenProfiles}
               />
             } />

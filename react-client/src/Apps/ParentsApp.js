@@ -37,7 +37,24 @@ import ProtectedRoute from '../Components/GeneralComponents/ProtectedRoute';
 import utf8 from 'utf8';
 // import GameRoutes from '../Games/GameRoutes';
 import { GameRoutes } from '../Pages/ParentsPages/GamesPage';
+import { GAME_DIFFICULTY } from '../Constants';
 
+//  JSON Cards list
+import jsonMatchCards from '../Games/MemoryGame/CardLists/MatchCardsList.json'
+import jsonOppositesCards from '../Games/MemoryGame/CardLists/OppositesCardsList.json'
+import jsonNumberAndCountCards from '../Games/MemoryGame/CardLists/NumberAndCountCardsList.json'
+import jsonSpotTheDifferences from '../Games/SpotTheDifference/SpotTheDifferenceSetsList.json'
+import jsonAssociationsGame from '../Games/AssociationsGame/AssociationsGameCards.json'
+import CardMatchList from '../Games/MatchCardsGame/CardMatchList.json'
+import AssociationsGame from "../Games/AssociationsGame/AssociationsGame";
+import MatchCardsGame from "../Games/MatchCardsGame/MatchCardsGame";
+
+//  Import Games
+import SpotTheDifference from '../Games/SpotTheDifference/SpotTheDifference'
+import MemoryGame from "../Games/MemoryGame/MemoryGame";
+
+//  Import Classes
+import Game from '../Project-Modules/GameClass';
 //	#endregion
 
 /**
@@ -53,7 +70,74 @@ import { GameRoutes } from '../Pages/ParentsPages/GamesPage';
 /** */
 
 
-// * React app component
+
+
+
+
+function GenerateDefaultGameDifficulties() {
+  let defaultGamesDifficulties = [];
+  let GAME_COUNT = 6;
+  let STARTING_GAME_ID = 12;
+
+  for (let i = STARTING_GAME_ID; i < STARTING_GAME_ID + GAME_COUNT; i++) {
+    defaultGamesDifficulties.push({
+      gameId: i,
+      difficultyLevel: GAME_DIFFICULTY.EASY,
+    })
+  }
+  return defaultGamesDifficulties;
+}
+
+
+//TODO: Turn to json (With paths instead of components)
+let games = [
+  new Game(12, "/Match", MemoryGame, jsonMatchCards),
+  new Game(13, "/Opposites", MemoryGame, jsonOppositesCards),
+  new Game(14, "/NumberAndCount", MemoryGame, jsonNumberAndCountCards),
+  new Game(15, "/yee", MatchCardsGame, CardMatchList),
+  new Game(16, "/SpotTheDifferences", SpotTheDifference, jsonSpotTheDifferences),
+  new Game(17, "/AssociationsGame", AssociationsGame, jsonAssociationsGame),
+]
+
+async function LoadGamesFromApi() {
+  ParentsApiRequest("GET", "GetGames", null).then((apiResponse) => {
+
+    let apiGames = JSON.parse(apiResponse.data);
+    let gamesData = CombineApiGamesWithPresetGames(apiGames, games)
+    sessionStorage.setItem('games', JSON.stringify(gamesData))
+  })
+}
+
+/**
+ * @returns An array containing a game object with data from both the api and the preset json 
+ */
+function CombineApiGamesWithPresetGames(apiGames, presetGames) {
+  let combinedGames = [];
+
+  for (let apiGame of apiGames) {
+    for (let presetGame of presetGames) {
+
+      //  If the game isn't in the combined game list and has the same id
+      if (DoesListContainsGame(apiGame, combinedGames) === false && apiGame.Id === presetGame.Id) {
+        combinedGames.push({ ...apiGame, ...presetGame });
+      }
+    }
+  }
+
+  return combinedGames;
+}
+
+function DoesListContainsGame(gameToCheck, games) {
+  for (let game of games) {
+    if (game.Id === gameToCheck.Id) {
+      return true;
+    }
+  }
+  return false;
+}
+
+
+// * Parents app component
 export default function ParentsApp() {
 
   const [currentChild, setCurrentChild] = useState({});
@@ -61,9 +145,12 @@ export default function ParentsApp() {
 
   const [userExists, setUserExists] = useState(null);
 
+  const [gamesDifficulties, setGamesDifficulties] = useState(() => GenerateDefaultGameDifficulties());
+
   let history = useHistory();
 
-  /**Gets the children belonging to the logged parent
+  /**
+   * Gets the children belonging to the logged parent
    * Set current children profiles to the matching children
    */
   async function LoadChildrenFromServer() {
@@ -73,29 +160,34 @@ export default function ParentsApp() {
     console.log(parentId);
     if (parentId) {
       let res = await ParentsApiRequest('GET', 'GetChildren', { parentId: parentId }).catch(err => console.log(err))
+      try {
+        //  Set children
+        sessionStorage.setItem('children', JSON.stringify(res?.data));
+        let children = JSON.parse(sessionStorage.getItem('children'));
 
-      //  Set children
-      sessionStorage.setItem('children', JSON.stringify(res.data));
-      let children = JSON.parse(sessionStorage.getItem('children'));
+        //  Set current child
+        if (children.length === 0) {
+          sessionStorage.setItem('currentChild', 'null');
+          console.log('EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE')
+          setCurrentChild(null);
+        }
+        else {
+          sessionStorage.setItem('currentChild', JSON.stringify(GetSelectedChild(children)))
+          setCurrentChild(JSON.parse(sessionStorage.getItem('currentChild')));
+        }
+      }
+      catch (e) {
 
-      //  Set current child
-      if (children.length === 0) {
-        sessionStorage.setItem('currentChild', 'null');
-        console.log('EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE')
-        setCurrentChild(null);
       }
-      else {
-        sessionStorage.setItem('currentChild', JSON.stringify(GetSelectedChild(children)))
-        setCurrentChild(JSON.parse(sessionStorage.getItem('currentChild')));
-      }
+
 
     }
   }
 
 
-  useEffect(() => {
-    console.log(history.location.pathname);
-  })
+
+
+
 
 
   function GetSelectedChild(childrenArray) {
@@ -130,6 +222,8 @@ export default function ParentsApp() {
 
     //  Load children
     LoadChildrenFromServer();
+
+    LoadGamesFromApi();
 
     //	Redirect to welcome page
     history.push("/Parent/Welcome");
@@ -204,11 +298,11 @@ export default function ParentsApp() {
 
 
   useEffect(() => {
-    //	Load username and current child
     setUsername(sessionStorage.getItem('username'));
     setCurrentChild(JSON.parse(sessionStorage.getItem('currentChild')));
 
     LoadChildrenFromServer();
+    LoadGamesFromApi();
   }, [])
 
 
@@ -251,6 +345,9 @@ export default function ParentsApp() {
         {/* GAMES */}
         <ProtectedRoute exact path="/Parent/Games" Component={() =>
           <GamesPage
+            LoadGamesFromApi={LoadGamesFromApi}
+            GamesDifficulties={gamesDifficulties}
+            SetGamesDifficulties={setGamesDifficulties}
           />}
         />
 
@@ -268,7 +365,11 @@ export default function ParentsApp() {
         <ProtectedRoute exact path="/Parent/Home" Component={HomePage} />
 
 
-        <GameRoutes UpdateChildrenProfiles={LoadChildrenFromServer} />
+        <GameRoutes
+          Games={games}
+          UpdateChildrenProfiles={LoadChildrenFromServer}
+          GamesDifficulties={gamesDifficulties}
+        />
 
       </NavBarContext.Provider>
     </div>

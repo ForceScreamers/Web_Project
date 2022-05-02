@@ -11,6 +11,7 @@ using System.Data;
 using System.Text;
 using System.Web.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Reflection;
 
 namespace ParentsApi
 {
@@ -251,6 +252,7 @@ namespace ParentsApi
 			return childrenList;
 		}
 
+		//TODO: Change these to use the class ConvertDataTable instead of each function instance
 		private static List<Evaluation> EvaluationsDataTableToList(DataTable evaluationsDt)
 		{
 			List<Evaluation> evaluations = new List<Evaluation>();
@@ -291,6 +293,76 @@ namespace ParentsApi
 
 			return children;
 		}
+		private static List<Game> GamesDataTableToList(DataTable gamesDt)
+		{
+			List<Game> games = new List<Game>();
+
+			foreach (DataRow row in gamesDt.Rows)
+			{
+				//  Convering properties
+				string gameName = row.ItemArray[0].ToString();
+				string gameDescription = row.ItemArray[1].ToString();
+				int gameId = int.Parse(row.ItemArray[2].ToString());
+				string gameTopic = row.ItemArray[3].ToString();
+
+				//	Create topics list with a single item
+				List<string> topic = new List<string>();
+				topic.Add(gameTopic);
+
+				games.Add(new Game(gameId, gameName, gameDescription, topic));
+			}
+
+			List<Game> combinedGames = CombineGameTopicsLists(games);
+
+			return combinedGames;
+		}
+
+
+		//	Returns a new list which containes new game objects with all of the matching game subjects/topics
+		private static List<Game> CombineGameTopicsLists(List<Game> games)
+		{
+			List<Game> combinedGames = new List<Game>();
+
+			foreach(Game game in games)
+			{
+				if (IsGameExistsInList(game, combinedGames))
+				{
+					//	Add topics to same game inside combined topics list
+					combinedGames[GetIndexOfSameGame(game, combinedGames)].Topics.Add(game.Topics[0]);
+				}
+				else
+				{
+					combinedGames.Add(game);
+				}
+			}
+
+			return combinedGames;
+		}
+
+		private static bool IsGameExistsInList(Game isExistGame, List<Game> games)
+		{
+			foreach(Game game in games)
+			{
+				if(game.Id == isExistGame.Id)
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+		private static int GetIndexOfSameGame(Game gameToCheck, List<Game> games)
+		{
+			int index = 0;
+			foreach (Game game in games)
+			{
+				if (game.Id == gameToCheck.Id)
+				{
+					return index;
+				}
+				index++;
+			}
+			return -1;
+		}
 
 		//	Games functions
 		public static List<int> GetGameIdsByTopicId(int topicId)
@@ -312,6 +384,48 @@ namespace ParentsApi
 		{
 			return null;
 		}
+		public static string GetGames()
+		{
+			DataTable gamesDt = GameMethods.GetGames();
+			List<Game> games = GamesDataTableToList(gamesDt);
 
+
+			return JsonConvert.SerializeObject(games);
+		}
 	}
+
+	//class ConvertDataTable
+	//{
+	//	public static List<T> GetListFromDataTable<T>(DataTable dt)
+	//	{
+	//		List<T> data = new List<T>();
+	//		foreach (DataRow row in dt.Rows)
+	//		{
+	//			T item = GetItem<T>(row);
+	//			data.Add(item);
+	//		}
+	//		return data;
+	//	}
+	//	private static T GetItem<T>(DataRow dr)
+	//	{
+	//		Type temp = typeof(T);
+	//		T obj = Activator.CreateInstance<T>();
+
+	//		foreach (DataColumn column in dr.Table.Columns)
+	//		{
+	//			foreach (PropertyInfo pro in temp.GetProperties())
+	//			{
+	//				if (pro.Name == column.ColumnName)
+	//					pro.SetValue(obj, dr[column.ColumnName], null);
+	//				else
+	//					continue;
+	//			}
+	//		}
+	//		return obj;
+	//	}
+	//}
+
+	
 }
+
+

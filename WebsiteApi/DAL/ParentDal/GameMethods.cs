@@ -38,8 +38,12 @@ namespace ParentDal
 
         public static DataTable GetGames()
         {
-            return UsersOdbcHelper.GetTable("SELECT * FROM game", new OdbcParameter[0]);
+            return UsersOdbcHelper.GetTable(@"SELECT game.game_name, game.game_description, game.game_id, topic.topic_title
+FROM topic INNER JOIN (game INNER JOIN topic_to_game ON game.game_id = topic_to_game.game_id) ON topic.topic_id = topic_to_game.topic_id;
+"
+            , new OdbcParameter[0]);
         }
+
         public static DataTable GetGameIdsByTopicId(int topicId)
         {
             string com = @"SELECT game.game_id, topic.topic_id 

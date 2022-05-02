@@ -6,11 +6,26 @@ import { GAMES_PATH_PREFIX } from "../../../Constants";
 
 import { GAME_DIFFICULTY } from "../../../Constants";
 
-export default function GamePreviewCard({ GamePath, Name, GameId, PreviewImage, Description, ChangeDifficulty, SelectedDifficulty }) {
+export default function GamePreviewCard({ GamePath, Name, GameId, PreviewImage, Description, Topics, ChangeDifficulty, SelectedDifficulty }) {
   const history = useHistory();
 
+  const [topicsToDisplay, setTopicsString] = useState(() => FormatTopicsString());
+  console.log(GamePath);
+  //  Returns a string with the topic names and a colon between then, except for the last topic
+  function FormatTopicsString() {
+    let topics_string = "";
 
+    if (Topics) {
+      for (let topic of Topics) {
+        topics_string = topics_string.concat(topic);
 
+        if (Topics.indexOf(topic) !== Topics.length - 1) { // Last topic
+          topics_string = topics_string.concat(", ");
+        }
+      }
+    }
+    return topics_string;
+  }
 
   return (
     <div>
@@ -35,6 +50,9 @@ export default function GamePreviewCard({ GamePath, Name, GameId, PreviewImage, 
               <Button onClick={() => history.push(GAMES_PATH_PREFIX + GamePath)} variant="primary" size="sm" >שחק!</Button>
             </div>
 
+            <div>
+              <label>{topicsToDisplay}</label>
+            </div>
             <div className='d-flex flex-column align-items-start justify-content-start'>
               <CustomAccordionToggle variant="link" eventKey="0" size="sm">עוד פרטים</CustomAccordionToggle>
             </div>
@@ -69,7 +87,6 @@ function SelectDifficultyButtons({ SelectedDifficulty, ChangeDifficulty, GameId 
 
 function DifficultyButton({ Text, Variant, SelectedDifficulty, ChangeDifficulty, Difficulty, GameId }) {
   console.log(SelectedDifficulty)
-
   return (
     <Button
       onClick={() => ChangeDifficulty(GameId, Difficulty)}

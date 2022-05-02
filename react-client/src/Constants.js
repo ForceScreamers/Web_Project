@@ -6,9 +6,4 @@ export const GAME_DIFFICULTY = {
   HARD: 2,
 }
 
-
-export const GAMES_PAGE_FILTER_TYPE = {
-  ALL: 0,
-  GAME_NAME: 1,
-  GAME_TYPE: 2,
-}
+export const GAMES_PAGE_SEARCH_VALUE_ALL = "הכל";

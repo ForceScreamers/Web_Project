@@ -5,8 +5,6 @@ export default function ProtectedRoute({ UserType, Component, ...rest }) {
 
   function IsLoggedIn() {
     console.log("check")
-
-
     return DoesHaveToken() && IsMatchingUserType();
   }
 
