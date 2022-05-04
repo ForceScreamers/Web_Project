@@ -132,8 +132,8 @@ namespace ProviderDal
         //Filter search requests
         public static DataTable GetAllArticlesBy(string tableToFilter, string filterValue)
         {
-            string com = $"SELECT article.article_content, article.topic_name, provider.provider_full_name, article.article_title FROM provider INNER JOIN article ON provider.provider_id = article.provider_id WHERE((({tableToFilter}) ALIKE ?));";
-
+            //string com = $"SELECT article.article_content, article.topic_name, provider.provider_full_name, article.article_title FROM provider INNER JOIN article ON provider.provider_id = article.provider_id WHERE((({tableToFilter}) ALIKE ?));";
+            string com = $"SELECT article.article_content, topic.topic_title, provider.provider_full_name, article.article_title, provider.provider_id FROM topic INNER JOIN(provider INNER JOIN article ON provider.provider_id = article.provider_id) ON topic.topic_id = article.topic_id WHERE((({tableToFilter}) ALIKE ?));";
             OdbcParameter[] queryParameters =
             {
                 new OdbcParameter($"@{tableToFilter}", $"%{filterValue}%"),
@@ -168,13 +168,13 @@ namespace ProviderDal
         }
 
 
-        public static void PostArticle(int providerId, string topicName, string content, string title)
+        public static void PostArticle(int providerId, int topicId, string content, string title)
         {
-            string com = "INSERT INTO article (provider_id, topic_name, article_content, article_title) VALUES (?,?,?,?)";
+            string com = "INSERT INTO article (provider_id, topic_id, article_content, article_title) VALUES (?,?,?,?)";
             
             OdbcParameter[] queryParameters = {
                 new OdbcParameter("@provider_id", providerId),
-                new OdbcParameter("@topic_name", topicName),
+                new OdbcParameter("@topic_id", topicId),
                 new OdbcParameter("@article_content", OdbcType.NText, 8000),
                 new OdbcParameter("@article_title", title),
             };
@@ -200,7 +200,7 @@ namespace ProviderDal
         public static DataTable GetAllTopics()
         {
             //string com = "SELECT topic_name, topic_id FROM topic";
-            string com = "SELECT DISTINCT topic_name FROM article";
+            string com = "SELECT topic_title, topic_id FROM topic";
             return UsersOdbcHelper.GetTable(com, new OdbcParameter[0]);
         }
 

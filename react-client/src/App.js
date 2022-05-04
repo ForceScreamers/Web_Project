@@ -29,6 +29,7 @@ function GetBackgroundByUserType() {
 	return backgroundCss;
 }
 
+//TODO: Disconnect user if the webapi is offline
 const App = () => {
 
 	return (

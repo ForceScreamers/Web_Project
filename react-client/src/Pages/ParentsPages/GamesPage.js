@@ -45,7 +45,7 @@ const DEFAULT_DIFFICULTY = GAME_DIFFICULTY.EASY;
 
 
 
-export default function GamesPage({ GamesDifficulties, SetGamesDifficulties, LoadGamesFromApi }) {
+export default function GamesPage({ GamesDifficulties, SetGamesDifficulties, LoadGamesFromApi, GamesSearchValue, SetGamesSearchValue }) {
   const [gamesToDisplay, setGamesToDisplay] = useState(JSON.parse(sessionStorage.getItem('games')));
 
   useEffect(() => {
@@ -53,6 +53,9 @@ export default function GamesPage({ GamesDifficulties, SetGamesDifficulties, Loa
     setGamesToDisplay(JSON.parse(sessionStorage.getItem('games')));
   }, [])
 
+  useEffect(() => {
+    UpdateGamesToDisplayBySearchValue(GamesSearchValue);
+  }, [GamesSearchValue])
 
   function ChangeDifficulty(gameId, selectedDifficulty) {
     let newDifficulties = [...GamesDifficulties];
@@ -86,10 +89,16 @@ export default function GamesPage({ GamesDifficulties, SetGamesDifficulties, Loa
 
 
   function UpdateSearchResult(event) {
-    UpdateGamesToDisplayBySearchValue(event.target.value)
+    let searchValue = event.target.value;
+
+    UpdateGamesToDisplayBySearchValue(searchValue);
+    SetGamesSearchValue(searchValue)
+    sessionStorage.setItem('gamesSearchValue', searchValue);
   }
 
-
+  /**
+   * Displays the games with the topic value given
+   */
   function UpdateGamesToDisplayBySearchValue(value) {
     let games = JSON.parse(sessionStorage.getItem('games'));
 
@@ -129,6 +138,7 @@ export default function GamesPage({ GamesDifficulties, SetGamesDifficulties, Loa
             <>
               <GamesPageSearchField
                 UpdateSearchResult={UpdateSearchResult}
+                GamesSearchValue={GamesSearchValue}
               />
 
 

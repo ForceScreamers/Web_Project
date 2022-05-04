@@ -32,12 +32,13 @@ import { NavBarContext } from '../Contexts/NavBarContext';
 //  Helper classes
 import PageDoesntExist from '../PageDoesntExist';
 import { ParentsApiRequest } from '../RequestHeadersToWebApi';
+import { ProvidersApiRequest } from '../RequestHeadersToWebApi';
 import ProtectedRoute from '../Components/GeneralComponents/ProtectedRoute';
 
 import utf8 from 'utf8';
 // import GameRoutes from '../Games/GameRoutes';
 import { GameRoutes } from '../Pages/ParentsPages/GamesPage';
-import { GAME_DIFFICULTY } from '../Constants';
+import { GAMES_PAGE_SEARCH_VALUE_ALL, GAME_DIFFICULTY } from '../Constants';
 
 //  JSON Cards list
 import jsonMatchCards from '../Games/MemoryGame/CardLists/MatchCardsList.json'
@@ -136,6 +137,10 @@ function DoesListContainsGame(gameToCheck, games) {
   return false;
 }
 
+async function LoadTopicsFromApi() {
+  let apiResponse = await ProvidersApiRequest("GET", "GetAllTopics", null);
+  sessionStorage.setItem('topics', JSON.stringify(apiResponse.data.Topics));
+}
 
 // * Parents app component
 export default function ParentsApp() {
@@ -147,8 +152,13 @@ export default function ParentsApp() {
 
   const [gamesDifficulties, setGamesDifficulties] = useState(() => GenerateDefaultGameDifficulties());
 
-  let history = useHistory();
+  const [gamesSearchValue, setGamesSearchValue] = useState(GAMES_PAGE_SEARCH_VALUE_ALL);
 
+  let history = useHistory();
+  useEffect(() => {
+    console.log("AAAAAAAAAAAAAAAAA")
+    console.log(gamesSearchValue)
+  }, [gamesSearchValue])
   /**
    * Gets the children belonging to the logged parent
    * Set current children profiles to the matching children
@@ -303,6 +313,7 @@ export default function ParentsApp() {
 
     LoadChildrenFromServer();
     LoadGamesFromApi();
+    LoadTopicsFromApi();
   }, [])
 
 
@@ -345,14 +356,21 @@ export default function ParentsApp() {
         {/* GAMES */}
         <ProtectedRoute exact path="/Parent/Games" Component={() =>
           <GamesPage
+            GamesSearchValue={gamesSearchValue}
+            SetGamesSearchValue={setGamesSearchValue}
             LoadGamesFromApi={LoadGamesFromApi}
             GamesDifficulties={gamesDifficulties}
             SetGamesDifficulties={setGamesDifficulties}
           />}
         />
 
-
-        <ProtectedRoute exact path="/Parent/Info" Component={InfoPage} />
+        {/* //TODO: Change Info page to articles search or similar */}
+        {/* ARTICLES */}
+        <ProtectedRoute exact path="/Parent/Info" Component={() =>
+          <InfoPage
+            SetGamesSearchValue={setGamesSearchValue}
+          />
+        } />
 
         <ProtectedRoute exact path="/Parent/Avatar" Component={AvatarPage} />
 

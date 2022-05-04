@@ -31,4 +31,3 @@ C:\Users\Kfir\Desktop\Web_Project\WebsiteApi\DAL\ProviderDal\bin\Debug\Provider-
 C:\Users\Kfir\Desktop\Web_Project\WebsiteApi\DAL\ProviderDal\bin\Debug\Provider-DAL.pdb
 C:\Users\Kfir\Desktop\Web_Project\WebsiteApi\DAL\ProviderDal\obj\Debug\Provider-DAL.exe
 C:\Users\Kfir\Desktop\Web_Project\WebsiteApi\DAL\ProviderDal\obj\Debug\Provider-DAL.pdb
-C:\Users\Kfir\Desktop\Web_Project\WebsiteApi\DAL\ProviderDal\obj\Debug\ProviderDal.csprojAssemblyReference.cache

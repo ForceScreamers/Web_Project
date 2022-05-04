@@ -11,7 +11,7 @@ import InfoPageSearchField from "./InfoPageStuff/InfoPageSearchField"
 
 import Randoms from '../../Randoms'
 import ArticleModal from "./InfoPageStuff/ArticleModal"
-//TODO: Shuffle articles
+//TODO: Show all articles when clearing the search field
 
 const breakpointColumnsObj = {
   default: 4,
@@ -25,7 +25,7 @@ const MIN_CARD_HEIGHT_PX = 250;
 const DEFUALT_FILTER_VALUE = "";
 const DEFUALT_TABLE_NAME = "all";
 
-export default function InfoPage() {
+export default function InfoPage({ SetGamesSearchValue }) {
 
   const [articles, setArticles] = useState([]);
   const [selectedArticleInfo, setSelectedArticleInfo] = useState({});
@@ -35,27 +35,35 @@ export default function InfoPage() {
 
   const [showArticleModal, setShowArticleModal] = useState(false);
 
+
+
   async function UpdateArticlesFromServerByFilter() {
-    if (filterValue !== "") {
-      let filterValues = {
-        tableName: filterType,
-        filterValue: utf8.encode(filterValue),
-      }
+    console.log("Hellio")
 
+    let filterValues = {
+      tableName: filterType,
 
-      ProvidersApiRequest("GET", "GetArticles", filterValues)
-        .then((response) => {
-          let responseData = JSON.parse(response.data);
-          console.log(JSON.parse(response.data));
-          let articlesWithHeight = GenerateArticlesWithCardHeights(responseData);
-          setArticles(articlesWithHeight);
-        })
+      //  If the filter value is empty, set it to get all articles
+      filterValue: filterValue === "" ? "all" : utf8.encode(filterValue),
     }
+
+
+    ProvidersApiRequest("GET", "GetArticles", filterValues)
+      .then((response) => {
+        let responseData = JSON.parse(response.data);
+        console.log(JSON.parse(response.data));
+        let articlesWithHeight = GenerateArticlesWithCardHeights(responseData);
+        setArticles(articlesWithHeight);
+      })
+  }
+
+  function UpdateArticles() {
+    UpdateArticlesFromServerByFilter();
   }
 
   useEffect(() => {
     UpdateArticlesFromServerByFilter();
-  }, [filterValue, filterType])
+  }, [])
 
   function UpdateFilterValue(event) {
     setFilterValue(event.target.value);
@@ -102,12 +110,12 @@ export default function InfoPage() {
           FilterValue={filterValue}
           FilterType={filterType}
           ClearSearch={ClearSearch}
+          UpdateArticles={UpdateArticles}
         />
 
         <Masonry className="info-container" breakpointCols={breakpointColumnsObj}>
           {
             articles.map((article, index) => {
-              console.log(article)
               return (
                 <Card key={index} onClick={() => OnArticleClick(article)} className="info-card" style={{ height: article.cardHeight, cursor: "pointer" }}>
                   <Card.Title>
@@ -126,14 +134,15 @@ export default function InfoPage() {
         </Masonry>
 
         <ArticleModal
+          SetGamesSearchValue={SetGamesSearchValue}
           ShowArticleModal={showArticleModal}
           CloseArticleModal={CloseArticleModal}
+
           Title={selectedArticleInfo.article_title}
           Content={selectedArticleInfo.article_content}
           ProviderName={selectedArticleInfo.provider_full_name}
-          Topic={selectedArticleInfo.topic_name}
+          TopicTitle={selectedArticleInfo.topic_title}
           TopicId={selectedArticleInfo.topic_id}
-
         />
       </ParentMainPage>
     </div >

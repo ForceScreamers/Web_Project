@@ -17,7 +17,7 @@ export default function ProviderPublishArticle() {
 
   const [showCreateTopicField, setShowCreateTopicField] = useState(false);
 
-  const [articleTopic, setArticleTopics] = useState([""]);
+  const [articleTopics, setArticleTopics] = useState([""]);
   const [topicToUse, setTopicToUse] = useState("");
 
   const [content, setContent] = useState("");
@@ -40,10 +40,12 @@ export default function ProviderPublishArticle() {
     if (isArticleValid === true) {
 
       console.log("publishing...")
+      let parsedTopicData = JSON.parse(topicToUse);
+      console.log(parsedTopicData);
 
       let articleData = {
         providerId: JSON.parse(sessionStorage.getItem("Info")).Id,
-        topic: utf8.encode(topicToUse),
+        topicId: parsedTopicData.id,
         content: utf8.encode(content),
         title: utf8.encode(title),
       }
@@ -54,7 +56,22 @@ export default function ProviderPublishArticle() {
   async function LoadTopics() {
     let response = await ProvidersApiRequest("GET", "GetAllTopics", null);
     console.log(response);
-    setArticleTopics(response.data.Topics);
+    let articleTopics = GetTopicsFromApiData(response.data.Topics)
+    setArticleTopics(articleTopics);
+    console.log(articleTopics)
+  }
+
+
+  function GetTopicsFromApiData(apiData) {
+    let topics = [];
+    for (let topicData of apiData) {
+      //  Destructure topic object
+      topics.push({
+        title: topicData.topic_title,
+        id: topicData.topic_id,
+      });
+    }
+    return topics;
   }
 
   function ValidatePostArticleAndChangeErrorMessage() {
@@ -128,9 +145,9 @@ export default function ProviderPublishArticle() {
               <FormSelect onChange={ChangeSelectedTopic} style={{ width: "200px", opacity: showCreateTopicField ? "60%" : "100%" }} disabled={showCreateTopicField}>
                 <option hidden={true}>בחירת נושא</option>
                 {
-                  articleTopic.map((topic, index) => {
+                  articleTopics.map((topic, index) => {
                     return (
-                      <option key={index}>{topic.topic_name}</option>
+                      <option key={index} value={JSON.stringify(topic)} >{topic.title}</option>
                     )
                   })
                 }

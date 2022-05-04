@@ -35,7 +35,7 @@ namespace ProvidersApi
 
 		public static string GetArticlesBy(string tableName, string filterValue)
 		{
-			if(tableName != "all")
+			if(tableName != "all" || filterValue != "all")
 			{
 				return JsonConvert.SerializeObject(ProviderMethods.GetAllArticlesBy(tableName, filterValue));
 			}
@@ -61,10 +61,10 @@ namespace ProvidersApi
 			//return JsonConvert.SerializeObject(children);
 			return null;
 		}
-		public static string PostArticle(int providerId, string topic, string content, string title)
+		public static string PostArticle(int providerId, int topicId, string content, string title)
 		{
 			//TODO: Add posted successfully
-			ProviderMethods.PostArticle(providerId, topic, content, title);
+			ProviderMethods.PostArticle(providerId, topicId, content, title);
 
 			//bool childAddConfirm = false;
 			//try

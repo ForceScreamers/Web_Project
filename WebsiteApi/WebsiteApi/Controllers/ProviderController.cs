@@ -89,11 +89,11 @@ namespace ParentsApi.Controllers
 		public ContentResult PostArticle()
 		{
 			int providerId= int.Parse(Request.Headers["providerId"].ToString());
-			string topicName = Request.Headers["topic"].ToString();
+			int topicId = int.Parse(Request.Headers["topicId"].ToString());
 			string content = Request.Headers["content"].ToString();
 			string title = Request.Headers["title"].ToString();
 
-			return base.Content(ProviderHelperFunctions.PostArticle(providerId, topicName, content, title));
+			return base.Content(ProviderHelperFunctions.PostArticle(providerId, topicId, content, title));
 		}
 
 		[Microsoft.AspNetCore.Mvc.HttpGet]
