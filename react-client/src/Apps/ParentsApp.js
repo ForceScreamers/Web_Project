@@ -154,6 +154,9 @@ export default function ParentsApp() {
 
   const [gamesSearchValue, setGamesSearchValue] = useState(GAMES_PAGE_SEARCH_VALUE_ALL);
 
+
+
+
   let history = useHistory();
   useEffect(() => {
     console.log("AAAAAAAAAAAAAAAAA")

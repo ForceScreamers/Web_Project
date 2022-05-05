@@ -27,7 +27,7 @@ export default function GamesPageSearchField({ UpdateSearchResult, GamesSearchVa
       <h2>הצג משחקים בתחום:</h2>
       <div className="info-page-search-container" >
 
-        <FormSelect className="info-page-select-field" onChange={UpdateSearchResult} value={GamesSearchValue}>
+        <FormSelect style={{ textAlign: "right" }} className="info-page-select-field" onChange={UpdateSearchResult} value={GamesSearchValue}>
           <option>{GAMES_PAGE_SEARCH_VALUE_ALL}</option>
           {
             gameTopics.map((gameTopic, index) => {

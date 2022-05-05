@@ -12,6 +12,8 @@ import InfoPageSearchField from "./InfoPageStuff/InfoPageSearchField"
 import Randoms from '../../Randoms'
 import ArticleModal from "./InfoPageStuff/ArticleModal"
 //TODO: Show all articles when clearing the search field
+//! FIX: Games by topic won't show games if there are no games with that matching topic 
+
 
 const breakpointColumnsObj = {
   default: 4,

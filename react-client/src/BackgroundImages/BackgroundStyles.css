@@ -5,35 +5,7 @@
   position: absolute;
 }
 
-
-.login-register-pages-background {
-
-  /* background:  center cover fixed; */
-  background-image: url('../BackgroundImages/parentBackgroundImage.svg');
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-  background-attachment: fixed;
-  height: 100%;
-  background-color: white;
-}
-
-
-.parent-background-image {
-
-  /* background:  center cover fixed; */
-  background-image: url('../BackgroundImages/parentBackgroundImage.svg');
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-  background-attachment: fixed;
-  height: 100%;
-  background-color: white;
-}
-
-.provider-background-image {
-  /* background:  center cover fixed; */
-  background-image: url('../BackgroundImages/parentBackgroundImage.svg');
+.background-style {
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;

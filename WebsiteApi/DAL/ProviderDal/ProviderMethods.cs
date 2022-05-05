@@ -108,6 +108,7 @@ namespace ProviderDal
             };
 
             //  Execute command
+
             DataTable dt = UsersOdbcHelper.GetTable(com, queryParameters);
 
             int providerId = int.Parse(dt.Rows[0].ItemArray[0].ToString());
