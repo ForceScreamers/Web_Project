@@ -1,13 +1,128 @@
-.LoginContainer{
-    display: flex;
-    margin-top: 20vh;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center; 
+.login-main-container {
+  background-color: transparent;
+
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
 }
 
-.InputContainer{
-    display: flex;
-    justify-content: space-between;
-    flex-direction: column; 
+.login-title {
+  font-size: 35px;
+  font-weight: 400;
+
+  margin-top: 80px;
+}
+
+.login-container {
+  width: 500px;
+  height: 500px;
+
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position-x: center;
+
+  margin-top: 20vh;
+}
+
+.login-inputs-container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.login-submit-button-container {
+  margin-top: 60px;
+
+  color: white;
+}
+
+.login-submit-button {
+  border: none;
+  border-radius: 11px;
+
+  padding: 8px;
+  padding-right: 20px;
+  padding-left: 20px;
+
+  font-size: 18px;
+}
+
+
+
+.user-doesnt-exist-label {
+  color: red;
+}
+
+.login-navigate-button {
+  border-color: transparent;
+  border-radius: 11px;
+
+  font-size: 20px;
+
+  margin-top: 20px;
+  padding-left: 55px;
+  padding-right: 55px;
+
+  background-color: #CBBEDD;
+}
+
+.login-navigate-button:hover {
+  border-color: transparent;
+
+  background-color: #aba0ba;
+
+  outline: none;
+  box-shadow: none !important;
+}
+
+.login-navigate-button:focus {
+  border-color: transparent;
+
+  background-color: #aba0ba;
+
+  outline: none;
+  box-shadow: none !important;
+}
+
+.login-navigate-button:active {
+  border-color: transparent;
+
+  background-color: #aba0ba;
+
+  outline: none;
+  box-shadow: none !important;
+}
+
+
+
+/* Provider and parent background images */
+.parent-login-background-image {
+  background-image: url('../../website-images/login-background.png');
+}
+
+/* TODO: Replace with correct image */
+.provider-login-background-image {
+  background-image: url('../../website-images/login-background.png');
+}
+
+
+
+.login-form-input-field {
+  border-radius: 11px;
+  border: solid white 2px;
+
+  font-size: 15px;
+
+  width: 220px;
+  height: 50px;
+
+  padding: 10px;
+  margin-top: 25px;
+  margin-bottom: 20px;
 }

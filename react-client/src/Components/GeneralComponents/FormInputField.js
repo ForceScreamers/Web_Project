@@ -1,12 +1,12 @@
-import '../../CSS/pages-css/ParentLogin.css'
+import '../../CSS/pages-css/Login.css'
 
 const MAX_INPUT_LENGTH = 40;
 
-export default function FormInputField({ Name, Valid, OnChange, Type, Label }) {
+export default function FormInputField({ Name, Valid, OnChange, Type, Label, FormType }) {
 
   return (
     <input
-      className={`d-flex justify-content-end align-items-start ${Valid ? "" : "border-danger"}`}
+      className={`${FormType === "Login" ? "login-form-input-field" : "register-form-input-field"} ${Valid ? "" : "border-danger"}`}
       onChange={OnChange}
       name={Name}
       type={Type}
@@ -15,6 +15,3 @@ export default function FormInputField({ Name, Valid, OnChange, Type, Label }) {
     />
   )
 }
-
-{/* Split into 2 components */ }
-{/* <label>{Valid ? null : UserErrorMessageText}</label> */ }

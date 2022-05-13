@@ -13,6 +13,7 @@ import { PublicRoute } from "../Components/GeneralComponents/PublicRoute";
 import { ProvidersApiRequest } from "../RequestHeadersToWebApi";
 import ProtectedRoute from "../Components/GeneralComponents/ProtectedRoute";
 import ProviderPublishArticle from "../Pages/ProvidersPages/ProviderPublishArticle";
+import ProviderArticles from "../Pages/ProvidersPages/ProviderArticles";
 
 export default function ProvidersApp() {
   const history = useHistory();
@@ -25,10 +26,24 @@ export default function ProvidersApp() {
     history.push("/Provider/Games");
   }
 
+
+
+  useEffect(() => {
+  }, [])
+
   function SetSessionStorageItems(data) {
     sessionStorage.setItem('Info', JSON.stringify(data.Info));
     sessionStorage.setItem('token', JSON.stringify("Logged in token"));
     sessionStorage.setItem('userType', JSON.stringify("Provider"));
+  }
+
+  async function LoadArticlesFromApi() {
+    let providerId = JSON.parse(sessionStorage.getItem("Info"))?.Id;
+    let response = await ProvidersApiRequest("GET", "GetArticlesForProvider", { providerId: providerId })
+    let articles = JSON.parse(response.data).Articles;
+
+    sessionStorage.setItem("articles", JSON.stringify(articles))
+    console.log(articles)
   }
 
   function SetSessionStorageAndRedirect(data) {
@@ -43,31 +58,27 @@ export default function ProvidersApp() {
         email: e.target.loginEmailField.value,
         password: e.target.loginPasswordField.value,
       }
-      console.log(loginData);
 
       try {
         let loginResponse = await ProvidersApiRequest('POST', 'ProviderLogin', loginData);
 
-        console.log(loginResponse);
         if (loginResponse.data.IsAdmin) {
           sessionStorage.setItem('token', JSON.stringify("Logged in token"));
           sessionStorage.setItem('userType', JSON.stringify("Admin"));
 
-          console.log("Admin");
           history.push("/Admin");
         }
-        else if (loginResponse.data.AllowedToLogin) {
+        else if (loginResponse.data.AllowedToLogin) {// If the user isn't an admin, proceed as a provider
           SetSessionStorageAndRedirect(loginResponse.data);
+          LoadArticlesFromApi();
         }
         else {
-          //alert("בעל מקצוע לא מורשה להתחבר")
-          console.log("Provider isn't permitted to login")
+          // User doesn't exist in the system
           setUserExistsError(true);
         }
       }
       catch (err) {
         // Do nothing
-        console.log(err);
       }
 
     }
@@ -128,7 +139,22 @@ export default function ProvidersApp() {
       />
 
       <ProtectedRoute exact path="/Provider/Games" Component={ProviderGames} />
-      <ProtectedRoute exact path="/Provider/PublishArticle" Component={ProviderPublishArticle} />
+
+      <ProtectedRoute exact path="/Provider/PublishArticle" Component={() =>
+        <ProviderPublishArticle
+          LoadArticlesFromApi={LoadArticlesFromApi}
+        />}
+      />
+
+      <ProtectedRoute exact path="/Provider/Articles" Component={() =>
+        <ProviderArticles
+          LoadArticlesFromApi={LoadArticlesFromApi}
+        />}
+      />
+
+
+
+
     </div>
     // </div>
   )

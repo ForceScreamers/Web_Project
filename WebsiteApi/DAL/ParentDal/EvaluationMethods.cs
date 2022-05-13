@@ -71,9 +71,6 @@ namespace ParentDal
                 $"evaluation_lowest_time = IIF(evaluation_lowest_time > {timeInSeconds}, {timeInSeconds}, evaluation_lowest_time ), " +
                 $"evaluation_lowest_moves = IIF(evaluation_lowest_moves > {moveCount}, {moveCount}, evaluation_lowest_moves ) " +
 
-                //$"evaluation_lowest_time = CASE WHEN evaluation_lowest_time > {timeInSeconds} THEN {timeInSeconds} ELSE evaluation_lowest_time END, " +
-                //$"evaluation_lowest_moves = CASE WHEN evaluation_lowest_moves > {moveCount} THEN {moveCount} ELSE evaluation_lowest_moves END " +
-
                 "WHERE evaluation_child_id = ?";
 
             OdbcParameter[] queryParameters =

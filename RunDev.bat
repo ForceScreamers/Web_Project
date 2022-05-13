@@ -1,1 +1,1 @@
-code . && WebsiteApi/websiteApi.sln
+start.bat && start-react-server.bat

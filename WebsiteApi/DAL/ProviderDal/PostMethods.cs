@@ -12,6 +12,7 @@ namespace ProviderDal
 {
     public class PostMethods
     {
+        //TODO: Find what this class is used for, if nothing then delete it.
 
         public static DataTable GetPostsForProvider(int providerId)
         {
@@ -37,11 +38,11 @@ namespace ProviderDal
 
             return UsersOdbcHelper.Execute(com, queryParameters);
         }
-        public static int DeletePost(int postId)
+        public static int DeleteArticle(int articleId)
         {
             string com = "DELETE FROM post WHERE post_id=@post_id";
             OdbcParameter[] queryParameters = {
-                new OdbcParameter("@post_id", postId)
+                new OdbcParameter("@post_id", articleId)
             };
 
             return UsersOdbcHelper.Execute(com, queryParameters);

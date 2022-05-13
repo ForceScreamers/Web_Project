@@ -9,11 +9,12 @@ import ProviderMainPage from '../../ProviderMainPage';
 const ARTICLE_CONTENT_MAX_LENGTH = 1800;
 const ARTICLE_MAX_LENGTH_SMALL = 30;
 
-export default function ProviderPublishArticle() {
+const MAX_ARTICLES = 10;
+
+export default function ProviderPublishArticle({ LoadArticlesFromApi }) {
   //TODO: Save written content to localstorage and display after closing
   //TODO: Edit written article
   //TODO: Add article posted prompt and clear fields
-  //TODO: Add dropdown when choosing topic (?)
 
   const [showCreateTopicField, setShowCreateTopicField] = useState(false);
 
@@ -27,21 +28,26 @@ export default function ProviderPublishArticle() {
   const [noTopicSelectedError, setNoTopicSelectedError] = useState("");
   const [titleEmptyError, setTitleEmptyError] = useState("");
 
+  //  Used for counting how many articles has been posted without leaving the page
+  const [currentPublishes, setCurrentPublishes] = useState(0);
+
   useEffect(() => {
     LoadTopics();
     LoadSavedContent();
+
+    //  Reset current publishes
+    setCurrentPublishes(0);
   }, [])
 
   async function PublishArticle(e) {
     e.preventDefault();
 
-    let isArticleValid = ValidatePostArticleAndChangeErrorMessage();
+    let canPublish = ValidatePostArticleAndChangeErrorMessage() && IsArticleCountValid();
 
-    if (isArticleValid === true) {
+    if (canPublish === true) {
 
       console.log("publishing...")
       let parsedTopicData = JSON.parse(topicToUse);
-      console.log(parsedTopicData);
 
       let articleData = {
         providerId: JSON.parse(sessionStorage.getItem("Info")).Id,
@@ -49,7 +55,14 @@ export default function ProviderPublishArticle() {
         content: utf8.encode(content),
         title: utf8.encode(title),
       }
-      ProvidersApiRequest("POST", "PostArticle", articleData)
+
+      //  Increment current publishes count
+      setCurrentPublishes((prevCurrentPublishes) => prevCurrentPublishes + 1);
+
+      //  Publish
+      ProvidersApiRequest("POST", "PostArticle", articleData);
+
+      LoadArticlesFromApi();
     }
   }
 
@@ -72,6 +85,12 @@ export default function ProviderPublishArticle() {
       });
     }
     return topics;
+  }
+
+  function IsArticleCountValid() {
+    console.log(GetArticleCount())
+    console.log("Current publuishes " + currentPublishes)
+    return GetArticleCount() < MAX_ARTICLES && currentPublishes < MAX_ARTICLES;
   }
 
   function ValidatePostArticleAndChangeErrorMessage() {
@@ -117,6 +136,11 @@ export default function ProviderPublishArticle() {
 
   function HandleNewTopicChange(event) {
     setTopicToUse(event.target.value);
+  }
+
+  function GetArticleCount() {
+    let articles = JSON.parse(sessionStorage.getItem("articles"));
+    return articles.length;
   }
 
   return (

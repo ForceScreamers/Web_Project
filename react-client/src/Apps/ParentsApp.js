@@ -47,12 +47,14 @@ import jsonNumberAndCountCards from '../Games/MemoryGame/CardLists/NumberAndCoun
 import jsonSpotTheDifferences from '../Games/SpotTheDifference/SpotTheDifferenceSetsList.json'
 import jsonAssociationsGame from '../Games/AssociationsGame/AssociationsGameCards.json'
 import CardMatchList from '../Games/MatchCardsGame/CardMatchList.json'
-import AssociationsGame from "../Games/AssociationsGame/AssociationsGame";
-import MatchCardsGame from "../Games/MatchCardsGame/MatchCardsGame";
+import jsonCatchGame from "../Games/CatchGame/jsonCatchGame.json"
 
 //  Import Games
 import SpotTheDifference from '../Games/SpotTheDifference/SpotTheDifference'
 import MemoryGame from "../Games/MemoryGame/MemoryGame";
+import CatchGame from '../Games/CatchGame/CatchGame';
+import AssociationsGame from "../Games/AssociationsGame/AssociationsGame";
+import MatchCardsGame from "../Games/MatchCardsGame/MatchCardsGame";
 
 //  Import Classes
 import Game from '../Project-Modules/GameClass';
@@ -98,6 +100,7 @@ let games = [
   new Game(15, "/yee", MatchCardsGame, CardMatchList),
   new Game(16, "/SpotTheDifferences", SpotTheDifference, jsonSpotTheDifferences),
   new Game(17, "/AssociationsGame", AssociationsGame, jsonAssociationsGame),
+  new Game(18, "/CatchGame", CatchGame, jsonCatchGame),
 ]
 
 async function LoadGamesFromApi() {

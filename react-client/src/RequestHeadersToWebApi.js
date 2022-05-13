@@ -30,12 +30,9 @@ async function ApiRequest(httpMethod, request, headers, apiSection) {
   })
 }
 
-
 export async function ParentsApiRequest(httpMethod, request, headers) {
   return ApiRequest(httpMethod, request, headers, 'Parent');
 }
-
-
 
 export async function ProvidersApiRequest(httpMethod, request, headers) {
   return ApiRequest(httpMethod, request, headers, 'Provider');

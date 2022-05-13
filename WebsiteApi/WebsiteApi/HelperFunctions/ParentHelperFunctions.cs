@@ -67,8 +67,6 @@ namespace ParentsApi
 		}
 		public static string ParentRegister(string username, string email, string password)
 		{
-			Console.WriteLine("Registering parent: {0} {1} {2}", username, email, password);
-
 			bool userRegistered = false;//  If the parent is registered in the system
 			bool userExists = false;//  If the user already exists in the system
 
@@ -83,7 +81,7 @@ namespace ParentsApi
 				}
 				catch (Exception e)
 				{
-					Console.WriteLine(e);
+					//	Do nothing
 				}
 
 				//  If there are no errors, the parent is registered
@@ -118,7 +116,7 @@ namespace ParentsApi
 			return JsonConvert.SerializeObject(new { IsSelected = result });
 		}
 
-
+		
 		//	Child functions
 		public static string DeleteChild(int childId, int parentId)
 		{

@@ -26,6 +26,7 @@ namespace ParentDal
 
             return UsersOdbcHelper.Execute(com, queryParameters);
         }
+
         public static int DeleteGame(int gameId)
         {
             string com = "DELETE FROM game WHERE game_id=?";

@@ -130,11 +130,42 @@ namespace ProviderDal
         }
 
 
+        public static DataTable GetAllArticlesByProviderId(int providerId)
+        {
+            string com = @"SELECT article.article_content, topic.topic_title, article.article_title, article.article_content, article.article_id, provider.provider_id
+                            FROM topic INNER JOIN(provider INNER JOIN article ON provider.provider_id = article.provider_id) ON topic.topic_id = article.topic_id
+                            WHERE(((provider.provider_id) =[?])); ";
+
+
+            OdbcParameter[] queryParameters =
+            {
+                new OdbcParameter($"@providerId", providerId),
+            };
+
+            return UsersOdbcHelper.GetTable(com, queryParameters);
+        }
+
+        public static void DeleteArticle(int articleId)
+        {
+            string com = "DELETE FROM article WHERE article_id=?";
+
+            OdbcParameter[] queryParameters =
+            {
+                new OdbcParameter("@article_id", articleId),
+            };
+
+            UsersOdbcHelper.Execute(com, queryParameters);
+        }
+
         //Filter search requests
         public static DataTable GetAllArticlesBy(string tableToFilter, string filterValue)
         {
-            //string com = $"SELECT article.article_content, article.topic_name, provider.provider_full_name, article.article_title FROM provider INNER JOIN article ON provider.provider_id = article.provider_id WHERE((({tableToFilter}) ALIKE ?));";
-            string com = $"SELECT article.article_content, topic.topic_title, provider.provider_full_name, article.article_title, provider.provider_id FROM topic INNER JOIN(provider INNER JOIN article ON provider.provider_id = article.provider_id) ON topic.topic_id = article.topic_id WHERE((({tableToFilter}) ALIKE ?));";
+            string com = $"SELECT article.article_content, topic.topic_title, provider.provider_full_name, article.article_title, provider.provider_id " +
+                         $"FROM topic " +
+                         $"INNER JOIN(provider INNER JOIN article ON provider.provider_id = article.provider_id) " +
+                         $"ON topic.topic_id = article.topic_id " +
+                          $"WHERE((({tableToFilter}) ALIKE ?));";
+
             OdbcParameter[] queryParameters =
             {
                 new OdbcParameter($"@{tableToFilter}", $"%{filterValue}%"),
@@ -181,7 +212,6 @@ namespace ProviderDal
             };
 
             //  Set special size for long strings 
-
             queryParameters[2].Value = content;
 
             UsersOdbcHelper.Execute(com, queryParameters);

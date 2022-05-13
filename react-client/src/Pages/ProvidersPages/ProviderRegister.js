@@ -5,6 +5,9 @@ import { useState } from 'react'
 import { InputField } from '../../Project-Modules/UserInputValidation'
 import FormInputFieldSection from '../../Components/GeneralComponents/FormInputFieldSection'
 import WaitForConfirmationModal from './ProviderRegisterFiles/WaitForConfirmationModal'
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min'
+import { Button } from 'react-bootstrap'
+import FormInputField from '../../Components/GeneralComponents/FormInputField'
 
 export default function ProviderRegister({ HandleProviderRegister, UserExistsError, ShowWaitForConfirmationModal, CloseWaitForConfirmationModal }) {
 
@@ -16,6 +19,7 @@ export default function ProviderRegister({ HandleProviderRegister, UserExistsErr
     new InputField("confirmPasswordField", "אשר סיסמה:", ValidateConfirmPassword, "שגיאה", "password"),
   ]);
 
+  const history = useHistory();
 
   function OnSubmit(e) {
     e.preventDefault();
@@ -120,7 +124,8 @@ export default function ProviderRegister({ HandleProviderRegister, UserExistsErr
   function RenderInputField(field, index) {
     return (
       <div key={index}>
-        <FormInputFieldSection
+        <FormInputField
+          FormType="Register"
           Label={field.labelText}
           Valid={field.isValid}
           Name={field.name}
@@ -133,31 +138,61 @@ export default function ProviderRegister({ HandleProviderRegister, UserExistsErr
   }
 
   return (
-    <div>
+    <div className="register-main-container">
 
-      <div className="RegisterContainer">
-        <h1>הרשמה בתור בעל מקצוע</h1>
-        <Link to="/Provider/Login" >התחברות בתור בעל מקצוע</Link>
+      <div className="provider-register-background-image register-container">
+        <div className="register-title ">הרשמת בעלי מקצוע</div>
 
         <form onSubmit={OnSubmit}>
-          <div className="InputContainer">
 
+          <div className="register-inputs-container">
             {
               inputFields.map((field, index) => {
                 return RenderInputField(field, index);
               })
             }
 
-            <label className="user-exists-label" >{UserExistsError ? "מייל כבר נמצא בשימוש" : ""}</label>
+            <label className="user-doesnt-exist-label" >{UserExistsError ? "שם משתמש או סיסמה שגויים" : ""}</label>
 
-            <input type="submit" value="Register" />
+            <div className="register-submit-button-container">
+
+              <input className="register-submit-button" type="submit" value="הירשם" />
+            </div>
           </div>
         </form>
-        <Link to="/" >התחברות בתור הורה</Link>
 
       </div>
 
       <WaitForConfirmationModal ShowModal={ShowWaitForConfirmationModal} CloseModal={CloseWaitForConfirmationModal} />
+
+      <Button className="register-navigate-button" onClick={() => history.push("/Provider/Login")}>התחברות בעלי מקצוע</Button>
     </div >
   )
 }
+
+// <div>
+
+// <div className="RegisterContainer">
+//   <h1>הרשמה בתור בעל מקצוע</h1>
+//   <Link to="/Provider/Login" >התחברות בתור בעל מקצוע</Link>
+
+//   <form onSubmit={OnSubmit}>
+//     <div className="InputContainer">
+
+//       {
+//         inputFields.map((field, index) => {
+//           return RenderInputField(field, index);
+//         })
+//       }
+
+//       <label className="user-exists-label" >{UserExistsError ? "מייל כבר נמצא בשימוש" : ""}</label>
+
+//       <input type="submit" value="Register" />
+//     </div>
+//   </form>
+//   <Link to="/" >התחברות בתור הורה</Link>
+
+// </div>
+
+// <WaitForConfirmationModal ShowModal={ShowWaitForConfirmationModal} CloseModal={CloseWaitForConfirmationModal} />
+// </div >

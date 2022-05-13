@@ -15,22 +15,16 @@ namespace ProvidersApi
 {
 	public class ProviderHelperFunctions
 	{
-		public static string DeletePost(int postId, int providerId)
+		public static void DeleteArticle(int articleId)
 		{
-			//try
-			//{
-			//	//	Delete post from database
-			//	PostMethods.DeletePost(postId);
-			//}
-			//catch (Exception e) { Console.WriteLine(e); }
-			//finally
-			//{
-			//	Console.WriteLine("Deleted child: " + postId);
-			//}
-
-			////  Return the deleted post id
-			//return JsonConvert.SerializeObject(new { DeletedChildId = postId });
-			return null;
+			try
+			{
+				//	Delete post from database
+				ProviderMethods.DeleteArticle(articleId);
+			}
+			catch (Exception e) { 
+				Console.WriteLine(e); 
+			}
 		}
 
 		public static string GetArticlesBy(string tableName, string filterValue)
@@ -166,6 +160,12 @@ namespace ProvidersApi
                     UserExists = providerExists,
                     //	Posts perhaps?
                 });
+		}
+
+
+		public static string GetArticlesForProvider(int providerId)
+		{
+			return JsonConvert.SerializeObject(new { Articles = ProviderMethods.GetAllArticlesByProviderId(providerId) });
 		}
 
 		public static List<ProviderInfo> GetProviderInfos()

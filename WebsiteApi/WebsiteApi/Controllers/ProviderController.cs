@@ -39,13 +39,13 @@ namespace ParentsApi.Controllers
 			return base.Content(result);
 		}
 
+
 		//	Checks if the user exists in the database
 		//	Returns information about the user
 		[Microsoft.AspNetCore.Mvc.HttpPost]
 		[Microsoft.AspNetCore.Mvc.ActionName("ProviderLogin")]
 		public ContentResult ProviderLogin()
 		{
-			//	Check if this works
 			string result = ProviderHelperFunctions.ProviderLogin(Request.Headers["email"].ToString(), Request.Headers["password"].ToString());
 
 			return base.Content(result);
@@ -84,6 +84,28 @@ namespace ParentsApi.Controllers
 			return base.Content(JsonConvert.SerializeObject(ProviderHelperFunctions.GetArticlesBy(tableName, filterValue)));
 		}
 
+		[Microsoft.AspNetCore.Mvc.HttpGet]
+		[Microsoft.AspNetCore.Mvc.ActionName("GetArticlesForProvider")]
+		public ContentResult GetArticlesForProvider()
+		{
+			int providerId = int.Parse(Request.Headers["providerId"].ToString());
+
+			//object a = JsonConvert.DeserializeObject(ProviderHelperFunctions.GetArticlesBy(tableName, filterValue));
+			return base.Content(JsonConvert.SerializeObject(ProviderHelperFunctions.GetArticlesForProvider(providerId)));
+		}
+
+		[Microsoft.AspNetCore.Mvc.HttpPost]
+		[Microsoft.AspNetCore.Mvc.ActionName("DeleteArticle")]
+		public void DeleteArticle()
+		{
+			int articleId = int.Parse(Request.Headers["articleId"].ToString());
+
+			//object a = JsonConvert.DeserializeObject(ProviderHelperFunctions.GetArticlesBy(tableName, filterValue));
+			 ProviderHelperFunctions.DeleteArticle(articleId);
+		}
+
+
+
 		[Microsoft.AspNetCore.Mvc.HttpPost]
 		[Microsoft.AspNetCore.Mvc.ActionName("PostArticle")]
 		public ContentResult PostArticle()
@@ -102,6 +124,7 @@ namespace ParentsApi.Controllers
 		{
 			return base.Content(ProviderHelperFunctions.GetAllTopics());
 		}
+
 
 
 

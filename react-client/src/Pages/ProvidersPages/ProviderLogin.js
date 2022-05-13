@@ -1,18 +1,22 @@
 import '../../CSS/pages-css/Login.css';
 
+import { Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { ValidateEmail, ValidatePassword } from '../../Project-Modules/UserInputValidation';
 import { InputField } from '../../Project-Modules/UserInputValidation';
 import FormInputFieldSection from '../../Components/GeneralComponents/FormInputFieldSection';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+import FormInputField from '../../Components/GeneralComponents/FormInputField';
 
 export default function ProviderLogin({ HandleProviderLogin, UserExistsError }) {
 
   const [inputFields, setInputFields] = useState([
-    new InputField("loginEmailField", "כתובת מייל:", ValidateEmail, "שגיאה", "text"),
-    new InputField("loginPasswordField", "סיסמה:", ValidatePassword, "ריק מתוכן", "password"),
+    new InputField("loginEmailField", "אי-מייל", ValidateEmail, "שגיאה", "text"),
+    new InputField("loginPasswordField", "סיסמה", ValidatePassword, "ריק מתוכן", "password"),
   ])
 
+  const history = useHistory();
 
   const OnSubmit = (e) => {
     e.preventDefault();
@@ -61,7 +65,8 @@ export default function ProviderLogin({ HandleProviderLogin, UserExistsError }) 
   function RenderInputField(field, index) {
     return (
       <div key={index}>
-        <FormInputFieldSection
+        <FormInputField
+          FormType="Login"
           Label={field.labelText}
           Valid={field.isValid}
           Name={field.name}
@@ -74,27 +79,57 @@ export default function ProviderLogin({ HandleProviderLogin, UserExistsError }) 
   }
 
   return (
-    <div className="LoginContainer">
+    <div className="login-main-container">
 
-      <h1>התחברות בתור בעל מקצוע</h1>
-      <Link to="/Provider/Register" >הרשמה בתור בעל מקצוע</Link>
+      <div className="provider-login-background-image login-container">
+        <div className="login-title">כניסת בעלי מקצוע</div>
 
-      <form onSubmit={OnSubmit}>
-        <div className="InputContainer">
-          {
-            inputFields.map((field, index) => {
-              return RenderInputField(field, index);
-            })
-          }
+        <form onSubmit={OnSubmit}>
 
+          <div className="login-inputs-container">
+            {
+              inputFields.map((field, index) => {
+                return RenderInputField(field, index);
+              })
+            }
 
-          <label className="user-doesnt-exist-label" >{UserExistsError ? "לא מורשה להתחבר" : ""}</label>
+            <label className="user-doesnt-exist-label" >{UserExistsError ? "שם משתמש או סיסמה שגויים" : ""}</label>
 
-          <input type="submit" value="התחברות" />
-        </div>
-      </form>
+            <div className="login-submit-button-container">
 
-      <Link to="/" >התחברות בתור הורה</Link>
-    </div>
+              <input className="login-submit-button" type="submit" value="התחבר" />
+            </div>
+          </div>
+        </form>
+
+      </div>
+
+      <Button className="login-navigate-button" onClick={() => history.push("/Provider/Register")}>הרשמה</Button>
+      <Button className="login-navigate-button" onClick={() => history.push("/")}>התחבר כהורה</Button>
+    </div >
   )
 }
+
+
+// <div className="login-main-container">
+
+// <h1>התחברות בתור בעל מקצוע</h1>
+// <Link to="/Provider/Register" >הרשמה בתור בעל מקצוע</Link>
+
+// <form onSubmit={OnSubmit}>
+//   <div className="InputContainer">
+//     {
+//       inputFields.map((field, index) => {
+//         return RenderInputField(field, index);
+//       })
+//     }
+
+
+//     <label className="user-doesnt-exist-label" >{UserExistsError ? "לא מורשה להתחבר" : ""}</label>
+
+//     <input type="submit" value="התחברות" />
+//   </div>
+// </form>
+
+// <Link to="/" >התחברות בתור הורה</Link>
+// </div>

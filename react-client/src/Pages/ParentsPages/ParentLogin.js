@@ -1,4 +1,4 @@
-import '../../CSS/pages-css/ParentLogin.css'
+import '../../CSS/pages-css/Login.css'
 
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
@@ -6,14 +6,18 @@ import { ValidateEmail, ValidatePassword } from '../../Project-Modules/UserInput
 import { InputField } from '../../Project-Modules/UserInputValidation';
 import FormInputFieldSection from '../../Components/GeneralComponents/FormInputFieldSection';
 import { Button } from 'react-bootstrap';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+import FormInputField from '../../Components/GeneralComponents/FormInputField';
 
 
 export default function ParentLogin({ HandleLogin, UserExists }) {
 
 	const [inputFields, setInputFields] = useState([
-		new InputField("loginEmailField", "כתובת מייל:", ValidateEmail, "שגיאה", "text"),
-		new InputField("loginPasswordField", "סיסמה:", ValidatePassword, "ריק מתוכן", "password"),
+		new InputField("loginEmailField", "אי-מייל", ValidateEmail, "שגיאה", "text"),
+		new InputField("loginPasswordField", "סיסמה", ValidatePassword, "ריק מתוכן", "password"),
 	])
+
+	const history = useHistory();
 
 	const OnSubmit = (e) => {
 		e.preventDefault();
@@ -62,7 +66,8 @@ export default function ParentLogin({ HandleLogin, UserExists }) {
 	function RenderInputField(field, index) {
 		return (
 			<div key={index}>
-				<FormInputFieldSection
+				<FormInputField
+					FormType="Login"
 					Label={field.labelText}
 					Valid={field.isValid}
 					Name={field.name}
@@ -76,14 +81,14 @@ export default function ParentLogin({ HandleLogin, UserExists }) {
 	}
 
 	return (
-		<div className="parent-login-main-container">
+		<div className="login-main-container">
 
-			<div className="login-container">
-				<div className="parent-login-title">התחברות הורים</div>
+			<div className="parent-login-background-image login-container">
+				<div className="login-title ">כניסת הורים</div>
 
 				<form onSubmit={OnSubmit}>
 
-					<div className="InputContainer">
+					<div className="login-inputs-container">
 						{
 							inputFields.map((field, index) => {
 								return RenderInputField(field, index);
@@ -92,14 +97,17 @@ export default function ParentLogin({ HandleLogin, UserExists }) {
 
 						<label className="user-doesnt-exist-label" >{UserExists ? "שם משתמש או סיסמה שגויים" : ""}</label>
 
-						<input type="submit" value="התחברות" />
+						<div className="login-submit-button-container">
+
+							<input className="login-submit-button" type="submit" value="התחבר" />
+						</div>
 					</div>
 				</form>
 
 			</div>
 
-			<Link to="/Parent/Register" >הרשמת הורים</Link>
-			<Link to="/Provider/Login" >התחברות בתור בעל מקצוע</Link>
-		</div>
+			<Button className="login-navigate-button" onClick={() => history.push("/Parent/Register")}>הרשמה</Button>
+			<Button className="login-navigate-button" onClick={() => history.push("/Provider/Login")}>התחבר כבעל מקצוע</Button>
+		</div >
 	)
 }

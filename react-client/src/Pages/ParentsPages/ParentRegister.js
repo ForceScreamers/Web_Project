@@ -5,17 +5,20 @@ import { useState } from 'react'
 import { InputField } from '../../Project-Modules/UserInputValidation'
 import FormInputFieldSection from '../../Components/GeneralComponents/FormInputFieldSection'
 import { IsHebrewInputValid } from '../../Project-Modules/UserInputValidation'
-
+import { Button } from 'react-bootstrap'
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min'
+import FormInputField from '../../Components/GeneralComponents/FormInputField'
 
 export default function ParentRegister({ HandleRegister, UserExists }) {
 
   const [inputFields, setInputFields] = useState([
-    new InputField("registerUsernameField", "שם מלא:", IsHebrewInputValid, "לא מתאים", "text"),
-    new InputField("registerEmailField", "כתובת מייל:", ValidateEmail, "שגיאה", "text"),
-    new InputField("registerPasswordField", "סיסמה:", ValidatePassword, "ריק מתוכן", "password"),
-    new InputField("registerPasswordConfirmField", "אשר סיסמה:", ValidateConfirmPassword, "שגיאה", "password"),
+    new InputField("registerUsernameField", "שם מלא", IsHebrewInputValid, "לא מתאים", "text"),
+    new InputField("registerEmailField", "אי-מייל", ValidateEmail, "שגיאה", "text"),
+    new InputField("registerPasswordField", "סיסמה", ValidatePassword, "ריק מתוכן", "password"),
+    new InputField("registerPasswordConfirmField", "אשר סיסמה", ValidateConfirmPassword, "שגיאה", "password"),
   ]);
 
+  const history = useHistory();
 
   function OnSubmit(e) {
     e.preventDefault();
@@ -118,7 +121,8 @@ export default function ParentRegister({ HandleRegister, UserExists }) {
   function RenderInputField(field, index) {
     return (
       <div key={index}>
-        <FormInputFieldSection
+        <FormInputField
+          FormType="Register"
           Label={field.labelText}
           Valid={field.isValid}
           Name={field.name}
@@ -133,28 +137,58 @@ export default function ParentRegister({ HandleRegister, UserExists }) {
 
 
   return (
-    <div>
+    <div className="register-main-container">
 
-      <div className="RegisterContainer">
-        <h1>הרשמת הורים</h1>
-        <Link to="/" >התחברות הורים</Link>
+			<div className="parent-register-background-image register-container">
+				<div className="register-title ">הרשמת הורים</div>
 
-        <form onSubmit={OnSubmit}>
-          <div className="InputContainer">
+				<form onSubmit={OnSubmit}>
 
-            {
-              inputFields.map((field, index) => {
-                return RenderInputField(field, index);
-              })
-            }
+					<div className="register-inputs-container">
+						{
+							inputFields.map((field, index) => {
+								return RenderInputField(field, index);
+							})
+						}
 
-            <label className="user-exists-label" >{UserExists ? "משתמש זה קיים" : ""}</label>
+						<label className="user-doesnt-exist-label" >{UserExists ? "שם משתמש או סיסמה שגויים" : ""}</label>
 
-            <input type="submit" value="הירשם" />
-          </div>
-        </form>
+						<div className="register-submit-button-container">
 
-      </div>
-    </div>
+							<input className="register-submit-button" type="submit" value="הירשם" />
+						</div>
+					</div>
+				</form>
+
+			</div>
+
+			<Button className="register-navigate-button" onClick={() => history.push("/")}>התחברות הורים</Button>
+		</div >
   )
 }
+
+
+// <div>
+
+// <div className="RegisterContainer">
+  
+//   <h1>הרשמת הורים</h1>
+//   <Link to="/" >התחברות הורים</Link>
+
+//   <form onSubmit={OnSubmit}>
+//     <div className="InputContainer">
+
+//       {
+//         inputFields.map((field, index) => {
+//           return RenderInputField(field, index);
+//         })
+//       }
+
+//       <label className="user-exists-label" >{UserExists ? "משתמש זה קיים" : ""}</label>
+
+//       <input type="submit" value="הירשם" />
+//     </div>
+//   </form>
+
+// </div>
+// </div>
