@@ -80,6 +80,13 @@ namespace ProvidersApi
 			return null;
 		}
 
+
+		public static string GetArticleById(int articleId)
+		{
+			return JsonConvert.SerializeObject(ProviderMethods.GetArticleById(articleId));
+		}
+
+
 		public static string CreateTopic(string topicName)
 		{
 			bool isTopicExists = ProviderMethods.IsTopicExists(topicName);

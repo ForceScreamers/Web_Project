@@ -90,8 +90,16 @@ namespace ParentsApi.Controllers
 		{
 			int providerId = int.Parse(Request.Headers["providerId"].ToString());
 
-			//object a = JsonConvert.DeserializeObject(ProviderHelperFunctions.GetArticlesBy(tableName, filterValue));
 			return base.Content(JsonConvert.SerializeObject(ProviderHelperFunctions.GetArticlesForProvider(providerId)));
+		}
+
+		[Microsoft.AspNetCore.Mvc.HttpGet]
+		[Microsoft.AspNetCore.Mvc.ActionName("GetArticleById")]
+		public ContentResult GetArticleById()
+		{
+			int articleId = int.Parse(Request.Headers["articleId"].ToString());
+
+			return base.Content(JsonConvert.SerializeObject(ProviderHelperFunctions.GetArticleById(articleId)));
 		}
 
 		[Microsoft.AspNetCore.Mvc.HttpPost]
@@ -100,7 +108,6 @@ namespace ParentsApi.Controllers
 		{
 			int articleId = int.Parse(Request.Headers["articleId"].ToString());
 
-			//object a = JsonConvert.DeserializeObject(ProviderHelperFunctions.GetArticlesBy(tableName, filterValue));
 			 ProviderHelperFunctions.DeleteArticle(articleId);
 		}
 

@@ -2,7 +2,7 @@ import '../../CSS/pages-css/Login.css'
 
 const MAX_INPUT_LENGTH = 40;
 
-export default function FormInputField({ Name, Valid, OnChange, Type, Label, FormType }) {
+export default function FormInputField({ Name, Valid, OnChange, Type, Label, FormType, MaxLength }) {
 
   return (
     <input
@@ -10,7 +10,7 @@ export default function FormInputField({ Name, Valid, OnChange, Type, Label, For
       onChange={OnChange}
       name={Name}
       type={Type}
-      maxLength={MAX_INPUT_LENGTH}
+      maxLength={MaxLength}
       placeholder={Label}
     />
   )

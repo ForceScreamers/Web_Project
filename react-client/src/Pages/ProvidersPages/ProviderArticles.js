@@ -20,7 +20,7 @@ const breakpointColumnsObj = {
   1000: 1
 };
 
-export default function ProviderArticles({ LoadArticlesFromApi }) {
+export default function ProviderArticles({ OpenArticleInEditor, LoadArticlesFromApi }) {
   const [articles, setArticles] = useState([]);
 
   const history = useHistory();
@@ -49,6 +49,7 @@ export default function ProviderArticles({ LoadArticlesFromApi }) {
             articles.map((article, index) => {
               return (
                 <ProviderArticleCard
+                  OpenArticleInEditor={OpenArticleInEditor}
                   UpdateArticles={UpdateArticles}
                   Title={article.article_title}
                   ArticleId={article.article_id}
@@ -57,7 +58,7 @@ export default function ProviderArticles({ LoadArticlesFromApi }) {
             })
           }
 
-          <div className="d-flex justify-content-center align-items-center">
+          <div className="d-flex justify-content-center align-items-center add-article-image-container">
             <img onClick={() => history.push("/Provider/PublishArticle")} alt="add-article" className="add-article-image" src={addArticleIcon} width={110} />
           </div>
         </Masonry>

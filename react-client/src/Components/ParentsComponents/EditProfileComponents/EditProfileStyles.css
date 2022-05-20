@@ -1,0 +1,62 @@
+.children-profiles-container {
+  display: flex;
+  gap: 50px;
+  width: 70vw;
+  height: 400px;
+}
+
+.child-profile-card {
+  border: none;
+}
+
+.edit-profile-secondary-card-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* background-color: red; */
+}
+
+.child-profile-edit-icon-container {
+  height: 80px;
+  width: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  /* background-color: aqua; */
+}
+
+.child-profile-icon-container {
+  height: 350px;
+  width: 350px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.add-child-profile-button {
+  cursor: pointer;
+}
+
+/* Select button */
+.child-profile-select-button {
+  border-radius: 50px;
+  border-color: transparent;
+
+  padding: 10px;
+
+  width: 230px;
+  font-size: 28px;
+
+  margin-top: 40px;
+  /* height: 30px; */
+}
+
+.child-profile-select-button:hover {
+  transform: scale(0.95);
+}
+
+.child-profile-select-button:active {
+  transform: scale(0.9);
+}

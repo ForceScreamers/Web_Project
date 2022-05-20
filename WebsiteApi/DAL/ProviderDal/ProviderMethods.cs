@@ -133,17 +133,35 @@ namespace ProviderDal
         public static DataTable GetAllArticlesByProviderId(int providerId)
         {
             string com = @"SELECT article.article_content, topic.topic_title, article.article_title, article.article_content, article.article_id, provider.provider_id
-                            FROM topic INNER JOIN(provider INNER JOIN article ON provider.provider_id = article.provider_id) ON topic.topic_id = article.topic_id
+                            FROM topic 
+                            INNER JOIN(provider INNER JOIN article ON provider.provider_id = article.provider_id) 
+                            ON topic.topic_id = article.topic_id
                             WHERE(((provider.provider_id) =[?])); ";
 
 
             OdbcParameter[] queryParameters =
             {
-                new OdbcParameter($"@providerId", providerId),
+                new OdbcParameter($"@provider_id", providerId),
             };
 
             return UsersOdbcHelper.GetTable(com, queryParameters);
         }
+        public static DataTable GetArticleById(int articleId)
+        {
+            string com = @"SELECT topic.topic_title, article.article_title, article.article_content, article.article_id
+                           FROM topic 
+                           INNER JOIN article ON topic.topic_id = article.topic_id
+                           WHERE (((article.article_id)=[?]));";
+
+            OdbcParameter[] queryParameters =
+            {
+                new OdbcParameter($"@article_id", articleId),
+            };
+
+            return UsersOdbcHelper.GetTable(com, queryParameters);
+        }
+
+
 
         public static void DeleteArticle(int articleId)
         {

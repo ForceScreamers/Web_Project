@@ -30,6 +30,7 @@ Games:
 
 
 General:
+  [ ] Check before every request that the server is online, if not then disconnect the user
   [ ] Limit maxlength for all input text types
   [ ] Math game - make 32 cards, each time with a random set of cards (finish cropping the pictures)
   [ ] Split user exists state into loginUserExists and registerUserExists

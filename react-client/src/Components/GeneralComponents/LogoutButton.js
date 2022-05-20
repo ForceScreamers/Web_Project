@@ -11,6 +11,6 @@ export default function LogoutButton() {
   }
 
   return (
-    <Button onClick={() => LogoutUser()} variant='danger'>יציאה</Button>
+    <Button onClick={() => LogoutUser()} variant='danger' style={{ marginRight: "20px" }}>יציאה</Button>
   )
 }

@@ -1,6 +1,133 @@
 {
+  "cards": [
+    {
+      "name": "pencil",
+      "color": "green",
+      "imagePath": "/Images/catch-game-images/green-pencil.png"
+    },
+    {
+      "name": "book",
+      "color": "green",
+      "imagePath": "/Images/catch-game-images/green-book.png"
+    },
+    {
+      "name": "pin",
+      "color": "green",
+      "imagePath": "/Images/catch-game-images/green-pin.png"
+    },
+    {
+      "name": "glass",
+      "color": "green",
+      "imagePath": "/Images/catch-game-images/green-glass.png"
+    },
+    {
+      "name": "pencil",
+      "color": "red",
+      "imagePath": "/Images/catch-game-images/red-pencil.png"
+    },
+    {
+      "name": "book",
+      "color": "red",
+      "imagePath": "/Images/catch-game-images/red-book.png"
+    },
+    {
+      "name": "pin",
+      "color": "red",
+      "imagePath": "/Images/catch-game-images/red-pin.png"
+    },
+    {
+      "name": "glass",
+      "color": "red",
+      "imagePath": "/Images/catch-game-images/red-glass.png"
+    },
+    {
+      "name": "pencil",
+      "color": "black",
+      "imagePath": "/Images/catch-game-images/black-pencil.png"
+    },
+    {
+      "name": "book",
+      "color": "black",
+      "imagePath": "/Images/catch-game-images/black-book.png"
+    },
+    {
+      "name": "pin",
+      "color": "black",
+      "imagePath": "/Images/catch-game-images/black-pin.png"
+    },
+    {
+      "name": "glass",
+      "color": "black",
+      "imagePath": "/Images/catch-game-images/black-glass.png"
+    },
+    {
+      "name": "pencil",
+      "color": "pink",
+      "imagePath": "/Images/catch-game-images/pink-pencil.png"
+    },
+    {
+      "name": "book",
+      "color": "pink",
+      "imagePath": "/Images/catch-game-images/pink-book.png"
+    },
+    {
+      "name": "pin",
+      "color": "pink",
+      "imagePath": "/Images/catch-game-images/pink-pin.png"
+    },
+    {
+      "name": "glass",
+      "color": "pink",
+      "imagePath": "/Images/catch-game-images/pink-glass.png"
+    },
+    {
+      "name": "pencil",
+      "color": "yellow",
+      "imagePath": "/Images/catch-game-images/yellow-pencil.png"
+    },
+    {
+      "name": "book",
+      "color": "yellow",
+      "imagePath": "/Images/catch-game-images/yellow-book.png"
+    },
+    {
+      "name": "pin",
+      "color": "yellow",
+      "imagePath": "/Images/catch-game-images/yellow-pin.png"
+    },
+    {
+      "name": "glass",
+      "color": "yellow",
+      "imagePath": "/Images/catch-game-images/yellow-glass.png"
+    }
+  ],
+  "imageSizes": {
+    "pencil": {
+      "width": 20,
+      "height": 100
+    },
+    "pin": {
+      "width": 45,
+      "height": 55
+    },
+    "book": {
+      "width": 100,
+      "height": 50
+    },
+    "glass": {
+      "width": 55,
+      "height": 100
+    }
+  },
   "difficulty1": {
-    "background": "",
+    "speed": "",
+    "interval": ""
+  },
+  "difficulty2": {
+    "speed": "",
+    "interval": ""
+  },
+  "difficulty3": {
     "speed": "",
     "interval": ""
   }

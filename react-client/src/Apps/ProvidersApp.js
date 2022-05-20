@@ -15,6 +15,12 @@ import ProtectedRoute from "../Components/GeneralComponents/ProtectedRoute";
 import ProviderPublishArticle from "../Pages/ProvidersPages/ProviderPublishArticle";
 import ProviderArticles from "../Pages/ProvidersPages/ProviderArticles";
 
+
+const PAGE_MODE = {
+  PUBLISH: 0,
+  EDIT: 1
+}
+
 export default function ProvidersApp() {
   const history = useHistory();
 
@@ -22,11 +28,34 @@ export default function ProvidersApp() {
 
   const [showWaitForConfirmationModal, setShowWaitForConfirmationModal] = useState(false);
 
+
+  //  Edit and publish article states
+  const [titleValue, setTitleValue] = useState("");
+  const [contentValue, setContentValue] = useState("");
+  const [topicValue, setTopicValue] = useState("");
+  const [overridenArticleId, setOverridenArticleId] = useState(0);
+  const [pageMode, setPageMode] = useState(PAGE_MODE.PUBLISH);
+
+
+
   function RedirectToWelcome() {
     history.push("/Provider/Games");
   }
 
+  async function OpenArticleInEditor(articleId) {
+    setOverridenArticleId(articleId);
+    setPageMode(PAGE_MODE.EDIT);
 
+    let apiResponse = await ProvidersApiRequest("GET", "GetArticleById", { articleId: articleId });
+    let articleData = JSON.parse(apiResponse.data);
+
+    setTitleValue(articleData[0].article_title)
+    setContentValue(articleData[0].article_content)
+    setTopicValue(articleData[0].topic_title)
+
+    //  Redirect to publish page
+    history.push("/Provider/PublishArticle");
+  }
 
   useEffect(() => {
   }, [])
@@ -142,6 +171,11 @@ export default function ProvidersApp() {
 
       <ProtectedRoute exact path="/Provider/PublishArticle" Component={() =>
         <ProviderPublishArticle
+          TitleValue={titleValue}
+          ContentValue={contentValue}
+          TopicValue={topicValue}
+          OverridenArticleId={overridenArticleId}
+          PageMode={pageMode}
           LoadArticlesFromApi={LoadArticlesFromApi}
         />}
       />
@@ -149,6 +183,7 @@ export default function ProvidersApp() {
       <ProtectedRoute exact path="/Provider/Articles" Component={() =>
         <ProviderArticles
           LoadArticlesFromApi={LoadArticlesFromApi}
+          OpenArticleInEditor={OpenArticleInEditor}
         />}
       />
 

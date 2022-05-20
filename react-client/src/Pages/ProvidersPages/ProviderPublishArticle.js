@@ -11,7 +11,20 @@ const ARTICLE_MAX_LENGTH_SMALL = 30;
 
 const MAX_ARTICLES = 10;
 
-export default function ProviderPublishArticle({ LoadArticlesFromApi }) {
+//  This page has 2 modes: edit and publish
+
+//  When in edit mode, the overriden article's id is saved and displayed to the screen in the appropriate fields
+//  Upon executing the overriden article is deleted and the new one is published
+
+//  When in publish mode, the fields are empty and the
+//  Upon publishing the article is posted to the system
+
+const PAGE_MODE = {
+  PUBLISH: 0,
+  EDIT: 1
+}
+
+export default function ProviderPublishArticle({ LoadArticlesFromApi, TitleValue, ContentValue, TopicValue, OverridenArticleId, PageMode }) {
   //TODO: Save written content to localstorage and display after closing
   //TODO: Edit written article
   //TODO: Add article posted prompt and clear fields
@@ -28,6 +41,7 @@ export default function ProviderPublishArticle({ LoadArticlesFromApi }) {
   const [noTopicSelectedError, setNoTopicSelectedError] = useState("");
   const [titleEmptyError, setTitleEmptyError] = useState("");
 
+
   //  Used for counting how many articles has been posted without leaving the page
   const [currentPublishes, setCurrentPublishes] = useState(0);
 
@@ -37,34 +51,63 @@ export default function ProviderPublishArticle({ LoadArticlesFromApi }) {
 
     //  Reset current publishes
     setCurrentPublishes(0);
+    console.log(PageMode)
   }, [])
 
-  async function PublishArticle(e) {
+
+  async function PublishArticle(articleData) {
+    console.log("publishing article...")
+
+    //  Increment current publishes count
+    setCurrentPublishes((prevCurrentPublishes) => prevCurrentPublishes + 1);
+
+    //  Publish
+    ProvidersApiRequest("POST", "PostArticle", articleData);
+  }
+
+  async function PublishEditedArticle(editedArticleData) {
+    console.log("publishing edited...")
+
+    //  Increment current publishes count
+    setCurrentPublishes((prevCurrentPublishes) => prevCurrentPublishes + 1);
+
+    //  Delete overriden article
+    ProvidersApiRequest("POST", "DeleteArticle", { articleId: OverridenArticleId });
+
+    //  Publish new article with new data
+    ProvidersApiRequest("POST", "PostArticle", editedArticleData);
+  }
+
+  async function ExecuteByPageMode(e) {
     e.preventDefault();
 
-    let canPublish = ValidatePostArticleAndChangeErrorMessage() && IsArticleCountValid();
+    console.log(PageMode);
 
-    if (canPublish === true) {
+    let parsedTopicData = JSON.parse(topicToUse);
 
-      console.log("publishing...")
-      let parsedTopicData = JSON.parse(topicToUse);
+    let articleData = {
+      providerId: JSON.parse(sessionStorage.getItem("Info")).Id,
+      topicId: parsedTopicData.id,
+      content: utf8.encode(content),
+      title: utf8.encode(title),
+    }
 
-      let articleData = {
-        providerId: JSON.parse(sessionStorage.getItem("Info")).Id,
-        topicId: parsedTopicData.id,
-        content: utf8.encode(content),
-        title: utf8.encode(title),
+    let isArticleValid = ValidatePostArticleAndChangeErrorMessage() && IsArticleCountValid();
+    if (isArticleValid) {
+
+      if (PageMode === PAGE_MODE.PUBLISH) {
+        PublishArticle(articleData);
       }
-
-      //  Increment current publishes count
-      setCurrentPublishes((prevCurrentPublishes) => prevCurrentPublishes + 1);
-
-      //  Publish
-      ProvidersApiRequest("POST", "PostArticle", articleData);
+      else {
+        PublishEditedArticle(articleData);
+      }
 
       LoadArticlesFromApi();
     }
   }
+
+
+
 
   async function LoadTopics() {
     let response = await ProvidersApiRequest("GET", "GetAllTopics", null);
@@ -150,15 +193,15 @@ export default function ProviderPublishArticle({ LoadArticlesFromApi }) {
         {/* <ProviderNavigationBar /> */}
         <h1>כתיבת מאמר</h1>
 
-        <form onSubmit={PublishArticle}>
-
+        <form onSubmit={ExecuteByPageMode}>
+          {/* TODO: Finish edit article */}
           <div className="d-flex flex-column justify-content-start align-items-center" style={{ marginTop: "2%" }} >
 
             <div>
-              <FormControl maxLength={ARTICLE_MAX_LENGTH_SMALL} type="text" placeholder="כותרת" onChange={(event) => setTitle(event.target.value)} />
+              <FormControl maxLength={ARTICLE_MAX_LENGTH_SMALL} defaultValue={TitleValue} type="text" placeholder="כותרת" onChange={(event) => setTitle(event.target.value)} />
               <label>{titleEmptyError}</label>
               <br />
-              <textarea maxLength={ARTICLE_CONTENT_MAX_LENGTH} placeholder="תוכן" rows={10} cols={100} onChange={SaveContentToLocalStorage} />
+              <textarea maxLength={ARTICLE_CONTENT_MAX_LENGTH} defaultValue={ContentValue} placeholder="תוכן" rows={10} cols={100} onChange={SaveContentToLocalStorage} />
               <br />
               <label>{articleEmptyError}</label>
             </div>

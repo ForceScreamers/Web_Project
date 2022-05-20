@@ -1,5 +1,5 @@
 import { Container, Row, Col } from "react-bootstrap"
-import AddChildCard from "../../Components/ParentsComponents/EditProfileComponents/AddChildCard"
+import AddChildButton from "../../Components/ParentsComponents/EditProfileComponents/AddChildButton"
 import ChildCard from "../../Components/ParentsComponents/EditProfileComponents/ChildCard"
 import ParentMainPage from "../../Components/ParentsComponents/ParentMainPage"
 
@@ -7,9 +7,28 @@ import { useEffect, useState } from "react"
 import utf8 from 'utf8'
 import { ParentsApiRequest } from "../../RequestHeadersToWebApi"
 
+import Masonry from 'react-masonry-css'
+import AddChildProfileModal from "../../Components/ParentsComponents/EditProfileComponents/AddChildProfileModal"
+
+
+
+const breakpointColumnsObj = {
+  default: 4,
+  1900: 3,
+  1500: 2,
+  1000: 1
+};
+
+
+//TODO: Finish add child and edit child 
+
+
 export default function EditProfilePage({ LoadChildrenFromServer }) {
 
   const [childrenProfiles, setChildrenProfiles] = useState(JSON.parse(sessionStorage.getItem('children')))
+
+  const [showAddChildProfileModal, setShowAddChildProfileModal] = useState(false);
+  const [showEditChildProfileModal, setShowEditChildProfileModal] = useState(false);
 
   useEffect(() => {
 
@@ -68,38 +87,47 @@ export default function EditProfilePage({ LoadChildrenFromServer }) {
       })
   }
 
+  function DisplayAddChildProfileModal() { setShowAddChildProfileModal(true); }
+  function CloseAddChildProfileModal() { setShowAddChildProfileModal(false); }
+
+  function DisplayEditChildProfileModal() { setShowEditChildProfileModal(true); }
+  function CloseEditChildProfileModal() { setShowEditChildProfileModal(false); }
+
 
   return (
     <div >
       <ParentMainPage title='עריכת פרופיל'>
         <h1>רשימת ילדים</h1>
-        <Container className="d-flex justify-content-start align-center">
-          <Row>
-            <Col>
-              {
 
-                childrenProfiles !== null//  If there are no children
+        <div className="d-flex justify-content-center">
+          <Masonry className="children-profiles-container" breakpointCols={breakpointColumnsObj}>
+            {
+              childrenProfiles !== null//  If there are no children
+                //  i - index inside the state array, using it because react wants to use it...
+                ? childrenProfiles.map((childProfile, index) => (
+                  <ChildCard
+                    HandleAddChild={HandleAddChild}
 
-                  //  i - index inside the state array, using it because react wants to use it...
-                  ? childrenProfiles.map((childProfile) => (
-                    <ChildCard
-                      SelectChild={SelectChild}
-                      DeleteChild={DeleteChild}
-                      ChildProfile={childProfile}
-                      key={childProfile.Id}  // Key for the component's index
+                    DisplayEditChildProfileModal={DisplayEditChildProfileModal}
+                    ShowEditChildProfileModal={showEditChildProfileModal}
+                    CloseEditChildProfileModal={CloseEditChildProfileModal}
 
-                    />
-                  ))
-                  : <></>
+                    SelectChild={SelectChild}
+                    DeleteChild={DeleteChild}
+                    ChildProfile={childProfile}
+                    key={index}  // Key for the component's index
+                  />
+                ))
+                : <></>
+            }
 
-              }
-              <AddChildCard HandleAddChild={HandleAddChild} />
+            <div>
+              <AddChildButton DisplayAddChildProfileModal={DisplayAddChildProfileModal} />
+            </div>
+          </Masonry>
+        </div>
 
-            </Col>
-          </Row>
-
-
-        </Container>
+        <AddChildProfileModal HandleAddChild={HandleAddChild} ShowAddChildProfileModal={showAddChildProfileModal} CloseAddChildProfileModal={CloseAddChildProfileModal} />
       </ParentMainPage>
     </div>
   )

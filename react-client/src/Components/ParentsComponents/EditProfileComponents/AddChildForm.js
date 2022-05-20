@@ -1,17 +1,29 @@
 import { useState } from "react";
+import FormRange from "react-bootstrap/esm/FormRange";
 import { IsInputValid_OnlyHebrew } from "../../../Project-Modules/UserInputValidation";
 import FormInputField from "../../GeneralComponents/FormInputField";
 
-function AddChildForm({ HandleAddChild }) {
+
+const MIN_CHILD_AGE = 3;
+const MAX_CHILD_AGE = 10;
+
+export default function AddChildForm({ HandleAddChild, CloseChildProfileModal }) {
   let childNameValid = true;
   const [childName, setChildName] = useState("");
   const [childNameValidState, setChildNameValidState] = useState(true);
+
+  const [childAgeDisplay, setChildAgeDisplay] = useState(MIN_CHILD_AGE)
+
 
   const OnSubmit = (e) => {
     e.preventDefault();
 
     childNameValid = IsInputValid_OnlyHebrew(childName);
 
+    // If the name is valid close modal
+    if (childNameValid) {
+      CloseChildProfileModal();
+    }
     setChildNameValidState(childNameValid);
 
     HandleAddChild(e, childNameValid)
@@ -25,17 +37,21 @@ function AddChildForm({ HandleAddChild }) {
         <div className="InputContainer d-flex flex-column justify-content-center align-items-start" >
           <label>שם:</label>
 
-          <FormInputField Valid={childNameValidState} Name={"childNameField"} OnChange={(e) => setChildName(e.target.value)} />
+          <FormInputField MaxLength={15} Valid={childNameValidState} Name={"childNameField"} OnChange={(e) => setChildName(e.target.value)} />
 
-          <label>גיל:</label>
-          <select name="childAgeSelect">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-          </select>
+          <div className="d-flex">
+            <label style={{ marginLeft: "10px" }}>{childAgeDisplay}</label>
+
+            <FormRange
+              name="childAgeSelect"
+              step={1}
+              tooltip="on"
+              defaultValue={MIN_CHILD_AGE}
+              min={MIN_CHILD_AGE}
+              max={MAX_CHILD_AGE}
+              onChange={(e) => setChildAgeDisplay(e.target.value)}
+            />
+          </div>
 
           <input type="submit" value="הוספה" />
         </div>
@@ -43,5 +59,3 @@ function AddChildForm({ HandleAddChild }) {
     </div>
   )
 }
-
-export default AddChildForm

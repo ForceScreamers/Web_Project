@@ -34,7 +34,7 @@ export default function GameTemplate({ GameId, GameComponent, CardsJSON, GameNam
   const [correctMoves, setCorrectMoves] = useState(0);
 
   const [childEvaluation, setChildEvaluation] = useState(0);
-  console.log(Difficulty)
+  // console.log(Difficulty)
 
   useEffect(() => {
     let intervalId;
