@@ -22,6 +22,7 @@ export default function ProviderNavigationBar() {
               <Link to="/Provider/Games" className="nav-link">משחקים</Link>
               <Link to="/Provider/PublishArticle" className="nav-link">פרסום מאמר</Link>
               <Link to="/Provider/Articles" className="nav-link">המאמרים שלי</Link>
+              <Link to="/Provider/MyProfile" className="nav-link">הפרופיל שלי</Link>
               {/* <NavDropdown title="Dropdown" id="collasible-nav-dropdown">
                 <NavDropdown.Item href="#action/3.1">דברים</NavDropdown.Item>
                 <NavDropdown.Item href="#action/3.2">עוד דברים</NavDropdown.Item>

@@ -1,9 +1,5 @@
-
 עריכת פרופיל - מספר טלפון, מקצוע, שם, כתובת, כתובת מייל, תמונה ?
 פרסום מאמר - קטגוריה, שם המאמר, תוכן
-
-
-
 
 
 לעצב פס ניווט
@@ -11,22 +7,35 @@
 להוסיף את התמונות של מצא את ההבדלים ולתקן (שהמיקומים יהיו דינמיים)
 
 
+NOW:
+edit child profile
+
+3 difficulties for each game
+
+book - no eval message
+
+provider games
+
+about
+
+add associations game 
+
+background
+
+book design
+
+finish catch game
 
 
-פרטים למאמר על הבעל מקצוע
-
-עריכת פרטים
-
-עיצוב ספר
-
-המאמרים שלי
 
 
 
-Games:
-- פאזל
-- מגדל האנוי
-- מתמטיקה
+
+
+
+
+
+
 
 
 General:
@@ -39,10 +48,6 @@ General:
   [ ] Display the game names from the same source, currently there are 2 different data sources
   [ ] Fix user already exists message
   [ ] Delete unnessesary files
-
-
-Admins App:
-
 
 Parents App:
 
@@ -58,7 +63,6 @@ Parents App:
 
     Match Cards - 
       [ ] Pre setup files
-
 
 
 Providers App:

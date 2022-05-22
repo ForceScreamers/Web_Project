@@ -133,7 +133,18 @@ namespace ParentsApi.Controllers
 		}
 
 
+		[Microsoft.AspNetCore.Mvc.HttpPost]
+		[Microsoft.AspNetCore.Mvc.ActionName("UpdateProviderInfo")]
+		public void UpdateProviderInfo()
+		{
+			int providerId = int.Parse(Request.Headers["providerId"].ToString());
+			string providerName = Request.Headers["providerName"].ToString();
+			string providerEmail = Request.Headers["providerEmail"].ToString();
+			string providerOccupation = Request.Headers["providerOccupation"].ToString();
+			string providerPhoneNumber = Request.Headers["providerPhoneNumber"].ToString();
 
+			ProviderHelperFunctions.UpdateProviderInfo(providerId, providerName, providerEmail, providerOccupation, providerPhoneNumber);
+		}
 
 
 		#endregion

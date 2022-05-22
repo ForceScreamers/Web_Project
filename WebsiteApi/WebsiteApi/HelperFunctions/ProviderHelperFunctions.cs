@@ -190,15 +190,14 @@ namespace ProvidersApi
             List<ProviderInfo> providerInfosList = new List<ProviderInfo>();
 
             foreach (DataRow row in providersDt.Rows)
-            {
-                //  Convering child properties
-                
+            {                
 				int providerId = int.Parse(row.ItemArray[0].ToString());
 				string providerFullName = row.ItemArray[1].ToString();
 				string providerOccupation = row.ItemArray[2].ToString();
 				string providerEmail = row.ItemArray[3].ToString();
+				string providerPhoneNumber = row.ItemArray[4].ToString();
 
-				providerInfosList.Add(new ProviderInfo(providerFullName, providerId, providerOccupation, providerEmail));
+				providerInfosList.Add(new ProviderInfo(providerFullName, providerId, providerOccupation, providerEmail, providerPhoneNumber));
 			}
 
             return providerInfosList;
@@ -247,6 +246,11 @@ namespace ProvidersApi
 			//childrenDt.Columns["child_is_selected"].ColumnName = "isSelected";
 
 			return null;
+		}
+
+		public static void UpdateProviderInfo(int providerId, string providerName, string providerEmail, string providerOccupation, string providerPhoneNumber)
+		{
+			ProviderMethods.UpdateProviderInfo(providerId, providerName, providerEmail, providerOccupation, providerPhoneNumber);
 		}
 	}
 }

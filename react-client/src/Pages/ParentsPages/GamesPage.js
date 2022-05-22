@@ -130,8 +130,6 @@ export default function GamesPage({ GamesDifficulties, SetGamesDifficulties, Loa
   return (
     <div>
       <ParentMainPage>
-
-        <h1>משחקים</h1>
         {
           UserHasChildren() === true
             ?

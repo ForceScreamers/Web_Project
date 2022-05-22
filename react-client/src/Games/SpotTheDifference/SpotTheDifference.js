@@ -2,13 +2,12 @@ import React from 'react'
 import { useState } from 'react'
 
 import { useEffect } from 'react'
-// import img1 from './images/squid_1.png'
-// import img2 from './images/squid_2.png'
-import selectionImg from './images/selection.png'
+import selectionImg from '../../website-images/spot-the-difference-selection.png'
 import Canvas from './Canvas'
 
-// import spotTheDifferenceSets from './SpotTheDifferenceSetsList.json'
-import Randoms from '../../Randoms'
+import './SpotTheDifferenceStyles.css'
+
+import GetCardsDataFromJsonByDifficulty from '../CardDataManipulations/ExtractFromJsonClass'
 
 
 //  The area padding the user is able to click around the correct coordinates for the game to be registered as correct
@@ -16,31 +15,16 @@ const CORRECT_POSITION_PADDING = 30;
 
 //  The offset of the selection image
 const CORRECT_SELECTION_OFFSET = {
-  xOffset: -120,
-  yOffset: -60,
+  xOffset: -65,
+  yOffset: -40,
 }
 
+const CORRECT_SELECTION_WIDTH = 100;
+const CORRECT_SELECTION_HEIGHT = 75;
 
-function jsonDataToArray(jsonData) {
-  //  Convert to array
-  let imageSetData = [];
-
-  for (let card in jsonData) {
-    imageSetData.push(jsonData[card]);
-  }
-  return imageSetData;
-}
-
-function GetRandomDataSet(jsonData) {
-
-  //  Convert to js array
-  let dataSets = jsonDataToArray(jsonData);
-  let randomIndex = Randoms.GetRandomInt(0, dataSets.length - 1);
-
-  return dataSets[randomIndex];
-}
 
 function GetImagesFromDataSet(dataSet) {
+  console.log(dataSet)
   return [
     dataSet.img1,
     dataSet.img2,
@@ -51,13 +35,14 @@ function GetCorrectPositionsFromDataSet(dataSet) {
   return [...dataSet.correctPositions];
 }
 
-// let correctPositions = GetCorrectPositionsFromDataSet(randomDataSet)
+export default function SpotTheDifference({ SetMoves, SetCorrectMoves, SetHasEnded, CardsJSON, HasUserEndedGame, Difficulty }) {
 
-export default function SpotTheDifference({ SetMoves, SetCorrectMoves, SetHasEnded, CardsJSON, HasUserEndedGame }) {
+  const [randomDataSet, setRandomDataSet] = useState(() =>
+    GetCardsDataFromJsonByDifficulty(CardsJSON, Difficulty)
+  );
 
-
-  const randomDataSet = GetRandomDataSet(CardsJSON);
   const [images, setImages] = useState(() => GetImagesFromDataSet(randomDataSet));
+
   const [correctPositions, setCorrectPositions] = useState(() => GetCorrectPositionsFromDataSet(randomDataSet));
 
   const [canvasContexts, setCanvasContexts] = useState([]);
@@ -85,7 +70,7 @@ export default function SpotTheDifference({ SetMoves, SetCorrectMoves, SetHasEnd
 
         correctPositionImage.src = selectionImg;
         correctPositionImage.onload = function () {
-          context.drawImage(correctPositionImage, position.x + CORRECT_SELECTION_OFFSET.xOffset, position.y + CORRECT_SELECTION_OFFSET.yOffset);
+          context.drawImage(correctPositionImage, position.x + CORRECT_SELECTION_OFFSET.xOffset, position.y + CORRECT_SELECTION_OFFSET.yOffset, CORRECT_SELECTION_WIDTH, CORRECT_SELECTION_HEIGHT);
         }
       }
     }
@@ -100,7 +85,6 @@ export default function SpotTheDifference({ SetMoves, SetCorrectMoves, SetHasEnd
     }
 
     setCorrectPositions(newCorrectPositions);
-    // correctPositions = newCorrectPositions;
   }
 
   function IsDone() {
@@ -115,10 +99,10 @@ export default function SpotTheDifference({ SetMoves, SetCorrectMoves, SetHasEnd
   }
 
   function HandleClick(e) {
-
     SetMoves((moves) => moves + 1);
 
     let mousePosition = { x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY }
+    console.log(mousePosition)
 
     let newCorrectPositions = [...correctPositions];
 
@@ -133,7 +117,6 @@ export default function SpotTheDifference({ SetMoves, SetCorrectMoves, SetHasEnd
       }
     }
     setCorrectPositions(newCorrectPositions);
-    // correctPositions = newCorrectPositions;
 
     UpdateCanvasContexts();
 
@@ -143,15 +126,9 @@ export default function SpotTheDifference({ SetMoves, SetCorrectMoves, SetHasEnd
     }
   }
 
-
-
   useEffect(() => {
-    console.log("HasUserEndedGame " + HasUserEndedGame)
-    console.log(correctPositions)
 
     if (HasUserEndedGame === true) {
-      console.log("BYE")
-
       SetCorrectPositionsToFalse();
     }
   }, [HasUserEndedGame])
@@ -168,8 +145,9 @@ export default function SpotTheDifference({ SetMoves, SetCorrectMoves, SetHasEnd
       <div>
         {
           images.map((randomImage, index) => {
+
             return (
-              <Canvas key={index} height={515} width={330} SetCanvasContext={setCanvasContexts} HandleClick={HandleClick} StartingImageSource={randomImage} />
+              <Canvas key={index} height={800} width={512} SetCanvasContext={setCanvasContexts} HandleClick={HandleClick} StartingImageSource={randomImage} />
             )
           })
         }

@@ -96,9 +96,7 @@ export default function EditProfilePage({ LoadChildrenFromServer }) {
 
   return (
     <div >
-      <ParentMainPage title='עריכת פרופיל'>
-        <h1>רשימת ילדים</h1>
-
+      <ParentMainPage>
         <div className="d-flex justify-content-center">
           <Masonry className="children-profiles-container" breakpointCols={breakpointColumnsObj}>
             {

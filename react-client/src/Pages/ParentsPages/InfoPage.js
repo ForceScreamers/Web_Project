@@ -14,6 +14,7 @@ import ArticleModal from "./InfoPageStuff/ArticleModal"
 //TODO: Show all articles when clearing the search field
 //! FIX: Games by topic won't show games if there are no games with that matching topic 
 
+//TODO: Change file name to articles page
 
 const breakpointColumnsObj = {
   default: 4,
@@ -36,8 +37,7 @@ export default function InfoPage({ SetGamesSearchValue }) {
   const [filterType, setFilterType] = useState("all");
 
   const [showArticleModal, setShowArticleModal] = useState(false);
-
-
+  console.log(selectedArticleInfo)
 
   async function UpdateArticlesFromServerByFilter() {
     console.log("Hellio")
@@ -104,7 +104,7 @@ export default function InfoPage({ SetGamesSearchValue }) {
 
   return (
     <div>
-      <ParentMainPage title='מידע ומאמרים'>
+      <ParentMainPage>
 
         <InfoPageSearchField
           UpdateFilterType={UpdateFilterType}
@@ -145,6 +145,9 @@ export default function InfoPage({ SetGamesSearchValue }) {
           ProviderName={selectedArticleInfo.provider_full_name}
           TopicTitle={selectedArticleInfo.topic_title}
           TopicId={selectedArticleInfo.topic_id}
+          ProviderEmail={selectedArticleInfo.provider_email}
+          ProviderPhone={selectedArticleInfo.provider_phone}
+          ProviderOccupation={selectedArticleInfo.provider_occupation}
         />
       </ParentMainPage>
     </div >

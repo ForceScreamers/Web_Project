@@ -49,12 +49,14 @@ import jsonAssociationsGame from '../Games/AssociationsGame/AssociationsGameCard
 import CardMatchList from '../Games/MatchCardsGame/CardMatchList.json'
 import jsonCatchGame from "../Games/CatchGame/jsonCatchGame.json"
 
+
 //  Import Games
 import SpotTheDifference from '../Games/SpotTheDifference/SpotTheDifference'
 import MemoryGame from "../Games/MemoryGame/MemoryGame";
 import CatchGame from '../Games/CatchGame/CatchGame';
 import AssociationsGame from "../Games/AssociationsGame/AssociationsGame";
 import MatchCardsGame from "../Games/MatchCardsGame/MatchCardsGame";
+
 
 //  Import Classes
 import Game from '../Project-Modules/GameClass';
@@ -97,7 +99,7 @@ let games = [
   new Game(12, "/Match", MemoryGame, jsonMatchCards),
   new Game(13, "/Opposites", MemoryGame, jsonOppositesCards),
   new Game(14, "/NumberAndCount", MemoryGame, jsonNumberAndCountCards),
-  new Game(15, "/yee", MatchCardsGame, CardMatchList),
+  new Game(15, "/yee", MatchCardsGame, CardMatchList),//TODO: Change pathname
   new Game(16, "/SpotTheDifferences", SpotTheDifference, jsonSpotTheDifferences),
   new Game(17, "/AssociationsGame", AssociationsGame, jsonAssociationsGame),
   new Game(18, "/CatchGame", CatchGame, jsonCatchGame),

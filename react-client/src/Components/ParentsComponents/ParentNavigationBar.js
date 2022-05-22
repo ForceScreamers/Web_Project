@@ -16,8 +16,12 @@ export default function ParentNavigationBar() {
   const usernameFromContext = useContext(NavBarContext).username;
   const currentChildFromContext = useContext(NavBarContext).child;
 
-  const S_CURRENT_CHILD = "פרופיל נוכחי";
-  const S_NO_CHILD_SELECTED = "לא נבחר ילד";
+  const STRING_CURRENT_CHILD = "פרופיל נוכחי";
+  const STRING_NO_CHILD_SELECTED = "לא נבחר ילד";
+
+  function IsChildSelected() {
+    return currentChildFromContext === null;
+  }
 
   return (
     <div dir="rtl">
@@ -34,14 +38,18 @@ export default function ParentNavigationBar() {
                 <NavLink activeClassName='active-nav-bar-link' to="/Parent/Info" className="nav-bar-link">מאמרים</NavLink>
                 <NavLink activeClassName='active-nav-bar-link' to="/Parent/About" className="nav-bar-link">אודות</NavLink>
                 <NavLink activeClassName='active-nav-bar-link' to="/Parent/EditProfile" className="nav-bar-link">עריכת פרופיל</NavLink>
-                <NavLink activeClassName='active-nav-bar-link' to="/Parent/Journal" className="nav-bar-link">{currentChildFromContext === null ? S_NO_CHILD_SELECTED : `היומן של ${currentChildFromContext.Name}`}</NavLink>
+                <NavLink hidden={IsChildSelected()} activeClassName='active-nav-bar-link' to="/Parent/Journal" className="nav-bar-link" >
+                  {IsChildSelected() ? STRING_NO_CHILD_SELECTED : `היומן של ${currentChildFromContext.Name}`}
+                </NavLink>
+
+
 
                 <div>
                   <LogoutButton />
                 </div>
 
                 <Navbar.Brand> מחובר בתור: {usernameFromContext}</Navbar.Brand>
-                <Navbar.Brand> {currentChildFromContext === null ? S_NO_CHILD_SELECTED : `${S_CURRENT_CHILD}: ${currentChildFromContext.Name}`} </Navbar.Brand>
+                <Navbar.Brand> {IsChildSelected() ? STRING_NO_CHILD_SELECTED : `${STRING_CURRENT_CHILD}: ${currentChildFromContext.Name}`} </Navbar.Brand>
 
               </Nav>
             </Navbar.Collapse>

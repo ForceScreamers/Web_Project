@@ -1,42 +1,93 @@
 {
-  "set-1": {
-    "img1": "/match-cards-images/SpotTheDifference/squid_1.png",
-    "img2": "/match-cards-images/SpotTheDifference/squid_2.png",
+  "difficulty1": {
+    "img1": "/match-cards-images/SpotTheDifference/spot-set1-a.png",
+    "img2": "/match-cards-images/SpotTheDifference/spot-set1-b.png",
     "correctPositions": [
       {
-        "x": 410,
-        "y": 227,
+        "x": 191,
+        "y": 162,
         "isActive": false
       },
       {
-        "x": 101,
-        "y": 241,
+        "x": 365,
+        "y": 184,
         "isActive": false
       },
       {
-        "x": 273,
-        "y": 316,
+        "x": 247,
+        "y": 398,
         "isActive": false
       },
       {
-        "x": 426,
-        "y": 721,
+        "x": 51,
+        "y": 678,
         "isActive": false
       },
       {
-        "x": 222,
-        "y": 701,
+        "x": 266,
+        "y": 222,
         "isActive": false
       }
     ]
   },
-  "set-2": {
-    "img1": "/match-cards-images/SpotTheDifference/snake.jpg",
-    "img2": "/match-cards-images/SpotTheDifference/bird.jpg",
+  "difficulty2": {
+    "img1": "/match-cards-images/SpotTheDifference/spot-set2-a.png",
+    "img2": "/match-cards-images/SpotTheDifference/spot-set2-b.png",
     "correctPositions": [
       {
-        "x": 0,
-        "y": 0,
+        "x": 200,
+        "y": 83,
+        "isActive": false
+      },
+      {
+        "x": 349,
+        "y": 225,
+        "isActive": false
+      },
+      {
+        "x": 237,
+        "y": 162,
+        "isActive": false
+      },
+      {
+        "x": 93,
+        "y": 425,
+        "isActive": false
+      },
+      {
+        "x": 226,
+        "y": 419,
+        "isActive": false
+      }
+    ]
+  },
+  "difficulty3": {
+    "img1": "/match-cards-images/SpotTheDifference/spot-set3-a.png",
+    "img2": "/match-cards-images/SpotTheDifference/spot-set3-b.png",
+    "correctPositions": [
+      {
+        "x": 125,
+        "y": 61,
+        "isActive": false
+      },
+      {
+        "x": 419,
+        "y": 716,
+        "isActive": false
+      },
+      {
+        "x": 414,
+        "y": 178,
+        "isActive": false
+      },
+      {
+        "x": 303,
+        "y": 334,
+        "isAc0tive": false
+      },
+      {
+        "x": 31,
+        "y": 213,
         "isActive": false
       }
     ]

@@ -5,7 +5,16 @@ import { ParentsApiRequest, ProvidersApiRequest } from "../../../RequestHeadersT
 import './ArticleModalStyles.css'
 
 
-export default function ArticleModal({ SetGamesSearchValue, ShowArticleModal, CloseArticleModal, TopicTitle, TopicId, Title, ProviderName, Content, ProviderData /*later*/ }) {
+export default function ArticleModal({ SetGamesSearchValue, ShowArticleModal, CloseArticleModal, TopicTitle, TopicId, Title, ProviderName, Content, ProviderPhone, ProviderEmail, ProviderOccupation }) {
+
+  // function ProviderPhoneEmailFormat() {
+
+  //   // {phone}/{email}
+  //   if (phone === "" || email === "") {
+
+  //   }
+  // }
+
   return (
     <div>
       <Modal show={ShowArticleModal} className="article-modal-main" centered dialogClassName="modal-dialog">
@@ -18,12 +27,16 @@ export default function ArticleModal({ SetGamesSearchValue, ShowArticleModal, Cl
             </div>
           </div>
 
-
-
           <div className="article-modal-content-bottom">
             <label>
-              כותב המאמר:
-              <Button variant="link" size="lg">{ProviderName}</Button>
+              כותב המאמר: {ProviderName}
+            </label>
+            <label>
+              {/* Display a "/" if there is a phone number and an email address */}
+              צור קשר: {ProviderPhone}{(ProviderPhone !== null && ProviderEmail !== null) ? " / " : " "}{ProviderEmail}
+            </label>
+            <label>
+              תעסוקה: {ProviderOccupation}
             </label>
           </div>
 

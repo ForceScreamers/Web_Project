@@ -35,7 +35,7 @@ export default function JournalPage({ LoadChildrenFromServer, ChildProfile }) {
   return (
     <div>
 
-      <ParentMainPage title={selectedChild === undefined ? `` : `היומן של ${selectedChild.Name}`}>
+      <ParentMainPage>
         <div>
           {
             //  If there is no child selected

@@ -20,7 +20,7 @@ import backgroundParentLogin from "./images/backgrounds/background_parent_login.
 import backgroundParentGames from "./images/backgrounds/background_parent_games.png";
 
 import backgroundMatch1 from "./images/backgrounds/background_match_1.png"
-import backgroundSpotTheDifference from "./images/backgrounds/background_spot_1.png"
+import backgroundSpotTheDifference from "./website-images/spot-the-difference-background.png"
 
 const DEFAULT_BACKGROUND_IMAGE = backgroundParentLogin;
 
@@ -38,7 +38,7 @@ const presetBackgroundImages = [
 	new Background("/", backgroundParentLogin),
 	new Background("/Parent/Games", backgroundParentGames),
 	new Background("/Parent/Games/Match", backgroundMatch1),
-	new Background("/Parent/Games/SpoTheDifference", backgroundSpotTheDifference),
+	new Background("/Parent/Games/SpotTheDifferences", backgroundSpotTheDifference),
 ]
 
 //TODO: Disconnect user if the webapi is offline

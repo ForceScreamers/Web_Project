@@ -102,7 +102,7 @@ namespace ProviderDal
 
         public static ProviderInfo GetProviderInfo(string parentEmail, string parentPassword)
         {
-            string com = "SELECT provider_id, provider_full_name, provider_occupation, provider_email FROM provider WHERE provider_email=?";
+            string com = "SELECT provider_id, provider_full_name, provider_occupation, provider_email, provider_phone FROM provider WHERE provider_email=?";
             OdbcParameter[] queryParameters = {
                 new OdbcParameter("@parent_email", parentEmail),
             };
@@ -115,8 +115,9 @@ namespace ProviderDal
             string providerFullName = dt.Rows[0].ItemArray[1].ToString();
             string providerOccupation = dt.Rows[0].ItemArray[2].ToString();
             string providerEmail = dt.Rows[0].ItemArray[3].ToString();
+            string providerPhoneNumber = dt.Rows[0].ItemArray[4].ToString();
 
-            return new ProviderInfo(providerFullName, providerId, providerOccupation, providerEmail);
+            return new ProviderInfo(providerFullName, providerId, providerOccupation, providerEmail, providerPhoneNumber);
             //return null;
         }
 
@@ -178,11 +179,18 @@ namespace ProviderDal
         //Filter search requests
         public static DataTable GetAllArticlesBy(string tableToFilter, string filterValue)
         {
-            string com = $"SELECT article.article_content, topic.topic_title, provider.provider_full_name, article.article_title, provider.provider_id " +
-                         $"FROM topic " +
-                         $"INNER JOIN(provider INNER JOIN article ON provider.provider_id = article.provider_id) " +
-                         $"ON topic.topic_id = article.topic_id " +
-                          $"WHERE((({tableToFilter}) ALIKE ?));";
+            string com = $@"SELECT article.article_content, article.article_title, article.topic_id, topic.topic_title, article.article_content, provider.provider_phone, provider.provider_full_name, provider.provider_email, provider.provider_occupation
+                            FROM provider 
+                            INNER JOIN (topic INNER JOIN article ON topic.topic_id = article.topic_id) 
+                            ON provider.provider_id = article.provider_id;
+                            WHERE((({tableToFilter}) ALIKE ?));";
+
+
+                //$"SELECT article.article_content, topic.topic_title, provider.provider_full_name, article.article_title, provider.provider_id " +
+                //         $"FROM topic " +
+                //         $"INNER JOIN(provider INNER JOIN article ON provider.provider_id = article.provider_id) " +
+                //         $"ON topic.topic_id = article.topic_id " +
+                //          $"WHERE((({tableToFilter}) ALIKE ?));";
 
             OdbcParameter[] queryParameters =
             {
@@ -209,10 +217,10 @@ namespace ProviderDal
             //            string com = @"SELECT article.article_title, article.topic_id, provider.provider_full_name, article.article_content, topic.topic_title
             //FROM provider INNER JOIN ((topic INNER JOIN article ON topic.topic_id = article.topic_id) INNER JOIN topic_to_game ON topic.topic_id = topic_to_game.topic_id) ON provider.provider_id = article.provider_id;";
 
-            string com = @"SELECT article.article_content, provider.provider_full_name, article.article_title, article.topic_id, topic.topic_title, article.article_content
-                           FROM topic 
-                           INNER JOIN (provider INNER JOIN article ON provider.provider_id = article.provider_id) 
-                           ON topic.topic_id = article.topic_id;";
+            string com = @"SELECT article.article_content, article.article_title, article.topic_id, topic.topic_title, article.article_content, provider.provider_phone, provider.provider_full_name, provider.provider_email, provider.provider_occupation
+                           FROM provider 
+                           INNER JOIN (topic INNER JOIN article ON topic.topic_id = article.topic_id) 
+                           ON provider.provider_id = article.provider_id;";
 
             return UsersOdbcHelper.GetTable(com, new OdbcParameter[0]);
         }
@@ -264,6 +272,24 @@ namespace ProviderDal
             DataTable topicDt = UsersOdbcHelper.GetTable(com, queryParameters);
 
             return topicDt.Rows.Count > 0;
+        }
+
+        public static void UpdateProviderInfo(int providerId, string providerName, string providerEmail, string providerOccupation, string providerPhoneNumber)
+        {
+            string com = @"UPDATE provider SET provider.provider_full_name = [?], provider.provider_email = [?], provider.provider_occupation = [?], provider.provider_phone = [?]
+                           WHERE (((provider.provider_id)=[?]));";
+
+            OdbcParameter[] queryParameters = {
+                new OdbcParameter("@provider_full_name", providerName),
+                new OdbcParameter("@provider_email", providerEmail),
+                new OdbcParameter("@provider_occupation", providerOccupation),
+                new OdbcParameter("@provider_phone", providerPhoneNumber),
+                new OdbcParameter("@provider_id", providerId),
+            };
+
+            UsersOdbcHelper.Execute(com, queryParameters);
+
+            
         }
     }
 }

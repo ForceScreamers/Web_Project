@@ -31,12 +31,13 @@ namespace ProviderDal
             Posts = new List<Article>();
         }
 
-        public ProviderInfo(string fullName, int id, string occupation, string email)
+        public ProviderInfo(string fullName, int id, string occupation, string email, string phoneNumber)
         {
             this.FullName = fullName;
             this.Id = id;
             this.Occupation = occupation;
             this.Email = email;
+            this.PhoneNumber = phoneNumber;
         }
     }
 

@@ -14,6 +14,7 @@ import { ProvidersApiRequest } from "../RequestHeadersToWebApi";
 import ProtectedRoute from "../Components/GeneralComponents/ProtectedRoute";
 import ProviderPublishArticle from "../Pages/ProvidersPages/ProviderPublishArticle";
 import ProviderArticles from "../Pages/ProvidersPages/ProviderArticles";
+import ProviderProfile from "../Pages/ProvidersPages/ProviderProfile";
 
 
 const PAGE_MODE = {
@@ -187,7 +188,9 @@ export default function ProvidersApp() {
         />}
       />
 
-
+      <ProtectedRoute exact path="/Provider/MyProfile" Component={() =>
+        <ProviderProfile />
+      } />
 
 
     </div>

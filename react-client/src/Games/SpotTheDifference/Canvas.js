@@ -1,4 +1,5 @@
 import { useRef, useEffect } from "react";
+import './SpotTheDifferenceStyles.css'
 
 export default function Canvas({ height: Height, width: Width, HandleClick, StartingImageSource, SetCanvasContext }) {
   const canvas = useRef();
@@ -12,25 +13,32 @@ export default function Canvas({ height: Height, width: Width, HandleClick, Star
   }, []);
 
   function SetStartingImageForContext(context) {
+    console.log(StartingImageSource)
 
     let image = new Image();
-    let sizeRatio = Height / Width;
     image.src = StartingImageSource;
-
-
-    var hRatio = Width / image.width;
-    var vRatio = Height / image.height;
-    var ratio = Math.min(hRatio, vRatio);
-
 
     //  Draw image
     image.onload = () => {
-      context.drawImage(image, 0, 0, image.width * ratio, image.height * ratio)
+
+      //  Calculate the width and height of the image according to the canvas size
+      let ratio = GetScaleRatio(image);
+      let imageWidth = image.width * ratio;
+      let imageHeight = image.height * ratio;
+
+      context.drawImage(image, 0, 0, imageWidth, imageHeight)
     }
   }
 
 
+  function GetScaleRatio(image) {
+    let hRatio = Width / image.width;
+    let vRatio = Height / image.height;
+    return Math.min(hRatio, vRatio);
+  }
+
+
   return (
-    <canvas style={{ border: 'solid black' }} ref={canvas} height={Height} width={Width} onClick={(e) => HandleClick(e)} />
+    <canvas className="canvas" ref={canvas} height={Height} width={Width} onClick={(e) => HandleClick(e)} />
   );
 };
