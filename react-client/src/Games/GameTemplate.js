@@ -6,6 +6,11 @@ import ShowExitGameModal from "./ShowExitGameModal";
 import { ParentsApiRequest } from "../RequestHeadersToWebApi";
 import ConvertSecondsToTime from "../TimeConvert";
 
+import MoveCountIcon from '../website-images/game-move-count-icon.png'
+import TimeLeftIcon from '../website-images/game-time-icon.png'
+
+import './GameTemplateStyles.css';
+
 const MAXIMUN_SECONDS = 3600;
 
 const STARTING_SCORE = 100;
@@ -132,10 +137,10 @@ export default function GameTemplate({ GameId, GameComponent, CardsJSON, GameNam
   return (
     <div >
       <h3>{GameName}</h3>
-      <div className="score d-flex flex-row justify-content-around" >
-        <div>מהלכים: {moves}</div>
-        <div>זמן: {ConvertSecondsToTime(secondsPassed)}</div>
-        <div>הצלחות: {correctMoves}</div>
+      <div className="score d-flex flex-row justify-content-start" >
+        <div className="game-template-parameter"><img alt="move-count" src={MoveCountIcon} width={80} /><label className="game-template-parameter-title">מהלכים: {moves}</label></div>
+        <div className="game-template-parameter"><img alt="move-count" src={TimeLeftIcon} width={80} /><label className="game-template-parameter-title">זמן: {ConvertSecondsToTime(secondsPassed)}</label></div>
+        {/* <div>הצלחות: {correctMoves}</div> */}
       </div>
 
       <GameComponent
@@ -145,6 +150,7 @@ export default function GameTemplate({ GameId, GameComponent, CardsJSON, GameNam
         HasUserEndedGame={hasUserEndedGame}
         CardsJSON={CardsJSON}
         Difficulty={Difficulty}
+        Seconds={secondsPassed}
       />
       <br />
 

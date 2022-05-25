@@ -14,19 +14,9 @@ import { ParentsApiRequest } from '../../../RequestHeadersToWebApi';
 const SELECTED_PROFILE_COLOR = "#A7D9FC";
 const UNSELECTED_PROFILE_COLOR = "#F9B2F6";
 
-export default function ChildCard(
-  {
-    HandleAddChild,
-    DisplayEditChildProfileModal,
-    ShowEditChildProfileModal,
-    CloseEditChildProfileModal,
-    SelectChild, DeleteChild,
-    ChildProfile,
-    LoadChildrenFromServer
-  }
-) {
+export default function ChildCard({ SelectChild, DeleteChild, ChildProfile, LoadChildrenFromServer }) {
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
-
+  const [childProfile, setChildProfile] = useState(ChildProfile)
 
   function HandleDeleteChild() {
     console.log(ChildProfile)
@@ -35,6 +25,7 @@ export default function ChildCard(
 
   function HandleDeleteConfirmation() {
     setShowDeleteConfirmation(false);
+    console.log(ChildProfile.Name)
     DeleteChild(ChildProfile.Id);
   }
 
@@ -52,22 +43,12 @@ export default function ChildCard(
     return ChildProfile.IsSelected ? childProfileIconSelected : childProfileIconUnselected
   }
 
-  function GetChildProfileEditIcon() {
-    return ChildProfile.IsSelected ? editChildProfileIconSelected : editChildProfileIconUnselected;
-  }
-
-
 
   return (
     <div>
-      <Card className="child-profile-card">
+      <Card className="child-profile-card game-card">
 
-
-        <div className="child-profile-edit-icon-container">
-          <img onClick={() => DisplayEditChildProfileModal()} alt="edit-profile" src={GetChildProfileEditIcon()} width={100} />
-        </div>
-
-
+        <CloseButton onClick={HandleDeleteChild} />
 
 
         <div className="edit-profile-secondary-card-container">
@@ -79,19 +60,10 @@ export default function ChildCard(
             onClick={(e) => SelectChild(e, ChildProfile.Id)}
             className="child-profile-select-button"
             style={{ backgroundColor: GetButtonBackroundColor() }}
-          >{ChildProfile.Name}</button>
+          >{childProfile.Name}</button>
         </div>
       </Card >
 
-      <EditChildProfileModal
-        HandleDeleteChild={HandleDeleteChild}
-        HandleEditChild={HandleAddChild}
-        ShowEditChildProfileModal={ShowEditChildProfileModal}
-        CloseEditChildProfileModal={CloseEditChildProfileModal}
-
-        ChildProfile={ChildProfile}
-        LoadChildrenFromServer={LoadChildrenFromServer}
-      />
 
 
       <ChildDeleteConfirmationModal
@@ -102,26 +74,3 @@ export default function ChildCard(
     </div>
   )
 }
-
-
-// <Card.Body >
-//           <Card.Title>
-//             <CloseButton aria-label='מחיקה' onClick={() => HandleDeleteChild()} /> {ChildProfile.Name + " "}
-
-//             <Button
-//               className='test-class'
-//               // disabled={isSelected ? "true" : "false"}
-//               disabled={ChildProfile.IsSelected}
-//               onClick={(e) => SelectChild(e, ChildProfile.Id)} variant="primary"
-//             >
-//               {ChildProfile.IsSelected ? "ילד נוכחי" : "בחר ילד"}
-
-
-//             </Button>
-
-//           </Card.Title>
-//           <Card.Text>
-//             {"גיל: " + ChildProfile.Age}
-//           </Card.Text>
-
-//         </Card.Body>

@@ -21,22 +21,25 @@ export default function ShowScoreModal({ ShowScoreModal, CloseScoreModal, Score,
 
   return (
     <Modal show={ShowScoreModal}>
-      <Modal.Header className="d-flex justify-content-center">
-        <Modal.Title>ניקוד</Modal.Title>
-      </Modal.Header>
-      <Modal.Body style={{ fontWeight: '500', fontSize: '20px' }}>
-        זמן: {ConvertSecondsToTime(Time)}
-        <br />
-        ניקוד: {Score}
-      </Modal.Body>
-      <Modal.Footer className="d-flex justify-content-center">
-        <Button style={{ backgroundColor: 'purple' }} onClick={() => CloseAndNavigateToGamesPage()}>
-          חזרה למשחקייה
-        </Button>
-        {/* <Button variant="primary" onClick={() => CloseAndNavigateToJournalPage()}>
+      <div style={{ backgroundColor: "white" }}>
+
+        <Modal.Header className="d-flex justify-content-center">
+          <Modal.Title>ניקוד</Modal.Title>
+        </Modal.Header>
+        <Modal.Body style={{ fontWeight: '500', fontSize: '20px' }}>
+          זמן: {ConvertSecondsToTime(Time)}
+          <br />
+          ניקוד: {Score}
+        </Modal.Body>
+        <Modal.Footer className="d-flex justify-content-center">
+          <Button style={{ backgroundColor: 'purple' }} onClick={() => CloseAndNavigateToGamesPage()}>
+            חזרה למשחקייה
+          </Button>
+          {/* <Button variant="primary" onClick={() => CloseAndNavigateToJournalPage()}>
           ליומן שלי
         </Button> */}
-      </Modal.Footer>
+        </Modal.Footer>
+      </div>
     </Modal>
   )
 }

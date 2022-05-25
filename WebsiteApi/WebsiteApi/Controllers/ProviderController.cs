@@ -146,6 +146,17 @@ namespace ParentsApi.Controllers
 			ProviderHelperFunctions.UpdateProviderInfo(providerId, providerName, providerEmail, providerOccupation, providerPhoneNumber);
 		}
 
+		[Microsoft.AspNetCore.Mvc.HttpPost]
+		[Microsoft.AspNetCore.Mvc.ActionName("UpdateArticle")]
+		public void UpdateArticle()
+		{
+			int articleId = int.Parse(Request.Headers["articleId"].ToString());
+			string articleTitle = Request.Headers["articleTitle"].ToString();
+			string articleContent = Request.Headers["articleContent"].ToString();
+			string articleTopic = Request.Headers["articleTopic"].ToString();
+
+			ProviderHelperFunctions.UpdateArticle(articleId, articleTitle, articleContent, articleTopic);
+		}
 
 		#endregion
 

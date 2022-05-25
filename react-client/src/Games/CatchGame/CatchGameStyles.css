@@ -1,9 +1,18 @@
 .catch-game-main-container {
   display: flex;
   justify-content: center;
-  margin-top: 50px;
+  margin-top: -30px;
   background-image: url("../../website-images/catch-game-background.png");
   background-size: contain;
   background-repeat: no-repeat;
   background-position-x: center;
+  margin-left: 330px;
+
+}
+
+.catch-game-order-container {
+  background-image: url('../../website-images/catch-game-bubble.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  padding: 30px;
 }

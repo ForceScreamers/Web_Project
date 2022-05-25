@@ -14,7 +14,7 @@ const Card = ({ OnClick, Index, IsInactive, IsFlipped, IsDisabled, Caption, Card
 
   return (
     <div
-      className={classnames("card-resize-animation border-0 card row align-items-center justify-content-center ", {
+      className={classnames("card-resize-animation border-0 game-card row align-items-center justify-content-center ", {
         "is-flipped": IsFlipped,
         "is-inactive": IsInactive
       })}

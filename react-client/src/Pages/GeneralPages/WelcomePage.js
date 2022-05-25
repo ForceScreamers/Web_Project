@@ -11,6 +11,9 @@ import welcomeBackgroundLine from '../../website-images/welcome-background-line.
 import vocabIcon from '../../website-images/welcome-vocab-icon.png';
 import { useRef } from 'react';
 
+import welcomeImage1 from '../../website-images/welcome-image-1.png'
+import welcomeImage2 from '../../website-images/welcome-image-2.png'
+
 export default function WelcomePage({ RedirectToGamesAndFilterByTopic }) {
 
     const scrollToElementRef = useRef();
@@ -24,6 +27,8 @@ export default function WelcomePage({ RedirectToGamesAndFilterByTopic }) {
             <div className="WelcomeContainer">
                 <div className='HeadlineContainer'>
                     <WelcomeOpener>
+                        <img className="welcome-image-2" alt="lion" src={welcomeImage2} width={250} />
+                        <img className="welcome-image-1" alt="lion" src={welcomeImage1} width={200} />
                         <h1 className="Headline">
                             בואו לפתח כישורי למידה
                         </h1>

@@ -8,12 +8,12 @@ import FormInputField from "../../GeneralComponents/FormInputField";
 const MIN_CHILD_AGE = 3;
 const MAX_CHILD_AGE = 10;
 
-export default function EditChildForm({ UpdateChildProfile, CloseEditChildProfileModal, ChildProfile }) {
+export default function EditChildForm({ UpdateChildProfile, CloseEditChildProfileModal, ChildName }) {
   let childNameValid = true;
   const [childName, setChildName] = useState("");
   const [childNameValidState, setChildNameValidState] = useState(true);
 
-  const [childAgeDisplay, setChildAgeDisplay] = useState(ChildProfile.Age)
+  // const [childAgeDisplay, setChildAgeDisplay] = useState(ChildProfile.Age)
 
 
   const OnSubmit = (e) => {
@@ -41,13 +41,13 @@ export default function EditChildForm({ UpdateChildProfile, CloseEditChildProfil
             Valid={childNameValidState}
             Name={"editChildNameField"}
             OnChange={(e) => setChildName(e.target.value)}
-            DefaultValue={ChildProfile.Name}
+            DefaultValue={ChildName}
           />
 
           <div className="d-flex ">
-            <label style={{ width: "70px" }}>גיל: {childAgeDisplay}</label>
+            {/* <label style={{ width: "70px" }}>גיל: {childAgeDisplay}</label> */}
 
-            <FormRange
+            {/* <FormRange
               name="editChildAgeSelect"
               step={1}
               tooltip="on"
@@ -55,7 +55,7 @@ export default function EditChildForm({ UpdateChildProfile, CloseEditChildProfil
               min={MIN_CHILD_AGE}
               max={MAX_CHILD_AGE}
               onChange={(e) => setChildAgeDisplay(e.target.value)}
-            />
+            /> */}
           </div>
 
           <Button type="submit" >עדכן</Button>

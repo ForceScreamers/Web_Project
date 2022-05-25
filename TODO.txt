@@ -1,37 +1,15 @@
-Games page - design
 About - design
-Provider profile - design
+
 Provider articles - edit ?
-Modals
-Login and register error
-fix deleting child and editing child only applies to latest child added
-
-
-finish catch game
-
-backgrounds games!
-navbar each tab has it's own color
 
 need to check:
-  each field is validated correctly
   Limit maxlength for all input text types
 
 file managment
     remove unnessesary files
     arrange folders
 
-
-Check before every request that the server is online, if not then disconnect the user
-
 iis website
-
-
-
-
-
-
-3 difficulties for each game
-
 
 
 

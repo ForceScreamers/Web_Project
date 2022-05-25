@@ -6,13 +6,6 @@ import './ProviderProfileStyles.css'
 export default function ProviderProfile({ }) {
 
 
-
-
-
-
-
-
-
   return (
     <div>
       <ProviderNavigationBar />

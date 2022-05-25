@@ -33,7 +33,7 @@ export default function ParentNavigationBar() {
               <Nav className="parent-navbar-tabs-container">
                 <NavLink activeClassName='active-nav-bar-link' to="/Parent/Games" className="nav-bar-link">משחקייה</NavLink>
                 <NavLink activeClassName='active-nav-bar-link' to="/Parent/Info" className="nav-bar-link">מאמרים</NavLink>
-                <NavLink activeClassName='active-nav-bar-link' to="/Parent/About" className="nav-bar-link">אודות</NavLink>
+                {/* <NavLink activeClassName='active-nav-bar-link' to="/Parent/About" className="nav-bar-link">אודות</NavLink> */}
                 <NavLink activeClassName='active-nav-bar-link' to="/Parent/EditProfile" className="nav-bar-link">עריכת פרופיל</NavLink>
                 <NavLink hidden={IsChildSelected()} activeClassName='active-nav-bar-link' to="/Parent/Journal" className="nav-bar-link" >
                   {IsChildSelected() ? STRING_NO_CHILD_SELECTED : `היומן של ${currentChildFromContext.Name}`}

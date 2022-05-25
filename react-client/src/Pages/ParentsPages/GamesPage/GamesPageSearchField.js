@@ -24,8 +24,8 @@ export default function GamesPageSearchField({ UpdateSearchResult, GamesSearchVa
 
   return (
     <div className='d-flex flex-column align-items-center'>
-      <h2>הצג משחקים בתחום:</h2>
       <div className="info-page-search-container" >
+        <h2 className="info-page-seach-title">חיפוש לפי:  </h2>
 
         <FormSelect style={{ textAlign: "right" }} className="info-page-select-field" onChange={UpdateSearchResult} value={GamesSearchValue}>
           <option>{GAMES_PAGE_SEARCH_VALUE_ALL}</option>

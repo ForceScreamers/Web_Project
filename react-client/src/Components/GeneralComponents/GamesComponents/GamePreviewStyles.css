@@ -1,0 +1,39 @@
+.game-preview-cards-grid {
+  margin-top: 50px;
+  display: flex;
+  grid-gap: 100px;
+  gap: 100px;
+  width: 60vw;
+  height: 400px;
+
+}
+
+.game-preview-card {
+  background-color: #E7D0EA;
+  border-radius: 25px;
+
+  margin-top: 50px;
+
+  min-height: 350px;
+  width: auto;
+  /* min-width: 300px; */
+}
+
+
+.game-card-image {
+  width: 200px;
+  /* min-height: 300px; */
+}
+
+.game-difficulty-button {
+  outline: none;
+  box-shadow: none;
+  margin-left: 10px;
+  margin-right: 10px;
+
+  border-radius: 30px;
+  padding: 5px;
+  padding-right: 20px;
+  padding-left: 20px;
+  margin-top: 20px;
+}

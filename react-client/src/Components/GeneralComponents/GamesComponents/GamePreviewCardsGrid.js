@@ -1,7 +1,7 @@
 import { Col, Container, Row } from "react-bootstrap";
 import GamePreviewCard from "./GamePreviewCard";
 import Img from '../../../images/download.jpg'
-import './GamePreviewCardsGrid.css'
+import './GamePreviewStyles.css'
 import { GAME_DIFFICULTY } from "../../../Constants";
 
 import Masonry from "react-masonry-css";
@@ -42,7 +42,7 @@ export default function GamePreviewCardsGrid({ Games, ChangeDifficulty, GamesDif
                   GameId={game.Id}
                   Name={game.Name}
                   Description={game.Description}
-                  PreviewImage={Img}
+                  PreviewImage={game.previewImage}
                   Topics={game.Topics}
                   ChangeDifficulty={ChangeDifficulty}
                   SelectedDifficulty={GetGameDifficultyById(game.Id)}

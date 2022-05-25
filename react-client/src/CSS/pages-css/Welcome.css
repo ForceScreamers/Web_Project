@@ -145,3 +145,19 @@ html {
   /* background-color: ; */
   /* background-image: url('../../website-images/welcome-background-line.png'); */
 }
+
+.welcome-image-1 {
+  position: absolute;
+
+  float: right;
+  left: 71vw;
+  top: 39vh;
+}
+
+.welcome-image-2 {
+  position: absolute;
+
+  float: right;
+  left: 80vw;
+
+}

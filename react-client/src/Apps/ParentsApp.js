@@ -58,6 +58,13 @@ import AssociationsGame from "../Games/AssociationsGame/AssociationsGame";
 import MatchCardsGame from "../Games/MatchCardsGame/MatchCardsGame";
 
 
+//  Game preview images
+import SpotTheDifferencePreview from '../website-images/spot-preview-image.png';
+import NumberAndCountPreview from '../website-images/number-and-count-preview-image.png';
+import OppositesPreview from '../website-images/opposites-preview-image.png';
+import MatchPreview from '../website-images/match-preview-image.png'
+import CatchPreview from '../website-images/catch-preview-image.png'
+
 //  Import Classes
 import Game from '../Project-Modules/GameClass';
 //	#endregion
@@ -95,13 +102,13 @@ function GenerateDefaultGameDifficulties() {
 
 
 let games = [
-  new Game(12, "/Match", MemoryGame, jsonMatchCards),
-  new Game(13, "/Opposites", MemoryGame, jsonOppositesCards),
-  new Game(14, "/NumberAndCount", MemoryGame, jsonNumberAndCountCards),
-  new Game(15, "/yee", MatchCardsGame, CardMatchList),//TODO: Change pathname
-  new Game(16, "/SpotTheDifferences", SpotTheDifference, jsonSpotTheDifferences),
-  new Game(17, "/AssociationsGame", AssociationsGame, jsonAssociationsGame),
-  new Game(18, "/CatchGame", CatchGame, jsonCatchGame),
+  new Game(12, "/Match", MemoryGame, jsonMatchCards, MatchPreview),
+  // new Game(13, "/Opposites", MemoryGame, jsonOppositesCards, OppositesPreview),
+  // new Game(14, "/NumberAndCount", MemoryGame, jsonNumberAndCountCards, NumberAndCountPreview),
+  // new Game(15, "/yee", MatchCardsGame, CardMatchList),//TODO: Change pathname
+  new Game(16, "/SpotTheDifferences", SpotTheDifference, jsonSpotTheDifferences, SpotTheDifferencePreview),
+  // new Game(17, "/AssociationsGame", AssociationsGame, jsonAssociationsGame),
+  new Game(18, "/CatchGame", CatchGame, jsonCatchGame, CatchPreview),
 ]
 
 async function LoadGamesFromApi() {
@@ -376,7 +383,7 @@ export default function ParentsApp() {
             SetGamesSearchValue={setGamesSearchValue}
             LoadGamesFromApi={LoadGamesFromApi}
             GamesDifficulties={gamesDifficulties}
-            RedirectToGamesAndFilterByTopic={RedirectToGamesAndFilterByTopic}
+            SetGamesDifficulties={setGamesDifficulties}
           />}
         />
 

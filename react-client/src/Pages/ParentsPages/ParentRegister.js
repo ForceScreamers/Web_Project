@@ -9,6 +9,8 @@ import { Button } from 'react-bootstrap'
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min'
 import FormInputField from '../../Components/GeneralComponents/FormInputField'
 
+import logo from '../../website-images/logo.png';
+
 export default function ParentRegister({ HandleRegister, UserExists }) {
 
   const [inputFields, setInputFields] = useState([
@@ -138,6 +140,8 @@ export default function ParentRegister({ HandleRegister, UserExists }) {
 
   return (
     <div className="register-main-container">
+
+			<img style={{ marginLeft: "-80%", marginTop: "20px" }}  alt="bambino-logo" src={logo} />
 
 			<div className="parent-register-background-image register-container">
 				<div className="register-title ">הרשמת הורים</div>

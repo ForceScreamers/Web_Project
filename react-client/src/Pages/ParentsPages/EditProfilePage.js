@@ -61,6 +61,8 @@ export default function EditProfilePage({ LoadChildrenFromServer }) {
 
 
   async function SelectChild(e, childIdToSelect) {
+    console.log("childIdToSelect ", childIdToSelect);
+
     let childSelectData = {
       childId: childIdToSelect,
       parentId: JSON.parse(sessionStorage.getItem('userId')),
@@ -102,7 +104,6 @@ export default function EditProfilePage({ LoadChildrenFromServer }) {
               childrenProfiles !== null//  If there are no children
                 ?
                 childrenProfiles.map((childProfile, index) => {
-                  console.log(childProfile)
                   return (
                     <ChildCard
                       HandleAddChild={HandleAddChild}

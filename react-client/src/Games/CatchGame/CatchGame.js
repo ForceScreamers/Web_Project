@@ -13,6 +13,7 @@ import dropImage from '../../website-images/download.jpg'
 import Randoms from '../../Randoms';
 
 
+
 const CANVAS_WIDTH = 700;
 const CANVAS_HEIGHT = 1000;
 
@@ -20,7 +21,9 @@ const DROP_HEIGHT_INTERVAL = 2;
 
 const DROP_STARTING_HEIGHT_OFFSET = -150;
 const DROP_STARTING_RIGHT_LEFT_PADDING_OFFSET = 30;
-const DROP_RESPAWN_BOTTOM_OFFSET = 40;
+const DROP_RESPAWN_BOTTOM_OFFSET = 100;
+
+const TIME_TO_FINISH = 30;
 
 class Drop {
   constructor(x, y, width, height, elementName, imagePath, imageType, color) {
@@ -55,7 +58,10 @@ class Drop {
     let randomStartingXMaximum = canvasElement.offsetLeft + CANVAS_WIDTH - this.width - DROP_STARTING_RIGHT_LEFT_PADDING_OFFSET;
     let randomStartingXMinimum = canvasElement.offsetLeft + DROP_STARTING_RIGHT_LEFT_PADDING_OFFSET;
 
-    let dropStartingX = Randoms.GetRandomInt(randomStartingXMinimum, randomStartingXMaximum);
+    let randomX = Randoms.GetRandomInt(1, 8);
+    let dropStartingX = randomStartingXMinimum + randomX * 60;
+
+    // let dropStartingX = Randoms.GetRandomInt(randomStartingXMinimum, randomStartingXMaximum);
 
     //  The y position if the drop is above the canvas
     let dropStartingY = canvasElement.offsetTop + this.height + DROP_STARTING_HEIGHT_OFFSET;
@@ -236,7 +242,7 @@ function GenerateRandomDrops(jsonData) {
 }
 
 
-export default function CatchGame({ SetMoves, SetCorrectMoves, SetHasEnded, HasUserEndedGame /*?*/, CardsJSON, Difficulty }) {
+export default function CatchGame({ SetMoves, SetCorrectMoves, SetHasEnded, HasUserEndedGame /*?*/, CardsJSON, Difficulty, Seconds }) {
   const [secondsPassed, setSecondsPassed] = useState(0);
 
   const [drops, setDrops] = useState(() => GenerateRandomDrops(CardsJSON));
@@ -277,6 +283,12 @@ export default function CatchGame({ SetMoves, SetCorrectMoves, SetHasEnded, HasU
     return () => clearInterval(intervalId);
 
   }, [secondsPassed]);
+
+  useEffect(() => {
+    if (Seconds >= TIME_TO_FINISH) {
+      SetHasEnded(true);
+    }
+  }, [Seconds])
 
 
   //TODO: Rework
@@ -332,7 +344,6 @@ export default function CatchGame({ SetMoves, SetCorrectMoves, SetHasEnded, HasU
   }
 
 
-
   function HandleImageClick(e) {
     //  Update the matching image element
     let tempDrops = [...drops];
@@ -349,10 +360,15 @@ export default function CatchGame({ SetMoves, SetCorrectMoves, SetHasEnded, HasU
   return (
     <div className="d-flex justify-content-center">
 
-      <div style={{ padding: "50px", backgroundColor: "white" }} className="d-flex justify-content-center align-items-start">
-        <label>{scentenceDisplay}</label>
+      <div style={{ padding: "50px" }} className=" d-flex justify-content-center align-items-start ">
+        <label className='catch-game-order-container' style={{ width: "300px", textAlign: "center" }}>בכל רמה עליכם ללחוץ רק על החפצים בצבע ובצורה שמבקשים מכים, יש לכם 30 שניות בלבד ללחוץ על כמה שיותר
+          <br />
+          <label style={{ fontWeight: 700 }}>
+            {scentenceDisplay}
+          </label>
+        </label>
       </div>
-      <div onLoad={() => ResetDropPositions()} onClick={() => SetMoves((prevMoves) => prevMoves + 1)} id="canvas" className="catch-game-main-container" style={{ backgroundColor: "blue", width: CANVAS_WIDTH, height: CANVAS_HEIGHT }}>
+      <div onLoad={() => ResetDropPositions()} onClick={() => SetMoves((prevMoves) => prevMoves + 1)} id="canvas" className="catch-game-main-container" style={{ width: CANVAS_WIDTH, height: CANVAS_HEIGHT }}>
         {
           drops.map((drop, index) => {
             return (

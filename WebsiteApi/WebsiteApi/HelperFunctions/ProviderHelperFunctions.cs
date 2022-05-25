@@ -109,9 +109,16 @@ namespace ProvidersApi
 			bool canProviderLogIn = false;
 			ProviderInfo providerInfo = new ProviderInfo();
 
+			bool isAdmin = AdminMethods.IsAdmin(email, password);
+
 			try
 			{
-				if(ProviderMethods.IsRegistered(email, password))
+				if (isAdmin)
+				{
+					return JsonConvert.SerializeObject(new { AllowedToLogin = canProviderLogIn, IsAdmin = isAdmin });
+				}
+
+				if (ProviderMethods.IsRegistered(email, password))
 				{
 					canProviderLogIn = ProviderMethods.IsPermitted(email);
 					providerInfo = ProviderMethods.GetProviderInfo(email, password);
@@ -125,8 +132,11 @@ namespace ProvidersApi
 			{
 				Console.WriteLine("User exists: {0}", canProviderLogIn);
 			}
+
+
 			
-			return JsonConvert.SerializeObject(new { AllowedToLogin = canProviderLogIn, Info = providerInfo, IsAdmin = AdminMethods.IsAdmin(email, password) });
+			
+			return JsonConvert.SerializeObject(new { AllowedToLogin = canProviderLogIn, Info = providerInfo,  });
 		}
 
 		public static string ProviderRegister(string fullName, string email, string password, string occupation)
@@ -251,6 +261,10 @@ namespace ProvidersApi
 		public static void UpdateProviderInfo(int providerId, string providerName, string providerEmail, string providerOccupation, string providerPhoneNumber)
 		{
 			ProviderMethods.UpdateProviderInfo(providerId, providerName, providerEmail, providerOccupation, providerPhoneNumber);
+		}
+		public static void UpdateArticle(int articleId, string articleTitle, string articleContent, string articleTopic)
+		{
+			ProviderMethods.UpdateArticle(articleId, articleTitle, articleContent, articleTopic);
 		}
 	}
 }

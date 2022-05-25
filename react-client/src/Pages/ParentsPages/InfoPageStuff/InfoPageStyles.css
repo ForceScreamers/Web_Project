@@ -15,7 +15,6 @@
   border: solid lightblue 3px;
   transform: translateY(-10px);
   /* transform: rotate(30); */
-
 }
 
 .info-container {
@@ -38,6 +37,12 @@
 
   margin-left: 50%;
   margin-Right: 50%;
+
+  width: 500px;
+  background-color: rgb(255, 255, 255);
+  padding: 10px;
+  border-radius: 20px;
+
 }
 
 .info-page-search-field {
@@ -47,4 +52,10 @@
 .info-page-select-field {
   margin-left: 10px;
   width: 130px;
+}
+
+.info-page-seach-title {
+  margin-left: 20px;
+  font-size: 30px;
+  align-items: center;
 }

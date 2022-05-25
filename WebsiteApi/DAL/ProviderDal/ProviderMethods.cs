@@ -124,7 +124,7 @@ namespace ProviderDal
         public static DataTable GetProviders()
         {
 
-            string com = "SELECT provider_id, provider_full_name, provider_occupation, provider_email FROM provider WHERE provider_status=0";
+            string com = "SELECT provider_id, provider_full_name, provider_occupation, provider_email, provider_phone FROM provider WHERE provider_status=0";
 
             //  Execute command
             return UsersOdbcHelper.GetTable(com, new OdbcParameter[0]);
@@ -133,7 +133,7 @@ namespace ProviderDal
 
         public static DataTable GetAllArticlesByProviderId(int providerId)
         {
-            string com = @"SELECT article.article_content, topic.topic_title, article.article_title, article.article_content, article.article_id, provider.provider_id
+            string com = @"SELECT article.article_content, topic.topic_title, article.article_title, article.article_content, article.article_id, provider.provider_id, provider.provider_phone
                             FROM topic 
                             INNER JOIN(provider INNER JOIN article ON provider.provider_id = article.provider_id) 
                             ON topic.topic_id = article.topic_id
@@ -287,9 +287,27 @@ namespace ProviderDal
                 new OdbcParameter("@provider_id", providerId),
             };
 
+            //  Set special size for long strings 
+
             UsersOdbcHelper.Execute(com, queryParameters);
 
             
+        }
+        public static void UpdateArticle(int articleId, string articleTitle, string articleContent, string articleTopic)
+        {
+            string com = @"UPDATE topic INNER JOIN article ON topic.topic_id = article.topic_id SET article.article_content = [?], article.article_title = [?], topic.topic_title = [?]
+                           WHERE (((article.article_id)=[?]));";
+
+            OdbcParameter[] queryParameters = {
+                new OdbcParameter("@article_id", articleId),
+                new OdbcParameter("@article_title", articleTitle),
+                new OdbcParameter("@article_content", OdbcType.NText, 8000),
+                new OdbcParameter("@topic_title", articleTopic)
+            };
+
+            queryParameters[2].Value = articleContent;
+
+            UsersOdbcHelper.Execute(com, queryParameters);
         }
     }
 }

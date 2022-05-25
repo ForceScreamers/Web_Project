@@ -4,12 +4,12 @@ import EditChildForm from "./EditChildForm"
 import utf8 from 'utf8';
 import { useEffect } from "react";
 
-export default function EditChildProfileModal({ HandleDeleteChild, HandleEditChild, ShowEditChildProfileModal, CloseEditChildProfileModal, ChildProfile, LoadChildrenFromServer }) {
+export default function EditChildProfileModal({ HandleDeleteChild, HandleEditChild, ShowEditChildProfileModal, CloseEditChildProfileModal, ChildName, LoadChildrenFromServer }) {
 
   async function UpdateChildProfile(e, childNameValid) {
     if (childNameValid) {
       let newChildInfo = {
-        childId: ChildProfile.Id,
+        childId: 0,
         childAge: utf8.encode(e.target.editChildAgeSelect.value),
         childName: utf8.encode(e.target.editChildNameField.value)
       }
@@ -18,28 +18,27 @@ export default function EditChildProfileModal({ HandleDeleteChild, HandleEditChi
     }
   }
 
-  useEffect(() => {
-    console.log(ChildProfile)
-  }, [])
-
   return (
     <div>
       <Modal show={ShowEditChildProfileModal} className="" centered dialogClassName="modal-dialog">
-        <Modal.Body >
-          <Modal.Title>
-            <CloseButton style={{ marginLeft: "10px" }} onClick={CloseEditChildProfileModal}></CloseButton>
-            <label>עריכת פרופיל</label>
+        <div style={{ backgroundColor: "white" }}>
 
-          </Modal.Title>
+          <Modal.Body >
+            <Modal.Title>
+              <CloseButton style={{ marginLeft: "10px" }} onClick={CloseEditChildProfileModal}></CloseButton>
+              <label>עריכת פרופיל</label>
+
+            </Modal.Title>
 
 
-          <EditChildForm UpdateChildProfile={UpdateChildProfile} ChildProfile={ChildProfile} CloseEditChildProfileModal={CloseEditChildProfileModal} />
+            <EditChildForm UpdateChildProfile={UpdateChildProfile} ChildName={ChildName} CloseEditChildProfileModal={CloseEditChildProfileModal} />
 
-        </Modal.Body>
-        <Modal.Footer className="">
-          <Button variant="danger" onClick={HandleDeleteChild}>מחיקת התקדמות</Button>
-        </Modal.Footer>
+          </Modal.Body>
+          <Modal.Footer className="">
+            <Button variant="danger" onClick={HandleDeleteChild}>מחיקת התקדמות</Button>
+          </Modal.Footer>
+        </div>
       </Modal>
-    </div>
+    </div >
   )
 }

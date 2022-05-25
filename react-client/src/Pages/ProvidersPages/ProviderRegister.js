@@ -8,6 +8,7 @@ import WaitForConfirmationModal from './ProviderRegisterFiles/WaitForConfirmatio
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min'
 import { Button } from 'react-bootstrap'
 import FormInputField from '../../Components/GeneralComponents/FormInputField'
+import logo from '../../website-images/logo.png';
 
 export default function ProviderRegister({ HandleProviderRegister, UserExistsError, ShowWaitForConfirmationModal, CloseWaitForConfirmationModal }) {
 
@@ -139,6 +140,9 @@ export default function ProviderRegister({ HandleProviderRegister, UserExistsErr
 
   return (
     <div className="register-main-container">
+
+      <img style={{ marginLeft: "-80%", marginTop: "20px" }} alt="bambino-logo" src={logo} />
+
 
       <div className="provider-register-background-image register-container">
         <div className="register-title ">הרשמת בעלי מקצוע</div>

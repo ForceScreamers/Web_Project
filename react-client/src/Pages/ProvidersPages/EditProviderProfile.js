@@ -4,6 +4,7 @@ import { ProvidersApiRequest } from '../../RequestHeadersToWebApi';
 import EditProviderProfileField from './EditProviderProfileField';
 import utf8 from 'utf8'
 
+import './ProviderProfileStyles.css';
 
 const EDIT_PAGE_MODE = {
   EDIT: 0,
@@ -59,16 +60,26 @@ export default function EditProviderProfile() {
   return (
     <form onSubmit={UpdateProviderProfile}>
 
-      <Button hidden={IsPageInEditMode()} variant="danger" onClick={() => FlipEditPageMode()}>ערוך</Button>
-      <Button hidden={!IsPageInEditMode()} onClick={FlipEditPageMode} type="submit">עדכון</Button>
 
-      <div className='d-flex flex-column justify-content-center align-items-start '>
-        <label>שם: <EditProviderProfileField UpdateStateField={setProviderName} Value={providerName} Mode={editPageMode} /></label>
-        <label>תעסוקה: <EditProviderProfileField UpdateStateField={setProviderOccupation} Value={providerOccupation} Mode={editPageMode} /></label>
-        <label>מספר טלפון: <EditProviderProfileField UpdateStateField={setProviderPhoneNumber} Value={providerPhoneNumber} Mode={editPageMode} /></label>
-        <label>אי-מייל: <EditProviderProfileField UpdateStateField={setProviderEmail} Value={providerEmail} Mode={editPageMode} /></label>
+      <div className="provider-profile-labels-container">
+        <label className="provider-profile-field-label">
+          שם: <EditProviderProfileField UpdateStateField={setProviderName} Value={providerName} Mode={editPageMode} />
+
+        </label>
+        <label className="provider-profile-field-label">
+          תעסוקה: <EditProviderProfileField UpdateStateField={setProviderOccupation} Value={providerOccupation} Mode={editPageMode} />
+        </label>
+        <label className="provider-profile-field-label">
+          מספר טלפון: <EditProviderProfileField UpdateStateField={setProviderPhoneNumber} Value={providerPhoneNumber} Mode={editPageMode} />
+        </label>
+        <label className="provider-profile-field-label">
+          אי-מייל: <EditProviderProfileField UpdateStateField={setProviderEmail} Value={providerEmail} Mode={editPageMode} />
+        </label>
       </div>
-
+      <div className="provider-profile-update-button-container">
+        <Button hidden={IsPageInEditMode()} variant="danger" onClick={() => FlipEditPageMode()}>ערוך</Button>
+        <Button hidden={!IsPageInEditMode()} onClick={FlipEditPageMode} type="submit">עדכון</Button>
+      </div>
     </form>
   )
 }

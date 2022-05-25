@@ -23,6 +23,7 @@ import backgroundParentGames from "./images/backgrounds/background_parent_games.
 
 import backgroundMatch1 from "./images/backgrounds/background_match_1.png"
 import backgroundSpotTheDifference from "./website-images/spot-the-difference-background.png"
+import CatchGameBackground from "./website-images/catch-game-screen-background.png"
 
 import JournalBackground from "./website-images/journal-background.png";
 import EditProfileBackground from "./website-images/edit-profile-background.png";
@@ -52,6 +53,7 @@ const App = () => {
 			new Background("/Parent/Games", backgroundParentGames),
 			new Background("/Parent/Games/Match", backgroundMatch1),
 			new Background("/Parent/Games/SpotTheDifferences", backgroundSpotTheDifference),
+			new Background("/Parent/Games/CatchGame", CatchGameBackground),
 
 			new Background("/Parent/Welcome", WelcomeBackground),
 

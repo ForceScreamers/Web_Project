@@ -46,13 +46,17 @@ export default function ProvidersApp() {
   async function OpenArticleInEditor(articleId) {
     let apiResponse = await ProvidersApiRequest("GET", "GetArticleById", { articleId: articleId });
     let articleData = JSON.parse(apiResponse.data);
+    console.log(articleData)
 
     setTitleValue(articleData[0].article_title)
     setContentValue(articleData[0].article_content)
     setTopicValue(articleData[0].topic_title)
 
-    //  Redirect to publish page
-    history.push("/Provider/PublishArticle");
+    console.log(articleData[0])
+    console.log(topicValue)
+
+    setArticleToEditId(articleId);
+    OpenEditArticleModal();
   }
 
   useEffect(() => {
@@ -153,6 +157,8 @@ export default function ProvidersApp() {
   function OpenEditArticleModal() { setShowEditArticleModal(true) };
   function CloseEditArticleModal() { setShowEditArticleModal(false) };
 
+
+
   return (
 
     // <div className="provider-background-image">
@@ -184,12 +190,17 @@ export default function ProvidersApp() {
         ShowEditArticleModal={showEditArticleModal}
         CloseEditArticleModal={CloseEditArticleModal}
         LoadArticlesFromApi={LoadArticlesFromApi}
+
+        ArticleName={titleValue}
+        ArticleContent={contentValue}
+        ArticleTopic={topicValue}
+        ArticleId={articleToEditId}
       />
 
       <ProtectedRoute exact path="/Provider/Articles" Component={() =>
         <ProviderArticles
           OpenPublishArticleModal={OpenPublishArticleModal}
-          OpenEditArticleModal={OpenArticleInEditor}
+          OpenArticleInEditor={OpenArticleInEditor}
 
           LoadArticlesFromApi={LoadArticlesFromApi}
         />}

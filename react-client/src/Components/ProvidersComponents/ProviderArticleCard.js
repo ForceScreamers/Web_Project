@@ -20,7 +20,7 @@ export default function ProviderArticleCard({ OpenArticleInEditor, UpdateArticle
 
 
   return (
-    <Card className="article-container">
+    <Card className="article-container game-card">
       <div className="icons-container">
         <img onClick={() => OpenArticleInEditor(ArticleId)} alt="edit-article" className="article-icon" src={editIcon} width={80} />
         <br />

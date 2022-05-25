@@ -9,17 +9,20 @@ export default function ShowExitGameModal({ ShowExitGameModal, CloseExitGameModa
 
   return (
     <Modal show={ShowExitGameModal} >
-      <Modal.Header>
-        <Modal.Title>ניקוד</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        היציאה מהמשחק לא שומרת את הניקוד שהושג
-      </Modal.Body>
-      <Modal.Footer>
-        <Button variant="danger" onClick={() => CloseExitGameModal()}>
-          יציאה
-        </Button>
-      </Modal.Footer>
+      <div style={{ backgroundColor: "white" }}>
+
+        <Modal.Header>
+          <Modal.Title>ניקוד</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          היציאה מהמשחק לא שומרת את הניקוד שהושג
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="danger" onClick={() => CloseExitGameModal()}>
+            יציאה
+          </Button>
+        </Modal.Footer>
+      </div>
     </Modal>
   )
 }

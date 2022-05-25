@@ -8,7 +8,7 @@ import FormInputFieldSection from '../../Components/GeneralComponents/FormInputF
 import { Button } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import FormInputField from '../../Components/GeneralComponents/FormInputField';
-
+import logo from '../../website-images/logo.png'
 
 export default function ParentLogin({ HandleLogin, UserExists }) {
 
@@ -83,8 +83,11 @@ export default function ParentLogin({ HandleLogin, UserExists }) {
 	return (
 		<div className="login-main-container">
 
+			<img style={{ marginLeft: "-80%", marginTop: "20px" }} alt="bambino-logo" src={logo} />
+
 			<div className="parent-login-background-image login-container">
 				<div className="login-title ">כניסת הורים</div>
+
 
 				<form onSubmit={OnSubmit}>
 
