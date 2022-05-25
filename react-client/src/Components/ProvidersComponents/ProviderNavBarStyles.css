@@ -1,0 +1,50 @@
+.provider-navbar-main {
+  background-color: transparent;
+  height: 200px;
+}
+
+.provider-navbar-container {
+  background-color: transparent;
+}
+
+
+/* Navigation bar link styles */
+.nav-bar-link {
+  color: white;
+  text-decoration: none;
+  align-self: center;
+  /* padding: 20px; */
+  padding-right: 50px;
+  padding-left: 50px;
+  font-size: 20px;
+
+  box-shadow: -100px -px 20px 1px blue;
+
+  border-left: solid white 2px;
+}
+
+
+.nav-bar-link:first-child {
+  border-right: solid white 2px;
+}
+
+.nav-bar-link:active {
+  color: white;
+}
+
+.nav-bar-link:hover {
+  color: rgba(211, 211, 211, 0.73);
+}
+
+
+.active-nav-bar-link {
+  color: aqua;
+}
+
+.active-nav-bar-link:hover {
+  color: rgba(0, 255, 255, 0.635);
+}
+
+.provider-navbar-fade {
+  background-image: linear-gradient(hsla(289, 60%, 67%, 0.55), transparent);
+}

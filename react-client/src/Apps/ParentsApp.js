@@ -94,7 +94,6 @@ function GenerateDefaultGameDifficulties() {
 }
 
 
-//TODO: Turn to json (With paths instead of components)
 let games = [
   new Game(12, "/Match", MemoryGame, jsonMatchCards),
   new Game(13, "/Opposites", MemoryGame, jsonOppositesCards),
@@ -163,10 +162,7 @@ export default function ParentsApp() {
 
 
   let history = useHistory();
-  useEffect(() => {
-    console.log("AAAAAAAAAAAAAAAAA")
-    console.log(gamesSearchValue)
-  }, [gamesSearchValue])
+
   /**
    * Gets the children belonging to the logged parent
    * Set current children profiles to the matching children
@@ -325,6 +321,12 @@ export default function ParentsApp() {
   }, [])
 
 
+  function RedirectToGamesAndFilterByTopic(topicTitle) {
+    history.push('/Parent/Games');
+    sessionStorage.setItem('gamesSearchValue', topicTitle);
+    setGamesSearchValue(topicTitle);
+  }
+
   return (
 
     <div /*className="parent-background-image"*/>
@@ -349,7 +351,13 @@ export default function ParentsApp() {
         username: username,
       }}>
 
-        <ProtectedRoute exact path="/Parent/Welcome" Component={WelcomePage} />
+        <ProtectedRoute exact path="/Parent/Welcome" Component={
+          () =>
+            <WelcomePage
+              RedirectToGamesAndFilterByTopic={RedirectToGamesAndFilterByTopic}
+            />
+
+        } />
 
         {/* ABOUT */}
         <ProtectedRoute exact path="/Parent/About" Component={About} />
@@ -368,7 +376,7 @@ export default function ParentsApp() {
             SetGamesSearchValue={setGamesSearchValue}
             LoadGamesFromApi={LoadGamesFromApi}
             GamesDifficulties={gamesDifficulties}
-            SetGamesDifficulties={setGamesDifficulties}
+            RedirectToGamesAndFilterByTopic={RedirectToGamesAndFilterByTopic}
           />}
         />
 
@@ -376,7 +384,7 @@ export default function ParentsApp() {
         {/* ARTICLES */}
         <ProtectedRoute exact path="/Parent/Info" Component={() =>
           <InfoPage
-            SetGamesSearchValue={setGamesSearchValue}
+            RedirectToGamesAndFilterByTopic={RedirectToGamesAndFilterByTopic}
           />
         } />
 

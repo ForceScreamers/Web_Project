@@ -17,7 +17,6 @@ export default function JournalPage({ LoadChildrenFromServer, ChildProfile }) {
 
 
   useEffect(() => {
-    //TODO: Check if needed (already setting it in state creation)
     setChildrenProfiles(JSON.parse(sessionStorage.getItem('children')));
   }, [])
 
@@ -31,40 +30,17 @@ export default function JournalPage({ LoadChildrenFromServer, ChildProfile }) {
 
 
 
-
   return (
     <div>
 
       <ParentMainPage>
-        <div>
-          {
-            //  If there is no child selected
-            // selectedChild === undefined
-            //   ? <NoChildrenMessage />
-            //   :
-            //   <div>
-            //     {
-            //       //  If the selected child has no evaluations
-            //       selectedChild.Evaluations.length > 0
-            //         ? <ChildEvaluationPrompt Evaluation={selectedChild.Evaluations[currentEvaluationIndex]} />
-            //         : <label>אין מידע לשחק</label>
-            //     }
-            //     {/* The buttons call the opposing functions to match rtl reading */}
-
-            //   </div>
-          }
-        </div>
-
         <div className="d-flex flex-column justify-content-center align-items-center" >
           <div style={{ width: "1050px", height: "420px" }}>
 
             <EvaluationsBook
               Evaluations={selectedChild.Evaluations}
             />
-
-
-            {/* <PageFlipTest /> */}
-          </div >
+          </div>
 
         </div>
 

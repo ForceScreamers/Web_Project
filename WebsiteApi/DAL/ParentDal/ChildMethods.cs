@@ -132,5 +132,19 @@ namespace ParentDal
             return int.Parse(dt.Rows[0].ItemArray[0].ToString());
         }
 
+        public static void UpdateChildInfo(int childId, string childName, int childAge)
+        {
+            string com = @"UPDATE child SET child.child_age = ?, child.child_name = ?
+                           WHERE(((child.child_id) = ?));";
+
+            OdbcParameter[] queryParameters = {
+                new OdbcParameter("@child_age", childAge),
+                new OdbcParameter("@child_name", childName),
+                new OdbcParameter("@child_id", childId),
+            };
+
+            UsersOdbcHelper.Execute(com, queryParameters);
+        }
+
     }
 }

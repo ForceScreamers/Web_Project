@@ -9,6 +9,7 @@ import editChildProfileIconSelected from '../../../website-images/child-profile-
 import childProfileIconUnselected from '../../../website-images/child-profile-icon-unselected.png'
 import childProfileIconSelected from '../../../website-images/child-profile-icon-selected.png'
 import EditChildProfileModal from './EditChildProfileModal';
+import { ParentsApiRequest } from '../../../RequestHeadersToWebApi';
 
 const SELECTED_PROFILE_COLOR = "#A7D9FC";
 const UNSELECTED_PROFILE_COLOR = "#F9B2F6";
@@ -20,13 +21,15 @@ export default function ChildCard(
     ShowEditChildProfileModal,
     CloseEditChildProfileModal,
     SelectChild, DeleteChild,
-    ChildProfile
+    ChildProfile,
+    LoadChildrenFromServer
   }
 ) {
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
 
   function HandleDeleteChild() {
+    console.log(ChildProfile)
     setShowDeleteConfirmation(true);
   }
 
@@ -55,7 +58,6 @@ export default function ChildCard(
 
 
 
-
   return (
     <div>
       <Card className="child-profile-card">
@@ -73,11 +75,6 @@ export default function ChildCard(
             <img alt="child-profile" src={GetChildProfileIcon()} />
           </div>
 
-          {/* TEMP */}
-          <div className="d-flex justify-content-center align-items-center">
-            <label></label>
-          </div>
-
           <button
             onClick={(e) => SelectChild(e, ChildProfile.Id)}
             className="child-profile-select-button"
@@ -91,6 +88,9 @@ export default function ChildCard(
         HandleEditChild={HandleAddChild}
         ShowEditChildProfileModal={ShowEditChildProfileModal}
         CloseEditChildProfileModal={CloseEditChildProfileModal}
+
+        ChildProfile={ChildProfile}
+        LoadChildrenFromServer={LoadChildrenFromServer}
       />
 
 

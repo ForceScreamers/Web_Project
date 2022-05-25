@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react'
 import { Card, Col, Container, Row } from 'react-bootstrap';
 import ProviderNavigationBar from '../../Components/ProvidersComponents/ProviderNavigationBar';
@@ -20,7 +21,7 @@ const breakpointColumnsObj = {
   1000: 1
 };
 
-export default function ProviderArticles({ OpenArticleInEditor, LoadArticlesFromApi }) {
+export default function ProviderArticles({ OpenArticleInEditor, LoadArticlesFromApi, OpenPublishArticleModal }) {
   const [articles, setArticles] = useState([]);
 
   const history = useHistory();
@@ -59,7 +60,7 @@ export default function ProviderArticles({ OpenArticleInEditor, LoadArticlesFrom
           }
 
           <div className="d-flex justify-content-center align-items-center add-article-image-container">
-            <img onClick={() => history.push("/Provider/PublishArticle")} alt="add-article" className="add-article-image" src={addArticleIcon} width={110} />
+            <img onClick={() => OpenPublishArticleModal()} alt="add-article" className="add-article-image" src={addArticleIcon} width={110} />
           </div>
         </Masonry>
       </div>

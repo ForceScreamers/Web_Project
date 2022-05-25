@@ -6,6 +6,8 @@ import { GAMES_PATH_PREFIX } from "../../../Constants";
 
 import { GAME_DIFFICULTY } from "../../../Constants";
 
+import './GamePreviewCardStyles.css'
+
 export default function GamePreviewCard({ GamePath, Name, GameId, PreviewImage, Description, Topics, ChangeDifficulty, SelectedDifficulty }) {
   const history = useHistory();
 
@@ -30,19 +32,25 @@ export default function GamePreviewCard({ GamePath, Name, GameId, PreviewImage, 
   return (
     <div>
       <Accordion>
-        <Card bg='light' style={{ borderRadius: "0px" }}>
+        <Card bg='light' className="game-preview-card-container">
 
-          <Card.Body  >
+          <Card.Body>
             <Card.Title>
-              <Card.Img src={PreviewImage} />
-              <br />
-              <br />
+              <div className="d-flex flex-row">
 
-              <div className="d-flex justify-content-around">
-                {Name + " "}
-                <div>
-                  <SelectDifficultyButtons GameId={GameId} ChangeDifficulty={ChangeDifficulty} SelectedDifficulty={SelectedDifficulty} />
+                <div className="game-card-image-container">
+                  <img alt="game-preview" src={PreviewImage} width={100} height={100} />
                 </div>
+
+
+
+                <div className="d-flex justify-content-around flex-column">
+                  {Name + " "}
+                  <div>
+                    <SelectDifficultyButtons GameId={GameId} ChangeDifficulty={ChangeDifficulty} SelectedDifficulty={SelectedDifficulty} />
+                  </div>
+                </div>
+
               </div>
             </Card.Title>
 
@@ -77,7 +85,7 @@ export default function GamePreviewCard({ GamePath, Name, GameId, PreviewImage, 
 function SelectDifficultyButtons({ SelectedDifficulty, ChangeDifficulty, GameId }) {
 
   return (
-    <div>
+    <div className='d-flex flex-row'>
       <DifficultyButton GameId={GameId} SelectedDifficulty={SelectedDifficulty} ChangeDifficulty={ChangeDifficulty} Variant="success" Text="קל" Difficulty={GAME_DIFFICULTY.EASY} />
       <DifficultyButton GameId={GameId} SelectedDifficulty={SelectedDifficulty} ChangeDifficulty={ChangeDifficulty} Variant="warning" Text="בינוני" Difficulty={GAME_DIFFICULTY.MEDIUM} />
       <DifficultyButton GameId={GameId} SelectedDifficulty={SelectedDifficulty} ChangeDifficulty={ChangeDifficulty} Variant="danger" Text="קשה" Difficulty={GAME_DIFFICULTY.HARD} />

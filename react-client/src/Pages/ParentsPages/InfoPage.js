@@ -14,7 +14,6 @@ import ArticleModal from "./InfoPageStuff/ArticleModal"
 //TODO: Show all articles when clearing the search field
 //! FIX: Games by topic won't show games if there are no games with that matching topic 
 
-//TODO: Change file name to articles page
 
 const breakpointColumnsObj = {
   default: 4,
@@ -28,7 +27,7 @@ const MIN_CARD_HEIGHT_PX = 250;
 const DEFUALT_FILTER_VALUE = "";
 const DEFUALT_TABLE_NAME = "all";
 
-export default function InfoPage({ SetGamesSearchValue }) {
+export default function InfoPage({ RedirectToGamesAndFilterByTopic }) {
 
   const [articles, setArticles] = useState([]);
   const [selectedArticleInfo, setSelectedArticleInfo] = useState({});
@@ -136,7 +135,7 @@ export default function InfoPage({ SetGamesSearchValue }) {
         </Masonry>
 
         <ArticleModal
-          SetGamesSearchValue={SetGamesSearchValue}
+          RedirectToGamesAndFilterByTopic={RedirectToGamesAndFilterByTopic}
           ShowArticleModal={showArticleModal}
           CloseArticleModal={CloseArticleModal}
 

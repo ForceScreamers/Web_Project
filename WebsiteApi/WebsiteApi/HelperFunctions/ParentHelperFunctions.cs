@@ -231,6 +231,11 @@ namespace ParentsApi
 			return (int)ChildMethods.GetChildrenForParent(parentId).Rows[0]["child_id"];
 		}
 
+		public static void UpdateChildInfo(int childId, string childName, int childAge)
+		{
+			ChildMethods.UpdateChildInfo(childId, childName, childAge);
+		}
+
 
 		private static List<Evaluation> GetEvaluationsForChild(int childId)
 		{

@@ -1,73 +1,39 @@
-עריכת פרופיל - מספר טלפון, מקצוע, שם, כתובת, כתובת מייל, תמונה ?
-פרסום מאמר - קטגוריה, שם המאמר, תוכן
+Games page - design
+About - design
+Provider profile - design
+Provider articles - edit ?
+Modals
+Login and register error
+fix deleting child and editing child only applies to latest child added
 
-
-לעצב פס ניווט
-
-להוסיף את התמונות של מצא את ההבדלים ולתקן (שהמיקומים יהיו דינמיים)
-
-
-NOW:
-edit child profile
-
-3 difficulties for each game
-
-book - no eval message
-
-provider games
-
-about
-
-add associations game 
-
-background
-
-book design
 
 finish catch game
 
+backgrounds games!
+navbar each tab has it's own color
+
+need to check:
+  each field is validated correctly
+  Limit maxlength for all input text types
+
+file managment
+    remove unnessesary files
+    arrange folders
+
+
+Check before every request that the server is online, if not then disconnect the user
+
+iis website
 
 
 
 
 
 
+3 difficulties for each game
 
 
 
 
 
 
-General:
-  [ ] Check before every request that the server is online, if not then disconnect the user
-  [ ] Limit maxlength for all input text types
-  [ ] Math game - make 32 cards, each time with a random set of cards (finish cropping the pictures)
-  [ ] Split user exists state into loginUserExists and registerUserExists
-  [ ] Add errors in login and register as text to screen
-
-  [ ] Display the game names from the same source, currently there are 2 different data sources
-  [ ] Fix user already exists message
-  [ ] Delete unnessesary files
-
-Parents App:
-
-  [ ] Login and register response have unnessesary headers i.e.:
-    Data: {
-        FromParent: {
-            ParentInfo: {
-              some data
-            },
-          more data
-        }
-    }
-
-    Match Cards - 
-      [ ] Pre setup files
-
-
-Providers App:
-  [ ] Check if can register with an existing email 
-
-
-Small additions:
-  [ ] Check that every input field is validated correctly

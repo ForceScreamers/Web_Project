@@ -1,25 +1,27 @@
-.List li{
-  display:inline;
+.List li {
+  display: inline;
 }
 
-.NavBarContainer{
+.NavBarContainer {
   background-color: red;
   height: 45px;
   display: flex;
   justify-content: space-between;
 }
 
-.ControlContainer{
+.ControlContainer {
   display: flex;
   align-items: center;
   background-color: red;
 }
 
-.RightContainer{
+.RightContainer {
   justify-content: flex-end;
-  padding-left:10px;
+  padding-left: 10px;
   padding-right: 10px;
 }
+
+
 
 /* .LeftContainer{
   width: 200px;
@@ -41,14 +43,15 @@
   color: black;
 }  */
 
-.LogoutButton{
+.LogoutButton {
   border-radius: 2px;
   border: none;
   padding: 6px;
   padding-right: 9px;
   padding-left: 9px;
 }
-.LogoutButton:hover{
+
+.LogoutButton:hover {
   background-color: gainsboro;
   cursor: pointer;
 }

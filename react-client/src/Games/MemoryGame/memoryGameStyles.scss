@@ -4,15 +4,15 @@
 }
 
 .memory-game-container {
-  padding: 5px;
+  padding: 30px;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(4, 1fr);
   justify-items: center;
   align-items: stretch;
-  gap: 10px;
+  gap: 30px;
   margin: 0 auto;
-  perspective: 100%;
+  // perspective: 100%;
 
   //  Main container sizes
   width: 65vw;
@@ -24,5 +24,11 @@
 
   max-width: 30vw;
   max-height: 30vw;
+  background-color: gray;
+  // width: 1000px;
+  border-radius: 20px;
 
+  border: solid #B6CEFF 7px;
 }
+
+.memory-game-main {}

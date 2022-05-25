@@ -29,8 +29,10 @@ namespace ParentsApi.Controllers
 
 	public class ParentController : Controller
 	{
-		#region -------------  HTTP functions  -------------
-		
+
+
+		#region	------------- Login and registration -------------
+
 		// Puts a new user into the database
 		// Returns is the register was successful or failed, returns if the user alreadt exists in the database
 		[Microsoft.AspNetCore.Mvc.HttpPost]
@@ -56,14 +58,17 @@ namespace ParentsApi.Controllers
 				token = AuthController.GetToken(Request.Headers["email"].ToString()),
 			}));
 		}
+		#endregion
 
-		
+
+
+
+		#region	------------- Children for parent functions -------------
 
 		//	Adds a new child to the database
 		//	Returns if the child was added, and information about the child
 		[Microsoft.AspNetCore.Mvc.HttpPost]
 		[Microsoft.AspNetCore.Mvc.ActionName("AddChild")]
-
 		public ContentResult AddChild()
 		{
 
@@ -108,9 +113,6 @@ namespace ParentsApi.Controllers
 
 
 
-
-		//	---	Evaluations ---
-
 		[Microsoft.AspNetCore.Mvc.HttpPost]
 		[Microsoft.AspNetCore.Mvc.ActionName("UpdateEvaluationScore")]
 		public ContentResult UpdateEvaluationScore()
@@ -124,16 +126,29 @@ namespace ParentsApi.Controllers
 			int difficulty = int.Parse(Request.Headers["difficulty"].ToString());
 
 			ParentHelperFunctions.UpdateChildEvaluation(childId, gameId, moveCount, time, score, difficulty);
-			
+
 			//	TODO: return confirmed update
-			return base.Content(JsonConvert.SerializeObject(new { UpdatedScore = true}));
+			return base.Content(JsonConvert.SerializeObject(new { UpdatedScore = true }));
 		}
 
+		[Microsoft.AspNetCore.Mvc.HttpPost]
+		[Microsoft.AspNetCore.Mvc.ActionName("UpdateChildInfo")]
+		public void UpdateChildInfo()
+		{
+			int childId = int.Parse(Request.Headers["childId"].ToString());
+			int childAge = int.Parse(Request.Headers["childAge"].ToString());
+			string childName = Request.Headers["childName"].ToString();
+
+			ParentHelperFunctions.UpdateChildInfo(childId, childName, childAge);
+		}
+
+		#endregion
 
 
 
 
-		// --- Games ---
+		#region	------------- Games -------------
+
 		[Microsoft.AspNetCore.Mvc.HttpGet]
 		[Microsoft.AspNetCore.Mvc.ActionName("GetGameIdsByTopicId")]
 		public ContentResult GetGameIdsByTopicId()
@@ -144,6 +159,8 @@ namespace ParentsApi.Controllers
 			return base.Content(JsonConvert.SerializeObject( ParentHelperFunctions.GetGameIdsByTopicId(topicId) ));
 		}
 
+
+
 		[Microsoft.AspNetCore.Mvc.HttpGet]
 		[Microsoft.AspNetCore.Mvc.ActionName("GetGames")]
 		public ContentResult GetGames()
@@ -153,6 +170,6 @@ namespace ParentsApi.Controllers
 
 			return base.Content(JsonConvert.SerializeObject(ParentHelperFunctions.GetGames()));
 		}
-		#endregion
-	}
+        #endregion
+    }
 }

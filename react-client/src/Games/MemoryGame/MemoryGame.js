@@ -173,7 +173,7 @@ export default function MemoryGame({ SetMoves, SetCorrectMoves, CardsJSON, SetHa
   return (
     <div>
 
-      <div>
+      <div className="memory-game-main">
         <div className="memory-game-container">
           {cards.map((card, index) => {
             return (

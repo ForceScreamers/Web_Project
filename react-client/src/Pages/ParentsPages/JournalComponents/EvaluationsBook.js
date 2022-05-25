@@ -5,6 +5,12 @@ import ChildEvaluationPrompt from '../ChildEvaluationPrompt';
 import { Button } from 'react-bootstrap';
 import { useRef } from 'react';
 
+import NoEvaluationsMessage from './NoEvaluationsMessage';
+
+import flipBookArrowRight from '../../../website-images/flip-book-button-right.png'
+import flipBookArrowLeft from '../../../website-images/flip-book-button-left.png'
+
+
 
 export const EvaluationsBook = React.forwardRef((props, ref) => {
   console.log(props.Evaluations)
@@ -43,42 +49,55 @@ export const EvaluationsBook = React.forwardRef((props, ref) => {
     <div>
       {
         props.Evaluations.length === 0
-          ? <div>אין מידע לשחק</div>
+          ? <NoEvaluationsMessage />
           :
-          <>
-            <HTMLFlipBook onFlip={UpdatePageIndexDisplay} onInit={() => FlipBookToRightSide()} showCover={true} flippingTime={600} maxShadowOpacity={0.2} style={{ backgroundColor: "transparent" }} ref={flip} width={500} height={500} useMouseEvents={false}>
+          <div>
+            <div className="d-flex " style={{ width: "120%" }}>
+              <Button className="evaluation-book-button" onClick={() => TurnToNextPage()}><img alt="flip-left" src={flipBookArrowRight} width="100px" /></Button>
 
-              <BookCover />
+              <HTMLFlipBook onFlip={UpdatePageIndexDisplay} onInit={() => FlipBookToRightSide()} showCover={true} flippingTime={600} maxShadowOpacity={0.2} style={{ backgroundColor: "transparent" }} ref={flip} width={500} height={500} useMouseEvents={false}>
 
-              {
-                props.Evaluations.map((evaluation, index) => {
-                  return (
-                    <EvaluationPage
-                      key={index}
-                      Evaluation={evaluation}
-                    />
+                <BookCover />
 
-                  )
-                })
-              }
+                {
+                  props.Evaluations.map((evaluation, index) => {
+                    return (
+                      <EvaluationPage
+                        key={index}
+                        Evaluation={evaluation}
+                      />
 
-              <BookCover />
+                    )
+                  })
+                }
 
-            </HTMLFlipBook>
-            <label>{pageIndexDisplay}</label>
-            <br />
+                <BookCover />
 
-            <Button onClick={() => TurnToNextPage()}>עמוד קודם</Button>
-            <Button onClick={() => TurnToPrevPage()}>עמוד הבא</Button>
-          </>
+              </HTMLFlipBook>
+
+              <Button className="evaluation-book-button" onClick={() => TurnToPrevPage()}><img alt="flip-left" src={flipBookArrowLeft} width="100px" /></Button>
+            </div>
+          </div>
       }
     </div>
   )
 })
 
 const BookCover = React.forwardRef((props, ref) => {
+  const [currentChildName, setCurrentChildName] = useState(() => GetCurrentChildName())
+
+  function GetCurrentChildName() {
+    let currentChild = JSON.parse(sessionStorage.getItem('currentChild'));
+    if (currentChild) {
+      return currentChild.Name;
+    }
+    else {
+      return ""
+    }
+  }
+
   return (
-    <div className="evaluation-book-cover evaluation-book-cover-front" ref={ref} >כריכה</div>
+    <div className="evaluation-book-cover evaluation-book-cover-front" ref={ref} >היומן של {currentChildName}</div>
   );
 });
 

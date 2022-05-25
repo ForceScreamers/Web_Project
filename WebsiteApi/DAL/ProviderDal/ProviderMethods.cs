@@ -137,7 +137,7 @@ namespace ProviderDal
                             FROM topic 
                             INNER JOIN(provider INNER JOIN article ON provider.provider_id = article.provider_id) 
                             ON topic.topic_id = article.topic_id
-                            WHERE(((provider.provider_id) =[?])); ";
+                            WHERE(((provider.provider_id) =[?]));";
 
 
             OdbcParameter[] queryParameters =
@@ -182,7 +182,7 @@ namespace ProviderDal
             string com = $@"SELECT article.article_content, article.article_title, article.topic_id, topic.topic_title, article.article_content, provider.provider_phone, provider.provider_full_name, provider.provider_email, provider.provider_occupation
                             FROM provider 
                             INNER JOIN (topic INNER JOIN article ON topic.topic_id = article.topic_id) 
-                            ON provider.provider_id = article.provider_id;
+                            ON provider.provider_id = article.provider_id
                             WHERE((({tableToFilter}) ALIKE ?));";
 
 

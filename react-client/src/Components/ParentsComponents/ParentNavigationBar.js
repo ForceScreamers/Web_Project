@@ -8,9 +8,6 @@ import logoImage from '../../website-images/logo.png'
 
 import './ParentNavigationBar/ParentNavBarStyles.css'
 
-//  היומן שלי, שינוי אווטר, עריכת פרופיל, משחקייה, מאמרים, אודותר
-//  The main pages are: Games, info, about, edit profile, avatar, journal
-
 export default function ParentNavigationBar() {
 
   const usernameFromContext = useContext(NavBarContext).username;
@@ -24,7 +21,7 @@ export default function ParentNavigationBar() {
   }
 
   return (
-    <div dir="rtl">
+    <div dir="rtl" className="parent-navbar-fade">
       <Navbar className="parent-navbar-main" collapseOnSelect navbarScroll expand="lg" variant="dark">
 
         <Container fluid className="parent-navbar-container" >

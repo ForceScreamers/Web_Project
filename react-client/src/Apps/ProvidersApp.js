@@ -8,19 +8,16 @@ import utf8 from 'utf8';
 //  Import main pages
 import ProviderRegister from "../Pages/ProvidersPages/ProviderRegister";
 import ProviderLogin from "../Pages/ProvidersPages/ProviderLogin";
-import ProviderGames from "../Pages/ProvidersPages/ProviderGames";
 import { PublicRoute } from "../Components/GeneralComponents/PublicRoute";
 import { ProvidersApiRequest } from "../RequestHeadersToWebApi";
 import ProtectedRoute from "../Components/GeneralComponents/ProtectedRoute";
-import ProviderPublishArticle from "../Pages/ProvidersPages/ProviderPublishArticle";
 import ProviderArticles from "../Pages/ProvidersPages/ProviderArticles";
 import ProviderProfile from "../Pages/ProvidersPages/ProviderProfile";
 
+import PublishArticleModal from "../Pages/ProvidersPages/PublishArticleModal";
+import EditArticleModal from "../Pages/ProvidersPages/EditArticleModal";
 
-const PAGE_MODE = {
-  PUBLISH: 0,
-  EDIT: 1
-}
+import { ParentsApiRequest } from "../RequestHeadersToWebApi";
 
 export default function ProvidersApp() {
   const history = useHistory();
@@ -35,18 +32,18 @@ export default function ProvidersApp() {
   const [contentValue, setContentValue] = useState("");
   const [topicValue, setTopicValue] = useState("");
   const [overridenArticleId, setOverridenArticleId] = useState(0);
-  const [pageMode, setPageMode] = useState(PAGE_MODE.PUBLISH);
 
 
+  const [showPublishArticleModal, setShowPublishArticleModal] = useState(false);
+
+  const [showEditArticleModal, setShowEditArticleModal] = useState(false);
+  const [articleToEditId, setArticleToEditId] = useState(0);
 
   function RedirectToWelcome() {
-    history.push("/Provider/Games");
+    history.push("/Provider/Articles");
   }
 
   async function OpenArticleInEditor(articleId) {
-    setOverridenArticleId(articleId);
-    setPageMode(PAGE_MODE.EDIT);
-
     let apiResponse = await ProvidersApiRequest("GET", "GetArticleById", { articleId: articleId });
     let articleData = JSON.parse(apiResponse.data);
 
@@ -80,6 +77,8 @@ export default function ProvidersApp() {
     SetSessionStorageItems(data);
     RedirectToWelcome();
   }
+
+
 
   async function HandleProviderLogin(e, formValid) {
 
@@ -148,6 +147,12 @@ export default function ProvidersApp() {
   function CloseWaitForConfirmationModal() { setShowWaitForConfirmationModal(false); }
   function OpenWaitForConfirmationModal() { setShowWaitForConfirmationModal(true); }
 
+  function OpenPublishArticleModal() { setShowPublishArticleModal(true) };
+  function ClosePublishArticleModal() { setShowPublishArticleModal(false) };
+
+  function OpenEditArticleModal() { setShowEditArticleModal(true) };
+  function CloseEditArticleModal() { setShowEditArticleModal(false) };
+
   return (
 
     // <div className="provider-background-image">
@@ -168,23 +173,25 @@ export default function ProvidersApp() {
         />}
       />
 
-      <ProtectedRoute exact path="/Provider/Games" Component={ProviderGames} />
 
-      <ProtectedRoute exact path="/Provider/PublishArticle" Component={() =>
-        <ProviderPublishArticle
-          TitleValue={titleValue}
-          ContentValue={contentValue}
-          TopicValue={topicValue}
-          OverridenArticleId={overridenArticleId}
-          PageMode={pageMode}
-          LoadArticlesFromApi={LoadArticlesFromApi}
-        />}
+      <PublishArticleModal
+        ShowPublishArticleModal={showPublishArticleModal}
+        ClosePublishArticleModal={ClosePublishArticleModal}
+        LoadArticlesFromApi={LoadArticlesFromApi}
+      />
+
+      <EditArticleModal
+        ShowEditArticleModal={showEditArticleModal}
+        CloseEditArticleModal={CloseEditArticleModal}
+        LoadArticlesFromApi={LoadArticlesFromApi}
       />
 
       <ProtectedRoute exact path="/Provider/Articles" Component={() =>
         <ProviderArticles
+          OpenPublishArticleModal={OpenPublishArticleModal}
+          OpenEditArticleModal={OpenArticleInEditor}
+
           LoadArticlesFromApi={LoadArticlesFromApi}
-          OpenArticleInEditor={OpenArticleInEditor}
         />}
       />
 

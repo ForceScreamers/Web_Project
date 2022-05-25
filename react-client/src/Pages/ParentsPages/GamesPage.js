@@ -39,7 +39,6 @@ import GamesPageSearchField from "./GamesPage/GamesPageSearchField";
 const DEFAULT_DIFFICULTY = GAME_DIFFICULTY.EASY;
 
 
-//TODO: Get game names from db
 
 
 
@@ -144,6 +143,7 @@ export default function GamesPage({ GamesDifficulties, SetGamesDifficulties, Loa
                 Games={gamesToDisplay}
                 ChangeDifficulty={ChangeDifficulty}
                 GamesDifficulties={GamesDifficulties}
+
               />
             </>
             :

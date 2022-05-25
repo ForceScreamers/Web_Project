@@ -45,14 +45,56 @@ export default function ChildEvaluationPrompt({ Evaluation }) {
 
   return (
     <div>
-      <div className="d-flex flex-column">
-        <h1>{Evaluation.GameName}: <label style={{ color: GetColorByDifficulty(Evaluation.Difficulty) }}>{DifficultyToHebrew(Evaluation.Difficulty)}</label></h1>
+      <div className="d-flex flex-column align-items-center">
+        <h1>{Evaluation.GameName} </h1>
+      </div>
 
-        <label>ממוצע מהלכים: {Evaluation.AverageMoveCount}</label>
-        <label>ניקוד ממוצע: {Evaluation.AverageScore}</label>
-        <label>זמן ממוצע: {ConvertSecondsToTime(Evaluation.AverageTimeInSeconds)}</label>
-        <label>שיא מהלכים: {Evaluation.LowestMoveCount}</label>
-        <label>שיא זמן: {ConvertSecondsToTime(Evaluation.LowestTime)}</label>
+      <div className="d-flex flex-column" style={{ fontSize: "18px" }}>
+        <label style={{ fontSize: "22px", fontWeight: "500" }}>רמת קושי: <label style={{ color: GetColorByDifficulty(Evaluation.Difficulty), fontSize: "26px" }}>{DifficultyToHebrew(Evaluation.Difficulty)}</label></label>
+
+        <br />
+
+        <label style={{ fontSize: "22px", fontWeight: "500" }}>הממוצע שלי:</label>
+
+        <br />
+
+        <div className="d-flex flex-row justify-content-around">
+
+          <div className="d-flex flex-column align-items-center">
+            <label>ממוצע מהלכים</label>
+            <label>{Evaluation.AverageMoveCount}</label>
+          </div>
+
+          <div className="d-flex flex-column align-items-center">
+            <label>ניקוד ממוצע</label>
+            <label>{Evaluation.AverageScore}</label>
+          </div>
+
+          <div className="d-flex flex-column align-items-center">
+            <label>זמן ממוצע</label>
+            <label>{ConvertSecondsToTime(Evaluation.AverageTimeInSeconds)}</label>
+          </div>
+
+        </div>
+
+        <br />
+
+        <label style={{ fontSize: "22px", fontWeight: "500" }}>השיאים שלי:</label>
+
+        <br />
+
+        <div className="d-flex flex-row justify-content-around">
+          <div className="d-flex flex-column align-items-center">
+            <label>שיא מהלכים</label>
+            <label>{Evaluation.LowestMoveCount}</label>
+          </div>
+          <div className="d-flex flex-column align-items-center">
+            <label>שיא זמן</label>
+            <label>{ConvertSecondsToTime(Evaluation.LowestTime)}</label>
+          </div>
+
+        </div>
+
         <br />
       </div>
     </div>

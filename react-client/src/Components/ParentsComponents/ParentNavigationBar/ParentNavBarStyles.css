@@ -7,8 +7,6 @@
   background-color: transparent;
 }
 
-/* TODO: Each tab has it's own color */
-/* TODO: Glow effect around border */
 
 /* Navigation bar link styles */
 .nav-bar-link {
@@ -45,4 +43,8 @@
 
 .active-nav-bar-link:hover {
   color: rgba(0, 255, 255, 0.635);
+}
+
+.parent-navbar-fade {
+  background-image: linear-gradient(hsla(289, 60%, 67%, 0.55), transparent);
 }

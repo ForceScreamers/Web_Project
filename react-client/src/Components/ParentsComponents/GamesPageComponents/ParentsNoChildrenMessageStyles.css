@@ -1,0 +1,43 @@
+.no-children-message-button {
+  border-color: transparent;
+  border-radius: 25px;
+
+  border-color: white;
+  border-width: 3px;
+
+  font-size: 25px;
+  font-weight: 500;
+
+  margin-top: 20px;
+  padding-left: 55px;
+  padding-right: 55px;
+
+  background-color: #A1DD64;
+}
+
+.no-children-message-button:hover {
+  border-color: transparent;
+
+  background-color: #a1dd649d;
+
+  outline: none;
+  box-shadow: none !important;
+}
+
+.no-children-message-button:focus {
+  border-color: transparent;
+
+  background-color: #a1dd649d;
+
+  outline: none;
+  box-shadow: none !important;
+}
+
+.no-children-message-button:active {
+  border-color: transparent;
+
+  background-color: #a1dd649d;
+
+  outline: none;
+  box-shadow: none !important;
+}

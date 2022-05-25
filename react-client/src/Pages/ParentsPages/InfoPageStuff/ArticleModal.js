@@ -5,7 +5,7 @@ import { ParentsApiRequest, ProvidersApiRequest } from "../../../RequestHeadersT
 import './ArticleModalStyles.css'
 
 
-export default function ArticleModal({ SetGamesSearchValue, ShowArticleModal, CloseArticleModal, TopicTitle, TopicId, Title, ProviderName, Content, ProviderPhone, ProviderEmail, ProviderOccupation }) {
+export default function ArticleModal({ RedirectToGamesAndFilterByTopic, ShowArticleModal, CloseArticleModal, TopicTitle, TopicId, Title, ProviderName, Content, ProviderPhone, ProviderEmail, ProviderOccupation }) {
 
   // function ProviderPhoneEmailFormat() {
 
@@ -48,7 +48,7 @@ export default function ArticleModal({ SetGamesSearchValue, ShowArticleModal, Cl
 
 
           <div>
-            <ShowGamesByTopicButton SetGamesSearchValue={SetGamesSearchValue} TopicTitle={TopicTitle} />
+            <ShowGamesByTopicButton RedirectToGamesAndFilterByTopic={RedirectToGamesAndFilterByTopic} TopicTitle={TopicTitle} />
             <Button variant="danger" onClick={() => CloseArticleModal()}>סגירה</Button>
           </div>
 
@@ -60,18 +60,12 @@ export default function ArticleModal({ SetGamesSearchValue, ShowArticleModal, Cl
 
 
 
-function ShowGamesByTopicButton({ TopicTitle, SetGamesSearchValue }) {
+function ShowGamesByTopicButton({ TopicTitle, RedirectToGamesAndFilterByTopic }) {
   const history = useHistory();
 
-  //  TODO: Change function name
-  function Yee(topicTitle) {
-    history.push('/Parent/Games');
-    sessionStorage.setItem('gamesSearchValue', topicTitle);
 
-    SetGamesSearchValue(topicTitle);
-  }
 
   return (
-    <Button onClick={() => Yee(TopicTitle)}>למשחקים בתחום</Button>
+    <Button onClick={() => RedirectToGamesAndFilterByTopic(TopicTitle)}>למשחקים בתחום</Button>
   )
 }

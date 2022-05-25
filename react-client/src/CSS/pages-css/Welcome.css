@@ -1,35 +1,147 @@
-.Headline{
-  color:rgb(25, 0, 255);
-  font-size: 80px;
+html {
+  scroll-behavior: smooth;
 }
 
-.WelcomeContainer{
+.Headline {
+  color: black;
+  font-size: 40px;
+}
+
+.WelcomeContainer {
   display: flex;
   justify-content: center;
   flex-direction: column;
   align-items: center;
-  margin-top: 11%;
+  margin-top: 100px;
 }
 
-.HeadlineContainer{
+.HeadlineContainer {
   width: 1200px;
   text-align: center;
   display: flex;
   justify-content: center;
 }
 
-.para{
+.para {
   margin-top: 25%;
-  margin-bottom: 5%;
+  margin-bottom: 10%;
   font-size: 20px;
   line-height: 50px;
-  background-color: rgb(61, 62, 75);
 
   display: flex;
-  justify-content: center;
-  flex-direction: column;
+  justify-content: space-around;
+  flex-direction: row;
   text-align: center;
   align-items: center;
 
-  height: 90vh;
+  /* height: 90vh; */
+}
+
+
+.welcome-icon {
+  cursor: pointer;
+}
+
+.welcome-icon:hover {
+  transform: scale(0.95);
+}
+
+.welcome-icon-right {
+  margin-left: 30%;
+}
+
+.welcome-icon-left {
+  margin-right: 30%;
+}
+
+
+/* Start button */
+
+.welcome-start-button {
+  width: 500px;
+  background-color: aliceblue;
+  /* margin-bottom: 400px; */
+  font-size: 25px;
+
+  border-radius: 30px;
+  padding: 10px;
+  border: solid white 4px;
+  background-color: #95DB4F;
+
+  outline: none;
+  box-shadow: none !important;
+}
+
+.welcome-start-button:hover {
+  transform: scale(0.95);
+  border: solid white 4px;
+  background-color: #95DB4F;
+
+  outline: none;
+  box-shadow: none !important;
+}
+
+.welcome-start-button:active {
+  border: solid white 4px;
+  background-color: #95DB4F;
+
+  outline: none;
+  box-shadow: none !important;
+}
+
+.welcome-start-button:focus {
+  border: solid white 4px;
+  background-color: #95DB4F;
+
+  outline: none;
+  box-shadow: none !important;
+}
+
+/* More button */
+
+.welcome-more-button {
+  width: 500px;
+  background-color: aliceblue;
+  margin-bottom: 400px;
+  font-size: 25px;
+
+  border-radius: 30px;
+  padding: 10px;
+  border: solid white 4px;
+  background-image: linear-gradient(to right, #F29EA7, #7AD0F4);
+}
+
+.welcome-more-button:active {
+  border: solid white 4px;
+  background-color: #95DB4F;
+
+  outline: none;
+  box-shadow: none !important;
+}
+
+.welcome-more-button:hover {
+  transform: scale(0.95);
+  border: solid white 4px;
+  background-color: #95DB4F;
+
+  outline: none;
+  box-shadow: none !important;
+}
+
+.welcome-more-button:focus {
+  border: solid white 4px;
+  background-color: #95DB4F;
+
+  outline: none;
+  box-shadow: none !important;
+}
+
+.welcome-background-line-container {
+  width: 800px;
+  height: 600px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* background-color: ; */
+  /* background-image: url('../../website-images/welcome-background-line.png'); */
 }

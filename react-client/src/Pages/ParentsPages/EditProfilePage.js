@@ -20,7 +20,6 @@ const breakpointColumnsObj = {
 };
 
 
-//TODO: Finish add child and edit child 
 
 
 export default function EditProfilePage({ LoadChildrenFromServer }) {
@@ -101,21 +100,26 @@ export default function EditProfilePage({ LoadChildrenFromServer }) {
           <Masonry className="children-profiles-container" breakpointCols={breakpointColumnsObj}>
             {
               childrenProfiles !== null//  If there are no children
-                //  i - index inside the state array, using it because react wants to use it...
-                ? childrenProfiles.map((childProfile, index) => (
-                  <ChildCard
-                    HandleAddChild={HandleAddChild}
+                ?
+                childrenProfiles.map((childProfile, index) => {
+                  console.log(childProfile)
+                  return (
+                    <ChildCard
+                      HandleAddChild={HandleAddChild}
 
-                    DisplayEditChildProfileModal={DisplayEditChildProfileModal}
-                    ShowEditChildProfileModal={showEditChildProfileModal}
-                    CloseEditChildProfileModal={CloseEditChildProfileModal}
+                      DisplayEditChildProfileModal={DisplayEditChildProfileModal}
+                      ShowEditChildProfileModal={showEditChildProfileModal}
+                      CloseEditChildProfileModal={CloseEditChildProfileModal}
 
-                    SelectChild={SelectChild}
-                    DeleteChild={DeleteChild}
-                    ChildProfile={childProfile}
-                    key={index}  // Key for the component's index
-                  />
-                ))
+                      SelectChild={SelectChild}
+                      DeleteChild={DeleteChild}
+                      ChildProfile={childProfile}
+                      key={index}  // Key for the component's index
+
+                      LoadChildrenFromServer={LoadChildrenFromServer}
+                    />
+                  )
+                })
                 : <></>
             }
 

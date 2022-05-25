@@ -1,43 +1,41 @@
 import { Navbar, Container, Nav } from 'react-bootstrap'
-import { Link } from "react-router-dom"
+import { Link, NavLink } from "react-router-dom"
 import LogoutButton from '../GeneralComponents/LogoutButton';
+
+import './ProviderNavBarStyles.css'
+
+import logoImage from '../../website-images/logo.png'
 
 export default function ProviderNavigationBar() {
 
   return (
-    <div dir="rtl" >
-      <Navbar collapseOnSelect expand="lg" bg="secondary" variant="dark">
-        <Container fluid className="h-25">
-
-          <Navbar.Brand style={{ fontSize: 35, color: 'black', }} className="fw-bold" href="">בעלי מקצוע</Navbar.Brand>
-
-          {/* <Navbar.Brand href="">כפתור בית</Navbar.Brand> */}
-
-          <Navbar.Brand> מחובר בתור: {JSON.parse(sessionStorage.getItem('Info')).FullName}</Navbar.Brand>
+    <div dir="rtl" className="provider-navbar-fade">
+      <Navbar className="provider-navbar-main" collapseOnSelect expand="lg" variant="dark">
+        <Container fluid className="provider-navbar-container">
 
 
-          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-          <Navbar.Collapse id="responsive-navbar-nav">
-            <Nav className="me-auto">
-              <Link to="/Provider/Games" className="nav-link">משחקים</Link>
-              <Link to="/Provider/PublishArticle" className="nav-link">פרסום מאמר</Link>
-              <Link to="/Provider/Articles" className="nav-link">המאמרים שלי</Link>
-              <Link to="/Provider/MyProfile" className="nav-link">הפרופיל שלי</Link>
-              {/* <NavDropdown title="Dropdown" id="collasible-nav-dropdown">
-                <NavDropdown.Item href="#action/3.1">דברים</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.2">עוד דברים</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.3">עוד דברים</NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
-              </NavDropdown> */}
 
-              {/* <Button onClick={LogoutUser} variant='danger'>יציאה</Button> */}
-              <LogoutButton />
+          <div>
+            <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+            <Navbar.Collapse id="responsive-navbar-nav">
+              <Nav className="me-auto">
+                <NavLink activeClassName='active-nav-bar-link' className="nav-bar-link" to="/Provider/Articles">המאמרים שלי</NavLink>
+                <NavLink activeClassName='active-nav-bar-link' className="nav-bar-link" to="/Provider/MyProfile">הפרופיל שלי</NavLink>
 
-            </Nav>
-          </Navbar.Collapse>
+                <div>
+                  <LogoutButton />
+                </div>
+
+                <Navbar.Brand> מחובר בתור: {JSON.parse(sessionStorage.getItem('Info')).FullName}</Navbar.Brand>
+
+              </Nav>
+            </Navbar.Collapse>
+          </div>
         </Container>
-      </Navbar>
+        <div >
+          <img width={300} alt="logo" src={logoImage} />
+        </div>
+      </Navbar >
     </div >
   )
 }
